@@ -1,0 +1,35 @@
+---
+title: "Universal Accounts"
+mode: "wide"
+---
+
+___
+
+Particle Network’s Universal Accounts play a crucial role within Particle Network’s implementation of chain abstraction, providing users with a single address, balance, and interaction point across the multi-chain Web3 ecosystem.
+
+Users leveraging a Universal Account maintain one balance and account state across every blockchain. Particle’s Universal Accounts leverage [Universal Liquidity](doc:universal-liquidity) to automatically execute atomic cross-chain transactions and pool funds from a user's balance across chains to meet the conditions of a given operation. This creates a unified UX, agnostic to any specific blockchain.
+
+By using a Universal Account, user’s not only unify their interface with the EVM and non-EVM ecosystem, but have the ability to deposit and use funds on any blockchain– represented and used as if it existed on a single chain.
+
+<Frame caption="User flow of Particle Network's Universal Accounts.">
+<img
+  className="block dark:hidden"
+  src="/resources/modular-l1/images/universal-accounts.jpg"
+  alt="Universal Accounts"
+/>
+<img
+  className="hidden dark:block"
+  src="/resources/modular-l1/images/universal-accounts.jpg"
+  alt="Universal Accounts"
+/>
+</Frame>
+
+### Key modules and initial ecosystem
+
+Particle Network is primarily constituted by three key modules. For a detailed description of these modules you can read our [Modular L1](doc:particle-chain) section.
+
+### Design and security
+
+Particle Network features a **dual staking system**, combining Proof-of-Stake through Tendermint with Bitcoin’s economic security and resilience, powered by **[Babylon](https://babylonchain.io)**.
+
+Furthermore, it presents a unique data availability aggregation (AggDA) model relying on providers like [Celestia](https://celestia.org/), [Avail](https://www.availproject.org/), and [NEAR DA](https://near.org/data-availability) to reduce vendor lock-in and liveness risks. This constitutes a decentralized system of Aggregated DA node operators to dynamically publish and verify data between providers for conditional redundancy or optimization.

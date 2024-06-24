@@ -1,31 +1,40 @@
 {
   "$schema": "https://mintlify.com/schema.json",
-  "name": "Starter Kit",
+  "name": "Particle docs",
   "logo": {
-    "dark": "/logo/dark.svg",
-    "light": "/logo/light.svg"
+    "dark": "/logo/dark.png",
+    "light": "/logo/dark.png"
   },
-  "favicon": "/favicon.svg",
+  "favicon": "/favicon.png",
   "colors": {
-    "primary": "#0D9373",
-    "light": "#07C983",
-    "dark": "#0D9373",
-    "anchors": {
-      "from": "#0D9373",
-      "to": "#07C983"
-    }
+    "primary": "#e44be0",
+    "light": "#e44be0",
+    "dark": "#e44be0"
+  },
+  "modeToggle": {
+    "default": "dark",
+    "isHidden": true
+  },
+  "topbarCtaButton": {
+    "name": "Dashboard",
+    "url": "https://dashboard.particle.network/#/login"
   },
   "topbarLinks": [
     {
-      "name": "Support",
-      "url": "mailto:hi@mintlify.com"
+      "name": "Blog",
+      "url": "https://blog.particle.network/"
+    },
+    {
+      "name": "GitHub",
+      "url": "https://github.com/Particle-Network"
     }
+
   ],
-  "topbarCtaButton": {
-    "name": "Dashboard",
-    "url": "https://dashboard.mintlify.com"
-  },
   "tabs": [
+    {
+      "name": "Resources",
+      "url": "resources"
+    },
     {
       "name": "API Reference",
       "url": "api-reference"
@@ -33,19 +42,24 @@
   ],
   "anchors": [
     {
-      "name": "Documentation",
+      "name": "Documentation Home",
       "icon": "book-open-cover",
-      "url": "https://mintlify.com/docs"
+      "url": "#"
     },
     {
-      "name": "Community",
-      "icon": "slack",
-      "url": "https://mintlify.com/community"
+      "name": "Particle Network",
+      "icon": "house-chimney-window",
+      "url": "https://particle.network/"
     },
     {
-      "name": "Blog",
-      "icon": "newspaper",
-      "url": "https://mintlify.com/blog"
+      "name": "Discord",
+      "icon": "discord",
+      "url": "https://discord.com/invite/2y44qr6CR2"
+    },
+    {
+      "name": "GitHub",
+      "icon": "github",
+      "url": "https://github.com/Particle-Network"
     }
   ],
   "navigation": [
@@ -69,6 +83,21 @@
       ]
     },
     {
+      "group": "📚 OVERVIEW",
+      "pages": [
+        "resources/what-is-particle-network",
+        "resources/realized-vision"
+      ]
+    },
+    {
+      "group": "⚡ TECHNOLOGY",
+      "pages": [
+        {
+            "group": "Modular L1",
+            "pages": ["resources/modular-l1/introduction","resources/modular-l1/universal-accounts","resources/modular-l1/universal-liquidity", "resources/modular-l1/universal-gas"]
+        }]
+    },
+    {
       "group": "API Documentation",
       "pages": [
         "api-reference/introduction"
@@ -84,8 +113,8 @@
     }
   ],
   "footerSocials": {
-    "x": "https://x.com/mintlify",
-    "github": "https://github.com/mintlify",
-    "linkedin": "https://www.linkedin.com/company/mintsearch"
+    "x": "https://twitter.com/ParticleNtwrk",
+    "github": "https://github.com/Particle-Network",
+    "discord": "https://discord.com/invite/2y44qr6CR2"
   }
 }

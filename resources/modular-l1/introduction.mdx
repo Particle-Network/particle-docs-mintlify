@@ -1,0 +1,186 @@
+---
+title: "Particle Chain"
+mode: "wide"
+---
+
+> 🔮 The Particle Network Modular L1's Testnet is now live in Phase 1. As such, early versions of some functionalities described here, like Universal Accounts and Universal Gas, are currently live. However, other components described are subject to changes and updates as Particle Network approaches Mainnet.
+
+Built with the Cosmos SDK, Particle Network exists to coordinate and settle cross-chain transactions within a high-performance EVM execution environment (with this EVM-compatibility powered by Berachain's BeaconKit). This L1 enables three core functionalities:
+
+1. [Universal Accounts](/resources/modular-l1/universal-accounts)
+2. [Universal Liquidity](/resources/modular-l1/universal-liquidity)
+3. [Universal Gas](/resources/modular-l1/universal-gas)
+
+
+Collectively, these allow for the unification of interactions across all chains, providing users with a single balance and account state. To achieve this, Particle Network coordinates and settles the atomic cross-chain transactions needed to fulfill users’ goals, moving funds across chains automatically.
+
+<img
+  className="block dark:hidden"
+  src="/resources/modular-l1/images/particle-chain.jpg"
+  alt="Particle Chain"
+/>
+<img
+  className="hidden dark:block"
+  src="/resources/modular-l1/images/particle-chain.jpg"
+  alt="Particle Chain"
+/>
+
+***
+
+## Core Functionalities
+
+### Universal Accounts
+
+Particle Network’s [Universal Accounts](doc:universal-accounts) aggregate token balances across all chains by automatically routing and executing atomic cross-chain transactions.
+
+These accounts, which in turn leverage Particle’s [Universal Liquidity](doc:universal-liquidity), can be understood as specialized Smart Account implementations deployed and coordinated across all chains. A Universal Account can be created and managed by simply connecting and assigning a wallet derived from either social logins through Particle Network’s [Modular Smart Wallet-as-a-Service](doc:modular-smart-waas) or a Web3 wallet, such as MetaMask, UniSat, Keplr, etc. 
+
+Universal Accounts automatically use Particle Network to maintain a unified state and, through the usage of [Universal Liquidity](doc:universal-liquidity). Universal Accounts act as an interface on top of existing wallets, allowing users to deposit and use funds across the chain-abstracted ecosystem. Developers will be able to leverage Universal Accounts within their dApps by simply implementing Particle Network’s Universal SDKs.
+
+<img
+  className="block dark:hidden"
+  src="/resources/modular-l1/images/functionalities.png"
+  alt="Particle Chain"
+/>
+<img
+  className="hidden dark:block"
+  src="/resources/modular-l1/images/functionalities.png"
+  alt="Particle Chain"
+/>
+
+### Universal Liquidity
+
+[Universal Liquidity](doc:universal-liquidity) refers to the aggregation of balances across all chains. The architecture of Universal Liquidity is directly driven by atomic cross-chain transactions and swaps coordinated by Particle Network. These atomic transaction sequences are powered by Bundler nodes, which execute UserOperations on their target chains using Liquidity Providers to move intermediary tokens –such as USDC and USDT– between chains through token pools. 
+
+An example of this can be seen through the usage of USDC on multiple chains to purchase an NFT (priced in ETH) on Base. In this scenario:
+
+1. Particle Network aggregates the user’s USDC balances across chains.
+2. Allows the user to purchase the NFT using their assets. 
+3. Upon confirming the transaction, Particle Network automatically swaps this USDC to ETH  and purchases the NFT. These additional on-chain operations only add a few seconds of processing and are completed unbeknownst to the user.
+
+<Frame caption="Transaction flow for cross-chain UserOperations, between Polygon and Base as an example.">
+<img
+  className="block dark:hidden"
+  src="/resources/modular-l1/images/transaction-flow.png"
+  alt="Transaction flow"
+/>
+<img
+  className="hidden dark:block"
+  src="/resources/modular-l1/images/transaction-flow.png"
+  alt="Transaction flow"
+/>
+</Frame>
+
+### Universal Gas
+
+Given the unification of balances across chains through Universal Liquidity, Particle Network also solves the fragmentation of expected gas tokens, providing a cohesive experience. 
+
+Historically, maintaining gas fee balances across chains has been a significant point of friction for users. To solve this problem, Particle Network uses its native Paymaster to allow users to pay for gas fees using any token on any chain, ultimately settled in the Particle Network L1 through the chain’s native token, PARTI. Users do not need to hold PARTI to use Universal Accounts, as the swaps required for settlement are performed automatically
+
+<Frame caption="Stack of core functionalities provided by Particle Network's Modular L1.">
+<img
+  className="block dark:hidden"
+  src="/resources/modular-l1/images/core-stack.jpg"
+  alt="Core functionalities stack"
+/>
+<img
+  className="hidden dark:block"
+  src="/resources/modular-l1/images/core-stack.jpg"
+  alt="Core functionalities stack"
+/>
+</Frame>
+
+***
+
+# Architecture
+
+Particle Network takes a unique and innovative approach to its foundational architecture. Our modular L1 compartmentalizes different components of its infrastructure to decentralize certain tasks, even outsourcing some to third parties. This is materialized through Modular Nodes, a collection of nodes driving core functionality within Particle Network.
+
+## Utility and key modules
+
+Particle Network leverages three primary modules to solve Web3's fragmentation of users and accounts across chains:
+
+- **Master Keystore Hub**: Particle Network’s Master Keystore Hub acts as the central component and source of truth used for coordinating smart contract deployments and updates across all networks, automatically synchronizing settings, such as modules and signers, between each Universal Account instance and ensuring state parity across networks. Account settings are stored on Particle Network to be used as a central source of truth across every instance. Our L1 then facilitates cross-chain messages to either deploy new instances abiding by these settings or update existing instances as they change.
+- **Decentralized Messaging Network (DMN)**: On Particle Network, Relayer Nodes use a Messaging Protocol (powered by Hyperlane) to monitor whether UserOperations on external chains have been executed successfully, and then settle the execution status on our L1. This network of decentralized Relayer Nodes, tasked with monitoring external chain events and the settlement of state events, is called the Decentralized Messaging Network.
+- **Decentralized Bundler**: While current implementations of ERC-4337 account abstraction Bundlers are centralized and as such censorable, Particle Network has designed and implemented a **fully decentralized** Bundler network for high-volume, cross-chain UserOperation processing. Within this implementation, node operators running Bundler nodes, as will be explored on this page, initiate and execute UserOperations on external chains.
+
+## Modular Nodes
+
+By running Modular Nodes, node operators can contribute to Particle Network and support decentralization. They do so by validating and computing certain key functionalities of Particle Network. These functionalities, as well as the different kinds of nodes performing them, are:
+
+### Cross-chain execution: Bundler Nodes
+
+A foundational function enabling Universal Liquidity is the Bundling and execution of transactions on external chains. 
+
+UserOperations initiated by Universal Accounts and thereby processed by Particle Network are executed by Bundler nodes, taking advantage of Particle Network’s Decentralized Bundler network.
+
+### Messaging: Relayer Nodes
+
+Powered by Particle Network’s Decentralized Messaging Network, Relayer Nodes exist as a message hub responsible for monitoring and synchronizing the execution status on external chains, following the work done by Bundler Nodes.
+
+In addition to this, Relayer Nodes work alongside Particle Network’s Master Keystore Hub module to facilitate the automatic maintenance and parity of changes in smart account state across chains, such as account modules, owners, and so on.
+
+### Node monitoring: Watchtower Nodes
+
+Given the various interconnected nodes simultaneously working alongside one another to power Universal Liquidity and Universal Accounts, a mechanism to monitor and ensure liveness among them is needed. Watchtower Nodes fulfill this need by acting as liveness assurance by watching the work of all other nodes in the network.
+
+Furthermore, Watchtower Nodes provide execution proofs, and in some cases, fraud proofs, for each block generated per epoch.
+
+<Frame caption="Architecture of the Particle Network Modular L1.">
+<img
+  className="block dark:hidden"
+  src="/resources/modular-l1/images/particle-architecture.png"
+  alt="Architecture of Particle Networks' L1"
+/>
+<img
+  className="hidden dark:block"
+  src="/resources/modular-l1/images/particle-architecture.png"
+  alt="Architecture of Particle Networks' L1"
+/>
+</Frame>
+
+***
+
+## Aggregated Data Availability (AggDA)
+
+Within modular blockchain architectures, the most commonly outsourced component is Data Availability (DA). Particle Network is no exception, although it takes a unique approach to the implementation of external DA layers.
+
+Due to the intensive task of coordinating cross-chain transactions across the entire blockchain ecosystem and simultaneously maintaining state across every Universal Account, Particle aims to maximize security and stability while avoiding single points of failure to ensure resilience. In the context of DA, this is achieved through the aggregation of multiple providers. These are:
+
+- [Celestia](https://celestia.org/)
+- [Avail](https://www.availproject.org/)
+- [NEAR DA](https://near.org/data-availability)
+
+Each of the above DA solutions brings unique benefits and performance priorities. As such, these can be used in conjunction for maximal security and stability. Particle leverages either random deterministic redundancy or selective conditional publishing for each block, posting and verifying data between different DA layers accordingly through the usage of dedicated Aggregated DA nodes. This model significantly enhances availability and stability through increased redundancy via redundant publishing, efficiency through selective publishing, and decentralization.
+
+<img
+  className="block dark:hidden"
+  src="/resources/modular-l1/images/aggda.jpeg"
+  alt="Aggregated Data Availability on Particle"
+/>
+<img
+  className="hidden dark:block"
+  src="/resources/modular-l1/images/aggda.jpeg"
+  alt="Aggregated Data Availability on Particle"
+/>
+
+## Dual Staking
+
+Following a similar philosophy to AggDA, Particle Network approaches consensus by focusing on ensuring a high degree of cryptoeconomic security and accessibility.
+
+Bootstrapping a Proof-of-Stake network can be risky. This is because, if a new blockchain’s entire validator set is secured through the network’s native token, natural volatility affecting the newly-deployed token impacts the network’s stability. To solve this, Particle Network will use a dual staking model, leveraging both the economic security of BTC through [Babylon](https://babylonchain.io/) and its native token, PARTI to secure the network.
+
+Our L1’s dual staking mechanism leverages two distinct pools of Validators: one secured by Particle Network’s native token, and another secured by BTC. Both groups are required to agree on validity individually, warranting equal participation in consensus.
+
+A model of this nature significantly reduces pressure and security dependence on Particle Network's native token, instead bootstrapping the network through the cryptoeconomic security provided by restaked ETH.
+
+<img
+  className="block dark:hidden"
+  src="/resources/modular-l1/images/dual-staking.jpeg"
+  alt="Dual staking on Particle"
+/>
+<img
+  className="hidden dark:block"
+  src="/resources/modular-l1/images/dual-staking.jpeg"
+  alt="Dual staking on Particle"
+/>

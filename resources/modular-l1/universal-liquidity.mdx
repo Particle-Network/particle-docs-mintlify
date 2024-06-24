@@ -1,0 +1,41 @@
+---
+title: "Universal Liquidity"
+mode: "wide"
+---
+
+Particle Network’s Universal Liquidity functionality acts as the underlying layer enabling seamless, atomic cross-chain interactions, enabling the unification of balances within [Universal Accounts](doc:universal-accounts).
+
+**Furthermore, Universal Liquidity handles the atomic movement of funds across chains within the frame of a relevant cross-chain transaction requiring liquidity from external sources.**
+
+For example, in transactions done on chains in which a user has no funds, Universal Liquidity will automatically pull funds from the user’s balance on one or more chains where the required liquidity exists. These transactions are paid for using any token, all while coordinated and settled through Particle Network.
+
+Through the implementation of Universal Liquidity, users who leverage applications across chains have an experience akin to that of interacting with a single chain. This eliminates the need to manually access and use bridges, as the liquidity needed for a given action is automatically sourced from balances a user’s [Universal Account](doc:universal-accounts) holds on other chains, with the automatic execution of any swaps the transaction requires.
+
+<Frame caption="Example of cross-chain transaction execution with Particle Network.">
+<img
+  className="block dark:hidden"
+  src="/resources/modular-l1/images/universal-liquidity.png"
+  alt="Universal Liquidity"
+/>
+<img
+  className="hidden dark:block"
+  src="/resources/modular-l1/images/universal-liquidity.png"
+  alt="Universal Liquidity"
+/>
+</Frame>
+
+***
+
+# Understanding Universal Liquidity
+
+Universal Liquidity is made possible through Particle Network’s Modular Nodes and Decentralized Messaging Network.
+
+Particle Network acts as a coordination and settlement layer for all cross-chain transactions processed through [Universal Accounts](doc:universal-accounts). Alongside Bundler Nodes, Universal Liquidity is responsible for the automatic execution of operations across chains, enabling a universal balance capable of being consumed on any blockchain.
+
+## Implementation of Universal Liquidity
+
+Universal Liquidity is primarily implemented through the means of [Universal Accounts](doc:universal-accounts). When a user onboards to an application integrating Particle Network’s Universal SDK, their EOA (MetaMask, Keplr, Particle, or UniSat wallet) will be assigned as a signer for a [Universal Account](doc:universal-accounts) instance. They can then fund the account and begin using the dApp in question. Importantly, Universal Accounts can be used within all other compatible applications across different chains without requiring users to bridge assets; this property is powered by Universal Liquidity.
+
+***
+
+<Tip>To dive further into the architecture of Universal Accounts, the primary implementation of Universal Liquidity, head over to [Universal Accounts](doc:universal-accounts).</Tip>
