@@ -7,9 +7,9 @@
   },
   "favicon": "/favicon.png",
   "colors": {
-    "primary": "#e44be0",
+    "primary": "#9d32de",
     "light": "#e44be0",
-    "dark": "#e44be0"
+    "dark": "#9d32de"
   },
   "topbarCtaButton": {
     "name": "Dashboard",
@@ -38,11 +38,6 @@
   ],
   "anchors": [
     {
-      "name": "Documentation Home",
-      "icon": "book-open-cover",
-      "url": "#"
-    },
-    {
       "name": "Particle Network",
       "icon": "house-chimney-window",
       "url": "https://particle.network/"
@@ -60,7 +55,7 @@
   ],
   "navigation": [
     {
-      "group": "📚 OVERVIEW",
+      "group": "OVERVIEW",
       "pages": [
         "introduction",
         "what-is-particle-network",
@@ -68,13 +63,13 @@
       ]
     },
     {
-      "group": "🏁 GETTING STARTED",
+      "group": "GETTING STARTED",
       "pages": [
         "resources/overview"
       ]
     },
     {
-      "group": "⚡ TECHNOLOGY",
+      "group": "TECHNOLOGY",
       "pages": [
         {
             "group": "Modular L1",
@@ -83,14 +78,14 @@
         {
           "group": "Wallet Abstraction",
           "pages": ["resources/wallet-abstraction/btc-connect",{
-            "group": "Modular Smart Wallet-as-a-Service",
+            "group": "Smart Wallet-as-a-Service",
             "pages": ["resources/wallet-abstraction/waas/overview","resources/wallet-abstraction/waas/mpc-tss","resources/wallet-abstraction/waas/bundler","resources/wallet-abstraction/waas/omni-paymaster","resources/wallet-abstraction/waas/differentiators"]
         }]
       }]
       
     },
     {
-      "group": "⏳ QUICKSTART: WALLET ABSTRACTION",
+      "group": "QUICKSTART: WALLET ABSTRACTION",
       "pages": [
         "resources/quickstart/intro",
         "resources/quickstart/network-coverage",
@@ -100,8 +95,42 @@
           "pages": ["resources/quickstart/connection-kits/solana","resources/quickstart/connection-kits/rainbow","resources/quickstart/connection-kits/particle-connect","resources/quickstart/connection-kits/web3modal", "resources/quickstart/connection-kits/web3-onboard"]
       },        {
         "group": "Wallet-as-a-Service",
-        "pages": ["resources/quickstart/connection-kits/solana","resources/quickstart/connection-kits/rainbow","resources/quickstart/connection-kits/particle-connect","resources/quickstart/connection-kits/web3modal", "resources/quickstart/connection-kits/web3-onboard"]
-    }
+        "pages": ["resources/quickstart/waas/understanding-waas", "resources/quickstart/waas/components", "resources/quickstart/waas/web-quickstart","resources/quickstart/waas/mobile-quickstart"]
+    },
+    {
+      "group": "Customization",
+      "pages": ["resources/quickstart/customization/auth", "resources/quickstart/customization/wallet" ]
+  },
+  {
+    "group": "Account Abstraction",
+    "pages": ["resources/quickstart/aa/web-aa", "resources/quickstart/aa/mobile-aa", "resources/quickstart/aa/bundler", "resources/quickstart/aa/paymaster"   ]
+}
+]
+    },
+    {
+      "group": "INTEGRATING WALLET ABSTRACTION",
+      "pages": [
+        {
+          "group": "Wallet-as-a-Service",
+          "pages": ["resources/integrations/waas/auth", "resources/integrations/waas/wallet", "resources/integrations/waas/connect"]
+      },        {
+        "group": "Account Abstraction",
+        "pages": ["resources/integrations/aa/bundler", "resources/integrations/aa/paymaster", "resources/integrations/aa/keys"]
+    },
+    {
+      "group": "Nodes & Data Services",
+      "pages": ["resources/integrations/nodes/nodes", "resources/integrations/nodes/data"]
+  },
+  {
+    "group": "Platform Coverage",
+    "pages": ["resources/integrations/platform/web", "resources/integrations/platform/android", "resources/integrations/platform/ios", "resources/integrations/platform/unity", "resources/integrations/platform/unreal", "resources/integrations/platform/cocos", "resources/integrations/platform/flutter", "resources/integrations/platform/react"]
+},     
+{
+  "group": "Building with Particle's Partners",
+  "pages": ["resources/integrations/partners/zetachain", "resources/integrations/partners/alchemy", "resources/integrations/partners/openfort", "resources/integrations/partners/biconomy", "resources/integrations/partners/berachain", "resources/integrations/partners/covalent", "resources/integrations/partners/bob"]
+},
+"resources/quickstart/intro",
+"resources/quickstart/network-coverage"
 ]
     },
     {

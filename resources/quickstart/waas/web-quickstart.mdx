@@ -1,0 +1,160 @@
+---
+title: "Web (Desktop) Quickstart"
+mode: "wide"
+---
+
+# Implementing Particle's Wallet-as-a-Service within Web Applications
+
+### (est. time: less than 5 minutes)
+
+Particle's Wallet-as-a-Service has **over 32 SDKs**, many of which are specific to integration within web applications. Particle Auth and Particle Connect both have **extensive web support**, as web is usually the most popular platform for implementing these SDKs. Getting started and integrating Particle Network's Wallet-as-a-Service within your web application often takes **less than five minutes or 20 lines of code**. This is due to a core focus on developer experience and fundamental abstraction of complexity, resulting in a simple implementation flow.
+
+Below is a quick rundown on installing, configuring, and facilitating social logins within your web application. For a more in-depth rundown, go to [Introduction to API & SDK overview](ref:introduction-to-api-sdk-reference).
+
+***
+
+## Installing WaaS-related libraries
+
+Currently, Particle Network has roughly seven **core** web SDKs across Particle Auth, Particle Connect, and the Particle AA SDK. To understand which SDK may be most relevant to you and the application you're building, see the table below:
+
+| Product                                                              | SDK                                                        | Description                                                                                                                                                                                                                                                                                                                                                        |
+| :------------------------------------------------------------------- | :--------------------------------------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [Particle Auth](ref:introduction-to-particle-auth)                   | `@particle-network/auth` - soon to be deprecated.          | `@particle-network/auth` acts as an all-in-one SDK facilitating social logins, transaction management, account information retrieval, and other integral functions. `@particle-network/auth` is currently the flagship web SDK for Particle's Wallet-as-a-Service, although it's soon to be deprecated in favor of `@particle-network/auth-core`.                  |
+| [Particle Auth](ref:introduction-to-particle-auth)                   | `@particle-network/provider` - soon to be deprecated.      | `@particle-network/provider` facilitates the construction of an EIP-1193 provider to be used within ethers or Web3.js for standardized interaction with Particle's Wallet-as-a-Service. `@particle-network/provider` will soon be deprecated in place of a unified provider construction mechanism within Auth Core.                                               |
+| [Particle Auth](ref:introduction-to-particle-auth)                   | `@particle-network/solana-wallet` - soon to be deprecated. | `@particle-network/solana-wallet` is a partial wrapper of `@particle-network/auth` designed specifically for the implementation of Wallet-as-a-Service within Solana applications.                                                                                                                                                                                 |
+| [Particle Auth Core](ref:introduction-to-particle-auth)              | `@particle-network/auth-core-modal`                        | `@particle-network/auth-core-modal` operates alongside `@particle-network/auth-core`, providing various hooks and React components for implementing Particle Auth Core. `@particle-network/auth-core-modal` contains a collection of hooks for full-stack utilization of Particle Auth, including EIP-1193 provider construction, user information retrieval, etc. |
+| [Particle Auth Core](ref:introduction-to-particle-auth)              | `@particle-network/auth-core`                              | `@particle-network/auth-core`, associated with `@particle-network/auth-core-modal`, is one of the primary components facilitating authentication and interaction within Particle's Wallet-as-a-Service; Auth Core includes a directly embedded interface (without iframe) with deep customization potential.                                                       |
+| [Particle Connect](ref:introduction-to-particle-connect)             | `@particle-network/connect`                                | `@particle-network/connect` is the flagship web SDK for Particle Connect, Particle's in-house connection kit enabling unified onboarding between social logins and external wallets. This SDK is essential for integrating Particle Connect within your application.                                                                                               |
+| [Particle Connect](ref:introduction-to-particle-connect)             | `@particle-network/connect-react-ui`                       | `@particle-network/connect-react-ui` is often used hand-in-hand with `@particle-network/connect`, as it provides various React components for integrating Particle Connect within your web application.                                                                                                                                                            |
+| [Particle Connect](ref:introduction-to-particle-connect) - Auth Core | `@particle-network/connectkit`                             | `@particle-network/connectkit` is an alternative to the two above Particle Connect SDKs, although following a similar configuration and utilization structure. `@particle-network/connectkit` instead facilitates social login connection through Particle Auth Core (`@particle-network/auth-core-modal`) rather than Particle Auth (`@particle-network/auth`).   |
+| [Particle AA SDK](ref:introduction-to-mpc-aa)                        | `@particle-network/aa`                                     | `@particle-network/aa` enables native utilization of account abstraction (a smart account) through Particle's Wallet-as-a-Service. This SDK specifically configures a smart account, constructs and sends UserOperations, creates an EIP-1193 provider object, and more.                                                                                           |
+
+***
+
+## Configuring Particle Auth
+
+The specifics of configuration deviate somewhat depending on whether you're using Particle Auth or Particle Auth Core, although universally, across all SDKs and platforms, three values are always required: `projectId`, `clientKey`, and `appId`. These values fundamentally link your application with the Particle dashboard, enabling customization, analytics, tracking, etc.
+
+To retrieve these values for configuration within your application, follow these steps:
+
+1. Sign up/log in to the [Particle dashboard](https://dashboard.particle.network/).
+
+<img
+  className="block dark:hidden"
+  src="/resources/quickstart/waas/images/login.png"
+  alt="Login into Particle."
+/>
+<img
+  className="hidden dark:block"
+  src="/resources/quickstart/waas/images/login.png"
+  alt="Login into Particle."
+/>
+
+2. Create a new project or enter an existing project.
+
+<img
+  className="block dark:hidden"
+  src="/resources/quickstart/waas/images/project.png"
+  alt="Create Particle project."
+/>
+<img
+  className="hidden dark:block"
+  src="/resources/quickstart/waas/images/project.png"
+  alt="Create Particle project."
+/>
+
+3. Create a new web application, or skip this step if you already have one.
+
+<img
+  className="block dark:hidden"
+  src="/resources/quickstart/waas/images/web-app.png"
+  alt="Create web app."
+/>
+<img
+  className="hidden dark:block"
+  src="/resources/quickstart/waas/images/web-app.png"
+  alt="Create web app."
+/>
+
+4. Retrieve the project ID (`projectId`), the client key (`clientKey`), and the application ID (`appId`).
+
+<img
+  className="block dark:hidden"
+  src="/resources/quickstart/waas/images/credentials.png"
+  alt="Find app's credentials."
+/>
+<img
+  className="hidden dark:block"
+  src="/resources/quickstart/waas/images/credentials.png"
+  alt="Find app's credentials."
+/>
+
+For more information on the Particle dashboard, take a look at [this video](https://www.youtube.com/watch?v=d7DYCMNDmjo&ab_channel=ParticleNetwork).
+
+With your `projectId`, `clientKey`, and `appId` retrieved, you'll need to configure Particle Auth within your application according to the SDK you're using. For Particle Auth, a new instance of `ParticleNetwork` can be created for central control over the whole SDK, including facilitating social logins. To initialize `ParticleNetwork`, use a snippet similar to the example below:
+
+```javascript JavaScript
+import { ParticleNetwork } from '@particle-network/auth';
+
+const particle = new ParticleNetwork({
+    projectId: process.env.REACT_APP_PROJECT_ID,
+    clientKey: process.env.REACT_APP_CLIENT_KEY,
+    appId: process.env.REACT_APP_APP_ID,
+    chainName: 'Ethereum',
+    chainId: 5, // Goerli
+    wallet: { displayWalletEntry: true },
+  });
+```
+
+Or, more likely, if you're using the new Auth Core SDK and configuring your application through `AuthCoreContextProvider` (imported from `@particle-network/auth-core-modal`), which wraps your primary React component within the `index` file, you can follow a structure such as the one below:
+
+```javascript JavaScript
+import { AuthCoreContextProvider } from '@particle-network/auth-core-modal';
+
+ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
+  <React.StrictMode>
+    <AuthCoreContextProvider
+      options={{
+        projectId: process.env.REACT_APP_PROJECT_ID,
+        clientKey: process.env.REACT_APP_CLIENT_KEY,
+        appId: process.env.REACT_APP_APP_ID,
+        wallet: {
+          visible: true,
+        },
+      }}
+    >
+      <App />
+    </AuthCoreContextProvider>
+  </React.StrictMode>
+)
+```
+
+***
+
+## Facilitating logins
+
+With the SDK configured, you can move on to initiating social logins within your application. Once again, this will deviate between Particle Auth and Particle Auth Core, but the general idea remains the same: If you're using Particle Auth, social login can be requested through the same instance of `ParticleNetwork` that was recently configured, such as with:
+
+```javascript JavaScript
+// authType can be 'google', 'twitter', 'email', 'github', 'facebook', etc.
+await particle.auth.login({authType}); 
+```
+
+If you're using Particle Auth Core, you can use `connect` from the `useConnect` hook imported from `@particle-network/auth-core-modal`. Doing so looks like this:
+
+```javascript JavaScript
+import { useConnect } from '@particle-network/auth-core-modal';
+import { X1Testnet } from '@particle-network/chains';
+
+const { connect } = useConnect();
+
+await connect({
+    // authType can be 'google', 'twitter', 'email', 'github', 'facebook', etc.
+	socialType: authType, 
+	chain: X1Testnet,
+});
+```
+
+***
+
+<Tip>The complete Web SDK reference is available at [Web (JavaScript/TypeScript)](ref:auth-web).</Tip>
