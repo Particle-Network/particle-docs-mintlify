@@ -1,6 +1,6 @@
 {
   "$schema": "https://mintlify.com/schema.json",
-  "name": "Particle docs",
+  "name": "Particle Network docs",
   "logo": {
     "dark": "/logo/dark.png",
     "light": "/logo/dark.png"
@@ -10,10 +10,6 @@
     "primary": "#e44be0",
     "light": "#e44be0",
     "dark": "#e44be0"
-  },
-  "modeToggle": {
-    "default": "dark",
-    "isHidden": true
   },
   "topbarCtaButton": {
     "name": "Dashboard",
@@ -64,29 +60,17 @@
   ],
   "navigation": [
     {
-      "group": "Get Started",
-      "pages": [
-        "introduction",
-        "quickstart",
-        "development"
-      ]
-    },
-    {
-      "group": "Essentials",
-      "pages": [
-        "essentials/markdown",
-        "essentials/code",
-        "essentials/images",
-        "essentials/settings",
-        "essentials/navigation",
-        "essentials/reusable-snippets"
-      ]
-    },
-    {
       "group": "📚 OVERVIEW",
       "pages": [
-        "resources/what-is-particle-network",
-        "resources/realized-vision"
+        "introduction",
+        "what-is-particle-network",
+        "realized-vision"
+      ]
+    },
+    {
+      "group": "🏁 GETTING STARTED",
+      "pages": [
+        "resources/overview"
       ]
     },
     {
@@ -95,7 +79,30 @@
         {
             "group": "Modular L1",
             "pages": ["resources/modular-l1/introduction","resources/modular-l1/universal-accounts","resources/modular-l1/universal-liquidity", "resources/modular-l1/universal-gas"]
+        },
+        {
+          "group": "Wallet Abstraction",
+          "pages": ["resources/wallet-abstraction/btc-connect",{
+            "group": "Modular Smart Wallet-as-a-Service",
+            "pages": ["resources/wallet-abstraction/waas/overview","resources/wallet-abstraction/waas/mpc-tss","resources/wallet-abstraction/waas/bundler","resources/wallet-abstraction/waas/omni-paymaster","resources/wallet-abstraction/waas/differentiators"]
         }]
+      }]
+      
+    },
+    {
+      "group": "⏳ QUICKSTART: WALLET ABSTRACTION",
+      "pages": [
+        "resources/quickstart/intro",
+        "resources/quickstart/network-coverage",
+        "resources/quickstart/dashboard",
+        {
+          "group": "Connection Kits",
+          "pages": ["resources/quickstart/connection-kits/solana","resources/quickstart/connection-kits/rainbow","resources/quickstart/connection-kits/particle-connect","resources/quickstart/connection-kits/web3modal", "resources/quickstart/connection-kits/web3-onboard"]
+      },        {
+        "group": "Wallet-as-a-Service",
+        "pages": ["resources/quickstart/connection-kits/solana","resources/quickstart/connection-kits/rainbow","resources/quickstart/connection-kits/particle-connect","resources/quickstart/connection-kits/web3modal", "resources/quickstart/connection-kits/web3-onboard"]
+    }
+]
     },
     {
       "group": "API Documentation",

@@ -1,0 +1,86 @@
+---
+title: Overview
+description: "Particle Network combines WaaS and ERC-4337 account abstraction to provide maximum flexibility for developers."
+mode: "wide"
+---
+
+***
+
+<Frame caption="Full representation of Particle Network's Modular Smart WaaS.">
+<img
+  className="block dark:hidden"
+  src="/resources/wallet-abstraction/waas/images/modular-waas.png"
+  alt="Modular wallet as a service representation"
+/>
+<img
+  className="hidden dark:block"
+  src="/resources/wallet-abstraction/waas/images/modular-waas.png"
+  alt="Modular wallet as a service representation"
+/>
+</Frame>
+
+Particle Network’s Smart Wallet-as-a-Service Modular Stack streamlines the dApp onboarding process while providing maximum flexibility for developers to implement AA into their applications.
+
+To illustrate the above, we'll deconstruct the expression “Modular Smart WaaS,” starting with “WaaS.” 
+
+## Wallet-as-a-Service
+
+WaaS tools streamline the integration of Web3 functionalities into applications by serving two critical functions:
+
+- Embedding wallets directly into platforms, simplifying the user experience. Instead of using a separate wallet application like MetaMask to authorize transactions or sign messages, users can perform these actions within the platform they are using. 
+- Allowing users to create or access their wallets via social logins, bridging the gap between conventional experiences and the Web3 ecosystem. This is particularly useful as it allows Web2 users to quickly begin interacting with Web3 products without the need to store private keys, install additional tools, etc. It also results in better conversion rates and faster onboarding.
+
+Regarding security and autonomy, WaaS tools can maintain full self-custody while providing user-friendly access via advanced cryptographic techniques like Particle Network's [Multi-Party Computation Threshold Signature Schemes (MPC-TSS)](https://particlenetwork.readme.io/docs/security-mpc-tss). MPC-TSS works by dividing the responsibility of signing transactions between multiple parties. No single entity holds the entire private key at any time. This [method](https://particlenetwork.readme.io/docs/particle-vs-alternatives) enhances security by distributing risk and ensures that users retain sovereign control over their assets.
+
+## Modularly and natively integrating AA into WaaS: Modular Smart Wallet-as-a-Service
+
+Smart WaaS tools, such as Particle Network’s modular AA stack, are Smart because of their native embracing of account abstraction. They provide developers with every possible path to leverage WaaS + Account Abstraction in their applications, regardless of their complexity, features, backend implementation, etc. 
+
+Native AA integrations (i.e., those that directly handle the assignment and unification of the Signer and smart account) create familiar mechanisms of interacting with smart accounts programmatically for developers –such as familiar transaction structures, building, and account management– all handled seamlessly by the SDK. In practice, this results in a short, straightforward path to start using AA.
+
+At the moment, Particle’s official developer and user-facing support uses [Biconomy’s](https://www.biconomy.io/) smart accounts. However, in an effort to promote intrinsic modularity and cross-compatibility across the ecosystem, Particle will enable both users and developers to choose what specific smart account implementation they'd like to use natively within our SDK & UI, presenting an advanced solution that doesn’t automatically default to a single provider. 
+
+Particle’s native modular AA support (via a native SDK, Particle’s RPCs, etc.), while powerful on its own, is also inherently cross-compatible with other AA stack providers due to Particle’s nature as a WaaS provider.
+
+The following are a few examples of utilizations of Particle’s stack.
+
+- Using Particle’s AA SDK for account management, Paymaster, UserOp building, and pushing through [Pimlico](https://docs.pimlico.io/)'s bundler ([see here](https://gist.github.com/TABASCOatw/3a658e39daf2df1ecded271cd5e32390?ref=blog.particle.network)).
+- Using Particle’s AA SDK for account management, then manual UserOp building, sponsorship, and pushing through Pimlico's Bundler and Paymaster ([see here](https://gist.github.com/TABASCOatw/61be56f0c2346f757692a1b33248bda9?ref=blog.particle.network)) ([demo](https://particle-pimlico-demo.replit.app/?ref=blog.particle.network).)
+- Using the EOA derived from our WaaS as the Signer in an alternative smart account implementation, choosing a Bundler and Paymaster ([see here](https://particle-account-kit.replit.app/?ref=blog.particle.network)).
+
+## Modularity
+
+In a nascent AA field with multiple smart account implementation options, introducing a comprehensive modular stack ensures even greater flexibility for developers. A modular approach means they can also plug into their preferred components while staying friendly for builders who do not demand much customization. 
+
+In the context of its interaction with AA, modularity might also mean that developers can choose specific implementations that meet the specific needs of their projects, e.g., by selecting among different smart account implementations, Bundlers, or Paymasters.
+
+The full ecosystem of Particle Network's AA stack is diagrammed below:
+
+<Frame caption="Particle Network's AA Stack Ecosystem.">
+<img
+  className="block dark:hidden"
+  src="/resources/wallet-abstraction/waas/images/aa-stack.png"
+  alt="Account abstraction stack"
+/>
+<img
+  className="hidden dark:block"
+  src="/resources/wallet-abstraction/waas/images/aa-stack.png"
+  alt="Account abstraction stack"
+/>
+</Frame>
+
+
+Regardless of a developer’s intended use of AA within a given application, modularity complements ERC-4337 AA at any level, especially within the context of native applications. Below is a table depicting the native and external implementation of different components within Particle's AA stack:
+
+<Frame caption="Native and external implementations within our AA stack.">
+<img
+  className="block dark:hidden"
+  src="/resources/wallet-abstraction/waas/images/implementations.png"
+  alt="Native and external implementations within our AA stack."
+/>
+<img
+  className="hidden dark:block"
+  src="/resources/wallet-abstraction/waas/images/implementations.png"
+  alt="Native and external implementations within our AA stack."
+/>
+</Frame>
