@@ -129,8 +129,8 @@
   "group": "Building with Particle's Partners",
   "pages": ["resources/integrations/partners/zetachain", "resources/integrations/partners/alchemy", "resources/integrations/partners/openfort", "resources/integrations/partners/biconomy", "resources/integrations/partners/berachain", "resources/integrations/partners/covalent", "resources/integrations/partners/bob"]
 },
-"resources/quickstart/intro",
-"resources/quickstart/network-coverage"
+"resources/integrations/repositories",
+"resources/integrations/videos"
 ]
     },
     {
