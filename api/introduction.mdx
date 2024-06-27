@@ -1,0 +1,292 @@
+---
+title: 'Introduction to APIs & SDKs'
+description: "Overview of Particle Network's APIs & SDKs."
+mode: "wide"
+---
+
+<img
+  className="block dark:hidden"
+  src="/api/images/api.png"
+  alt="Particle Network APIs and SDKs."
+/>
+<img
+  className="hidden dark:block"
+  src="/api/images/api.png"
+  alt="Particle Network APIs and SDKs."
+/>
+
+***
+
+# APIs & SDKs
+
+Particle Network has a suite of over **60 API endpoints** and **32 SDKs**, the latter of which are spread across **9 different platforms**. Integrating Particle Network's Wallet-as-a-Service solutions through these various SDKs and APIs is meant to be as simple as possible while retaining a high degree of customizability and fundamental flexibility.
+
+This section aims to provide **technical insights** (setup processes, implementation flow, request structures, etc.) into **every API endpoint and SDK** Particle Network offers.
+
+***
+
+import './style.css';
+
+export default MDXContent = () => (
+  <>
+    <div className="section">
+        <h2>Particle Auth</h2>
+        <p>Particle Auth acts as the core authentication and interaction component within Particle WaaS powering wallet creation and utilization facilitated by social login</p>
+        <div className="api-container">
+            <div className="api-card">
+                <img src="https://www.svgrepo.com/show/374144/typescript.svg" className="api-logo" alt="Logo" />
+                <h3>Web SDK</h3>
+                <p>Interacting with Particle Auth within web applications using either JavaScript or TypeScript.</p>
+                <a href="auth-web" className="api-link">Explore</a>
+            </div>
+            <div className="api-card">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/bd/Logo_C_sharp.svg/1200px-Logo_C_sharp.svg.png" className="api-logo" alt="Logo" />
+                <h3>Unity (Desktop) SDK</h3>
+                <p>Interacting with Particle Auth within Desktop games made on Unity using C#.</p>
+                <a href="auth-unity-desktop" className="api-link">Explore</a>
+            </div>
+            <div className="api-card">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/bd/Logo_C_sharp.svg/1200px-Logo_C_sharp.svg.png" className="api-logo" alt="Logo" />
+                <h3>Unity (Mobile) SDK</h3>
+                <p>Interacting with Particle Auth within Mobile games made on Unity using C#.</p>
+                <a href="auth-unity-mobile" className="api-link">Explore</a>
+            </div>
+            <div className="api-card">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/06/Kotlin_Icon.svg/2048px-Kotlin_Icon.svg.png" className="api-logo" alt="Logo" />
+                <h3>Android SDK</h3>
+                <p>Interacting with Particle Auth on Android using Kotlin.</p>
+                <a href="auth-android" className="api-link">Explore</a>
+            </div>
+            <div className="api-card">
+                <img src="https://cdn4.iconfinder.com/data/icons/social-media-logos-6/512/23-swift-512.png" className="api-logo" alt="Logo" />
+                <h3>iOS SDK</h3>
+                <p>Interacting with Particle Auth on iOS using Swift or Objective-C.</p>
+                <a href="auth-ios" className="api-link">Explore</a>
+            </div>
+            <div className="api-card">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/c/c6/Dart_logo.png" className="api-logo" alt="Logo" />
+                <h3>Flutter SDK</h3>
+                <p>Interacting with Particle Auth within applications made using Flutter.</p>
+                <a href="auth-flutter" className="api-link">Explore</a>
+            </div>
+            <div className="api-card">
+                <img src="https://cdn.worldvectorlogo.com/logos/javascript-1.svg" className="api-logo" alt="Logo" />
+                <h3>React Native SDK</h3>
+                <p>Interacting with Particle Auth within applications made using React Native.</p>
+                <a href="auth-react-native" className="api-link">Explore</a>
+            </div>
+            <div className="api-card">
+                <img src="https://cdn.worldvectorlogo.com/logos/javascript-1.svg" className="api-logo" alt="Logo" />
+                <h3>Cocos SDK</h3>
+                <p>Interacting with Particle Auth within applications made using Cocos.</p>
+                <a href="cocos-1" className="api-link">Explore</a>
+            </div>
+            <div className="api-card">
+                <img src="https://i.imgur.com/w2tcUa8.png" className="api-logo" alt="Logo" />
+                <h3>Unreal Engine SDK</h3>
+                <p>Interacting with Particle Auth within applications made using Unreal Engine.</p>
+                <a href="auth-unreal-engine" className="api-link">Explore</a>
+            </div>
+            <div className="api-card blue-glow">
+                <h3>Server API</h3>
+                <p>Collection of API endpoints for interacting with the Particle dashboard.</p>
+                <a href="getuserinfo" className="api-link api-link-blue">Explore</a>
+            </div>
+        </div>
+    </div>
+
+    <br />
+
+    <div className="section">
+        <h2>Particle Connect</h2>
+        <p>Particle Connect is the SSO for Web3; aggregating both Web2 and Web3 onboarding options in a unified custom connection modal</p>
+        <div className="api-container">
+            <div className="api-card">
+                <img src="https://www.svgrepo.com/show/374144/typescript.svg" className="api-logo" alt="Logo" />
+                <h3>Web SDK</h3>
+                <p>Integrating Particle Connect within web applications using either JavaScript or TypeScript.</p>
+                <a href="connect-web" className="api-link">Explore</a>
+            </div>
+            <div className="api-card">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/bd/Logo_C_sharp.svg/1200px-Logo_C_sharp.svg.png" className="api-logo" alt="Logo" />
+                <h3>Unity (Mobile) SDK</h3>
+                <p>Integrating Particle Connect within mobile games made on Unity using C#.</p>
+                <a href="connect-unity" className="api-link">Explore</a>
+            </div>
+            <div className="api-card">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/06/Kotlin_Icon.svg/2048px-Kotlin_Icon.svg.png" className="api-logo" alt="Logo" />
+                <h3>Android SDK</h3>
+                <p>Integrating Particle Connect on Android using Kotlin.</p>
+                <a href="connect-android" className="api-link">Explore</a>
+            </div>
+            <div className="api-card">
+                <img src="https://cdn4.iconfinder.com/data/icons/social-media-logos-6/512/23-swift-512.png" className="api-logo" alt="Logo" />
+                <h3>iOS SDK</h3>
+                <p>Integrating Particle Connect on iOS using Swift.</p>
+                <a href="connect-ios" className="api-link">Explore</a>
+            </div>
+            <div className="api-card">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/c/c6/Dart_logo.png" className="api-logo" alt="Logo" />
+                <h3>Flutter SDK</h3>
+                <p>Integrating Particle Connect within applications made using Flutter.</p>
+                <a href="connect-flutter" className="api-link">Explore</a>
+            </div>
+            <div className="api-card">
+                <img src="https://cdn.worldvectorlogo.com/logos/javascript-1.svg" className="api-logo" alt="Logo" />
+                <h3>React Native SDK</h3>
+                <p>Integrating Particle Connect within applications made using React Native.</p>
+                <a href="connect-react-native" className="api-link">Explore</a>
+            </div>
+        </div>
+    </div>
+
+    <br />
+
+    <div className="section">
+        <h2>Particle Wallet</h2>
+        <p>Particle Wallet is a unified interface for interacting with accounts generated by Particle Auth or connected to through external Web3 wallets</p>
+        <div className="api-container">
+            <div className="api-container">
+                <div className="api-card">
+                    <img src="https://www.svgrepo.com/show/374144/typescript.svg" className="api-logo" alt="Logo" />
+                    <h3>Web</h3>
+                    <p>Using Particle Wallet within web applications.</p>
+                    <a href="wallet-web" className="api-link">Explore</a>
+                </div>
+                <div className="api-card">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/bd/Logo_C_sharp.svg/1200px-Logo_C_sharp.svg.png" className="api-logo" alt="Logo" />
+                    <h3>Unity SDK</h3>
+                    <p>Using Particle Wallet within games built on Unity.</p>
+                    <a href="wallet-unity" className="api-link">Explore</a>
+                </div>
+                <div className="api-card">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/06/Kotlin_Icon.svg/2048px-Kotlin_Icon.svg.png" className="api-logo" alt="Logo" />
+                    <h3>Android SDK</h3>
+                    <p>Using Particle Wallet within Android applications.</p>
+                    <a href="wallet-android" className="api-link">Explore</a>
+                </div>
+                <div className="api-card">
+                    <img src="https://cdn4.iconfinder.com/data/icons/social-media-logos-6/512/23-swift-512.png" className="api-logo" alt="Logo" />
+                    <h3>iOS SDK</h3>
+                    <p>Using Particle Wallet within iOS applications.</p>
+                    <a href="wallet-ios" className="api-link">Explore</a>
+                </div>
+                <div className="api-card">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/c/c6/Dart_logo.png" className="api-logo" alt="Logo" />
+                    <h3>Flutter SDK</h3>
+                    <p>Using Particle Wallet within applications built using Flutter.</p>
+                    <a href="wallet-flutter" className="api-link">Explore</a>
+                </div>
+                <div className="api-card">
+                    <img src="https://cdn.worldvectorlogo.com/logos/javascript-1.svg" className="api-logo" alt="Logo" />
+                    <h3>React Native SDK</h3>
+                    <p>Using Particle Wallet within applications built using React Native.</p>
+                    <a href="wallet-react-native" className="api-link">Explore</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <br />
+
+    <div className="section">
+        <h2>Account Abstraction</h2>
+        <p>Particle Network's Account Abstraction SDK facilitates full-stack utilization of account abstraction, working natively with Particle Auth</p>
+        <div className="api-container">
+            <div className="api-container">
+                <div className="api-container">
+                    <div className="api-card">
+                        <img src="https://www.svgrepo.com/show/374144/typescript.svg" className="api-logo" alt="Logo" />
+                        <h3>Web SDK</h3>
+                        <p>Implementing account abstraction within web applications.</p>
+                        <a href="aa-web" className="api-link">Explore</a>
+                    </div>
+                    <div className="api-card">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/bd/Logo_C_sharp.svg/1200px-Logo_C_sharp.svg.png" className="api-logo" alt="Logo" />
+                        <h3>Unity SDK</h3>
+                        <p>Implementing account abstraction within games built on Unity.</p>
+                        <a href="aa-unity" className="api-link">Explore</a>
+                    </div>
+                    <div className="api-card">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/06/Kotlin_Icon.svg/2048px-Kotlin_Icon.svg.png" className="api-logo" alt="Logo" />
+                        <h3>Android SDK</h3>
+                        <p>Implementing account abstraction within Android applications.</p>
+                        <a href="aa-android" className="api-link">Explore</a>
+                    </div>
+                    <div className="api-card">
+                        <img src="https://cdn4.iconfinder.com/data/icons/social-media-logos-6/512/23-swift-512.png" className="api-logo" alt="Logo" />
+                        <h3>iOS SDK</h3>
+                        <p>Implementing account abstraction within iOS applications.</p>
+                        <a href="aa-ios" className="api-link">Explore</a>
+                    </div>
+                    <div className="api-card">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/c/c6/Dart_logo.png" className="api-logo" alt="Logo" />
+                        <h3>Flutter SDK</h3>
+                        <p>Implementing account abstraction within applications built using Flutter.</p>
+                        <a href="aa-flutter" className="api-link">Explore</a>
+                    </div>
+                    <div className="api-card blue-glow">
+                        <h3>Account Abstraction RPC</h3>
+                        <p>Enhanced RPC for utilizing account abstraction.</p>
+                        <a href="getsmartaccount" className="api-link api-link-blue">Explore</a>
+                    </div>
+                    <div className="api-card blue-glow">
+                        <h3>Bundler RPC</h3>
+                        <p>RPC for interacting with Particle Network's in-house Bundler.</p>
+                        <a href="getuseroperationreceipt" className="api-link api-link-blue">Explore</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <br />
+
+    <div className="section">
+        <h2>Web3 Services</h2>
+        <p>Collection of RPCs and APIs for enhanced data retrieval and blockchain interaction</p>
+        <div className="api-container">
+            <div className="api-card blue-glow">
+                <h3>NFT Market API</h3>
+                <p>Endpoints for interacting with the Particle Network NFT Service.</p>
+                <a href="getcollection" className="api-link api-link-blue">Explore</a>
+            </div>
+            <div className="api-card blue-glow">
+                <h3>Enhanced RPC (Data API)</h3>
+                <p>RPC endpoint natively integrating a realtime blockchain data API.</p>
+                <a href="getlatestblock" className="api-link api-link-blue">Explore</a>
+            </div>
+            <div className="api-card blue-glow">
+                <h3>Enhanced RPC (Swap API)</h3>
+                <p>RPC endpoint for the construction and retrieval of swaps.</p>
+                <a href="getswap" className="api-link api-link-blue">Explore</a>
+            </div>
+            <div className="api-card blue-glow">
+                <h3>Enhanced RPC (Solana)</h3>
+                <p>Solana-specific RPC endpoint leveraging a built-in blockchain data API.</p>
+                <a href="enhancedgetprice" className="api-link api-link-blue">Explore</a>
+            </div>
+            <div className="api-card blue-glow">
+                <h3>IPFS API</h3>
+                <p>API for programmatically working with Particle Network's IPFS service.</p>
+                <a href="upload" className="api-link api-link-blue">Explore</a>
+            </div>
+        </div>
+    </div>
+
+    <br />
+
+    <div className="section">
+        <h2>BTC Connect</h2>
+        <p>The First Account Abstraction Protocol for the BTC Ecosystem.</p>
+        <div className="api-container">
+            <div className="api-card">
+                <img src="https://www.svgrepo.com/show/374144/typescript.svg" className="api-logo" alt="Logo" />
+                <h3>Web SDK</h3>
+                <p>Implementing BTC Connect within web applications.</p>
+                <a href="aa-web" className="api-link">Explore</a>
+            </div>
+        </div>
+    </div>
+  </>
+);

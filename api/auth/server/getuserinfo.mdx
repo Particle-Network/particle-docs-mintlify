@@ -1,0 +1,40 @@
+---
+title: 'getUserInfo'
+openapi: 'POST /#getUserInfo'
+---
+
+## Understanding `getUserInfo`
+
+- `getUserInfo` retrieves a JSON object containing various data points relating to a registered user (a user that has already undergone social login), such as their name, UUID, token, email, and so on. The population of specific data points (such as `facebookId`, `googleId`, etc.) will be dependent upon their primary associated social account.` It takes:
+
+  - `UUID` - string.
+
+  - `Token` - string.
+
+***
+
+## Query example
+
+```javascript JavaScript
+const axios = require("axios");
+
+(async () => {
+  const response = await axios.post(
+    "https://api.particle.network/server/rpc",
+    {
+      jsonrpc: "2.0",
+      id: 0,
+      method: "getUserInfo",
+      params: ["Particle Auth User Uuid", "Particle Auth User Token"],
+    },
+    {
+      auth: {
+        username: "Your Project Id",
+        password: "Your Project Server Key",
+      },
+    }
+  );
+
+  console.log(response.data);
+})();
+```

@@ -1,0 +1,97 @@
+body {
+    background-color: #242e34; /* Dark mode body background */
+    color: #ffffff; /* Light text color for readability */
+}
+
+.api-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+}
+
+.api-card {
+    background: #2d3942; /* Dark mode card background */
+    border: 1px solid #3f4954; /* Darker border for contrast */
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Shadow effect without glow */
+    width: 220px;
+    padding: 20px;
+    text-align: left;
+    position: relative;
+    transition: box-shadow 0.3s ease-in-out;
+}
+
+.api-card h3 {
+    margin-top: 0;
+    color: #cccccc; /* Lighter color for headings */
+    font-size: 15px;
+}
+
+.api-card p {
+    color: #e1e1e1; /* Lighter text color for readability */
+    font-size: 10px;
+    margin-bottom: 20px;
+}
+
+.api-logo {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    width: 25px;
+    height: auto;
+}
+
+.api-link, .api-link-blue {
+    display: inline-block;
+    text-decoration: none;
+    font-weight: bold;
+    padding: 10px 15px;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+.api-link {
+    color: #e84ce4; /* Purple text color */
+    border: 1px solid #e84ce4; /* Purple border */
+}
+
+.api-link:hover {
+    background-color: #e84ce4;
+    color: #ffffff; /* White text on hover */
+}
+
+.api-card:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), 0 0 15px #e84ce4; /* Stronger purple glow on hover */
+}
+
+.blue-glow:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), 0 0 15px #007bff; /* Stronger blue glow on hover */
+}
+
+.api-link-blue {
+    color: #007bff; /* Blue text color */
+    border: 1px solid #007bff; /* Blue border */
+}
+
+.api-link-blue:hover {
+    background-color: #007bff;
+    color: #ffffff; /* White text on hover */
+}
+
+.section {
+    margin-bottom: 40px;
+}
+
+.section h2 {
+    color: #cccccc;
+    font-size: 24px;
+    text-align: center;
+}
+
+.section p {
+    color: #e1e1e1;
+    font-size: 16px;
+    text-align: center;
+    margin-bottom: 20px;
+}

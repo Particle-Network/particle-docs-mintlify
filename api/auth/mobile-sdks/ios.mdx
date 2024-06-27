@@ -1,0 +1,484 @@
+---
+title: "iOS (Swift/Obj-C) - Auth"
+description: "Interacting with Particle Auth on iOS using Swift or Objective-C."
+---
+
+## Particle Auth for iOS
+
+The Particle Auth iOS SDK is the primary means of integrating Particle's Wallet-as-a-Service within applications on iOS. From initialization and configuration to onboarding and account utilization, this SDK acts as the master library for interacting with Particle on iOS.
+
+The Particle Auth iOS SDK follows configuration and implementation mechanisms similar to the Particle Auth Android SDK. The specifics of integration, along with several examples, will be covered below.
+
+## Getting Started
+
+Implementation of the Particle Auth iOS SDK only takes a few lines of code, although before getting to that point, you'll need to meet a few key prerequisites in mind to ensure compatibility.
+
+### Prerequisites
+
+- Xcode **15.0** or later.
+- CocoaPods **1.14.3** or higher.
+- Your project must target these platform versions or later:
+  - iOS **14**.
+
+### Configuration
+
+To begin the initialization process, you must head over to the [Particle dashboard](https://dashboard.particle.network) and create a project alongside a corresponding application. These will control specific customizations, statistics, and more for your instance of Particle's Wallet-as-a-Service. After creating an application, you'll need to retrieve three key values: `projectId`, `clientKey`, and `appId`. We'll be using these down the road.
+
+1. Sign up/log in to the [Particle dashboard](https://dashboard.particle.network/).
+
+<img
+  className="block dark:hidden"
+  src="/api/auth/desktop-sdks/images/login.png"
+  alt="Particle Network login."
+/>
+<img
+  className="hidden dark:block"
+  src="/api/auth/desktop-sdks/images/login.png"
+  alt="Particle Network login."
+/>
+
+2. Create a new project or enter an existing project.
+
+<img
+  className="block dark:hidden"
+  src="/api/auth/desktop-sdks/images/project.png"
+  alt="Particle Network project."
+/>
+<img
+  className="hidden dark:block"
+  src="/api/auth/desktop-sdks/images/project.png"
+  alt="Particle Network project."
+/>
+
+3. Create a new web application, or skip this step if you already have one.
+
+<img
+  className="block dark:hidden"
+  src="/api/auth/mobile-sdks/images/ios.png"
+  alt="Particle Network project."
+/>
+<img
+  className="hidden dark:block"
+  src="/api/auth/mobile-sdks/images/ios.png"
+  alt="Particle Network project."
+/>
+
+4. Retrieve the project ID (`projectId`), the client key (`clientKey`), and the application ID (`appId`).
+
+<img
+  className="block dark:hidden"
+  src="/api/auth/desktop-sdks/images/credentials.png"
+  alt="Particle Network app credentials."
+/>
+<img
+  className="hidden dark:block"
+  src="/api/auth/desktop-sdks/images/credentials.png"
+  alt="Particle Network app credentials."
+/>
+
+### Installation
+
+Now that you've created a project and an application within the [Particle dashboard](https://dashboard.particle.network), you'll need to go ahead and install the Particle Auth Core SDK using CocoaPads (assuming you meet the previously mentioned minimum version requirements).
+
+1. If you don't already have a Podfile, create one from the root of your project directory with:
+
+   ```
+   pod init
+   ```
+
+2. Within the newly created Podfile, add the `ParticleAuthCore` pod.
+
+   ```
+   pod 'ParticleAuthCore'
+   pod 'ParticleMPCCore'
+   pod 'Thresh'
+
+   // Alternatively, to use ParticleAuthService (deprecated) 
+   // pod 'ParticleAuthService'
+
+   ```
+
+3. Install the pods, then open your .xcworkspace file to see the project in Xcode.
+
+   ```
+   pod install --repo-update
+   open your-project.xcworkspace
+   ```
+
+<Tip>For release updates, subscribe to the [GitHub repository](https://github.com/Particle-Network/particle-ios).</Tip>
+
+#### Podfile Configuration
+
+Additionally, you'll need to ensure that your resulting Podfile is properly configured and contains a snippet similar to the example below.
+
+```ruby Podfile
+post_install do |installer|
+  installer.pods_project.targets.each do |target|
+    target.build_configurations.each do |config|
+      config.build_settings['BUILD_LIBRARY_FOR_DISTRIBUTION'] = 'YES'
+    end
+  end
+end
+```
+
+#### Initialization
+
+Now that you've configured your [Particle dashboard](https://dashboard.particle.network), installed the SDK, and configured a Podfile, it's time to initialize the SDK with the aforementioned `projectId`, `clientKey`, and `appId` retrieved from the [Particle dashboard](https://dashboard.particle.network).
+
+1. Create a `ParticleNetwork-Info.plist` file from the root of your corresponding Xcode project.
+
+2. Paste the following text into this file:
+
+   ```xml XML
+   <?xml version="1.0" encoding="UTF-8"?>
+   <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+   <plist version="1.0">
+   <dict>
+   	<key>PROJECT_UUID</key>
+   	<string>YOUR_PROJECT_UUID</string>
+   	<key>PROJECT_CLIENT_KEY</key>
+   	<string>YOUR_PROJECT_CLIENT_KEY</string>
+   	<key>PROJECT_APP_UUID</key>
+   	<string>YOUR_PROJECT_APP_UUID</string>
+   </dict>
+   </plist>
+   ```
+
+3. Replace the placeholders with the values retrieved from your project and application within the [Particle dashboard](https://dashboard.particle.network).
+
+4. Import the `ParticleNetworkBase` and `ParticleAuthService` module in your `UIApplicationDelegate` file.
+
+   ```swift Swift
+   import ParticleNetworkBase
+
+   // Alternatively, to use ParticleAuthService (deprecated) 
+   // import ParticleAuthService
+   ```
+
+5. Initialize the ParticleNetwork service, which is typically located within your app's `application:didFinishLaunchingWithOptions` method:
+
+   ```swift Swift
+   // Set a primary network, derived from ChainInfo
+   let chainInfo = ParticleNetwork.ChainInfo.ethereum
+   let devEnv = ParticleNetwork.DevEnvironment.debug // For release, this can be set to DevEnvironment.production
+   let config = ParticleNetworkConfiguration(chainInfo: chainInfo, devEnv: devEnv)
+   ParticleNetwork.initialize(config: config)
+   ```
+
+Alternatively, to use ParticleAuthService (deprecated), two more steps.
+
+6. Add the scheme URL handle in your app's `application(\_:open:options:)` method.
+
+```swift Swift
+return ParticleAuthService.handleUrl(url) 
+```
+
+7. Then, to configure your application's scheme URL, follow the below process:
+
+1. Select your app from "TARGETS" within the "Info" section.
+2. Click the plus icon to add the URL types.
+3. Paste your scheme in "URL Schemes."
+
+<Tip>
+<p>Defining a scheme URL</p>
+<p>Your scheme URL should be "pn" concatenated with your `projectId`.</p>
+<p>For example, if your project app id is `63bfa427-cf5f-4742-9ff1-e8f5a1b9828f`, your scheme URL is `pn63bfa427-cf5f-4742-9ff1-e8f5a1b9828f`.</p>
+</Tip>
+
+### Switch Chain
+
+To switch the used chain after initial configuration, `auth.switchChain` is used. This enables asynchronous switching. Similar to the initial configuration, chain information derived from `ParticleNetwork.ChainInfo` can be passed as the primary parameter, determining the destination chain.
+
+```swift Swift
+let chainInfo = ParticleNetwork.ChainInfo.ethereum
+let auth = Auth()
+let result = try await auth.switchChain(chainInfo: chainInfo)
+
+// For switching chains synchronously, without checking login status
+let chainInfo = ParticleNetwork.ChainInfo.ethereum
+ParticleNetwork.setChainInfo(chainInfo)
+
+
+// Alternatively, to use ParticleAuthService (deprecated) 
+// ParticleAuthService.switchChain(chainInfo).subscribe { [weak self] result in
+//  guard let self = self else { return }
+//  switch result {
+//  case .failure(let error):
+//      print(error)
+//  case .success(let userInfo):
+//      print(userInfo)
+//  }
+// }.disposed(by: bag)
+```
+
+## Examples of utilization
+
+### Login
+
+`auth.login` is the main mechanism for facilitating login (account creation or sign in) with Particle's Wallet-as-a-Service. Upon calling this method, an authentication UI will be thrown, and the user will be asked to sign in with a specified login method. Specifically, five key parameters are available within `auth.login`:
+
+- `type`, the specific social login to be used. This can be either `.email`, `.phone`, `.google`, `.apple`, `.jwt`, or `.facebook`.
+- `account`, when `type` is set to either `.email`, `.phone`, or `.jwt`, you can use the `account` parameter to pass in an expected email, phone number, or JWT. This is optional for the former two, but required for `.jwt`. The phone number must be in E.164 format.
+- `code`, optional, when `type` is set to either `.email` pr `.phone`, you can use the code parameter to pass the verification code. 
+- `socialLoginPrompt`, either `'none'`, `'consent'`, or `'select_account'`.
+
+Alternatively, to use `ParticleAuthService.login` (deprecated), two more parameters.
+
+- `supportAuthType`, the methods of authentication visible on the authentication popup UI. By default, this will be exclusive to the chosen social login method, although by passing in additional types, you can expand the UI to include the ability to login with those as an alternative to `type`.
+- `authorization`, optionally, a hex string prompting an authentication signature upon sign-in.
+
+```swift Swift
+// connect with Google
+let userInfo = auth.connect(type: .google, socialLoginPrompt: .selectAccount)
+
+// connect with email or phone, the phone number must be in E.164 format.
+let userInfo = auth.connect(type: .email, account: "xx@example.com", code: "xxxxxx")
+let userInfo = auth.connect(type: .phone, account: "+11234567890", code: "xxxxxx")
+
+// connect with jet
+let account = "json web token"
+let userInfo = try await auth.connect(type: .jwt, account: jwt)
+
+
+// Alternatively, to use ParticleAuthService (deprecated) 
+// let userInfo = try await ParticleAuthService.login(type: .email).value
+
+// let account = "json web token"
+// let userInfo = ParticleAuthService.login(type: .jwt, account: account).value
+```
+
+After login is successful, detailed user information can be retrieved by calling `auth.getUserInfo` . 
+
+Alternatively, to use`ParticleAuthService.getUserInfo()` (deprecated).
+
+### Is Login
+
+`auth.getUserInfo() != nil` returns a Boolean based upon the current state of a session (whether or not a user is currently logged into an account). Additionally, an adjacent method, `auth.isConnected` can be called and subscribed to, returning `userInfo` upon a status of `true`.
+
+```swift Swift
+// local side
+let result = auth.getUserInfo() != nil
+// server side
+let result = try await auth.isConnected()
+
+// Alternatively, to use ParticleAuthService (deprecated) 
+// let result = ParticleAuthService.isLogin()
+
+// server side
+// let result = try await ParticleAuthService.isLoginAsync().value
+```
+
+### Logout
+
+`auth.disconnect` will simply log a user out of their existing session, assuming they're logged in. A parallel method to this exists, `ParticleAuthService.fastLogout`, which hides loading UI elements for immediate (silent) logout. Both of these methods facilitate simple session exits for logged-in users.
+
+```swift Logout, fast (Swift)
+let result = try await auth.disconnect()
+
+// Alternatively, to use ParticleAuthService (deprecated) 
+// let result = try await ParticleAuthService.fastLogout().value
+```
+
+### UserInfo and Address Retrieval (post-login)
+
+Once a user has logged in, you'll have access to various methods such as `auth.getUserInfo` and `auth.evm.getAddress`to retrieve specific user details. The `getUserInfo` response will, by default, include both an associated EVM and Solana address, while `auth.evm.getAddress` will return an EVM address, `auth.solana.getAddress` will return a Solana address.
+
+```swift Swift
+auth.getUserInfo()
+auth.evm.getAddress()
+auth.solana.getAddress()
+
+
+// Alternatively, to use ParticleAuthService (deprecated) 
+// ParticleAuthService.getUserInfo()
+// ParticleAuthService.getAddress()
+```
+
+### Custom Modal Style (deprecated in Auth Core)
+
+For the Particle Wallet modal popup, you can also specify presentation styling upon entry of the modal. This includes `.fullScreen` for a fullscreen overlay (covers the underlying application), or `.pageSheet` for a more concise, embedded display. Additionally, if `.fullScreen` is set, then this can be further configured by using medium screen with `ParticleAuthService.setMediumScreen`.
+
+```swift Swift
+// Alternatively, to use ParticleAuthService (deprecated) 
+
+// formSheet by default
+ParticleAuthService.setModalPresentStyle(.fullScreen)
+
+// Set Safari page to show in medium screen, this method works from iOS 15
+// false by default
+ParticleAuthService.setMediumScreen(true)
+```
+
+### Set and Get Language
+
+You can forcibly set a specific language to be used within the UI using `ParticleNetwork.setLanguage`, with retrieval of the current active language facilitated by `ParticleNetwork.getLanguage`. By default, this is set to English.
+
+```swift Swift
+ParticleNetwork.setLanguage(Language.en)
+
+ParticleNetwork.getLanguage()
+```
+
+### Signatures
+
+Once `ParticleNetwork` has been initialized and a user has successfully logged in, signatures can be proposed for confirmation through a popup; this can be facilitated via a few different methods:
+
+- `evm.sendTransaction`: Requests a signature for a given transaction and, upon receiving it, sends the transaction and returns the signature. For EVM chains, this expects a hex-encoded string containing transaction parameters. For Solana, this expects a base58 string.
+- `evm.personalSign/evm.personalSignUnique`: Requests a signature for a basic message. On EVM chains, this can be passed as a hex-encoded string prefixed by '0x'.
+- `evm.signTypedData/evm.signTypeDataUnique`:  Requests a signature for structured (typed) data --`eth_signTypedData`. For more information on `signTypedData`, see the [Web SDK reference](https://particlenetwork.readme.io/reference/auth-web).
+- `soalna.signAndSendTransaction`: Requests a signature for a given transaction and, upon receiving it, sends the transaction and returns the signature. For Solana, this expects a base58 string.
+- `solana.signTransaction`:  It requests a signature for a given transaction. Upon receiving a signature, it gets immediately returned (a transaction is not automatically sent). Expects a base58 string.
+- `solana.signAllTransactions`:  It requests a signature array for a given transaction array. Upon receiving a signature, it gets immediately returned (a transaction is not automatically sent). Expects a base58 string.
+- `solana.signMessage`: Requests a signature for a basic message. For Solana, this can be passed directly as a string.
+
+All of the above methods have a parameter `chainInfo`, to specify the chainInfo, default value is current `chainInfo`, you can get current `chainInfo` from `ParticleNetwork.getChainInfo`.
+
+<CodeGroup>
+```swift signAndSendTransaction (Swift)
+let result = try await auth.evm.sendTransaction(transaction)
+
+let result = try await auth.solana.signAndSendTransaction(transaction)
+
+
+// Alternatively, to use ParticleAuthService (deprecated) 
+// let result = try await ParticleAuthService.signAndSendTransaction(transaction).value
+```
+```swift signTransaction (Swift)
+let result = try await auth.solana.signTransaction(transaction)
+let result = try await auth.solana.signAllTransactions(transactions)
+
+// Alternatively, to use ParticleAuthService (deprecated)
+// let result = try await ParticleAuthService.signTransaction(transaction).value
+// let result = try await ParticleAuthService.signAllTransactions(transactions).value
+```
+```Text personalSign/signMessage(Swift)
+let result = try await auth.evm.personalSign(message)
+let result = try await auth.evm.personalSignUnique(message)
+
+let result = try await auth.solana.signMessage(message)
+
+// Alternatively, to use ParticleAuthService (deprecated)
+// let result = try await ParticleAuthService.signMessage(message).value
+// let result = try await ParticleAuthService.signMessageUnique(message).value
+```
+```swift signTypedData (Swift)
+let result = auth.evm.signTypedData(message).value
+let result = auth.evm.signTypedDataUnique(message).value
+
+// Alternatively, to use ParticleAuthService (deprecated)
+// let result = try await ParticleAuthService.signTypedData(message, type: .v4).value
+// let result = try await ParticleAuthService.signTypedData(message, type: .v4Unique).value
+```
+</CodeGroup>
+
+You can create a transaction with TxData and FeeMarketEIP1559TxData.
+
+### Open Web Wallet (deprecated in Auth Core)
+
+If you'd like to open an instance of the Wallet UI (Particle Wallet, a unified mechanism of interacting with accounts generated by `ParticleAuthService.login`), then you can do so by calling `ParticleAuthService.openWebWallet` and passing in various configurations.
+
+<Tip>For specific details regarding custom style configurations, see the [Web](ref:web-1) reference page.</Tip>
+
+```swift Swift
+// Alternatively, to use ParticleAuthService (deprecated) 
+let styleJsonString = """
+    {
+      "supportAddToken": false,
+      "supportChains": [{
+          "id": 1,
+          "name": "Ethereum"
+        },
+        {
+          "id": 5,
+          "name": "Ethereum"
+        }
+      ]
+    }
+"""
+// ParticleAuthService.openWebWallet(styleJsonString: styleJsonString)
+```
+
+### Open Account and Security
+
+If you'd like to force the "Account and Security" options to be opened on-screen (from which you can control master passwords, payment passwords, additional accounts, and so on), then you can call `auth.openAccountAndSecurity`. Upon calling this method, a popup allowing the user to control security settings will appear.
+
+```swift Swift
+auth.openAccountAndSecurity()
+
+// Alternatively, to use ParticleAuthService (deprecated) 
+ParticleAuthService.openAccountAndSecurity()
+```
+
+### Set Security Account Config
+
+Within the security settings, specific popups can be set to display upon confirmation or wallet UI entrance. These popups include `promptSettingWhenSign`, which refers to payment (signature) passwords, and `promptMasterPasswordSettingWhenLogin`, which refers to a login-based master password.
+
+By default, `promptSettingWhenSign` is set to 1, which will show the prompt upon the first signature a given account conducts. If it's set to 0, it will never be shown; if it's set to 2, it will be shown upon every signature confirmation, if it's set to 3, it will be force to set payment password.
+
+This same logic applies to `promptMasterPasswordSettingWhenLogin`, which by default is set to 0.
+
+```swift Swift
+ParticleNetwork.setSecurityAccountConfig(config:
+  .init(promptSettingWhenSign: 1, promptMasterPasswordSettingWhenLogin: 2))
+
+let securityAccountConfig = PartilceNetwork.getSecurityAccountConfig()
+```
+
+### Master Password and Payment Password
+
+User can set master password and payment password to protect assets, call `auth.changeMasterPassword` to set or change master password, call `auth.openAccountAndSecurity()` to set or change payment password.
+
+```swift Swift
+// check user has master password or not  
+let result = try auth.hasMasterPassword()
+// set or change master password  
+let result = try await auth.changeMasterPassword()  
+
+// check user has payment password or not  
+let result = try auth.hasPaymentPassword()
+// open securiy account page
+let result = try await auth.openAccountAndSecurity()
+```
+
+### Custom interface style
+
+```swift Swift
+// this is the default setting  
+ParticleNetwork.setAppearence(.unspecified)  
+// dark  
+ParticleNetwork.setAppearence(.dark)  
+// light  
+ParticleNetwork.setAppearence(.light)
+```
+
+### Language setting
+
+Support en, ja, ko, zh_hans and zh_hant.
+
+```swift Swift
+ParticleNetwork.setLanguage(.ja)
+let language = ParticleNetwork.getLanguage()
+```
+
+### Set custom UI json string
+
+```swift Swift
+// Set custom ui is pass json string  
+let jsonString = "your custom ui json string, keys should be the same with customUIConfig.json in demo"  
+Auth.loadCustomUIJsonString(jsonString)
+```
+
+### Blind sign enable
+
+This switch will work if the following conditions are met:
+
+1. your account is connected with JWT
+2. your account does not set payment password
+3. SecurityAccountConfig.promptSettingWhenSign is 0, you can call ParticleNetwork.setSecurityAccountConfig to update its value.
+
+```swift Swift
+// set blind sign enable  
+Auth.setBlindEnable(true)  
+// get current blind sign enable state  
+let result = Auth.getBlindEnable()
+```

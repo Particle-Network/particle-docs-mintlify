@@ -1,0 +1,40 @@
+---
+title: 'isProjectUser'
+openapi: 'POST /#isProjectUser'
+---
+
+# Understanding `isProjectUser`
+
+- `isProjectUser` returns a Boolean representing whether or not a specified user (their public address assumedly derived from social login) has interacted with or belongs to your project. It takes:
+
+  - `Chain` - either `solana` or `evm_chain`.
+
+  - `Address` - string.
+
+***
+
+## Query example
+
+```javascript JavaScript
+const axios = require("axios");
+
+(async () => {
+  const response = await axios.post(
+    "https://api.particle.network/server/rpc",
+    {
+      jsonrpc: "2.0",
+      id: 0,
+      method: "isProjectUser",
+      params: ["evm_chain", "0x6D5fCEd0C74F22a1B145ef48B25527Ce9BF829bF"],
+    },
+    {
+      auth: {
+        username: "Your Project Id",
+        password: "Your Project Server Key",
+      },
+    }
+  );
+
+  console.log(response.data);
+})();
+```

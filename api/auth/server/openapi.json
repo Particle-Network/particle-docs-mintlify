@@ -1,0 +1,330 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Particle Network Server API",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://api.particle.network/server/rpc"
+    }
+  ],
+  "security": [
+    {
+      "basicAuth": []
+    }
+  ],
+  "paths": {
+    "/#getUserInfo": {
+      "post": {
+        "summary": "getUserInfo",
+        "operationId": "getUserInfo",
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/getUserInfoRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/getUserInfoResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/#isProjectUser": {
+      "post": {
+        "summary": "isProjectUser",
+        "operationId": "isProjectUser",
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/isProjectUserRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/isProjectUserResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "basicAuth": {
+        "type": "http",
+        "scheme": "basic"
+      }
+    },
+    "schemas": {
+      "getUserInfoRequest": {
+        "type": "object",
+        "properties": {
+          "jsonrpc": {
+            "type": "string",
+            "example": "2.0"
+          },
+          "id": {
+            "type": "integer",
+            "example": 1
+          },
+          "method": {
+            "type": "string",
+            "example": "getUserInfo"
+          },
+          "params": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "UUID",
+              "Token"
+            ]
+          }
+        }
+      },
+      "getUserInfoResponse": {
+        "type": "object",
+        "properties": {
+          "jsonrpc": {
+            "type": "string",
+            "example": "2.0"
+          },
+          "id": {
+            "type": "integer",
+            "example": 1
+          },
+          "result": {
+            "type": "object",
+            "properties": {
+              "uuid": {
+                "type": "string",
+                "example": "2d7b1ff2-0791-4fd2-a26e-16fbcaefdf8a"
+              },
+              "phone": {
+                "type": "string",
+                "nullable": true,
+                "example": null
+              },
+              "email": {
+                "type": "string",
+                "example": "U1gphy1mnU@particle.network"
+              },
+              "name": {
+                "type": "string",
+                "nullable": true,
+                "example": null
+              },
+              "avatar": {
+                "type": "string",
+                "nullable": true,
+                "example": null
+              },
+              "facebookId": {
+                "type": "string",
+                "nullable": true,
+                "example": null
+              },
+              "facebookEmail": {
+                "type": "string",
+                "nullable": true,
+                "example": null
+              },
+              "googleId": {
+                "type": "string",
+                "nullable": true,
+                "example": null
+              },
+              "googleEmail": {
+                "type": "string",
+                "nullable": true,
+                "example": null
+              },
+              "appleId": {
+                "type": "string",
+                "nullable": true,
+                "example": null
+              },
+              "appleEmail": {
+                "type": "string",
+                "nullable": true,
+                "example": null
+              },
+              "twitterId": {
+                "type": "string",
+                "nullable": true,
+                "example": null
+              },
+              "twitterEmail": {
+                "type": "string",
+                "nullable": true,
+                "example": null
+              },
+              "telegramId": {
+                "type": "string",
+                "nullable": true,
+                "example": null
+              },
+              "telegramPhone": {
+                "type": "string",
+                "nullable": true,
+                "example": null
+              },
+              "discordId": {
+                "type": "string",
+                "nullable": true,
+                "example": null
+              },
+              "discordEmail": {
+                "type": "string",
+                "nullable": true,
+                "example": null
+              },
+              "githubId": {
+                "type": "string",
+                "nullable": true,
+                "example": null
+              },
+              "githubEmail": {
+                "type": "string",
+                "nullable": true,
+                "example": null
+              },
+              "twitchId": {
+                "type": "string",
+                "nullable": true,
+                "example": null
+              },
+              "twitchEmail": {
+                "type": "string",
+                "nullable": true,
+                "example": null
+              },
+              "microsoftId": {
+                "type": "string",
+                "nullable": true,
+                "example": null
+              },
+              "microsoftEmail": {
+                "type": "string",
+                "nullable": true,
+                "example": null
+              },
+              "linkedinId": {
+                "type": "string",
+                "nullable": true,
+                "example": null
+              },
+              "linkedinEmail": {
+                "type": "string",
+                "nullable": true,
+                "example": null
+              },
+              "createdAt": {
+                "type": "string",
+                "format": "date-time",
+                "example": "2022-06-08T07:47:54.000Z"
+              },
+              "updatedAt": {
+                "type": "string",
+                "format": "date-time",
+                "example": "2022-06-08T07:47:55.000Z"
+              },
+              "wallets": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "chain": {
+                      "type": "string",
+                      "example": "evm_chain"
+                    },
+                    "publicAddress": {
+                      "type": "string",
+                      "example": 6.244165809882205e+47
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "isProjectUserRequest": {
+        "type": "object",
+        "properties": {
+          "jsonrpc": {
+            "type": "string",
+            "example": "2.0"
+          },
+          "id": {
+            "type": "integer",
+            "example": 0
+          },
+          "method": {
+            "type": "string",
+            "example": "isProjectUser"
+          },
+          "params": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "evm_chain",
+              "0x6D5fCEd0C74F22a1B145ef48B25527Ce9BF829bF"
+            ]
+          }
+        }
+      },
+      "isProjectUserResponse": {
+        "type": "object",
+        "properties": {
+          "jsonrpc": {
+            "type": "string",
+            "example": "2.0"
+          },
+          "id": {
+            "type": "integer",
+            "example": 0
+          },
+          "result": {
+            "type": "boolean"
+          }
+        }
+      }
+    }
+  }
+}
