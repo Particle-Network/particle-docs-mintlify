@@ -1,0 +1,58 @@
+---
+title: "getBTCAccount"
+openapi: "POST /#particle_aa_getBTCAccount"
+---
+
+## Understanding `getBTCAccount`
+
+- `getBTCAccount`calculates and return the information of smart account  tied to an account address from btc public key. It takes:  
+  Account config object:
+  - `name`- string. only `BTC`
+  - `version` - string. Either 1.0.0 or 2.0.0.
+  - `btcPublicKey` - string.
+  - `btcAddress` - string. optional
+
+## Query example
+
+<CodeGroup>
+```json JSON
+{
+  "jsonrpc": "2.0",
+  "id": "1",
+  "method": "particle_aa_getBTCAccount",
+  "params": [
+    {
+      "name": "BTC",
+      "version": "2.0.0",
+      "btcPublicKey": "02f2ac735d9a0d1e5db8f6a6878ffb2a67d8415871c34df930cc2c03676f3a4eaa",
+      "btcAddress": "bc1qlyv3djgklwe0lm02a0265u4y8gg252cmut3j2u"
+    }
+  ]
+}
+```
+```js JavaScript
+const axios = require('axios');
+
+(async () => {
+    const response = await axios.post('https://rpc.particle.network/evm-chain', {
+        chainId: 1,
+        jsonrpc: '2.0',
+        id: 1,
+        method: 'particle_aa_getBTCAccount',
+        params: [{
+        		name: 'BTC',
+          	version: '2.0.0',
+          	btcPublicKey: '020ec8200effde9ba4d2de890074cda725ba7c1fcc659f7915c0caa96aae7bbadc',
+           	btcAddress: 'bc1qlyv3djgklwe0lm02a0265u4y8gg252cmut3j2u'
+        }],
+    }, {
+        auth: {
+            username: 'Your Project Id',
+            password: 'Your Project Server Key',
+        }
+    });
+
+    console.log(response.data);
+})();
+```
+</CodeGroup>

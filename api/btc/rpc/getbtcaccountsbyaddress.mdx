@@ -1,0 +1,60 @@
+---
+title: "getBTCAccountsByAddress"
+openapi: "POST /#particle_aa_getBTCAccountsByAddress"
+---
+
+## Understanding `getBTCAccountsByAddress`
+
+- `getBTCAccountsByAddress`return smart account btcAddress and it's smart account address.
+  - `address` - string, optional, smart account to query btc address
+  - `btcAddress` - string,  optional, btc address to query evm smart account address
+
+## Query example
+
+<CodeGroup>
+```json JSON
+{
+    "jsonrpc": "2.0",
+    "id": "1",
+    "method": "particle_aa_getBTCAccountsByAddress",
+    "params": [
+        {
+            "btcAddress": "bc1qlyv3djgklwe0lm02a0265u4y8gg252cmut3j2u"
+        }
+    ]
+}
+
+{
+    "jsonrpc": "2.0",
+    "id": "1",
+    "method": "particle_aa_getBTCAccountsByAddress",
+    "params": [
+        {
+            "address": "0x94727c34b2409cC5424368cF2D029c3fe3c2b1B7"
+        }
+    ]
+}
+```
+```js JavaScript
+const axios = require('axios');
+
+(async () => {
+    const response = await axios.post('https://rpc.particle.network/evm-chain', {
+        chainId: 1,
+        jsonrpc: '2.0',
+        id: 1,
+        method: 'particle_aa_getBTCAccountsByAddress',
+        params: [{
+           	btcAddress: 'bc1qlyv3djgklwe0lm02a0265u4y8gg252cmut3j2u'
+        }],
+    }, {
+        auth: {
+            username: 'Your Project Id',
+            password: 'Your Project Server Key',
+        }
+    });
+
+    console.log(response.data);
+})();
+```
+</CodeGroup>

@@ -217,7 +217,8 @@
             "api/auth/server/getuserinfo",
             "api/auth/server/isprojectuser"
           ]
-        },        {
+        },
+        {
           "group": "SDKs (Desktop)",
           "pages": [
             "api/auth/desktop-sdks/web",
@@ -239,6 +240,130 @@
           "group": "SDKs (Multi-platform)",
           "pages": [
             "api/auth/multi/unreal"
+          ]
+        }
+      ]
+    },
+    {
+      "group": "PARTICLE CONNECT",
+      "pages": [
+        "api/connect/introduction",
+        {
+          "group": "SDKs (Desktop)",
+          "pages": [
+            "api/connect/desktop/web"
+          ]
+        },
+        {
+          "group": "SDKs (Mobile)",
+          "pages": [
+            "api/connect/mobile/android",
+            "api/connect/mobile/ios",
+            "api/connect/mobile/unity",
+            "api/connect/mobile/flutter",
+            "api/connect/mobile/react"
+          ]
+        }
+      ]
+    },
+    {
+      "group": "PARTICLE WALLET",
+      "pages": [
+        "api/wallet/introduction",
+        {
+          "group": "SDKs (Desktop)",
+          "pages": [
+            "api/wallet/desktop/web"
+          ]
+        },
+        {
+          "group": "SDKs (Mobile)",
+          "pages": [
+            "api/wallet/mobile/android",
+            "api/wallet/mobile/ios",
+            "api/wallet/mobile/unity",
+            "api/wallet/mobile/flutter",
+            "api/wallet/mobile/react"
+          ]
+        }
+      ]
+    },
+    {
+      "group": "BTC CONNECT",
+      "pages": [
+        "api/btc/introduction",
+        {
+          "group": "SDKs (Desktop)",
+          "pages": [
+            "api/btc/desktop/web"
+          ]
+        },
+        {
+          "group": "BTC Connect RPC",
+          "pages": [
+            "api/btc/rpc/getbtcaccount",
+            "api/btc/rpc/getbtcaccountsbyaddress"
+          ]
+        }
+      ]
+    },
+    {
+      "group": "WEB3 SERVICES",
+      "pages": [
+        "api/web3/introduction",
+        {
+          "group": "NFT Market API (EVM-Compatible Blockchains)",
+          "pages": [
+            "api/web3/nft/getcollection",
+            "api/web3/nft/getcollectionactivities",
+            "api/web3/nft/getcollectionactivitiesbyaddress",
+            "api/web3/nft/refreshcollectionmetadata",
+            "api/web3/nft/getcollectiontokens",
+            "api/web3/nft/getcollectiontokencount",
+            "api/web3/nft/gettoken",
+            "api/web3/nft/gettokenactivities",
+            "api/web3/nft/uploadorder",
+            "api/web3/nft/buildorder",
+            "api/web3/nft/getcollectionlist",
+            "api/web3/nft/trackcollection"
+          ]
+        },
+        {
+          "group": "Enhanced RPC (Data API)",
+          "pages": [
+            "api/web3/data/getlatestblock",
+            "api/web3/data/deserializetransaction",
+            "api/web3/data/getcontractabi",
+            "api/web3/data/abi_encodefunctioncall",
+            "api/web3/data/getpendingtransactionsbyaddress",
+            "api/web3/data/gettransactionsbyaddress",
+            "api/web3/data/suggestedgasfees",
+            "api/web3/data/gettokensandnfts",
+            "api/web3/data/gettokens",
+            "api/web3/data/getnfts",
+            "api/web3/data/crosschain_getnfts",
+            "api/web3/data/getprice"
+          ]
+        },
+        {
+          "group": "Enhanced RPC (Swap API)",
+          "pages": [
+            "api/btc/rpc/getbtcaccount",
+            "api/btc/rpc/getbtcaccountsbyaddress"
+          ]
+        },
+        {
+          "group": "Enhanced RPC (Solana)",
+          "pages": [
+            "api/btc/rpc/getbtcaccount",
+            "api/btc/rpc/getbtcaccountsbyaddress"
+          ]
+        },
+        {
+          "group": "IPFS API",
+          "pages": [
+            "api/btc/rpc/getbtcaccount",
+            "api/btc/rpc/getbtcaccountsbyaddress"
           ]
         }
       ]

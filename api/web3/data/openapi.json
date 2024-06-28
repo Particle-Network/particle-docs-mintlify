@@ -1,0 +1,910 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Particle Network Enhanced RPC",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://rpc.particle.network/evm-chain"
+    }
+  ],
+  "paths": {
+    "/#particle_getPrice": {
+      "post": {
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ],
+        "summary": "getPrice",
+        "operationId": "getPrice",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetPriceRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetPriceResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/#particle_suggestedGasFees": {
+      "post": {
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ],
+        "summary": "suggestedGasFees",
+        "operationId": "suggestedGasFees",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SuggestedGasFeesRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuggestedGasFeesResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/#particle_getTransactionsByAddress": {
+      "post": {
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ],
+        "summary": "getTransactionsByAddress",
+        "operationId": "getTransactionsByAddress",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetTransactionsByAddressRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetTransactionsByAddressResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/#particle_getPendingTransactionsByAddress": {
+      "post": {
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ],
+        "summary": "getPendingTransactionsByAddress",
+        "operationId": "getPendingTransactionsByAddress",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetPendingTransactionsByAddressRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetPendingTransactionsByAddressResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/#particle_abi_encodeFunctionCall": {
+      "post": {
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ],
+        "summary": "abiEncodeFunctionCall",
+        "operationId": "abiEncodeFunctionCall",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ABIEncodeFunctionCallRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ABIEncodeFunctionCallResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/#particle_abi_getContractAbi": {
+      "post": {
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ],
+        "summary": "getContractABI",
+        "operationId": "getContractABI",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetContractABIRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetContractABIResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/#particle_deserializeTransaction": {
+      "post": {
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ],
+        "summary": "deserializeTransaction",
+        "operationId": "deserializeTransaction",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DeserializeTransactionRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeserializeTransactionResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/#particle_getLatestBlock": {
+      "post": {
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ],
+        "summary": "getLatestBlock",
+        "operationId": "getLatestBlock",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetLatestBlockRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetLatestBlockResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "basicAuth": {
+        "type": "http",
+        "scheme": "basic"
+      }
+    },
+    "schemas": {
+      "RPCRequest": {
+        "type": "object",
+        "required": [
+          "jsonrpc",
+          "id",
+          "method",
+          "params",
+          "chainId"
+        ],
+        "properties": {
+          "jsonrpc": {
+            "type": "string",
+            "default": 2
+          },
+          "id": {
+            "type": "integer",
+            "default": 1
+          },
+          "method": {
+            "type": "string"
+          },
+          "chainId": {
+            "type": "integer",
+            "example": 80001
+          },
+          "params": {
+            "type": "array"
+          }
+        }
+      },
+      "RPCResponse": {
+        "type": "object",
+        "properties": {
+          "jsonrpc": {
+            "type": "string"
+          },
+          "id": {
+            "type": "integer"
+          },
+          "result": {
+            "type": "object"
+          }
+        }
+      },
+      "GetPriceRequest": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/RPCRequest"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "method": {
+                "enum": [
+                  "particle_getPrice"
+                ]
+              },
+              "params": {
+                "type": "array",
+                "items": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        ]
+      },
+      "GetPriceResponse": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/RPCResponse"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "result": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "address": {
+                      "type": "string"
+                    },
+                    "currencies": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "type": {
+                            "type": "string"
+                          },
+                          "price": {
+                            "type": "number"
+                          },
+                          "marketCap": {
+                            "type": "number"
+                          },
+                          "24hChange": {
+                            "type": "number"
+                          },
+                          "24hVol": {
+                            "type": "number"
+                          },
+                          "lastUpdatedAt": {
+                            "type": "integer"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ]
+      },
+      "SuggestedGasFeesRequest": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/RPCRequest"
+          },
+          {
+            "type": "object",
+            "required": [
+              "method"
+            ],
+            "properties": {
+              "method": {
+                "type": "string",
+                "default": "particle_suggestedGasFees",
+                "enum": [
+                  "particle_suggestedGasFees"
+                ]
+              },
+              "params": {
+                "type": "array",
+                "enum": [
+                  []
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "SuggestedGasFeesResponse": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/RPCResponse"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "result": {
+                "type": "object",
+                "properties": {
+                  "low": {
+                    "type": "object"
+                  },
+                  "medium": {
+                    "type": "object"
+                  },
+                  "high": {
+                    "type": "object"
+                  },
+                  "baseFee": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        ]
+      },
+      "GetTransactionsByAddressRequest": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/RPCRequest"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "method": {
+                "enum": [
+                  "particle_getTransactionsByAddress"
+                ]
+              },
+              "params": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ]
+      },
+      "GetTransactionsByAddressResponse": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/RPCResponse"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "result": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "hash": {
+                      "type": "string"
+                    },
+                    "from": {
+                      "type": "string"
+                    },
+                    "to": {
+                      "type": "string"
+                    },
+                    "value": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "string"
+                    },
+                    "gasLimit": {
+                      "type": "integer"
+                    },
+                    "timestamp": {
+                      "type": "integer"
+                    },
+                    "status": {
+                      "type": "integer"
+                    },
+                    "type": {
+                      "type": "integer"
+                    },
+                    "nonce": {
+                      "type": "integer"
+                    },
+                    "accessList": {
+                      "type": "array",
+                      "items": {
+                        "type": "object"
+                      }
+                    },
+                    "maxPriorityFeePerGas": {
+                      "type": "string"
+                    },
+                    "maxFeePerGas": {
+                      "type": "string"
+                    },
+                    "gasSpent": {
+                      "type": "string"
+                    },
+                    "gasPrice": {
+                      "type": "string"
+                    },
+                    "fees": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ]
+      },
+      "GetPendingTransactionsByAddressRequest": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/RPCRequest"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "method": {
+                "enum": [
+                  "particle_getPendingTransactionsByAddress"
+                ]
+              },
+              "params": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ]
+      },
+      "GetPendingTransactionsByAddressResponse": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/RPCResponse"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "result": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "hash": {
+                      "type": "string"
+                    },
+                    "from": {
+                      "type": "string"
+                    },
+                    "to": {
+                      "type": "string"
+                    },
+                    "value": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "string"
+                    },
+                    "gasLimit": {
+                      "type": "integer"
+                    },
+                    "timestamp": {
+                      "type": "integer"
+                    },
+                    "status": {
+                      "type": "integer"
+                    },
+                    "type": {
+                      "type": "integer"
+                    },
+                    "nonce": {
+                      "type": "integer"
+                    },
+                    "accessList": {
+                      "type": "array",
+                      "items": {
+                        "type": "object"
+                      }
+                    },
+                    "maxPriorityFeePerGas": {
+                      "type": "string"
+                    },
+                    "maxFeePerGas": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ]
+      },
+      "ABIEncodeFunctionCallRequest": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/RPCRequest"
+          },
+          {
+            "type": "object",
+            "required": [
+              "method"
+            ],
+            "properties": {
+              "method": {
+                "type": "string",
+                "default": "particle_abi_encodeFunctionCall",
+                "enum": [
+                  "particle_abi_encodeFunctionCall"
+                ]
+              },
+              "params": {
+                "type": "array",
+                "items": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "array"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        ]
+      },
+      "ABIEncodeFunctionCallResponse": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/RPCResponse"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "result": {
+                "type": "string"
+              }
+            }
+          }
+        ]
+      },
+      "GetContractABIRequest": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/RPCRequest"
+          },
+          {
+            "type": "object",
+            "required": [
+              "method"
+            ],
+            "properties": {
+              "method": {
+                "type": "string",
+                "default": "particle_abi_getContractAbi",
+                "enum": [
+                  "particle_abi_getContractAbi"
+                ]
+              },
+              "params": {
+                "type": "array",
+                "items": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "boolean"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        ]
+      },
+      "GetContractABIResponse": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/RPCResponse"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "result": {
+                "type": "string"
+              }
+            }
+          }
+        ]
+      },
+      "DeserializeTransactionRequest": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/RPCRequest"
+          },
+          {
+            "type": "object",
+            "required": [
+              "method"
+            ],
+            "properties": {
+              "method": {
+                "type": "string",
+                "default": "particle_deserializeTransaction",
+                "enum": [
+                  "particle_deserializeTransaction"
+                ]
+              },
+              "params": {
+                "type": "array",
+                "items": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        ]
+      },
+      "DeserializeTransactionResponse": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/RPCResponse"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "result": {
+                "type": "object",
+                "properties": {
+                  "estimatedChanges": {
+                    "type": "object"
+                  },
+                  "data": {
+                    "type": "object"
+                  }
+                }
+              }
+            }
+          }
+        ]
+      },
+      "GetLatestBlockRequest": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/RPCRequest"
+          },
+          {
+            "type": "object",
+            "required": [
+              "method"
+            ],
+            "properties": {
+              "method": {
+                "type": "string",
+                "default": "particle_getLatestBlock",
+                "enum": [
+                  "particle_getLatestBlock"
+                ]
+              },
+              "params": {
+                "type": "array",
+                "enum": [
+                  []
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "GetLatestBlockResponse": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/RPCResponse"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "result": {
+                "type": "object",
+                "properties": {
+                  "difficulty": {
+                    "type": "string"
+                  },
+                  "extraData": {
+                    "type": "string"
+                  },
+                  "gasLimit": {
+                    "type": "string"
+                  },
+                  "gasUsed": {
+                    "type": "string"
+                  },
+                  "hash": {
+                    "type": "string"
+                  },
+                  "logsBloom": {
+                    "type": "string"
+                  },
+                  "miner": {
+                    "type": "string"
+                  },
+                  "mixHash": {
+                    "type": "string"
+                  },
+                  "nonce": {
+                    "type": "string"
+                  },
+                  "number": {
+                    "type": "string"
+                  },
+                  "parentHash": {
+                    "type": "string"
+                  },
+                  "receiptsRoot": {
+                    "type": "string"
+                  },
+                  "sha3Uncles": {
+                    "type": "string"
+                  },
+                  "size": {
+                    "type": "string"
+                  },
+                  "stateRoot": {
+                    "type": "string"
+                  },
+                  "timestamp": {
+                    "type": "string"
+                  },
+                  "totalDifficulty": {
+                    "type": "string"
+                  },
+                  "transactions": {
+                    "type": "array",
+                    "items": {
+                      "type": "object"
+                    }
+                  },
+                  "transactionsRoot": {
+                    "type": "string"
+                  },
+                  "uncles": {
+                    "type": "array",
+                    "items": {
+                      "type": "object"
+                    }
+                  },
+                  "receipts": {
+                    "type": "array",
+                    "items": {
+                      "type": "object"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ]
+      }
+    }
+  },
+  "x-readme": {
+    "explorer-enabled": true,
+    "proxy-enabled": true
+  }
+}

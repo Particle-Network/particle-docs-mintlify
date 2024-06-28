@@ -1,0 +1,101 @@
+---
+title: "Introduction to BTC Connect"
+description: "The first account abstraction protocol in the BTC ecosystem."
+---
+
+<img
+  className="block dark:hidden"
+  src="/api/btc/images/connect.png"
+  alt="Particle Network BTC Connect."
+/>
+<img
+  className="hidden dark:block"
+  src="/api/btc/images/connect.png"
+  alt="Particle Network BTC Connect."
+/>
+
+***
+
+# AA within the BTC ecosystem
+
+BTC Connect is the first account abstraction protocol in the BTC ecosystem, implementing ERC-4337 on EVM-compatible Bitcoin Layer-2s to assign smart accounts directly to native Bitcoin wallets. BTC Connect implements a smart account, Paymaster, Bundler, and unique Bitcoin-specific modal for unified utilization of smart accounts on supported EVM chains (such as [Merlin](https://twitter.com/MerlinLayer2/status/1748305593423757460), [BEVM](https://www.bevm.io), [bSquared](https://www.bsquared.network/)) alongside native Bitcoin transactions. Essentially, BTC Connect facilitates wallet connection (on Bitcoin Layer-1) with [UniSat](https://unisat.io/), [OKX](https://www.okx.com/web3), or [BitGet](https://web3.bitget.com/en), assigning an EVM-based smart account with the wallet in question as its Signer. Therefore, users can execute transactions both through smart accounts and their native Bitcoin account within the same wallet interface.
+
+In other words, BTC Connect abstracts away the complexities commonly associated with the dynamic between Layer-1 and Layer-2 accounts, going even further as to enhance this connection through the usage of smart accounts for additional flexibility (such as gasless transactions, batched transactions, and session keys).
+
+This architecture is constituted by the following components:
+
+1. A **connection modal** aggregating BTC wallets and directly facilitating connection.
+2. An **associated smart account** deployed on EVM-compatible Bitcoin Layer-2s, authenticated by the previously connected Bitcoin wallet.
+3. **Account abstraction infrastructure** on said Layer-2s, such as Particle's [Omnichain Paymaster](doc:omnichain-paymaster), the [Particle Bundler](doc:particle-bundler), etc.
+4. An **embedded wallet** that controls and displays the associated smart account, with the capability to send assets, view transactions and balances, etc.)
+
+***
+
+## Understanding the architecture of BTC Connect
+
+The linking of a Bitcoin wallet and a smart account on a Bitcoin EVM-compatible L2 is possible due to the inherent compatibility between BTC and Ethereum in the usage of ECDSA (sepc256k1) for signature generation.
+
+Bitcoin wallets follow a universal standard for signing messages (including standard strings, such as UserOperation hashes, in this case). See the two resources below for examples of this:
+
+- `bitcore-lib` signature generation: https://github.com/bitpay/bitcore/blob/926c1f78e458fca436acec6cac67659e52403880/packages/bitcore-lib/lib/message.js#L35.
+- `signMessage` within UniSat: https://docs.unisat.io/dev/unisat-developer-service/unisat-wallet#signmessage.
+
+Upon connecting for the first time, BTC Connect needs to generate and assign a smart account to a Bitcoin wallet. This is done through the computation of an EVM EOA address based on the Bitcoin wallet's public key (exposed by the connected wallet). This EOA address is then used as the Signer for a specific smart account implementation. An example of this computation can be found below:
+
+```typescript TypeScript
+function btcComputeEvmAddress(privateKey: string): string {
+    const bitcoinPrivateKey = new bitcore.PrivateKey(privateKey);
+    const bitcoinPublicKey = bitcoinPrivateKey.toPublicKey().toString();
+    const bitcoinAddress = bitcoinPrivateKey.toAddress().toString();
+    const evmAddress = computeAddress('0x' + bitcoinPublicKey).toString();
+
+    console.log('Bitcoin Public Key: ', bitcoinPublicKey);
+    console.log('Bitcoin Address: ', bitcoinAddress);
+    console.log('EVM Address: ', evmAddress);
+
+    return evmAddress;
+}
+```
+
+Once a smart account has been assigned to the Bitcoin wallet (by proxy of the generated EVM EOA address), signatures can be generated directly by the Bitcoin wallet to sign for the smart account. These are simply formatted as signatures for standard string representations of the EVM UserOperation hash. Upon signing, the signature will be converted to an EVM-compatible signature and used for authenticating the UserOperation. An example of this function has been included below:
+
+```typescript TypeScript
+function btcSignatureToEvmSignature(bitcoinSignature: string) {
+    const _bitcoinSignature: any = (bitcore.crypto.Signature as any).fromCompact(Buffer.from(bitcoinSignature, 'base64'));
+    const evmSignature = joinSignature(
+        splitSignature({
+            recoveryParam: _bitcoinSignature.i,
+            r: hexZeroPad('0x' + _bitcoinSignature.r.toString(16), 32),
+            s: hexZeroPad('0x' + _bitcoinSignature.s.toString(16), 32),
+        }),
+    );
+
+    return evmSignature;
+}
+```
+
+To visualize this further, see the following graphic covering the dynamics between the connected Bitcoin wallet, public key, generated EVM address, and associated smart account.
+
+<img
+  className="block dark:hidden"
+  src="/api/btc/images/architecture.jpg"
+  alt="Particle Network BTC Connect architecture."
+/>
+<img
+  className="hidden dark:block"
+  src="/api/btc/images/architecture.jpg"
+  alt="Particle Network BTC Connect architecture."
+/>
+
+***
+
+## Exploring the documentation
+
+<div class="api-container">
+    <div class="api-card">
+        <img src="https://www.svgrepo.com/show/374144/typescript.svg" class="api-logo" alt="Logo" />
+        <h3>Web SDK</h3>
+        <p>Interacting with BTC Connect within React applications using either JavaScript or TypeScript.</p>
+        <a href="btc-connect-web" class="api-link">Explore</a>
+    </div>
+</div>
