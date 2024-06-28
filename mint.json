@@ -195,6 +195,12 @@
       ]
     },
     {
+      "group": "EXTERNAL DOCUMENTS",
+      "pages": [
+        "resources/external/list"
+      ]
+    },
+    {
       "group": "MORE RESOURCES",
       "pages": [
         "resources/more/audits",
