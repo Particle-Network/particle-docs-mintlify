@@ -1,0 +1,31 @@
+---
+title: "checkApprove"
+openapi: "POST /#particle_swap_checkApprove"
+---
+
+# Contextualizing `checkApprove`
+
+- `checkApprove` returns a Boolean based upon whether a given address has approved spending of a specified amount for a particular ERC-20 token. It takes:
+  - `address` - string.
+  - Token object, containing:
+    - `tokenAddress` - string.
+    - `amount` - string.
+
+***
+
+## Query example
+
+```json JSON
+{
+  "id": 1,
+  "jsonrpc": "2.0",
+  "method": "particle_swap_checkApprove",
+  "params": [
+    "0x369aa8a7a7BE683E1a46d9A056806B2B3FD778C8", // wallet address
+    {
+      "tokenAddress": "0x111111111117dc0aa78b770fa6a738034120c302", // from token address
+      "amount": "1000000000"
+    }
+  ]
+}
+```

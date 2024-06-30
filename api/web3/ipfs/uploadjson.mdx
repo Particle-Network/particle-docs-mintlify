@@ -1,0 +1,28 @@
+---
+title: "upload_json"
+openapi: "POST /ipfs/upload_json"
+description : "Facilitates the uploading of raw JSON data to IPFS."
+---
+
+## Contextualizing `upload_json`
+
+- `upload_json` uploads provided JSON data to IPFS. JSON data must be entered within the raw body of the post request to be recognized for upload.
+
+## Code Examples
+
+```js JavaScript
+const axios = require('axios');
+
+const IPFS_URL = 'https://rpc.particle.network/ipfs/upload_json';
+
+(async () => {
+    let res = await axios.post(IPFS_URL, {// json data}, {
+        auth: {
+            username: 'Your Project Id',
+            password: 'Your Project Server Key',
+        },
+    });
+
+    console.log(res.data);
+})();
+```

@@ -1,46 +1,35 @@
 ---
-title: "getToken"
-openapi: "GET /chains/{chainId}/contractAddress/{contractAddress}/tokens/{tokenId}"
+title: "getTokensAndNFTs"
+openapi: "POST /#particle_getTokensAndNFTs"
 ---
 
-## Understanding `getToken`
+# Understanding `getTokensAndNFTs`
 
-- `getToken` returns detailed information about a specific token (NFT) within a collection. It takes the following path parameters:
-
-  - `chainId` - integer.
-
-  - `contractAddress` - string.
-
-  - `tokenId` - string.
-
-  And the following query parameters:
-
-  - `forceUpdate` - Boolean. It forces the metadata of the token to refresh if set to `true`.
+- `getTokensAndNFTs` retrieves the ERC-20 and ERC-721 (NFTs) owned by a given account address. It takes:
+  - `Address` - string.
+  - `Token addresses` - (optional), an array of strings.
 
 ***
 
 ## Query example
 
 ```javascript JavaScript
-const Axios = require("axios");
-
-const projectUuId = 'Your Project Id';
-const projectKey = 'Your Project Client Or Server Key';
-const chainId = 5; // Goerli
-const tokenId = '5';
-const baseUrl = 'https://api-market.particle.network';
-const contractAddress = '0x14CC6aF7A7318347419758274049e93DB03236C9';
-const url = `${baseUrl}/chains/${chainId}/contractAddress/${contractAddress}/tokens/${tokenId}`;
+const axios = require('axios');
 
 (async () => {
-    const response = await axios.get(url, {
-        params: {
-            projectUuid,
-            projectKey,
-            forceUpdate: 'true',
-        },
+    const response = await axios.post('https://rpc.particle.network/evm-chain', {
+        chainId: 1,
+        jsonrpc: '2.0',
+        id: 1,
+        method: 'particle_getTokensAndNFTs',
+        params: ['0x329a7f8b91Ce7479035cb1B5D62AB41845830Ce8'],
+    }, {
+        auth: {
+            username: 'Your Project Id',
+            password: 'Your Project Server Key',
+        }
     });
 
-    console.log(JSON.stringify(response.data));
+    console.log(response.data);
 })();
 ```

@@ -1,0 +1,39 @@
+---
+title: "estimateUserOperationGas"
+openapi: "POST /#eth_estimateUserOperationGas"
+---
+
+## Understanding `estimateUserOperationGas`
+
+- `estimateUserOperationGas` takes a partial UserOperation object and returns detailed gas estimates to be used in continued UserOperation construction. It takes:
+  - Partial user operation object:
+    - `sender` - string.
+    - `nonce` - string.
+    - `initCode` - string.
+    - `callData` - string.
+    - `signature` - string.`signature` can be a dummy string, such as `0xfffffffffffffffffffffffffffffff0000000000000000000000000000000007aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1c`.
+    - `entrypointAddress` - string.
+
+***
+
+## Query example
+
+```json JSON
+{
+  "method": "eth_estimateUserOperationGas",
+  "params": [
+    // partial user operation
+    {
+      "sender": "0x8fb859e944561678be40cdd2db16551396c0b074",
+      "nonce": "0x0152",
+      "initCode": "0x",
+      "callData": "0x9e5d4c49000000000000000000000000329a7f8b91ce7479035cb1b5d62ab41845830ce8000000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000000600000000000000000000000000000000000000000000000000000000000000000",
+      "signature": "0x73c3ac716c487ca34bb858247b5ccf1dc354fbaabdd089af3b2ac8e78ba85a4959a2d76250325bd67c11771c31fccda87c33ceec17cc0de912690521bb95ffcb1b"
+    },
+    "0x5ff137d4b0fdcd49dca30c7cf57e578a026d2789"
+  ],
+  "id": 1695717515,
+  "jsonrpc": "2.0",
+  "chainId": 80001
+}
+```

@@ -1,0 +1,39 @@
+---
+title: "enhancedGetTransactionsByAddress"
+openapi: "POST /#enhancedGetTransactionsByAddress"
+---
+
+## Understanding `enhancedGetTransactionsByAddress`
+
+- `enhancedGetTransactionsByAddress` retrieves detailed parsed transaction history relating to a specific public address on Solana. It takes:
+  - `address` - a base58-encoded string.
+  - Object, optional:
+    - `limit` - integer (between `1` and `1000`, default `1000`).
+    - `before` - string, transaction hash.
+    - `after` - string, transaction hash.
+    - `until` - string, transaction hash.
+
+***
+
+## Query example
+
+```javascript JavaScript
+const axios = require('axios');
+
+(async () => {
+    const response = await axios.post('https://rpc.particle.network/solana', {
+        chainId: 103,
+        jsonrpc: '2.0',
+        id: 0,
+        method: 'enhancedGetTransactionsByAddress',
+        params: ['6XU36wCxWobLx5Rtsb58kmgAJKVYmMVqy4SHXxENAyAe'],
+    }, {
+        auth: {
+            username: 'Your Project Id',
+            password: 'Your Project Server Key',
+        }
+    });
+
+    console.log(response.data);
+})();
+```

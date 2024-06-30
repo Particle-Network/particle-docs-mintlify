@@ -1,0 +1,38 @@
+---
+title: "paymasterBalance"
+openapi: "POST /#pm_paymasterBalance"
+---
+
+## Understanding `paymasterBalance`
+
+- `paymasterBalance` returns the USD balance (6 decimals) of the Paymaster associated with your `projectId` (`projectUuid`) and `serverKey` (`projectKey`). It takes no parameters other than the `projectUuid` and `projectKey` for authentication.
+
+***
+
+## Query example
+
+```javascript JavaScript
+import Axios from "axios";
+
+const projectUuid = "Your project uuid";
+const projectKey = "Your project client key or server key";
+
+const paymasterUrl = "https://paymaster.particle.network";
+(async () => {
+    const response = await Axios.post(
+        paymasterUrl,
+        {
+            method: "pm_paymasterBalance",
+            params: [],
+        },
+        {
+            params: {
+                projectUuid,
+                projectKey,
+            },
+        }
+    );
+
+    console.log(response.data);
+})();
+```

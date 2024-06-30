@@ -1,0 +1,23 @@
+---
+title: "supportedEntryPoints"
+openapi: "POST /#eth_supportedEntryPoints"
+---
+
+## Contextualizing `supportEntryPoints`
+  - `supportEntryPoints` returns a list of EntryPoint addresses supported by the Particle Bundler. It takes no parameters.
+
+<Note>At the moment, only `0x5ff137d4b0fdcd49dca30c7cf57e578a026d2789` is supported due to it being the flagship EntryPoint contract for ERC-4337.</Note>
+
+***
+
+## Query example
+
+```json JSON
+{
+  "chainId": 80001,
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "eth_supportedEntryPoints",
+  "params": []
+}
+```

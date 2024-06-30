@@ -1,0 +1,18 @@
+---
+title: "SDK Reference (SolanaService)"
+description: "Reference for the common SolanaService SDK extension."
+---
+
+Alongside the common `EvmService` SDK module, `SolanaService` enables programmatic data retrieval through Particle Network's suite of enhanced RPC endpoints. Specifically, `SolanaService` provides direct access to the endpoints listed on this document and additional SDK-exclusive methods, making it simple to work with rich data on Solana.
+
+A full reference of each common method alongside their parameters can be found **below**.
+
+| Class         | Methods                       | Parameters (\* indicates optional) |
+| ------------- | ----------------------------- | ---------------------------------- |
+| SolanaService | rpc                           | method, params                     |
+| SolanaService | getPrice                      | addresses, currencies              |
+| SolanaService | getTokensAndNFTs              | address                            |
+| SolanaService | getTransactionsByAddress      | address                            |
+| SolanaService | getTokenTransactionsByAddress | address, mintAddress               |
+| SolanaService | serializeSolTransction        | from, to, amount                   |
+| SolanaService | serializeSplTokenTransction   | from, to, mint, amount             |

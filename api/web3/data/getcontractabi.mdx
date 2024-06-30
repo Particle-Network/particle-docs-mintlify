@@ -1,37 +1,41 @@
 ---
-title: "getCollection"
-openapi: "GET /chains/{chainId}/contractAddress/{contractAddress}"
+title: "getContractAbi"
+openapi: "POST /#particle_abi_getContractAbi"
 ---
 
-## Contextualizing `getCollection`
+## Contextualizing `getContractAbi`
 
-- `getCollection` retrieves detailed information about an NFT collection based upon its contract address and chain ID. It takes the following path parameters:
+- `getContractAbi` takes the address of a **verified** contract and returns the complete ABI. It **will return null** if the contract is not verified.
 
-  - `chainId` - integer.
-  - `contractAddress` - string.
+<Tip>
+<p>If you're unsure whether a given contract is verified, Etherscan displays verification status on the **Contract** tab of smart contracts</p>
+Check it at: [https://etherscan.io/address/YOUR_CONTRACT_ADDRESS#code](https://etherscan.io/address/0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d#code)
+</Tip>
 
 ***
 
 ## Query example
 
-```javascript JavaSctipt
-const Axios = require("axios");
-
-const projectUuId = 'Your Project Id';
-const projectKey = 'Your Project Client Or Server Key';
-const chainId = 5; // Goerli
-const baseUrl = 'https://api-market.particle.network';
-const contractAddress = '0xE860aE9379B1902DC08F67F50de7b9CC066AF0FF';
-const url = `${baseUrl}/chains/${chainId}/contractAddress/${contractAddress}`;
+```javascript JavaScript
+const axios = require('axios');
 
 (async () => {
-    const response = await Axios.get(url, {
-        params: {
-            projectUuid,
-            projectKey,
-        },
+    const response = await axios.post('https://rpc.particle.network/evm-chain', {
+        chainId: 56,
+        jsonrpc: '2.0',
+        id: 1,
+        method: "particle_abi_getContractAbi",
+        params: [
+            "0x2170Ed0880ac9A755fd29B2688956BD959F933F8", 
+            true,
+        ]
+    }, {
+        auth: {
+            username: 'Your Project Id',
+            password: 'Your Project Server Key',
+        }
     });
 
-    console.log(JSON.stringify(response.data));
+    console.log(response.data);
 })();
 ```

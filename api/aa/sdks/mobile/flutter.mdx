@@ -1,0 +1,202 @@
+---
+title: "Flutter (Dart) - AA"
+description: "Leveraging Particle's AA SDK within applications built using Flutter."
+---
+
+## Account Abstraction for Flutter
+
+Particle Network's AA SDK offers a mechanism for facilitating full-stack ERC-4337 account abstraction, leveraging built-in infrastructure modularity without compromising simplicity. Paired with Particle Auth or Particle Connect for seamless onboarding, the Particle Network AA SDK presents itself as a key method for building high-quality UX within applications built using Flutter.
+
+## Repository
+
+All Particle Network Flutter SDKs, including the AA SDK for Flutter, are open-source in the [`particle-flutter` repository on GitHub](https://github.com/Particle-Network/particle-flutter), with each including demos/examples. It may be worthwhile taking a look at the [AA Flutter SDK](https://github.com/Particle-Network/particle-flutter/tree/master/particle-aa)'s architecture and implementation flow before continuing to build some context.
+
+***
+
+## Getting Started
+
+Before jumping in, you'll need to already have setup either [Particle Auth](https://particlenetwork.readme.io/reference/flutter-dart) or [Particle Connect](https://particlenetwork.readme.io/reference/flutter-dart-1) within your Flutter project (the AA SDK doesn't work on its own, requiring one of the two to function). If you don't have either of these already implemented, read through those pages and follow the outlined steps, then return to continue.
+
+With either of these SDKs set up, you can move on to adding `particle_aa` to your Flutter project through the following command:
+
+```
+flutter pub add particle_aa
+```
+
+<Note>
+Important details before initialization
+<p></p>
+<p>Before initializing the SDK, there are a few points to keep in mind, specifically regarding the utilization of Paymasters (to sponsor gas fees, pay for gas in ERC-20 tokens, etc.)</p>
+<p></p>
+<p>- All Testnets automatically have the Verifying Particle Network Omnichain Verifying Paymaster enabled. Transactions requesting it will automatically be sponsored and thus gasless.</p>
+<p>- On the occasion that you'd like to use the Particle Network Omnichain Verifying Paymaster for Mainnets, you'll need to deposit USDT on either Ethereum or BNB Chain within the <a href="https://dashboard.particle.network">Particle dashboard</a>. This USDT will then automatically be converted as needed into the native token of the network you're requesting (and qualifying for) sponsorship on.</p>
+<p>- Alternatively, if you'd like to instead use Biconomy's Verifying Paymaster, you can head over to the <a href="https://dashboard.biconomy.io">Biconomy dashboard</a>, create a new Paymaster, and fill in `biconomyApiKeys` within `ParticleAA.init`.</p>
+<p>- The Particle Network AA SDK automatically uses Biconomy's Token Paymaster; transactions that request it will be able to leverage it without additional configuration.</p>
+</Note>
+
+
+## Initialization
+
+The Particle Network AA SDK will fail to function correctly until it has been initialized. Initialization allows you to specify a smart account implementation and version, alongside the Paymaster you'd like to use. This can be initiated through `ParticleAA.init`, which takes the following parameters:
+
+- `name`, the smart account implementation to be used (any of these choices):
+  - `AccountName.BICONOMY_V1`, a [Biconomy smart account](https://www.biconomy.io/smart-accounts).
+  - `AccountName.BICONOMY_V2`, a [Biconomy smart account](https://www.biconomy.io/smart-accounts).
+  - `AccountName.CYBERCONNECT`, a [CyberConnect smart account](https://wallet.cyber.co/).
+  - `AccountName.SIMPLE`, a [SimpleAccount implementation](https://github.com/eth-infinitism/account-abstraction/blob/develop/contracts/samples/SimpleAccount.sol).
+  - `AccountName.LIGHT`, a [Light Account](https://accountkit.alchemy.com/packages/aa-accounts/light-account/).
+- Optionally, `biconomyApiKeys`; as mentioned, if you'd prefer natively using Biconomy's Paymaster rather than the built-in Paymaster from Particle Network, then you can do so by passing in a dictionary of chain IDs mapped to corresponding Biconomy API keys, retrieved from the [Biconomy dashboard](https://dashboard.biconomy.io)
+
+Once `init` has been called, you can close off initialization by enabling AA mode with `ParticleAA.enableAAMode`.
+
+```dart Dart
+// Optional, can pass empty collection
+Map<int, String> biconomyApiKeys = {
+  1: "Biconomy Paymaster API key",
+  137: "Biconomy Paymaster API key"
+};
+
+// Support BICONOMY_V1 | BICONOMY_V2 | CYBERCONNECT | SIMPLE | LIGHT
+ParticleAA.init(AccountName.BICONOMY_V2(), biconomyApiKeys);
+
+ParticleAA.enableAAMode();
+```
+
+***
+
+## Examples of Utilization
+
+### Is Deployed
+
+Now that you've initialized the AA SDK, you can move onto several methods to utilize it. First, it's important to note that the smart account implementation you chose will be automatically deployed with the first transaction it initiates. The deployment transaction will be bundled (batched) in with the first transaction. 
+
+However, if you'd like to check the deployment status of a given smart account manually, you can first retrieve the host address with `ParticleAuth.getAddress`, then pass that into `ParticleAA.isDeploy`, which returns a Boolean indicating deployment status.
+
+E.g.:
+
+```dart Dart
+final eoaAddress = await ParticleAuth.getAddress();
+
+var isDeploy = await ParticleAA.isDeploy(eoaAddress);
+```
+
+### Disable AA Mode
+
+If you'd like to exit AA mode and thus disable account abstraction functionality within your application, you'll need to call `ParticleAA.disableAAMode`. This will immediately render the usage of AA incompatible. Additionally, if you're unsure whether or not AA mode is enabled, you can call `ParticleAA.isAAModeEnable`, which will return a Boolean representing this status. E.g.:
+
+```dart Dart
+ParticleAA.disableAAMode();
+
+var result = await ParticleAA.isAAModeEnable();  
+```
+
+### Send Transaction
+
+Sending a transaction (UserOperation) is as simple as calling pre-existing methods within `ParicleAuth`, `ParticleConnect`or `Evm in particle_auth_core` and just passing in an additional parameter, `feeMode`. There are two ways to send transactions with the AA SDK: The first is with `signAndSendTransaction` of `sendTransaction` , which will send a singular transaction to the network. Alternatively, you can use `batchSendTransactions` to send batched transactions within a single UserOperation.
+
+`ParticleAuth/ParticleConnect.signAndSendTransaction` or `Evm.sendTransaction in particle_auth_core` takes the following parameters:
+
+- For Particle Connect, `walletType`, dictating the specific adapter being used/targeted.
+- `account`, the public address of the smart account sending the transaction, which can be retrieved through `EvmService.getSmartAccount`.
+- `transaction`, a stringified standard transaction object.
+- `feeMode`, the mechanism to be used for paying gas fees, can be:
+  - `AAFeeMode.gasless`, for sponsored transactions. This will happen automatically for Testnets and will pull from your previously defined (or configured) Paymaster for Mainnets. Takes one parameter:
+    - `wholeFeeQuote`, which can be retrieved through `ParticleAA.rpcGetFeeQuotes(EoaPublicAddress, [transaction])`.
+  - `AAFeeMode.native`, paying for gas fees in a native token (such as ETH). Takes one parameter:
+    - `wholeFeeQuote`, which can be retrieved through `ParticleAA.rpcGetFeeQuotes(EoaPublicAddress, [transaction])`.
+  - `AAFeeMode.token`, paying for gas fees in an ERC-20 token (such as USDC). Takes one parameter:
+    - `feeQuote`, to be used when leveraging a Token Paymaster. It can be retrieved through `ParticleAA.rpcGetFeeQuotes(EoaPublicAddress, [transaction])`.
+    - `tokenPaymasterAddress`, can be  retrieved through `ParticleAA.rpcGetFeeQuotes(EoaPublicAddress, [transaction])`.
+
+Alternatively, for `ParticleAuth/Connect.batchSendTransactions` or ParticleAuthCore`Evm.batchSendTransactions`, the parameters will be the same, with the exception of `transaction` being an array of transactions.
+
+```dart Dart
+await ParticleAuth.signAndSendTransaction(transaction,
+        feeMode: AAFeeMode.gasless(result));
+
+await ParticleConnect.signAndSendTransaction(
+        WalletType.metaMask, EoaPublicAddress, transaction,
+        feeMode: AAFeeMode.gasless(result));
+
+await Evm.sendTransaction(transaction,
+        feeMode: AAFeeMode.gasless(result));
+
+await ParticleAuth.signAndSendTransaction(transaction,
+        feeMode: AAFeeMode.token(feeQuote, tokenPaymasterAddress));
+
+await ParticleConnect.signAndSendTransaction(
+        WalletType.metaMask, EoaPublicAddress, transaction,
+        feeMode: AAFeeMode.token(feeQuote, tokenPaymasterAddress));
+
+await Evm.sendTransaction(transaction,
+        feeMode: AAFeeMode.token(feeQuote, tokenPaymasterAddress));
+
+await ParticleAuth.batchSendTransactions(transactions,
+        feeMode: AAFeeMode.native(result));
+
+await ParticleConnect.batchSendTransactions(
+        WalletType.metaMask, EoaPublicAddress, transactions,
+        feeMode: AAFeeMode.native(result));
+
+await Evm.sendTransaction(transaction,
+        feeMode: AAFeeMode.native(result));
+```
+
+Check if you can send with AAFeeMode.gasless/native/token.
+
+```dart Dart
+// check if enough native for gas fee
+var result = await ParticleAA.rpcGetFeeQuotes(EoaPublicAddress, [transaction]);
+var verifyingPaymasterNative = result["verifyingPaymasterNative"];
+var feeQuote = verifyingPaymasterNative["feeQuote"];
+var fee = BigInt.parse(feeQuote["fee"], radix: 10);
+var balance = BigInt.parse(feeQuote["balance"], radix: 10);
+
+if (balance < fee) {
+  print("can't natively paid, native balance if not enough for gas fee");
+  return;
+}
+
+// check if gasless available
+var verifyingPaymasterGasless = result["verifyingPaymasterGasless"];
+if (verifyingPaymasterGasless == null) {
+  print("gasless is not available");
+  return;
+}
+
+// check if can token paid
+List<dynamic> feeQuotes = result["tokenPaymaster"]["feeQuotes"];
+
+var overFeeQuotes = feeQuotes.where((element) {
+	var fee = BigInt.parse(element["fee"], radix: 10);
+	var balance = BigInt.parse(element["balance"], radix: 10);
+return balance >= fee;
+}).toList();
+
+if (overFeeQuotes.isEmpty) {
+  print("can't token paid, no valid token for gas fee");
+  return;
+}
+
+// select a fee quote, for example the first.
+var feeQuote = overFeeQuotes[0];
+String tokenPaymasterAddress = result["tokenPaymaster"]["tokenPaymasterAddress"];
+
+```
+
+***
+
+## Master reference
+
+For a direct, raw view into every method, below is a table containing every relevant one alongside specific parameters and a short description. For methods listed that weren't covered in the above examples, live implementation often mimics the common structure covered throughout this document.
+
+| Class      | Methods         | Parameters (\* indicates optional) |
+| ---------- | --------------- | ---------------------------------- |
+| ParticleAA | init            | name, version, biconomyApiKeys\*   |
+| ParticleAA | isDeploy        | eoaAddress                         |
+| ParticleAA | isAAModeEnable  |                                    |
+| ParticleAA | enableAAMode    |                                    |
+| ParticleAA | disableAAMode   |                                    |
+| ParticleAA | rpcGetFeeQuotes | eoaAddress, transactions           |
+
+See the [Particle Auth](https://particlenetwork.readme.io/reference/flutter-dart) and [Particle Connect](https://particlenetwork.readme.io/reference/flutter-dart-1) pages for insights into additional compatible methods (such as `signAndSendTransaction`), as shown here.

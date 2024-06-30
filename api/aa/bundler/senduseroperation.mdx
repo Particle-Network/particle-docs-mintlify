@@ -1,0 +1,41 @@
+---
+title: "sendUserOperation"
+openapi: "POST /#eth_sendUserOperation"
+---
+
+## Contextualizing `sendUserOperation`
+
+- `sendUserOperation` pushes a signed UserOperation to the network, in this case through the Particle Bundler. It takes:
+  - UserOperation object.
+  - `entrypointAddress` - string.
+
+***
+
+## Query example
+
+```json JSON
+{
+  "method": "eth_sendUserOperation",
+  "params": [
+    // user operation
+    {
+      "sender": "0x8Fb859E944561678be40Cdd2dB16551396c0b074",
+      "nonce": "0x0150",
+      "initCode": "0x",
+      "callData": "0x9e5d4c49000000000000000000000000329a7f8b91ce7479035cb1b5d62ab41845830ce8000000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000000600000000000000000000000000000000000000000000000000000000000000000",
+      "callGasLimit": "0xa13c",
+      "verificationGasLimit": "0xe2d8",
+      "maxFeePerGas": "0x7ca702cd",
+      "maxPriorityFeePerGas": "0x7ca702b0",
+      "paymasterAndData": "0x000031dd6d9d3a133e663660b959162870d755d4000000000000000000000000329a7f8b91ce7479035cb1b5d62ab41845830ce8000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000416665636080709b968ebec098bf71fb0e79b3b480cc9ff809f192afb478c84ec50ad2de74b93a67860542099b11a1b5dbfa9bc21a2790c58e10015ce992a02f411b00000000000000000000000000000000000000000000000000000000000000",
+      "preVerificationGas": "0x011120",
+      "signature": "0x7cc0a2ae350b79c5b189bd36d55ab6a2756097d6d37537e3ec2c26daaa82c6d909fed87ff9d79a6fa127bd798126259ee72fa9395ecbeb1f70ed22ca35983aea1c"
+    },
+    // entrypoint contract address
+    "0x5ff137d4b0fdcd49dca30c7cf57e578a026d2789"
+  ],
+  "id": 1695717470,
+  "jsonrpc": "2.0",
+  "chainId": 80001
+}
+```

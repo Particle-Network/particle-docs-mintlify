@@ -1,29 +1,33 @@
 ---
-title: "getCollectionList"
-openapi: "GET /chains/{chainId}"
+title: "getPendingTransactionsByAddress"
+openapi: "POST /#particle_getPendingTransactionsByAddress"
 ---
+
+## Contextualizing `getPendingTransactionsByAddress`
+
+- `getPendingTransactionsByAddress` fetches pending transactions for a specified address on a chain derived from `chainId`, offering detailed metrics like gas limits, transaction types, and statuses.
+
+***
 
 ## Query example
 
 ```javascript JavaScript
-const Axios = require("axios");
-
-const projectUuId = 'Your Project Id';
-const projectKey = 'Your Project Client Or Server Key';
-const chainId = 5; // Goerli
-const baseUrl = 'https://api-market.particle.network';
-const url = `${baseUrl}/chains/${chainId}`;
+const axios = require('axios');
 
 (async () => {
-    const response = await Axios.get(url, {
-        params: {
-            projectUuid,
-            projectKey,
-            page: 1,
-            limit: 10,
-        },
+    const response = await axios.post('https://rpc.particle.network/evm-chain', {
+        chainId: 5,
+        jsonrpc: '2.0',
+        id: 1,
+        method: 'particle_getPendingTransactionsByAddress',
+        params: ['0x425249Cf0F2f91f488E24cF7B1AA3186748f7516'],
+    }, {
+        auth: {
+            username: 'Your Project Id',
+            password: 'Your Project Server Key',
+        }
     });
 
-    console.log(JSON.stringify(response.data));
+    console.log(response.data);
 })();
 ```

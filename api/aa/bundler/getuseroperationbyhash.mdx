@@ -1,0 +1,26 @@
+---
+title: "getUserOperationByHash"
+openapi: "POST /#eth_getUserOperationByHash"
+---
+
+## Understanding `getUserOperationByHash`
+
+- `getUserOperationByHash` returns a UserOperation object corresponding with a specific hash. It takes:
+  - `hash` - string.
+
+***
+
+## Query example
+
+```json JSON
+{
+    "method": "eth_getUserOperationByHash",
+    "params": [
+      // user operation hash
+      "0x1ee478a6e967c407e8dfb5e3f2eb1131a7418c36396147fce1f7e81a871102a3"
+    ],
+    "id": 1695717473,
+    "jsonrpc": "2.0",
+    "chainId": 80001
+}
+```

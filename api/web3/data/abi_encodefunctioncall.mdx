@@ -1,49 +1,40 @@
 ---
-title: "getCollectionActivitiesByAddress"
-openapi: "GET /chains/{chainId}/contractAddress/{contractAddress}/myActivity"
+title: "abi_encodeFunctionCall"
+openapi: "POST /#particle_abi_encodeFunctionCall"
 ---
-## Understanding `getCollectionActivitiesByAddress`
 
-- `getCollectionActivitiesByAddress` is an alternative to `getCollectionActivities` in which you can filter collection activities (mints, transfers, etc.) by a specific involved address (for example, your personal address). It takes the following path parameters:
+## Contextualizing `abi_encodeFunctionCall`
 
-  - `chainId` - integer.
-
-  - `contractAddress` - string.
-
-  And the following query parameters:
-
-  - `address` - string.
-
-  - `activityTypes` - an array of strings (can be`sale`, `list`, `unlist`, `mint`, or `transfer`).
-
-  - `page` - integer, `1` by default.
-
-  - `limit` - integer, `100` by default.
+- `abi_encodeFunctionCall` takes a contract address, a function name, and an array of function parameters to return an ABI-encoded string that represents the specific function call you intend to make on the smart contract.
 
 ***
 
 ## Query example
 
 ```javascript JavaScript
-const Axios = require("axios");
-
-const projectUuId = 'Your Project Id';
-const projectKey = 'Your Project Client Or Server Key';
-const chainId = 5; // Goerli
-const baseUrl = 'https://api-market.particle.network';
-const contractAddress = '0x14CC6aF7A7318347419758274049e93DB03236C9';
-const url = `${baseUrl}/chains/${chainId}/contractAddress/${contractAddress}/myActivity`;
+const axios = require('axios');
 
 (async () => {
-    const response = await Axios.get(url, {
-        params: {
-            projectUuid,
-            projectKey,
-            address: '0x7DDd4989abb3cDa01BA31ac283c194852E42e1a8',
-            activityType: 'mint'
-        },
+    const response = await axios.post('https://rpc.particle.network/evm-chain', {
+        chainId: 1,
+        jsonrpc: '2.0',
+        id: 1,
+        method: "particle_abi_encodeFunctionCall",
+        params: [
+            "0xB8c77482e45F1F44dE1745F52C74426C631bDD52", 
+            "erc20_transfer", 
+            [
+                "0x329a7f8b91Ce7479035cb1B5D62AB41845830Ce8", 
+                "1000000000000000000"
+            ]
+        ]
+    }, {
+        auth: {
+            username: 'Your Project Id',
+            password: 'Your Project Server Key',
+        }
     });
 
-    console.log(JSON.stringify(response.data));
+    console.log(response.data);
 })();
 ```

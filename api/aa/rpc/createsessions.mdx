@@ -1,0 +1,51 @@
+---
+title: "createSessions"
+openapi: "POST /#particle_aa_createSessions"
+---
+
+## Contextualizing `createSessions`
+
+- `createSessions` will generate transactions (or UserOperation objects and hashes, according to the fee payment mechanism) for initializing a session key within predefined parameters. It takes:
+  - Account config object:
+    - `name` - string.
+    - `version` - string.
+    - `ownerAddress` - string.
+    - `biconomyApiKey` - (optional), string. It should only be used if you'd like to use a Biconomy Paymaster.
+  - Array of sessions:
+    - Session object:
+      - `validUntil` - integer.
+      - `validAfter` - integer.
+      - `sessionValidationModule` - string.
+      - `sessionKeyDataInAbi` (alternative: `sessionKeyData`) - array.
+
+***
+
+## Query example
+
+```json JSON
+{
+    "chainId": 80001,
+    "jsonrpc": "2.0",
+    "id": "f7423e6b-0f69-4b96-8d1e-dcd485f8c2eb",
+    "method": "particle_aa_createSessions",
+    "params": [
+        { "name": "BICONOMY", "version": "2.0.0", "ownerAddress": "0xc19dd1f3e212b39a30036EF3DE3F83dEf5a66E41" },
+        [
+            {
+                "validUntil": 0,
+                "validAfter": 0,
+                "sessionValidationModule": "0x4b7f018Fa27a97b6a17b6d4d8Cb3c0e2D9340133",
+                "sessionKeyDataInAbi": [ // or use sessionKeyData to replace
+                    ["address", "address", "address", "uint256"],
+                    [
+                        "0x1dacDa1087C4048774bEce7784EB8EC4CfBeDB2c",
+                        "0x909E30bdBCb728131E3F8d17150eaE740C904649",
+                        "0x11D266772b85C2C5D4f84A41ca3E08e9f04Fb5D3",
+                        1
+                    ]
+                ]
+            }
+        ]
+    ]
+}
+```

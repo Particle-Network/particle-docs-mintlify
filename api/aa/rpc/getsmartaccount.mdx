@@ -1,0 +1,38 @@
+---
+title: "getSmartAccount"
+openapi: "POST /#particle_aa_getSmartAccount"
+---
+
+## Understanding `getSmartAccount`
+
+- `getSmartAccount` returns information regarding a specific smart account (such as a `BICONOMY`, `CYBERCONNECT` or `SIMPLE` account) tied to an account address. It takes:
+  - Account config object:
+    - `name` - string. Either `BICONOMY`, `CYBERCONNECT` or `SIMPLE`.
+    - `version` - string. Either `1.0.0` or `2.0.0`.
+    - `ownerAddress` - string.
+
+***
+
+## Query example
+
+```json JSON
+{
+  "jsonrpc": "2.0",
+  "id": "ee9cce2a-2f34-4c66-879e-c84c6f0e7f2d",
+  "chainId": 80001,
+  "method": "particle_aa_getSmartAccount",
+  "params": [
+    // account config array
+    {
+      "name": "BICONOMY",
+      "version": "1.0.0",
+      "ownerAddress": "0xA60123a1056e9D38B64c4993615F27cCe9A9E8D5"
+    },
+    {
+      "name": "BICONOMY",
+      "version": "1.0.0",
+      "ownerAddress": "0x329a7f8b91Ce7479035cb1B5D62AB41845830Ce8"
+    }
+  ]
+}
+```

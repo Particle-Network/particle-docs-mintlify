@@ -1,43 +1,35 @@
 ---
-title: "uploadOrder"
-openapi: "POST /chains/{chainId}/orders"
+title: "getTokens"
+openapi: "POST /#particle_getTokens"
 ---
 
-## Understanding `uploadOrder`
+# Contextualizing `getTokens`
 
-- `uploadOrder` facilitates the uploading of an order (only single NFT purchases) created through the [Seaport protocol](https://github.com/ProjectOpenSea/seaport). It takes the following path parameter:
-
-  - `chainId` - integer.
-
-  And the following body parameter:
-
-  - `order` - Seaport order structure. It should be made through seaport and contain `parameters` and `signature`.
+- `getTokens`, as an alternative to `getTokensAndNFTs`, returns an object with detailed information regarding the various ERC-20 tokens owned by a given address. It takes:
+  - `Address` - string.
+  - `Token addresses` - (optional), an array of strings.
 
 ***
 
 ## Query example
 
 ```javascript JavaScript
-const Axios = require("axios");
-
-const projectUuId = 'Your Project Id';
-const projectKey = 'Your Project Client Or Server Key';
-const chainId = 5; // Goerli
-const baseUrl = 'https://api-market.particle.network';
-const url = `${baseUrl}/chains/${chainId}/orders`;
-
-const order = {}; // create from seaport
+const axios = require('axios');
 
 (async () => {
-    const response = await axios.post(url, {
-        order,
+    const response = await axios.post('https://rpc.particle.network/evm-chain', {
+        chainId: 1,
+        jsonrpc: '2.0',
+        id: 1,
+        method: 'particle_getTokens',
+        params: ['0x329a7f8b91Ce7479035cb1B5D62AB41845830Ce8'],
     }, {
-        params: {
-            projectUuid,
-            projectKey,
-        },
+        auth: {
+            username: 'Your Project Id',
+            password: 'Your Project Server Key',
+        }
     });
 
-    console.log(JSON.stringify(response.data));
+    console.log(response.data);
 })();
 ```

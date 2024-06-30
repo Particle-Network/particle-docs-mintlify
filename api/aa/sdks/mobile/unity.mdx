@@ -1,0 +1,212 @@
+---
+title: "Unity (C#) - AA"
+---
+
+## Account Abstraction on Unity
+
+Applications built using Unity can also directly leverage Particle Network's AA SDK to facilitate end-to-end utilization of ERC-4337 account abstraction. Particle Network's AA SDK handles smart account deployment (modularized to multiple built-in implementations), UserOperation construction and sponsoring, fee quote generation, etc. Particle's AA SDK is the core infrastructure component, working hand-in-hand with Particle's Bundler and Paymaster, which power Particle Network's Modular Smart Wallet-as-a-Service.
+
+This document will cover the installation, configuration, and utilization flow of Particle's AA SDK for Unity.
+
+## Repository
+
+Before diving in, you'll need to open the official [`particle-unity` GitHub repository](https://github.com/Particle-Network/particle-unity). This is where all of Particle Network's Unity SDKs are open-sourced and available for download. Before beginning, feel free to take a look at the underlying architecture and demos within `particle-unity` to contextualize the processes covered within this page.
+
+***
+
+## Getting Started
+
+### Prerequisites
+
+To start using the Particle AA SDK for Unity, you'll need to ensure that your project meets the minimum requirements for your platform (iOS or Android). Otherwise, you may run into compatibility issues, resulting in the SDK being non-functional. These prerequisites are as follows:
+
+- **Unity 2021.3.35f1** or higher.
+- For iOS:
+  - **Xcode 15.0** or higher.
+  - **CocoaPods 1.14.3** or higher.
+  - **iOS 14** or higher.
+- For Android:
+  - **Minimum API level 23** or higher.
+  - **Targets API level 33** or higher.
+  - **Java SDK version 11**.
+
+### Setting up Particle Auth or Particle Connect
+
+With your prerequisites set, you'll need to set up either Particle Auth or Particle Connect for Unity. Particle Auth will offer a direct social login mechanism resulting in a Particle wallet. Otherwise, Particle Connect will allow for a more generalized connection modal aggregating both social logins and external Web3 wallets.
+
+- Particle Auth: [Unity (C#)](ref:unity-c-1).
+- Particle Connect: [Unity (C#)](ref:unity-c-2).
+
+<Note>
+Important details before initialization.
+<p></p>
+<p>Before initializing the SDK, there are a few key points to keep in mind, specifically regarding the utilization of Paymasters (to sponsor gas fees, pay for gas in ERC-20 tokens, etc.)</p>
+<p></p>
+<p>- All Testnets automatically have the Verifying Particle Network Omnichain Verifying Paymaster enabled, transactions (that request it) will automatically be sponsored and thus gasless.</p>
+<p>- On the occasion that you'd like to use the Particle Network Omnichain Verifying Paymaster for Mainnets, you'll need to deposit USDT on either Ethereum or BNB Chain within the <a href="https://dashboard.particle.network">Particle dashboard</a>. This USDT will then automatically be converted as needed into the native token of the network you're requesting (and qualifying for) sponsorship on.</p>
+<p>- Alternatively, if you'd like to instead use Biconomy's Verifying Paymaster, you can head over to the <a href="https://dashboard.biconomy.io/">Biconomy dashboard</a>, create a new Paymaster, and fill in `apiKey` within `Init`.</p>
+<p>- The Particle Network AA SDK automatically uses Biconomy's Token Paymaster. Transactions that request it will be able to leverage it without additional configuration.</p>
+</Note>
+
+***
+
+## Initialization
+
+Now that you have a project set up with either Particle Auth or Particle Connect, you can initialize the Particle AA SDK. But first, make sure you have the `ParticleAA` prefab within your first scene. This can be retrieved through the AA package within the forenamed [GitHub repository](https://github.com/Particle-Network/particle-unity/tree/main/Assets/ParticleNetwork/Mobile/Modules/AA). 
+
+Before you can use the full extent of the SDK, you'll need to initialize it through `ParticleAAInteraction.Init`. This process will allow you to choose between a Biconomy or Particle Paymaster, alongside the specific smart account implementation you'd like your users to rely on. `ParticleAAInteraction.Init` takes the following parameters:
+
+- `accountName`, the name of the smart account implementation you'd like to use. Either:
+  - `BICONOMY_V1`, a [Biconomy smart account](https://www.biconomy.io/smart-accounts).
+  - `BICONOMY_V2`, a [Biconomy smart account](https://www.biconomy.io/smart-accounts).
+  - `CYBERCONNECT`, a [CyberConnect smart account](https://wallet.cyber.co).
+  - `SIMPLE`, a [SimpleAccount implementation](https://github.com/eth-infinitism/account-abstraction/blob/develop/contracts/samples/SimpleAccount.sol).
+  - `LIGHT`, a [Light Account](https://accountkit.alchemy.com/packages/aa-accounts/light-account/).
+- Optionally, `biconomyApiKeys`, if you'd like to use a Biconomy Paymaster rather than the default (enabled without extra configuration) Particle Network Paymaster. If you would, then you'll need a dictionary with chain IDs tied to corresponding Paymaster keys on the [Biconomy dashboard](https://dashboard.biconomy.io/).
+
+Once the Particle AA SDK has been initialized through `ParticleAAInteraction`, you'll need to go ahead and enable AA mode through `ParticleAAInteraction.EnableAAMode`. From there, you can directly interact with the SDK (sending UserOperations, retrieving fee quotes, etc.)
+
+E.g.:
+
+```csharp C#
+var biconomyApiKeys = new Dictionary<int, string>
+{
+    { 1, "your ethereum mainnet key" },
+    { 137, "your polygon mainnet key" },
+}; // Optional
+
+// BICONOMY_V1 || BICONOMY_V2 | SIMPLE | CYBERCONNECT | LIGHT
+ParticleAAInteraction.Init(AAAccountName.BICONOMY_V1, biconomyApiKeys);
+
+ParticleAAInteraction.EnableAAMode();
+// Inversely, ParticleAAInteraction.DisableAAMode();
+```
+
+## Examples of Utilization
+
+### Is Deployed
+
+Upon initiating social login, a smart account will be assigned to your user's EOA (either a SimpleAccount, Biconomy account, or CyberConnect account), although even upon assignment, that smart account still needs to be deployed. This deployment will happen automatically upon the first UserOperation execution, as the deployment operation will be batched in with the first transaction request. Although, if you'd like to see whether an EOA's assigned smart account has been deployed or not, you can call `ParticleAA.Instance.IsDeploy`, as shown below.
+
+```csharp C#
+var eoaAddress = ParticleAuthServiceInteraction.GetAddress();
+var result = await ParticleAA.Instance.IsDeploy(eoaAddress);
+```
+
+### Is AA Mode Enabled
+
+As mentioned prior, upon initialization, you'll need to enable the AA mode. If you're unsure whether this is currently enabled for a specific instance, then you can use `ParticleAAInteraction.IsAAModeEnable`, which will return a Boolean indicating either`true` or `false` otherwise. E.g.:
+
+```csharp C#
+var result = ParticleAAInteraction.IsAAModeEnable();
+```
+
+### Get Fee Quotes
+
+As you'll see in a moment, sending a UserOperation requires the retrieval of a `feeQuote` object, containing constructed UserOperations for three different fee payment mechanisms, either gasless, native paid (native token), or token paid (ERC-20 token Paymaster). Thus, upon sending a transaction, you'll need to pass in a complete response from the `ParticleAA.Instance.RpcGetFeeQuotes` method. Specifically, `ParticleAA.Instance.RpcGetFeeQuotes` takes the following parameters:
+
+- `eoaAddress`, the address of the Signer/owner of the smart account in question (can be retrieved through `ParticleAuthServiceInteraction.GetAddress` for Particle Auth).
+- `transaction`, an array of multiple or a singular standard transactions to be sent from the smart account. The fee quote response will be based on the parameters defined within the transaction object.
+
+E.g.:
+
+```csharp C#
+var nativeResultData = await ParticleAA.Instance.RpcGetFeeQuotes(eoaAddress, new List<string> { transaction });
+```
+
+### Send Transaction
+
+Sending a transaction or UserOperation within the AA SDK is also quite simple. There are four mechanisms that can achieve this: either through a singular transaction with Particle Auth, multiple (batched) transactions with Particle Auth, or the same two options for Particle Connect. Each option functions slightly differently; although, in general, these methods will take the following parameters:
+
+- For Particle Connect, `walletType`. This is the specific adapter or wallet being used through Particle Connect.
+- For Particle Connect, `eoaAddress`, the owner (or Signer) address of the smart account.
+- `transaction` (or for batched transaction, `transactions`, an array), a standard transaction object (or objects) containing the parameters of the transaction in question (`to`, `value`, `data`, etc.)
+- `AAFeeMode`, the mechanism used to pay gas fees. Either:
+  - `AAFeeMode.Native`, natively paid by the smart account (native referring to the network's base token).
+  - `AAFeeMode.Gasless`, sponsored by either the Particle Paymaster or a Biconomy Paymaster, depending on initialization settings.
+  - `AAFeeMode.Token`, leverages a token Paymaster to pay the gas fee in an ERC-20 token.
+- For each of the above methods, you'll need to pass in a JSON representation of a `feeQuote` object. The SDK will automatically choose the fee quote corresponding to the previous choice. If you've chosen `AAFeeMode.Token`, you'll need to pass in the address of the token Paymaster alongside the `feeQuote` object.
+
+E.g.:
+
+```csharp C#
+// Particle Auth, singular transaction
+var nativeResultData = await ParticleAuthService.Instance.SignAndSendTransaction(transaction, AAFeeMode.Native(JObject.Parse(feeQuotesResult.data)));
+
+// Particle Auth, batched transactions
+var nativeResultData = await ParticleAuthService.Instance.BatchSendTransactions(transactions, AAFeeMode.Gasless(JObject.Parse(feeQuotesResult.data)));
+
+// Particle Connect, singular transaction
+var nativeResultData = await ParticleConnect.Instance.SignAndSendTransaction(WalletType.MetaMask, eoaAddress, transaction, AAFeeMode.Token(feeQuote, tokenPaymasterAddress));
+
+// Particle Connect, batched transactions
+var nativeResultData = await ParticleConnect.Instance.BatchSendTransactions(WalletType.MetaMask, eoaAddress, transactions, AAFeeMode.Native(JObject.Parse(feeQuotesResult.data)));
+```
+
+Check if you can send gasless/native/token.
+
+```csharp C#
+// check if enough native for gas fee
+var feeQuotesResult =
+    await ParticleAA.Instance.RpcGetFeeQuotes(eoaAddress, new List<string> { transaction });
+
+// check if can natively paid.
+var verifyingPaymasterNative = JObject.Parse(feeQuotesResult.data)["verifyingPaymasterNative"];
+var feeQuote = verifyingPaymasterNative["feeQuote"];
+
+var fee = BigInteger.Parse((string)feeQuote["fee"]);
+var balance = BigInteger.Parse((string)feeQuote["balance"]);
+
+if (balance < fee)
+{
+  Debug.Log("can't natively paid, native balance is not enough for gas fee");
+  return;
+}
+
+// check if can gasless
+var verifyingPaymasterGasless = JObject.Parse(feeQuotesResult.data)["verifyingPaymasterGasless"];
+
+if (verifyingPaymasterGasless == null)
+{
+  Debug.Log("gasless is not available");
+  return;
+}
+
+// check if can token paid
+ JArray feeQuotes = (JArray)(JObject.Parse(feeQuotesResult.data)["tokenPaymaster"]["feeQuotes"]);
+
+var overFeeQuotes = feeQuotes
+.Where(jt => {
+  var fee = BigInteger.Parse(jt["fee"].Value<string>());
+  var balance = BigInteger.Parse((string)jt["balance"].Value<string>());
+  return balance >= fee;
+})
+.ToList();
+
+if (overFeeQuotes.Count == 0)
+{
+  Debug.Log("no valid token for gas fee");
+  return;
+}
+
+// select a feeQuote, for example the first.
+var feeQuote = overFeeQuotes[0];
+var tokenPaymasterAddress =
+    JObject.Parse(feeQuotesResult.data)["tokenPaymaster"]["tokenPaymasterAddress"].Value<string>();
+
+```
+
+***
+
+## Master reference
+
+For a direct, raw view into every method, below is a table containing every relevant one alongside specific parameters and a short description. For methods listed that weren't covered in the above examples, live implementation often mimics the previously covered common structure throughout the SDK.
+
+| Class                 | Methods         | Parameters (\* indicates optional) |
+| --------------------- | --------------- | ---------------------------------- |
+| ParticleAAInteraction | Init            | accountName, biconomyApiKeys\*     |
+| ParticleAAInteraction | EnableAAMode    |                                    |
+| ParticleAAInteraction | DisableAAMode   |                                    |
+| ParticleAAInteraction | IsAAModeEnable  |                                    |
+| ParticleAAInteraction | IsDeploy        | eoaAddress                         |
+| ParticleAAInteraction | RpcGetFeeQuotes | eoaAddress, transactions           |

@@ -354,24 +354,86 @@
         {
           "group": "Enhanced RPC (Swap API)",
           "pages": [
-            "api/btc/rpc/getbtcaccount",
-            "api/btc/rpc/getbtcaccountsbyaddress"
+            "api/web3/swap/checkapprove",
+            "api/web3/swap/getquote",
+            "api/web3/swap/getswap"
           ]
         },
         {
           "group": "Enhanced RPC (Solana)",
           "pages": [
-            "api/btc/rpc/getbtcaccount",
-            "api/btc/rpc/getbtcaccountsbyaddress"
+            "api/web3/solana/enhancedgetprice",
+            "api/web3/solana/enhancedgettokensandnfts",
+            "api/web3/solana/enhancedgettransactionsbyaddress",
+            "api/web3/solana/solanaservice"
           ]
         },
         {
           "group": "IPFS API",
           "pages": [
-            "api/btc/rpc/getbtcaccount",
-            "api/btc/rpc/getbtcaccountsbyaddress"
+            "api/web3/ipfs/upload",
+            "api/web3/ipfs/uploadjson",
+            "api/web3/ipfs/gateway",
+            "api/web3/ipfs/gatewayimage"
           ]
         }
+      ]
+    },
+    {
+      "group": "ACCOUNT ABSTRACTION",
+      "pages": [
+        "api/aa/introduction",
+        {
+          "group": "Account Abstraction RPC",
+          "pages": [
+            "api/aa/rpc/getsmartaccount",
+            "api/aa/rpc/createuserop",
+            "api/aa/rpc/senduserop",
+            "api/aa/rpc/getfeequotes",
+            "api/aa/rpc/validatesession",
+            "api/aa/rpc/createsessions"
+          ]
+        },
+        {
+          "group": "Bundler RPC",
+          "pages": [
+            "api/aa/bundler/getuseroperationreceipt",
+            "api/aa/bundler/getuseroperationbyhash",
+            "api/aa/bundler/senduseroperation",
+            "api/aa/bundler/estimateuseroperationgas",
+            "api/aa/bundler/supportedentrypoints"
+          ]
+        },
+        {
+          "group": "Paymaster RPC",
+          "pages": [
+            "api/aa/paymaster/paymasterbalance",
+            "api/aa/paymaster/sponsoruseroperation"
+          ]
+        },
+        {
+          "group": "SDKs (Desktop)",
+          "pages": [
+            "api/aa/sdks/desktop/web"
+          ]
+        },
+        {
+          "group": "SDKs (Mobile)",
+          "pages": [
+            "api/aa/sdks/mobile/android",
+            "api/aa/sdks/mobile/ios",
+            "api/aa/sdks/mobile/flutter",
+            "api/aa/sdks/mobile/unity",
+            "api/aa/sdks/mobile/react"
+          ]
+        }
+      ]
+    },
+    {
+      "group": "DEBUGGING",
+      "pages": [
+        "api/debug/sdk",
+        "api/debug/api"
       ]
     }
   ],

@@ -1,0 +1,64 @@
+---
+title: "createUserOp"
+openapi: "POST /#particle_aa_createUserOp"
+---
+
+## Understanding `createUserOp`
+
+- `createUserOp` will construct and return a UserOperation object and hash using a transaction or collection of transactions, alongside smart account and fee payment information. It takes:
+  - Account config object:
+    - `name` - string, either `BICONOMY`, `CYBERCONNECT`, or `SIMPLE`.
+    - `version` - string, either `1.0.0` or `2.0.0`.
+    - `ownerAddress` - string.
+    - `biconomyApiKey` - (optional, for using Biconomy's Paymaster), string.
+  - Array of transactions:
+    - Standard transaction object.
+  - Optionally, a token `feeQuote` object, retrieved from `getFeeQuotes`, only used if you're paying the gas fee in an ERC-20 token.
+  - Token paymaster address - (optional), string.
+
+***
+
+## Query example
+
+```json JSON
+{
+  "jsonrpc": "2.0",
+  "id": "4259f7fe-87aa-44fd-89c8-fc1e41f6d3d8",
+  "chainId": 80001,
+  "method": "particle_aa_createUserOp",
+  "params": [
+    // account config
+    {
+      "name": "BICONOMY",
+      "version": "1.0.0",
+      "ownerAddress": "0xA60123a1056e9D38B64c4993615F27cCe9A9E8D5",
+      "biconomyApiKey": "LdF-gC43H.6f0ec763-fde5-4d5e-89f6-1b9ef12ba4a4" // optional
+    },
+    // txs
+    [
+      {
+        "to": "0x329a7f8b91Ce7479035cb1B5D62AB41845830Ce8",
+        "value": "0x1",
+        "data": "0x"
+      }
+    ],
+    // optional: If you don't pass the following params, it'll create a gasless/user paid user op
+    // token feeQuote
+    {
+      "tokenInfo": {
+        "chainId": 80001,
+        "name": "WMATIC",
+        "symbol": "WMATIC",
+        "decimals": 18,
+        "address": "0x9c3C9283D3e44854697Cd22D3Faa240Cfb032889",
+        "logoURI": "https://polygonscan.com/token/images/wMatic_32.png"
+      },
+      "fee": "374428266633331",
+      "balance": "1019119852023946296",
+      "premiumPercentage": "10"
+    },
+    // token paymaster address
+    "0x00000f7365cA6C59A2C93719ad53d567ed49c14C"
+  ]
+}
+```

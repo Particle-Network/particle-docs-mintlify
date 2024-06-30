@@ -1,0 +1,44 @@
+---
+title: "getFeeQuotes"
+openapi: "POST /#particle_aa_getFeeQuotes"
+---
+
+## Understanding `getFeeQuotes`
+
+- `getFeeQuotes` returns an array of UserOperation objects and hashes derived from a standard transaction object. Each returned object corresponds to a specific gas Payment method. It takes:
+  - Account config object:
+    - `name` - string.
+    - `version` - string.
+    - `ownerAddress` - string.
+    - `biconomyApiKey` - (optional), string. It should only be used if you'd like to use a Biconomy Paymaster.
+  - An array of standard transaction objects.
+
+***
+
+## Query example
+
+```json JSON
+{
+  "jsonrpc": "2.0",
+  "id": "f216c7ea-3986-4784-954f-e54320c75b40",
+  "chainId": 80001,
+  "method": "particle_aa_getFeeQuotes",
+  "params": [
+    // account config
+    {
+      "name": "BICONOMY",
+      "version": "1.0.0",
+      "ownerAddress": "0xA60123a1056e9D38B64c4993615F27cCe9A9E8D5",
+      "biconomyApiKey": "LdF-gC43H.6f0ec763-fde5-4d5e-89f6-1b9ef12ba4a4" // optional
+    },
+    // txs
+    [
+      {
+        "to": "0x329a7f8b91Ce7479035cb1B5D62AB41845830Ce8",
+        "value": "0x1",
+        "data": "0x"
+      }
+    ]
+  ]
+}
+```

@@ -1,0 +1,152 @@
+---
+title: "Android (Kotlin) - AA"
+description: "Leveraging Particle's AA SDK within Android applications."
+---
+
+## Account Abstraction on Android
+
+Particle Network's AA SDK facilitates the comprehensive use of ERC-4337 account abstraction. Particle's AA SDK handles every step in leveraging account abstraction: smart account deployment, user operation construction and sending, fee quote generation, etc., and is fully compatible with Android applications. 
+
+***
+
+## Getting Started
+
+Installing, initializing, and ultimately using the Particle Network AA SDK for Android only takes a few steps.
+
+The first is including the `network.particle:aa-service` dependency within your `build.gradle` file, filling in `latest_version` with the most recent release on [Maven](https://central.sonatype.com/artifact/network.particle/aa-service/overview).
+
+This should be defined in a way similar to the example below:
+
+```groovy build.gradle
+dependencies {
+    implementation("network.particle:aa-service:${latest_version}") 
+    
+    // https://search.maven.org/search?q=g:network.particle
+    // ...
+}
+```
+
+<Note>
+<p>📘 Important details before initialization</p>
+<p></p>
+<p>Before initializing the SDK, there are a few key points to keep in mind, specifically regarding the utilization of Paymasters (to sponsor gas fees, pay for gas in ERC-20 tokens, etc.)</p>
+<p></p>
+<p>- All Testnets automatically have the Verifying Particle Network Omnichain Verifying Paymaster enabled. Transactions that request it will automatically be sponsored and thus gasless.</p>
+<p>- On the occasion that you'd like to use the Particle Network Omnichain Verifying Paymaster for Mainnets, you'll need to deposit USDT on either Ethereum or BNB Chain within the <a href="https://dashboard.particle.network">Particle dashboard</a>. This USDT will then automatically be converted as needed into the native token of the network on which you're requesting (and qualifying for) sponsorship.</p>
+<p>- Alternatively, if you'd like to instead use Biconomy's Verifying Paymaster, you can head over to the <a href="https://dashboard.biconomy.io/">Biconomy dashboard</a>, create a new Paymaster, and fill in `apiKey` within `initAAMode`.</p>
+<p>- The Particle Network AA SDK automatically uses Biconomy's Token Paymaster; transactions that request it will be able to leverage it without additional configuration.</p>
+</Note>
+
+***
+
+## Initialization
+
+With your project configured, you can move onto initializing the AA SDK. This is required before other SDK functions will work and allow you to select which smart account implementation you use. You can kickstart initialization through `ParticleNetwork.initAAMode`, which takes the following parameters:
+
+- Optionally, `apiKey`, a singular or array of specific chains mapped to a given Biconomy API key, allowing for the usage of Biconomy's Paymaster (if applicable).
+- `aaService`, dictating the smart account implementation to be used, this can be:
+  - `BiconomyV1AAService`, a [Biconomy smart account](https://www.biconomy.io/smart-accounts) 
+  - `BiconomyV2AAService`, a [Biconomy smart account](https://www.biconomy.io/smart-accounts) 
+  - `CyberConnectAAService`, a [CyberConnect smart account](https://wallet.cyber.co/).
+  - `SimpleAAService`, a [SimpleAccount implementation](https://github.com/eth-infinitism/account-abstraction/blob/develop/contracts/samples/SimpleAccount.sol).
+  - `LightAAService`a [LightAccount implementation](https://accountkit.alchemy.com/packages/aa-accounts/light-account/).
+
+E.g.:
+
+```kotlin Kotlin
+val apiKey = mapOf(
+            Ethereum.id to "YOUR_BICONOMY_API_KEY",
+            Polygon.id to "YOUR_BICONOMY_API_KEY"
+        ) // Optional
+
+ParticleNetwork.initAAMode(apiKey, aaService = BiconomyAAService)
+```
+
+## Enable AA Mode
+
+Additionally, after initializing the SDK with `initAAMode`, you'll need to intentionally enable it (signaling an updated address on the wallet interface, among other things) by using `ParticleNetwork.getAAService().enableAAMode()`. Alternatively, if it's already enabled and you'd like to disable it, you can do so with `disableAAMode`.
+
+If you're unsure whether or not AA mode is enabled or not, you can retrieve a Boolean representing this status with `isAAModeEnable`.
+
+E.g.:
+
+```kotlin Kotlin
+ParticleNetwork.getAAService().enableAAMode()
+
+ParticleNetwork.getAAService().disableAAMode()
+
+val isEnable = ParticleNetwork.getAAService().isAAModeEnable()  
+```
+
+## Send Transaction
+
+Sending a standard transaction (UserOperation after enabling AA mode), requesting a signature, and then automatically pushing it to the network with `ParticleNetwork` can be done through `ParticleNetwork.signAndSendTransaction`, which takes the following parameters:
+
+- `transaction`, a stringified standard transaction object.
+- `callback`, return handling.
+- `feeMode`, the mechanism to be used for paying gas fees, can be:
+  - `FeeModeGasless`, for sponsored transactions. This will happen automatically for Testnets, pulling from your previously defined (or configured) Paymaster for Mainnets.
+  - `FeeModeAuto`, automatic decision, generally native payments.
+  - `FeeModeCustom`, enables the selection of a specific mechanism, takes one parameter:
+    - `feeQuote`, to be used when leveraging a Token Paymaster, can be retrieved through `ParticleNetwork.getAAService().rpcGetFeeQuotes()`.
+
+Additionally, if you're using Particle Connect, you can send the same type of transaction by calling the `signAndSendTransaction` method on a relevant adapter. This takes the same parameters, although it requires passing the `publicAddress` of the targeted user for the transaction.
+
+```kotlin Kotlin
+ParticleNetwork.signAndSendTransaction(transaction, callback, FeeModeGasless())  
+
+ParticleNetwork.signAndSendTransaction(transaction, callback, FeeModeAuto())
+
+val feeQuote: Erc4337FeeQuote // ParticleNetwork.getAAService().rpcGetFeeQuotes()
+ParticleNetwork.signAndSendTransaction(transaction, callback , FeeModeCustom(feeQuote))
+
+// Alternatively, if using Particle Connect
+connectAdapter.signAndSendTransaction(publicAddress, transaction, FeeModeGasless(), callback)
+
+connectAdapter.signAndSendTransaction(publicAddress, transaction, FeeModeAuto(), callback) 
+
+connectAdapter.signAndSendTransaction(publicAddress, transaction, FeeModeCustom(feeQuote), callback)
+```
+
+## Send Batch Transactions
+
+As an alternative to `signAndSendTransaction`, you can use `quickSendTransaction` to batch multiple transactions together within a single UserOperation. `quickSendTransaction` requires the following parameters:
+
+- `transactions`, an array of stringified transaction objects.
+- `feeMode`, the mechanism for paying gas fees.
+- `messageSigner`, the owner/Signer address that'll be signing the UserOperation.
+- `callback`, return handling.
+
+E.g.:
+
+```kotlin Kotlin
+ParticleNetwork.getAAService().quickSendTransaction(transactions, feeMode, messageSigner, callback)
+```
+
+***
+
+## Master reference
+
+For a direct, raw view into every method provided, below is a table containing every relevant one, alongside specific parameters and a short description. For methods listed that weren't covered in the above examples, live implementation often mimics the previously covered common structure throughout the SDK.
+
+| Methods                       | Parameters                                                                                         |
+| :---------------------------- | :------------------------------------------------------------------------------------------------- |
+| rpcGetSmartAccount            | addresses: List`<String>`                                                                            |
+| rpcGetFeeQuotes               | eoaAddress: String, transactions: List`<PrefixedHexString>`                                          |
+| rpcCreateUserPaidTransaction  | eoaAddress: String, transactions: List`<PrefixedHexString>`, erc4337FeeQuote: Erc4337FeeQuote        |
+| rpcSendUserPaidTransaction    | eoaAddress: String, walletTransaction: WalletTransaction, signature: String                        |
+| rpcSendGaslessTransaction     | eoaAddress: String, userOp: WalletUserOp, signature: String                                        |
+| rpcCreateGaslessTransaction   | eoaAddress: String, transactions: List`<PrefixedHexString>`                                          |
+| isDeploy                      | eoaAddress: String                                                                                 |
+| deployWalletContract          | messageSigner: MessageSigner, feeMode: FeeMode\*                                                   |
+| isAAModeEnable                |                                                                                                    |
+| enableAAMode                  |                                                                                                    |
+| disableAAMode                 |                                                                                                    |
+| getSmartAccount               | eosAddress: String                                                                                 |
+| getSmartAccountSync           | eosAddress: String                                                                                 |
+| getSmartAddress               | eosAddress: String                                                                                 |
+| getSmartAccounts              | eosAddresses: List`<String> `                                                                        |
+| isSupportChainInfo            | chainInfo: ChainInfo                                                                               |
+| getSupportChainInfos          |                                                                                                    |
+| quickSendTransaction          | transactions: `String, feeMode: FeeMode\*, messageSigner: MessageSigner, sendCallback: WebServiceCallback<SignOutput>`\* |
+| quickSendTransaction          | transactions: List`<String>`, feeMode: FeeMode\*, messageSigner: MessageSigner, sendCallback: WebServiceCallback`<SignOutput>`\* |

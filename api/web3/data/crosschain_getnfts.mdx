@@ -1,49 +1,39 @@
 ---
-title: "getTokenActivities"
-openapi: "GET /chains/{chainId}/contractAddress/{contractAddress}/tokens/{tokenId}/activity"
+title: "crosschain_getNFTs"
+openapi: "POST /#particle_crosschain_getNFTs"
 ---
 
-## Contextualizing `getTokenActivities`
+# Understanding `crosschain_getNFTs`
 
-- Alike `getCollectionActivities`, `getTokenActivities` returns the activities (mints, transfers, etc.) associated with a given token (NFT). It takes the following path parameters:
-
-  - `chainId` - integer.
-
-  - `contractAddress` - string.
-
-  - `tokenId` - string.
-
-  And the following query parameters:
-
-  - `page` - integer, `1` by default.
-
-  - `limit` - integer, `100` by default.
+- `crosschain_getNFTs` is an alternative to `getNFTs` in which NFTs (ERC-721 tokens) can be retrieved for a given address across multiple different EVM chains in the same query. It takes:
+  - `Addresses` - an array of strings (either one or more account addresses.)
+  - `Chain IDs` - an array of integers.
+  - `Contracts` - (optional) an array of strings. It filters based upon specific collection contracts.
 
 ***
 
 ## Query example
 
 ```javascript JavaScript
-const Axios = require("axios");
-
-const projectUuId = 'Your Project Id';
-const projectKey = 'Your Project Client Or Server Key';
-const chainId = 5; // Goerli
-const tokenId = '5';
-const baseUrl = 'https://api-market.particle.network';
-const contractAddress = '0x14CC6aF7A7318347419758274049e93DB03236C9';
-const url = `${baseUrl}/chains/${chainId}/contractAddress/${contractAddress}/tokens/${tokenId}/activity`;
+const axios = require('axios');
 
 (async () => {
-    const response = await Axios.get(url, {
-        params: {
-            projectUuid,
-            projectKey,
-            page: 1,
-            limit: 10,
-        },
+    const response = await axios.post('https://rpc.particle.network/evm-chain', {
+        chainId: 1,
+        jsonrpc: '2.0',
+        id: 1,
+        method: 'particle_crosschain_getNFTs',
+        params: [
+                ['0x6a2C3C4C7169d69A67ae2251c7D765Ac79A4967e', '0xf584F8728B874a6a5c7A8d4d387C9aae9172D621'],
+                [1, 4, 137, 80001]
+            ],
+    }, {
+        auth: {
+            username: 'Your Project Id',
+            password: 'Your Project Server Key',
+        }
     });
 
-    console.log(JSON.stringify(response.data));
+    console.log(response.data);
 })();
 ```

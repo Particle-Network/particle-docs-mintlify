@@ -1,0 +1,44 @@
+---
+title: "enhancedGetPrice"
+openapi: "POST /#enhancedGetPrice"
+---
+
+## Understanding `enhancedGetPrice`
+
+- `enhancedGetPrice` retrieves the real-time price (fiat exchange rate) of a Solana token (SPL token). It takes:
+  - `address` - array of strings. This represents the SPL token address; for $SOL, you can use the string `native`.
+  - `currencies` - array of strings. It can contain `usd` and `cny`.
+
+***
+
+## Query example
+
+```javascript JavaScript
+const axios = require('axios');
+
+(async () => {
+    const response = await axios.post('https://rpc.particle.network/solana', {
+        chainId: 103,
+        jsonrpc: '2.0',
+        id: 0,
+        method: 'enhancedGetPrice',
+        params: [
+            [
+                'native', 
+                '2Dzzc14S1D7cEFGJyMZMACuoQRHVUYFhVE74C5o8Fwau',
+            ],
+            [
+                'usd', 
+                'cny',
+            ],
+        ],
+    }, {
+        auth: {
+            username: 'Your Project Id',
+            password: 'Your Project Server Key',
+        },
+    });
+
+    console.log(response.data);
+})();
+```

@@ -1,0 +1,38 @@
+---
+title: "enhancedGetTokensAndNFTs"
+openapi: "POST /#enhancedGetTokensAndNFTs"
+---
+
+## Contextualizing `enhancedGetTokensAndNFTs`
+
+- `enhancedGetTokensAndNFTs`, like its EVM counterpart, `getTokensAndNFTs`, retrieves a detailed list of tokens and NFTs that belong to a specific address. It takes:
+  - `address` - a base58-encoded string.
+  - Object, optional:
+    - `parseMetadataUri` - Boolean (`false` by default).
+
+***
+
+## Query example
+
+```javascript JavaScript
+const axios = require('axios');
+
+(async () => {
+    const response = await axios.post('https://rpc.particle.network/solana', {
+        chainId: 103,
+        jsonrpc: '2.0',
+        id: 0,
+        method: 'enhancedGetTokensAndNFTs',
+        params: ['6XU36wCxWobLx5Rtsb58kmgAJKVYmMVqy4SHXxENAyAe', {
+            parseMetadataUri: true,
+        }],
+    }, {
+        auth: {
+            username: 'Your Project Id',
+            password: 'Your Project Server Key',
+        }
+    });
+
+    console.log(response.data);
+})();
+```

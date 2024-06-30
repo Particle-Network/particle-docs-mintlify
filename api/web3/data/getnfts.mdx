@@ -1,28 +1,35 @@
 ---
-title: "trackCollection"
-openapi: "POST /chains/{chainId}/tracking"
+title: "getNFTs"
+openapi: "POST /#particle_getNFTs"
 ---
+
+# Understanding `getNFTs`
+
+- `getNFTs`, alike `getTokens`, retrieves a detailed list of NFTs (ERC721 tokens) belonging to a given public address. It takes:
+  - `Address` - string.
+  - `Token addresses` - (optional), an array of strings.
+
+***
 
 ## Query example
 
 ```javascript JavaScript
-const Axios = require("axios");
-
-const projectUuId = 'Your Project Id';
-const projectKey = 'Your Project Client Or Server Key';
-const chainId = 5; // Goerli
-const baseUrl = 'https://api-market.particle.network';
-const contractAddress = '0xE860aE9379B1902DC08F67F50de7b9CC066AF0FF';
-const url = `${baseUrl}/chains/${chainId}/contractAddress/${contractAddress}/tracking`;
+const axios = require('axios');
 
 (async () => {
-    const response = await Axios.post(url, {
-        params: {
-            projectUuid,
-            projectKey,
-        },
+    const response = await axios.post('https://rpc.particle.network/evm-chain', {
+        chainId: 1,
+        jsonrpc: '2.0',
+        id: 1,
+        method: 'particle_getNFTs',
+        params: ['0x329a7f8b91Ce7479035cb1B5D62AB41845830Ce8'],
+    }, {
+        auth: {
+            username: 'Your Project Id',
+            password: 'Your Project Server Key',
+        }
     });
 
-    console.log(JSON.stringify(response.data));
+    console.log(response.data);
 })();
 ```

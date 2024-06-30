@@ -1,0 +1,26 @@
+---
+title: "getUserOperationReceipt"
+openapi: "POST /#eth_getUserOperationReceipt"
+---
+
+## Understanding `getUserOperationReceipt`
+
+- `getUserOperationReceipt` returns a detailed object containing specific transaction details for a given user operation hash. It takes:
+  - `hash` - string.
+
+***
+
+## Query example
+
+```json JSON
+{
+  "method": "eth_getUserOperationReceipt",
+  "params": [
+    // user operation hash
+    "0x1ee478a6e967c407e8dfb5e3f2eb1131a7418c36396147fce1f7e81a871102a3"
+  ],
+  "id": 1695717473,
+  "jsonrpc": "2.0",
+  "chainId": 80001
+}
+```

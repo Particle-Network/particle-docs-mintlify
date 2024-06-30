@@ -10,6 +10,102 @@
     }
   ],
   "paths": {
+    "/#particle_crosschain_getNFTs": {
+      "post": {
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ],
+        "summary": "crosschainGetNFTs",
+        "operationId": "crosschainGetNFTs",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CrosschainGetNFTsRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CrosschainGetNFTsResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/#particle_getTokensAndNFTs": {
+      "post": {
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ],
+        "summary": "getTokensAndNFTs",
+        "operationId": "getTokensAndNFTs",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetTokensAndNFTsRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetTokensAndNFTsResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/#particle_getTokens": {
+      "post": {
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ],
+        "summary": "getTokens",
+        "operationId": "getTokens",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetTokensRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetTokensResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/#particle_getPrice": {
       "post": {
         "security": [
@@ -265,6 +361,38 @@
           }
         }
       }
+    },
+    "/#particle_getNFTs": {
+      "post": {
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ],
+        "summary": "getNFTs",
+        "operationId": "getNFTs",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetNFTsRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetNFTsResponse"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -319,6 +447,184 @@
           }
         }
       },
+      "GetTokensRequest": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/RPCRequest"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "method": {
+                "enum": [
+                  "particle_getTokens"
+                ]
+              },
+              "params": {
+                "type": "array",
+                "items": {}
+              }
+            }
+          }
+        ]
+      },
+      "GetTokensAndNFTsRequest": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/RPCRequest"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "method": {
+                "enum": [
+                  "particle_getTokensAndNFTs"
+                ]
+              },
+              "params": {
+                "type": "array",
+                "items": {}
+              }
+            }
+          }
+        ]
+      },
+      "GetTokensAndNFTsResponse": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/RPCResponse"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "result": {
+                "type": "object",
+                "required": [
+                  "native",
+                  "tokens",
+                  "nfts"
+                ],
+                "properties": {
+                  "native": {
+                    "type": "string"
+                  },
+                  "tokens": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "decimals": {
+                          "type": "integer"
+                        },
+                        "amount": {
+                          "type": "string"
+                        },
+                        "address": {
+                          "type": "string"
+                        },
+                        "name": {
+                          "type": "string"
+                        },
+                        "symbol": {
+                          "type": "string"
+                        },
+                        "image": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  },
+                  "nfts": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "address": {
+                          "type": "string"
+                        },
+                        "isSemiFungible": {
+                          "type": "boolean"
+                        },
+                        "tokenId": {
+                          "type": "string"
+                        },
+                        "tokenBalance": {
+                          "type": "string"
+                        },
+                        "tokenURI": {
+                          "type": "string"
+                        },
+                        "name": {
+                          "type": "string"
+                        },
+                        "symbol": {
+                          "type": "string"
+                        },
+                        "image": {
+                          "type": "string"
+                        },
+                        "data": {
+                          "type": "object"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ]
+      },
+      "GetTokensResponse": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/RPCResponse"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "result": {
+                "type": "object",
+                "required": [
+                  "native",
+                  "tokens"
+                ],
+                "properties": {
+                  "native": {
+                    "type": "string"
+                  },
+                  "tokens": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "decimals": {
+                          "type": "integer"
+                        },
+                        "amount": {
+                          "type": "string"
+                        },
+                        "address": {
+                          "type": "string"
+                        },
+                        "name": {
+                          "type": "string"
+                        },
+                        "symbol": {
+                          "type": "string"
+                        },
+                        "image": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ]
+      },
       "GetPriceRequest": {
         "allOf": [
           {
@@ -338,6 +644,79 @@
                   "type": "array",
                   "items": {
                     "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        ]
+      },
+      "CrosschainGetNFTsRequest": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/RPCRequest"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "method": {
+                "enum": [
+                  "particle_crosschain_getNFTs"
+                ]
+              },
+              "params": {
+                "type": "array",
+                "items": {}
+              }
+            }
+          }
+        ]
+      },
+      "CrosschainGetNFTsResponse": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/RPCResponse"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "result": {
+                "type": "object",
+                "properties": {
+                  "nfts": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "address": {
+                          "type": "string"
+                        },
+                        "isSemiFungible": {
+                          "type": "boolean"
+                        },
+                        "tokenId": {
+                          "type": "string"
+                        },
+                        "tokenBalance": {
+                          "type": "string"
+                        },
+                        "tokenURI": {
+                          "type": "string"
+                        },
+                        "name": {
+                          "type": "string"
+                        },
+                        "symbol": {
+                          "type": "string"
+                        },
+                        "image": {
+                          "type": "string"
+                        },
+                        "data": {
+                          "type": "object"
+                        }
+                      }
+                    }
                   }
                 }
               }
@@ -900,11 +1279,80 @@
             }
           }
         ]
+      },
+      "GetNFTsRequest": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/RPCRequest"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "method": {
+                "enum": [
+                  "particle_getNFTs"
+                ]
+              },
+              "params": {
+                "type": "array",
+                "items": {}
+              }
+            }
+          }
+        ]
+      },
+      "GetNFTsResponse": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/RPCResponse"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "result": {
+                "type": "object",
+                "properties": {
+                  "nfts": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "address": {
+                          "type": "string"
+                        },
+                        "isSemiFungible": {
+                          "type": "boolean"
+                        },
+                        "tokenId": {
+                          "type": "string"
+                        },
+                        "tokenBalance": {
+                          "type": "string"
+                        },
+                        "tokenURI": {
+                          "type": "string"
+                        },
+                        "name": {
+                          "type": "string"
+                        },
+                        "symbol": {
+                          "type": "string"
+                        },
+                        "image": {
+                          "type": "string"
+                        },
+                        "data": {
+                          "type": "object"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ]
       }
     }
-  },
-  "x-readme": {
-    "explorer-enabled": true,
-    "proxy-enabled": true
   }
 }

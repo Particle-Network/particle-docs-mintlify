@@ -1,0 +1,270 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+      "title": "Particle Network Paymaster",
+      "version": "1.0.0"
+    },
+    "servers": [
+      {
+        "url": "https://paymaster.particle.network"
+      }
+    ],
+    "paths": {
+      "/#pm_sponsorUserOperation": {
+        "post": {
+          "summary": "sponsorUserOperation",
+          "operationId": "pm_sponsorUserOperation",
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SponsorUserOperationRequest"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Success",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/SponsorUserOperationResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/#pm_paymasterBalance": {
+        "post": {
+          "summary": "paymasterBalance",
+          "operationId": "pm_paymasterBalance",
+          "parameters": [
+            {
+              "in": "query",
+              "name": "projectUuid",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            },
+            {
+              "in": "query",
+              "name": "projectKey",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaymasterBalanceRPCRequest"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Success",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/PaymasterBalanceResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "components": {
+      "schemas": {
+        "RPCRequest": {
+          "type": "object",
+          "required": [
+            "jsonrpc",
+            "id",
+            "method",
+            "params"
+          ],
+          "properties": {
+            "jsonrpc": {
+              "type": "string",
+              "default": 2
+            },
+            "id": {
+              "type": "integer",
+              "default": 0
+            },
+            "method": {
+              "type": "string"
+            },
+            "params": {
+              "type": "array"
+            }
+          }
+        },
+        "RPCResponse": {
+          "type": "object",
+          "required": [
+            "jsonrpc",
+            "id",
+            "result"
+          ],
+          "properties": {
+            "jsonrpc": {
+              "type": "string",
+              "default": 2
+            },
+            "id": {
+              "type": "integer",
+              "default": 0
+            },
+            "result": {
+              "type": "object"
+            }
+          }
+        },
+        "SponsorUserOperationRequest": {
+          "allOf": [
+            {
+              "$ref": "#/components/schemas/RPCRequest"
+            },
+            {
+              "type": "object",
+              "properties": {
+                "method": {
+                  "enum": [
+                    "pm_sponsorUserOperation"
+                  ]
+                },
+                "params": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "anyOf": [
+                      {
+                        "$ref": "#/components/schemas/UserOperation"
+                      },
+                      {
+                        "type": "string"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "UserOperation": {
+          "type": "object",
+          "properties": {
+            "sender": {
+              "type": "string"
+            },
+            "nonce": {
+              "type": "string"
+            },
+            "initCode": {
+              "type": "string"
+            },
+            "callData": {
+              "type": "string"
+            },
+            "maxFeePerGas": {
+              "type": "string"
+            },
+            "maxPriorityFeePerGas": {
+              "type": "string"
+            },
+            "paymasterAndData": {
+              "type": "string"
+            },
+            "signature": {
+              "type": "string"
+            },
+            "preVerificationGas": {
+              "type": "string"
+            },
+            "verificationGasLimit": {
+              "type": "string"
+            },
+            "callGasLimit": {
+              "type": "string"
+            }
+          }
+        },
+        "SponsorUserOperationResponse": {
+          "allOf": [
+            {
+              "$ref": "#/components/schemas/RPCResponse"
+            },
+            {
+              "type": "object",
+              "properties": {
+                "result": {
+                  "type": "object",
+                  "properties": {
+                    "paymasterAndData": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "PaymasterBalanceRPCRequest": {
+          "allOf": [
+            {
+              "$ref": "#/components/schemas/RPCRequest"
+            },
+            {
+              "type": "object",
+              "properties": {
+                "method": {
+                  "enum": [
+                    "pm_paymasterBalance"
+                  ]
+                },
+                "params": {
+                  "type": "array",
+                  "maxItems": 0
+                }
+              }
+            }
+          ]
+        },
+        "PaymasterBalanceResponse": {
+          "allOf": [
+            {
+              "$ref": "#/components/schemas/RPCResponse"
+            },
+            {
+              "type": "object",
+              "properties": {
+                "result": {
+                  "type": "object",
+                  "properties": {
+                    "balance": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    "x-readme": {
+      "explorer-enabled": true,
+      "proxy-enabled": true
+    }
+  }

@@ -1,0 +1,58 @@
+---
+title: "sponsorUserOperation"
+openapi: "POST /#pm_sponsorUserOperation"
+---
+
+## Contextualizing `sponsorUserOperation`
+
+- `sponsorUserOperation` returns a Paymaster signature to sponsor a given UserOperation, pulling from the USDT balance of the Paymaster. It takes:
+- UserOperation object.
+- `entrypointAddress` - string.
+
+***
+
+## Query example
+
+```javascript JavaScript
+import Axios from "axios";
+
+const chainId = 11155111;
+const projectUuid = "Your project uuid";
+const projectKey = "Your project client key or server key";
+const entryPoint = "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789";
+const userOp = {
+    sender: "0xfE71795B01d2c36FD5a001fe9D47EAec0da77e59",
+    nonce: "0x00",
+    initCode:
+        "0x9406cc6185a346906296840746125a0e449764545fbfb9cf0000000000000000000000009a8c05c7ac9acecc1185d5a624eb185e63dde9c20000000000000000000000000000000000000000000000000000000000000000",
+    callData:
+        "0xb61d27f6000000000000000000000000aae0de40f94469761b797920a46f223d0fffd013000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000600000000000000000000000000000000000000000000000000000000000000000",
+    maxFeePerGas: "0x5e18a0d2",
+    maxPriorityFeePerGas: "0x5de29812",
+    paymasterAndData: "0x",
+    signature: "0x",
+    preVerificationGas: "0xc954",
+    verificationGasLimit: "0x066c12",
+    callGasLimit: "0xf2a0",
+};
+
+const paymasterUrl = "https://paymaster.particle.network";
+(async () => {
+    const response = await Axios.post(
+        paymasterUrl,
+        {
+            method: "pm_sponsorUserOperation",
+            params: [userOp, entryPoint],
+        },
+        {
+            params: {
+                chainId,
+                projectUuid,
+                projectKey,
+            },
+        }
+    );
+
+    console.log(response.data);
+})();
+```

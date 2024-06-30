@@ -1,46 +1,44 @@
 ---
-title: "getCollectionActivities"
-openapi: "GET /chains/{chainId}/contractAddress/{contractAddress}/activity"
+title: "deserializeTransaction"
+openapi: "POST /#particle_deserializeTransaction"
 ---
 
-## Contextualizing `getCollectionActivities`
+## Contextualizing deserializeTransaction
 
-- `getCollectionActivities` retrieves an object containing various activities involving a specific collection (contract), such as sales, listings, mints, transfers, etc. It takes the following path parameters:
+`deserializeTransaction` takes a serialized transaction hash (example below) and returns a human-readable deserialized transaction object, including additional details such as balance changes, method calls, token attributes, etc.
 
-  - `chainId` - integer.
+***
 
-  - `contractAddress` - string.
+**Serialized transaction string example**
 
-  And the following query parameters:
-
-  - `activityTypes` - an array of strings (can be`sale`, `list`, `unlist`, `mint`, or `transfer`).
-
-  - `page` - integer, `1` by default.
-
-  - `limit` - integer, `100` by default.
+```
+0x02f8d30182030a843b9aca00850608379d4b8301122e9499ecdf17ded4fcb6c5f0fe280d21f832af464f6780b86442842e0e00000000000000000000000003afc65278e6d37f23bc0b8bf4c9d61bd35edfc8000000000000000000000000a058fb195d274afbae4dc317be362d4e96ffa1b400000000000000000000000000000000000000000000000000000000000006c1c001a0f7e0c908e4b549d24dad47f28205d3437e00b123e9b57bec95dcd61e1fd8065ca053495aaeec3740c0520e7717060a208aac0970dbc30ef3380e3ae9f81f4f6f66
+```
 
 ***
 
 ## Query example
 
 ```javascript JavaScript
-const Axios = require("axios");
-
-const projectUuId = 'Your Project Id';
-const projectKey = 'Your Project Client Or Server Key';
-const chainId = 5; // Goerli
-const baseUrl = 'https://api-market.particle.network';
-const contractAddress = '0x14CC6aF7A7318347419758274049e93DB03236C9';
-const url = `${baseUrl}/chains/${chainId}/contractAddress/${contractAddress}/activity`;
+const axios = require('axios');
 
 (async () => {
-    const response = await Axios.get(url, {
-        params: {
-            projectUuid,
-            projectKey,
-        },
+    const response = await axios.post('https://rpc.particle.network/evm-chain', {
+        chainId: 1,
+        jsonrpc: '2.0',
+        id: 1,
+        method: 'particle_deserializeTransaction',
+        params: [
+            '0x03afc65278e6d37f23bc0b8bf4c9d61bd35edfc8',
+            '0x02f8d30182030a843b9aca00850608379d4b8301122e9499ecdf17ded4fcb6c5f0fe280d21f832af464f6780b86442842e0e00000000000000000000000003afc65278e6d37f23bc0b8bf4c9d61bd35edfc8000000000000000000000000a058fb195d274afbae4dc317be362d4e96ffa1b400000000000000000000000000000000000000000000000000000000000006c1c001a0f7e0c908e4b549d24dad47f28205d3437e00b123e9b57bec95dcd61e1fd8065ca053495aaeec3740c0520e7717060a208aac0970dbc30ef3380e3ae9f81f4f6f66',
+        ]
+    }, {
+        auth: {
+            username: 'Your Project Id',
+            password: 'Your Project Server Key',
+        }
     });
 
-    console.log(JSON.stringify(response.data));
+    console.log(response.data);
 })();
 ```

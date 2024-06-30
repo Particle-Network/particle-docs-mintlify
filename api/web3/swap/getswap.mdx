@@ -1,0 +1,35 @@
+---
+title: "getSwap"
+openapi: "POST /#particle_swap_getSwap"
+---
+
+## Understanding `getSwap`
+
+- `getSwap` returns a detailed object containing swap information, a price quote, and a complete transaction object to have the user sign for swap execution. It takes:
+  - `address` - string.
+  - Swap information object:
+    - `fromTokenAddress` - string.
+    - `toTokenAddress` - string.
+    - `amount` - string.
+    - `slippage` - integer.
+
+***
+
+## Query example
+
+```json JSON
+{
+  "id": 1,
+  "jsonrpc": "2.0",
+  "method": "particle_swap_getSwap",
+  "params": [
+    "0x369aa8a7a7BE683E1a46d9A056806B2B3FD778C8",
+    {
+      "fromTokenAddress": "0x111111111117dc0aa78b770fa6a738034120c302",
+      "toTokenAddress": "0x6B175474E89094C44Da98b954EedeAC495271d0F",
+      "amount": "1000000000",
+      "slippage": 1
+    }
+  ]
+}
+```
