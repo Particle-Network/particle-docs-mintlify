@@ -355,7 +355,7 @@ await ParticleConnect.Instance.SignMessage(this._walletType, publicAddress, mess
 As an alternative to `SignMessage`, for **EVM chains**, you can request that a user signs typed (structured) data rather than purely a raw string. To do this, you can use `adapter.signTypedData` (equivalent to `eth_signTypedData`, represented as either `TypedDataV4`, `TypedDataV2`, or `TypedDataV1`). This takes the following parameters:
 
 - `address`, the user address to target for signature initiation.
-- `data`, the typed data to be signed; see the [Web (JavaScript/TypeScript)](ref:auth-web) page for additional guidance.
+- `data`, the typed data to be signed; see the [Web (JavaScript/TypeScript)](/api/auth/desktop-sdks/web) page for additional guidance.
 
 E.g.:
 

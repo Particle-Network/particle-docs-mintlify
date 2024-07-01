@@ -5,7 +5,7 @@ description: "Interacting with Particle Auth within applications made using Reac
 
 ## Particle Auth for React Native
 
-For mobile applications, both iOS and Android, leveraging React Native for end-to-end interaction with Particle's Wallet-as-a-Service is possible through the utilization of the Particle Auth React Native SDK. The Particle Auth React Native SDK is largely adjacent to the [Flutter (Dart)](ref:auth-flutter) SDK. It enables the integration of Particle's Wallet-as-a-Service within mobile applications using JavaScript, providing a potentially more accessible alternative to mobile interaction with Particle Network.
+For mobile applications, both iOS and Android, leveraging React Native for end-to-end interaction with Particle's Wallet-as-a-Service is possible through the utilization of the Particle Auth React Native SDK. The Particle Auth React Native SDK is largely adjacent to the [Flutter (Dart)](/api/auth/mobile-sdks/flutter) SDK. It enables the integration of Particle's Wallet-as-a-Service within mobile applications using JavaScript, providing a potentially more accessible alternative to mobile interaction with Particle Network.
 
 Initial configuration guides, along with various examples of utilization, are detailed below.
 
@@ -142,7 +142,7 @@ From here, with a fresh `ParticleNetwork-Info.plist` file, go ahead and fill it 
 </plist>
 ```
 
-Similar to the Android configuration, you'll need to fill in `PROJECT_UUID` (`projectId`), `PROJECT_CLIENT_KEY` (`clientKey`), and `PROJECT_APP_UUID` (`appId`) with the corresponding values retrieved from the [Particle dashboard](https://dashboard.particle.network).‎
+Similar to the Android configuration, you'll need to fill in `PROJECT_UUID` (`projectId`), `PROJECT_CLIENT_KEY` (`clientKey`), and `PROJECT_APP_UUID` (`appId`) with the corresponding values retrieved from the [Particle dashboard](https://dashboard.particle.network).
 
 Finally, you'll need to edit your Podfile to align with the snippet below; this is required for all iOS projects that leverage Particle Auth Core.
 
@@ -427,7 +427,7 @@ For both of these parameters, the specific integer chosen dictates the degree to
 
 Also present within `@particle-network/rn-auth` is `EvmService`, an object for facilitating additional on-chain interaction, leveraging standard and enhanced RPC endpoints. `EvmService` can either be accessed through a complete (`*`) import (such as is shown above) by using `particleAuth.EvmService.{method}` or individually importing it from `@particle-network/rn-auth`.
 
-<Tip>For a full list of methods available through `EvmService`, take a look at the `EvmService` [SDK Reference](ref:evmservice-sdk-reference).</Tip>
+<Tip>For a full list of methods available through `EvmService`, take a look at the `EvmService` [SDK Reference](/api/web3/data/sdk-ref).</Tip>
 
 ### Estimate gas
 

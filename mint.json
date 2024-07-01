@@ -348,7 +348,8 @@
             "api/web3/data/gettokens",
             "api/web3/data/getnfts",
             "api/web3/data/crosschain_getnfts",
-            "api/web3/data/getprice"
+            "api/web3/data/getprice",
+            "api/web3/data/sdk-ref"
           ]
         },
         {

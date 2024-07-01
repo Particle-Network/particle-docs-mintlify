@@ -202,7 +202,7 @@ Additionally, head over to your `Info.plist` file and include the following snip
 </array>
 ```
 
-Finally, you'll need to edit your Podfile to ensure `particle_connect` is properly imported. Head over to the [linked guide](<>) to complete this if you have not already.
+Finally, you'll need to edit your Podfile to ensure `particle_connect` is properly imported. Head over to the [linked guide](/api/connect/mobile/ios) to complete this if you have not already.
 
 ***
 
@@ -345,7 +345,7 @@ particleConnect.signMessage(walletType, publicAddress, message);
 
 Alternatively, **for EVM chains**, you can prompt a signature for typed (structured) data rather than purely a raw string (as is done within `signMessage`). To do this, you can use `signTypedData` (equivalent to `eth_signTypedData`), passing in a `WalletType`, address, and the data to be signed.
 
-See the [Web (JavaScript/TypeScript)](ref:auth-web) page for additional guidance.
+See the [Web (JavaScript/TypeScript)](/api/auth/desktop-sdks/web) page for additional guidance.
 
 ```js JavaScript
 particleConnect.signTypedData(walletType, publicAddress, typedData)

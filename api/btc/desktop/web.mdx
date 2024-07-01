@@ -14,13 +14,13 @@ Currently, BTC Connect is in its initial alpha release phase, and therefore only
 
 In this page, you'll find a complete rundown of what you need to know when using `@particle-network/btc-connectkit`.
 
-<Tip>To learn more about BTC Connect, see [Introduction to BTC Connect](ref:introduction-to-btc-connect) or take a look at the [GitHub repository](https://github.com/Particle-Network/particle-btc-connect).</Tip>
+<Tip>To learn more about BTC Connect, see [Introduction to BTC Connect](/api/btc/introduction) or take a look at the [GitHub repository](https://github.com/Particle-Network/particle-btc-connect).</Tip>
 
 ***
 
 ## Getting Started
 
-BTC Connect follows [Particle Network's AA SDK](ref:aa-web) and [Particle Auth Core](ref:auth-web) very closely in terms of structure, so if you've used either of these SDKs before, you may find this process familiar. 
+BTC Connect follows [Particle Network's AA SDK](/api/aa/sdks/desktop/web) and [Particle Auth Core](/api/auth/desktop-sdks/web) very closely in terms of structure, so if you've used either of these SDKs before, you may find this process familiar. 
 
 Before diving into the process of configuring and initializing the SDK, you'll need to go through the installation process and retrieve a few required values from the [Particle dashboard](https://dashboard.particle.network).
 
@@ -324,12 +324,12 @@ Most importantly, `useETHProvider` acts as the single mechanism for driving inte
 Below is the full list of functions derived from `useETHProvider`:
 
 - `chainId`, the ID for the currently connected chain.
-  - For a complete list of networks supported within BTC Connect, see [Network Coverage](doc:network-coverage).
+  - For a complete list of networks supported within BTC Connect, see [Network Coverage](/resources/quickstart/network-coverage).
 - `account`, the smart account address (automatically populated upon login).
 - `getSmartAccountInfo`, get smart account info(version, isDeployed, etc.).
 - `switchChain`, for forcibly changing the EVM chain used through the smart account. This takes a specific `chainId` (should be one of the aforementioned supported chains).
 - `provider`, the EIP-1193 provider object associated with the smart account.
-- `getFeeQuotes`, for retrieving fee quotes (a collection of UserOperation structures based upon different fee payment mechanisms); this is equivalent to [getFeeQuotes](ref:getfeequotes).
+- `getFeeQuotes`, for retrieving fee quotes (a collection of UserOperation structures based upon different fee payment mechanisms); this is equivalent to [getFeeQuotes](/api/aa/rpc/getfeequotes).
 - `buildUserOp`, to build a execution-ready UserOperation with a standard transaction object.
 - `sendUserOp`, for sending UserOperations (either objects derived from `getFeeQuotes`/`buildUserOp`, or standard transaction objects).
 - `publicClient`, the [viem](https://github.com/wevm/viem) `PublicClient` object for making standard JSON-RPC requests.

@@ -7,7 +7,7 @@ description: "Interacting with Particle Auth within games built on Unity using C
 
 The Particle Auth [Unity SDK](https://github.com/Particle-Network/particle-unity) acts as the primary mechanism for integrating Particle's Wallet-as-a-Service within games built on Unity. Specifically, this SDK facilitates configuration, integration, and interaction. This means that, for most applications, the Particle Auth's Unity SDK can be the sole library backing end-to-end utilization of Particle Network facilitated by users' **email**, **phone**, or **custom JWT authentication**.
 
-The structure of this SDK follows the [Web (JavaScript/TypeScript)](../desktop-sdks/web) page closely, albeit with several deviations, **as described below**.
+The structure of this SDK follows the [Web (JavaScript/TypeScript)](/api/auth/desktop-sdks/web) page closely, albeit with several deviations, **as described below**.
 
 <Warning>
 <p>Due to limitations with Webview, Particle Auth for Unity on Windows & macOS does not include most built-in social logins</p>
@@ -172,7 +172,7 @@ Debug.Log($"SignAndSendTransaction signature: {signature}");
 
 #### SignTypedData
 
-`ParticleSystem.Instance.SignTypedData` facilitates the signature of structured data; by default, this uses `eth_signTypedData_v4`. For more information on `signTypedData`, see the [Web (JavaScript/TypeScript)](ref:auth-web) page.
+`ParticleSystem.Instance.SignTypedData` facilitates the signature of structured data; by default, this uses `eth_signTypedData_v4`. For more information on `signTypedData`, see the [Web (JavaScript/TypeScript)](/api/auth/desktop-sdks/web) page.
 
 ```csharp C#
 string typedDataV4 = "";
