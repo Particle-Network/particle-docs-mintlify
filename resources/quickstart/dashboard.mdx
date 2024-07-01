@@ -136,13 +136,13 @@ Although applicable across all versions of Particle Auth is the Email/SMS custom
 />
 
 
-For more information on modal customization, head over to [Customizing Particle Auth](doc:particle-auth-customization) and [Customizing Particle Wallet](doc:particle-wallet-customization).
+For more information on modal customization, head over to [Customizing Particle Auth](/resources/quickstart/customization/auth) and [Customizing Particle Wallet](/resources/quickstart/customization/wallet).
 
 ## Users
 
 Offering a more granular view of the users represented within the "Activity" tab, the "Users" tab provides a list of every user who has either connected to your application through Particle Connect (or BTC Connect), or logged in through social login.
 
-Each user entry includes their social account (if applicable), their EVM address, and their Solana address (if a user has only ever used an EVM or Solana address within your application, the other will remain blank). Additionally, timestamps for the date in which the user signed up and was last active are also provided. Similar information is found through the `UserInfo` object attached to each user (see [getUserInfo](ref:getuserinfo) for more information).
+Each user entry includes their social account (if applicable), their EVM address, and their Solana address (if a user has only ever used an EVM or Solana address within your application, the other will remain blank). Additionally, timestamps for the date in which the user signed up and was last active are also provided. Similar information is found through the `UserInfo` object attached to each user (see [getUserInfo](/api/auth/server/getuserinfo) for more information).
 
 For users who have connected a wallet, only an address and associated timestamps will be available.
 
@@ -181,11 +181,11 @@ The "Custom" page allows you to establish your custom JWT configuration through 
 
 ## Paymaster
 
-The Particle dashboard is also used to fund and monitor Particle's [Omnichain Paymaster](doc:omnichain-paymaster), used for sponsoring transactions across 35+ chains. Particle's Omnichain Paymaster takes stablecoin deposits from one chain (such as Ethereum or BNB Chain) and automatically converts it to cover transaction fees on any other chain on which the paymaster is queried ([sponsorUserOperation](ref:pm_sponsoruseroperation)).
+The Particle dashboard is also used to fund and monitor Particle's [Omnichain Paymaster](/resources/wallet-abstraction/waas/omni-paymaster), used for sponsoring transactions across 35+ chains. Particle's Omnichain Paymaster takes stablecoin deposits from one chain (such as Ethereum or BNB Chain) and automatically converts it to cover transaction fees on any other chain on which the paymaster is queried ([sponsorUserOperation](/api/aa/paymaster/sponsoruseroperation)).
 
 Thus, the "Paymaster" page is used to deposit stablecoins, manage sponsorship conditions, and view data such as deposit and consumption records.
 
-To learn more about the process of configuring Particle's Omnichain Paymaster, take a look at [Setting up the Particle Omnichain Paymaster](doc:setting-up-particles-paymaster).
+To learn more about the process of configuring Particle's Omnichain Paymaster, take a look at [Setting up the Particle Omnichain Paymaster](/resources/integrations/aa/paymaster).
 
 <img
   className="block dark:hidden"
@@ -202,7 +202,7 @@ To learn more about the process of configuring Particle's Omnichain Paymaster, t
 
 Particle Network provides access to authenticated RPC endpoints for the majority of chains it supports; these are free-to-use through either HTTPS or WSS. The "Endpoint" page allows you to retrieve an authenticated HTTPS/WSS URL for a given chain selected through the dropdown menu.
 
-To learn more about Particle Network's RPC nodes, head to [RPC Nodes](doc:rpc-nodes).
+To learn more about Particle Network's RPC nodes, head to [RPC Nodes](/resources/integrations/nodes/nodes).
 
 <img
   className="block dark:hidden"

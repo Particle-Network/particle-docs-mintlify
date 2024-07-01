@@ -7,13 +7,13 @@ mode: "wide"
 
 Session keys are a powerful sub-technology of account abstraction allowing users to delegate signing permission under specific conditions to an external keypair, thus allowing applications to be used without requiring a signature popup or compromising security. In addition to this, session keys can be used for advanced use cases such as transaction automation (due to authentication delegation). 
 
-Particle Network has natively implemented session keys through both the [Account Abstraction RPC](ref:aa-rpc-api) and the AA SDKs ([Introduction to Smart Wallet-as-a-Service](ref:introduction-to-mpc-aa)), allowing developers to begin using session keys directly within the Particle Network tech stack.
+Particle Network has natively implemented session keys through both the [Account Abstraction RPC](/api/aa/rpc/getsmartaccount) and the AA SDKs ([Introduction to Smart Wallet-as-a-Service](/api/aa/introduction)), allowing developers to begin using session keys directly within the Particle Network tech stack.
 
 ***
 
 ## Creating a session key
 
-Creating a session key within Particle Network's [Account Abstraction RPC](ref:aa-rpc-api) or AA SDK requires the usage of `createSessions` and `validateSession` (through the RPC endpoint you can access these through [createSessions](ref:particle_aa_createsessions) and [validateSession](ref:particle_aa_validatesession)). This functionality is only currently compatible with `BICONOMY` `version` 2.0.0, other smart account implementations won't work and will throw an error.
+Creating a session key within Particle Network's [Account Abstraction RPC](/api/aa/rpc/getsmartaccount) or AA SDK requires the usage of `createSessions` and `validateSession` (through the RPC endpoint you can access these through [createSessions](/api/aa/rpc/createsessions) and [validateSession](/api/aa/rpc/validatesession)). This functionality is only currently compatible with `BICONOMY` `version` 2.0.0, other smart account implementations won't work and will throw an error.
 
 The underlying flow for implementing and leveraging a session key can be best described through these key steps:
 

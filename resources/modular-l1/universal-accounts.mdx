@@ -7,7 +7,7 @@ ___
 
 Particle Network’s Universal Accounts play a crucial role within Particle Network’s implementation of chain abstraction, providing users with a single address, balance, and interaction point across the multi-chain Web3 ecosystem.
 
-Users leveraging a Universal Account maintain one balance and account state across every blockchain. Particle’s Universal Accounts leverage [Universal Liquidity](doc:universal-liquidity) to automatically execute atomic cross-chain transactions and pool funds from a user's balance across chains to meet the conditions of a given operation. This creates a unified UX, agnostic to any specific blockchain.
+Users leveraging a Universal Account maintain one balance and account state across every blockchain. Particle’s Universal Accounts leverage [Universal Liquidity](/resources/modular-l1/universal-liquidity) to automatically execute atomic cross-chain transactions and pool funds from a user's balance across chains to meet the conditions of a given operation. This creates a unified UX, agnostic to any specific blockchain.
 
 By using a Universal Account, user’s not only unify their interface with the EVM and non-EVM ecosystem, but have the ability to deposit and use funds on any blockchain– represented and used as if it existed on a single chain.
 
@@ -24,12 +24,41 @@ By using a Universal Account, user’s not only unify their interface with the E
 />
 </Frame>
 
-### Key modules and initial ecosystem
+***
 
-Particle Network is primarily constituted by three key modules. For a detailed description of these modules you can read our [Modular L1](doc:particle-chain) section.
+# Understanding Universal Accounts
 
-### Design and security
+At the foundation of Universal Accounts is Particle Network's [Universal Liquidity](/resources/modular-l1/universal-liquidity) technology, which coordinates cross-chain transactions atomically on a per-transaction basis.
 
-Particle Network features a **dual staking system**, combining Proof-of-Stake through Tendermint with Bitcoin’s economic security and resilience, powered by **[Babylon](https://babylonchain.io)**.
+[Particle Network](/resources/modular-l1/introduction) coordinates and acts as the settlement layer for these transactions, managing Universal Accounts and relaying cross-chain interactions through a globally distributed network of Modular Nodes collectively contributing to the bundling, relaying, and verification of cross-chain transactions.
 
-Furthermore, it presents a unique data availability aggregation (AggDA) model relying on providers like [Celestia](https://celestia.org/), [Avail](https://www.availproject.org/), and [NEAR DA](https://near.org/data-availability) to reduce vendor lock-in and liveness risks. This constitutes a decentralized system of Aggregated DA node operators to dynamically publish and verify data between providers for conditional redundancy or optimization.
+<Frame caption="Composition of Universal Accounts.">
+<img
+  className="block dark:hidden"
+  src="/resources/modular-l1/images/composition.png"
+  alt="Universal Accounts"
+/>
+<img
+  className="hidden dark:block"
+  src="/resources/modular-l1/images/composition.png"
+  alt="Universal Accounts"
+/>
+</Frame>
+
+## Chain Abstraction through ERC-4337
+
+Universal Accounts are essentially ERC-4337 smart account implementations attached to a pre-existing EOA (Externally Owned Address).
+
+Protocols implementing Particle’s Universal SDK will assign or resolve a Universal Account attached to a given EOA address, retrieved either via social logins with Particle Network’s [Modular Smart Wallet-as-a-Service](/resources/wallet-abstraction/waas/overview) or by connecting a typical Web3 wallet (or even a native Bitcoin wallet via [BTC Connect](/resources/wallet-abstraction/btc-connect). This account will then be used as the core interface to interact with this application, as well as any other application leveraging Particle Network’s SDKs.
+
+The following example walks through this process for an end-user:
+
+1. Alice discovers a Play-to-Earn dApp. The dApp is hosted on Arbitrum and leverages Particle Network’s Universal SDK to enable Universal Accounts.
+2. Alice starts using the dApp. The assets in her wallet (Polygon-native) are used for basic dApp interactions. Bridging is automatic, executed atomically as she interacts.
+3. After playing for a bit, Alice earns some tokens. She uses them to buy an NFT for her friend Bob’s birthday. Unbeknownst to her, the NFT is hosted on Optimism. She can seamlessly send it to Bob’s Universal Account. Importantly, throughout her whole experience, Alice has only used a single gas token.
+4. Bob decides to take a loan against the NFT on Solana and use the proceeds to buy a meme Bitcoin Ordinal. He does this in just a few clicks within a few minutes, all through the same account.
+
+<Tip>
+Try Universal Accounts
+<p>Particle Network’s Testnet is currently live, alongside the [Particle Pioneer campaign](https://pioneer.particle.network) which demos Universal Accounts alongside [Universal Gas](/resources/modular-l1/universal-gas).</p>
+</Tip>

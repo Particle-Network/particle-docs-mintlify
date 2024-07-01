@@ -14,9 +14,9 @@ Particle Network hosts a proprietary Paymaster capable of omnichain gas sponsors
 
 To fund your instance of the Paymaster and thus begin sponsoring gas, you'll need to head over to the [Particle Network dashboard](https://dashboard.particle.network) and navigate to the "Paymaster" menu. Upon entering this menu, you can deposit USDT on either Ethereum or BNB Chain. The chain you chose does not affect the functionality of the Paymaster, only the origin of your deposit. 
 
-Upon sponsorship request, your USDT will be converted into the native token of the chain in question. You'll need to connect a wallet (or social login through Particle Auth) to deposit, tying the funds directly with your project (specified by your `projectId`, `clientKey`, and `appId`--you'll need to use these values within Particle's AA SDK or the [Paymaster RPC](ref:paymaster-rpc) to authenticate it).
+Upon sponsorship request, your USDT will be converted into the native token of the chain in question. You'll need to connect a wallet (or social login through Particle Auth) to deposit, tying the funds directly with your project (specified by your `projectId`, `clientKey`, and `appId`--you'll need to use these values within Particle's AA SDK or the [Paymaster RPC](/api/aa/paymaster/paymasterbalance) to authenticate it).
 
-Once you've deposited USDT, you're can define sponsorship conditions and sponsoring transactions on any supported EVM chain (see [Network Coverage](doc:network-coverage)).
+Once you've deposited USDT, you're can define sponsorship conditions and sponsoring transactions on any supported EVM chain (see [Network Coverage](/resources/quickstart/network-coverage)).
 
 <Note>USDT does not need to be deposited for sponsorship on testnets.</Note>
 
@@ -165,4 +165,4 @@ To ensure you can validate where the source of the request is coming from (to ma
 
 ***
 
-<Tip>Particle Network's Omnichain Paymaster can be leveraged either through Particle's AA SDK ([Web (Desktop) Quickstart](doc:aa-web-quickstart) & [Mobile (Android/iOS) Quickstart](doc:mobile-aa-quickstart)) or the [Paymaster RPC](ref:paymaster-rpc).</Tip>
+<Tip>Particle Network's Omnichain Paymaster can be leveraged either through Particle's AA SDK ([Web (Desktop) Quickstart](/resources/quickstart/aa/web-aa) & [Mobile (Android/iOS) Quickstart](/resources/quickstart/aa/mobile-aa)) or the [Paymaster RPC](/api/aa/paymaster/paymasterbalance).</Tip>

@@ -5,7 +5,7 @@ mode: "wide"
 
 # Understanding The Particle Bundler
 
-The Particle Bundler is Particle Network's **in-house and open-source bundler implementation**, reliably facilitating close to **1 million UserOperations** across the EVM ecosystem. The Particle Bundler is automatically used natively within Particle's [various AA SDKs](https://particlenetwork.readme.io/reference/introduction-to-mpc-aa), although it can also be used on its own, for free, through the open Particle Bundler RPC. The Particle Bundler has been proven to be a highly efficient and robust Bundler implementation capable of large-scale utilization of account abstraction. The Particle Bundler has been battle-tested by acting as the primary infrastructure component driving some of the ecosystem's largest [AA-centric growth campaigns](https://galxe.com/ParticleNetwork). 
+The Particle Bundler is Particle Network's **in-house and open-source bundler implementation**, reliably facilitating close to **1 million UserOperations** across the EVM ecosystem. The Particle Bundler is automatically used natively within Particle's [various AA SDKs](/api/aa/introduction), although it can also be used on its own, for free, through the open Particle Bundler RPC. The Particle Bundler has been proven to be a highly efficient and robust Bundler implementation capable of large-scale utilization of account abstraction. The Particle Bundler has been battle-tested by acting as the primary infrastructure component driving some of the ecosystem's largest [AA-centric growth campaigns](https://galxe.com/ParticleNetwork). 
 
 This document will briefly describe how you can leverage the Particle Bundler on its own through its public RPC endpoint.
 
@@ -58,7 +58,7 @@ All of these can be called through standard RPC requests without any authenticat
 
 ## Supported chains
 
-Currently, the Particle Bundler supports every chain available within Particle's Smart Wallet-as-a-Service. For a complete list of all chains supported, AA or not, look at [Network Coverage](doc:network-coverage). Otherwise, the following chains are supported by the Particle Bundler:
+Currently, the Particle Bundler supports every chain available within Particle's Smart Wallet-as-a-Service. For a complete list of all chains supported, AA or not, look at [Network Coverage](/resources/quickstart/network-coverage). Otherwise, the following chains are supported by the Particle Bundler:
 
 - Ethereum Mainnet
   - Ethereum Goerli
@@ -124,22 +124,22 @@ Currently, the Particle Bundler supports every chain available within Particle's
 
 ## Interactive API examples
 
-For a full list of interactive API request examples alongside parameter descriptions for each endpoint, head over to [Bundler RPC](ref:bundler-rpc) within the SDKs & APIs section of the documentation, or choose your desired endpoint below:
+For a full list of interactive API request examples alongside parameter descriptions for each endpoint, head over to [Bundler RPC](/api/aa/bundler/getuseroperationreceipt) within the SDKs & APIs section of the documentation, or choose your desired endpoint below:
 
 <CardGroup cols={2}>
-  <Card title="getUserOperationReceipt" href="https://developers.particle.network/docs/getuseroperationreceipt">
+  <Card title="getUserOperationReceipt" href="/api/aa/bundler/getuseroperationreceipt">
     Returns a detailed object containing specific transaction details for a given user operation hash.
   </Card>
-   <Card title="getUserOperationByHash" href="https://developers.particle.network/docs/getuseroperationbyhash">
+   <Card title="getUserOperationByHash" href="/api/aa/bundler/getuseroperationbyhash">
     Returns a user operation object corresponding with a specific hash.
   </Card>
-    <Card title="sendUserOperation" href="https://developers.particle.network/docs/senduseroperation">
+    <Card title="sendUserOperation" href="/api/aa/bundler/senduseroperation">
     Pushes a signed user operation to the network.
   </Card>
-     <Card title="estimateUserOperationGas" href="https://developers.particle.network/docs/estimateuseroperationgas">
+     <Card title="estimateUserOperationGas" href="/api/aa/bundler/estimateuseroperationgas">
     Takes a partial user operation object and returns detailed gas estimates.
   </Card>
-    <Card title="supportedEntryPoints" href="https://developers.particle.network/docs/supportedentrypoints">
+    <Card title="supportedEntryPoints" href="/api/aa/bundler/supportedentrypoints">
     Returns a list of EntryPoint addresses supported by the Particle Bundler.
   </Card>
 </CardGroup>

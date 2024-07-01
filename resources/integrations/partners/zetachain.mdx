@@ -25,7 +25,7 @@ This document will outline how you can begin building with Particle Network's Sm
 
 Within this tutorial, we'll be using Particle Auth Core (`@particle-network/auth-core-modal`), which is Particle Network's flagship SDK facilitating implementation of its Smart Wallet-as-a-Service. Additionally, we'll also be leveraging Particle's AA SDK (`@particle-network/aa`). These two SDKs will be used in tandem to facilitate social logins and, in this example, the execution of a sample gasless transaction (a burn of 0.001 ZETA), sent through the Particle Bundler and Omnichain Paymaster.
 
-To learn more about Particle Auth Core, take a look at this [sample](https://particlenetwork.readme.io/recipes/using-particle-auth-core). To learn more about the Particle Network AA SDK, check out the [AA quickstart page](doc:aa-web-quickstart).
+To learn more about Particle Auth Core, take a look at this [sample](https://particlenetwork.readme.io/recipes/using-particle-auth-core). To learn more about the Particle Network AA SDK, check out the [AA quickstart page](/resources/quickstart/aa/web-aa).
 
 To begin, you'll need to install a few different libraries, as mentioned above. Specifically, you'll need to install the following libraries:
 
@@ -142,7 +142,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
 
 Now that Particle Auth Core has been configured and initialized through `AuthCoreContextProvider` within `index.tsx`, we're ready to build our demo and dive into the specific utilization process of Particle's Smart Wallet-as-a-Service. To begin, head over to `App.tsx` (or its equivalent within your project); this is where the primary components of this application will be hosted.
 
-Before jumping into `App.tsx`, let's establish some context as to what will be built within `App.tsx`. As mentioned, the goal here is to have a user log in with one of their social accounts (in this example, we can use Google or Twitter), and send a sponsored transaction (a burn of 0.001 ZETA). More advanced functionalities, such as the usage of session keys, are also possible, as outlined [here](https://particlenetwork.readme.io/docs/session-keys). However, for this demo specifically, we'll stick to one of the most used functions of account abstraction –gasless transactions. You'll be able to apply the same flow covered here to your own application on ZetaChain.
+Before jumping into `App.tsx`, let's establish some context as to what will be built within `App.tsx`. As mentioned, the goal here is to have a user log in with one of their social accounts (in this example, we can use Google or Twitter), and send a sponsored transaction (a burn of 0.001 ZETA). More advanced functionalities, such as the usage of session keys, are also possible, as outlined [here](/resources/integrations/aa/keys). However, for this demo specifically, we'll stick to one of the most used functions of account abstraction –gasless transactions. You'll be able to apply the same flow covered here to your own application on ZetaChain.
 
 <img
   className="block dark:hidden"
@@ -311,7 +311,7 @@ To explore this demo yourself, head over to its deployment at https://particle-z
 
 ## Part 2: Account Abstraction Infrastructure
 
-While often used directly with Smart Wallet-as-a-Service, Particle Network's account abstraction infrastructure can also be leveraged independently within any project, even if it isn't using Smart Wallet-as-a-Service. This is especially true of the [Particle Bundler](doc:particle-bundler), [AA SDK/RPC](ref:aa-web), and [Omnichain Paymaster](doc:omnichain-paymaster), all of which can be used to construct, sponsor, and send UserOperations for free.
+While often used directly with Smart Wallet-as-a-Service, Particle Network's account abstraction infrastructure can also be leveraged independently within any project, even if it isn't using Smart Wallet-as-a-Service. This is especially true of the [Particle Bundler](/resources/wallet-abstraction/waas/bundler), [AA SDK/RPC](/api/aa/sdks/desktop/web), and [Omnichain Paymaster](/resources/wallet-abstraction/waas/omni-paymaster), all of which can be used to construct, sponsor, and send UserOperations for free.
 
 ### Particle Bundler
 
@@ -329,7 +329,7 @@ The Particle Omnichain Paymaster also has support for webhook-based sponsorship 
 
 Using the Particle Omnichain Paymaster can be done either through the Particle AA SDK, in which the Paymaster is set by default or, alternatively, you can use its associated RPC, https://paymaster.particle.network. This RPC supports two methods, `pm_paymasterBalance` and `pm_sponsorUserOperation`. 
 
-Learn more about [working with Particle Network's Paymaster](https://particlenetwork.readme.io/docs/setting-up-particles-paymaster).
+Learn more about [working with Particle Network's Paymaster](/resources/integrations/aa/paymaster).
 
 ### Particle AA SDK
 
@@ -337,7 +337,7 @@ Finally, the Particle AA SDK can also be used independently with any other walle
 
 By default, Particle's AA SDK uses the Particle Bundler and the Particle Omnichain Paymaster, although, through a fundamental focus on modularity, you can also either plug in a Biconomy Paymaster (through the `SmartAccount` configuration) or use any other Bundler/Paymaster pair independently, just leaving the account management and UserOperation construction to `@particle-network/aa`, handling sponsorship and execution externally.
 
-To learn more about using Particle Network's AA SDK, head over to the [AA quickstart guide](https://particlenetwork.readme.io/docs/aa-web-quickstart).
+To learn more about using Particle Network's AA SDK, head over to the [AA quickstart guide](/resources/quickstart/aa/web-aa).
 
 ## Conclusion
 

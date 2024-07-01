@@ -3,7 +3,7 @@ title: "Connecting Bitcoin Wallets to BOB using BTC Connect"
 mode: "wide"
 ---
 
-[BTC Connect](https://developers.particle.network/reference/introduction-to-btc-connect)  is the first account abstraction protocol for the Bitcoin ecosystem. It unifies smart accounts on Bitcoin Layer-2s and standard BTC accounts through native wallet interfaces. To achieve this, Particle Network has deployed ERC-4337 AA infrastructure natively on BOB (Build on Bitcoin), which developers can tap into to leverage Bitcoin-specific smart accounts.
+[BTC Connect](/api/btc/introduction)  is the first account abstraction protocol for the Bitcoin ecosystem. It unifies smart accounts on Bitcoin Layer-2s and standard BTC accounts through native wallet interfaces. To achieve this, Particle Network has deployed ERC-4337 AA infrastructure natively on BOB (Build on Bitcoin), which developers can tap into to leverage Bitcoin-specific smart accounts.
 
 BTC Connect achieves this by, firstly, allowing users to connect to your dApp with their UniSat, OKX, TokenPocket, Bybit, Wizz, Xverse, or Bitget wallet. Upon connecting, a smart account is generated on BitLayer and assigned to their BTC account. This smart account can then be used and authenticated directly through their BTC wallet, providing native Bitcoin users a simple interface to interact with applications on BOB, a leading Bitcoin Layer-2.
 
@@ -120,7 +120,7 @@ To configure `options`, you'll need to define the following properties:
 - `aaOptions`, which contains `accountContracts`, taking:
   - `BTC`, the smart account implementation you'll be leveraging.
     - `chainIds`, one or multiple chains that your application will support. In this case, you can either use BOB's chain ID, `111`, or `BOBTestnet.id` from `@particle-network/chains`.
-    - `version`, the version of the BTC smart account you intend to use. For BOB, this should be **`2.0.0`**. If you intend to use more than just BOB, you may need to define another instance of `BTC` using `version` `1.0.0`. For more information on which chains support `1.0.0` and which support `2.0.0`, head over to [Particle Network's documentation](https://developers.particle.network/docs/network-coverage#btc-connect).
+    - `version`, the version of the BTC smart account you intend to use. For BOB, this should be **`2.0.0`**. If you intend to use more than just BOB, you may need to define another instance of `BTC` using `version` `1.0.0`. For more information on which chains support `1.0.0` and which support `2.0.0`, head over to [Particle Network's documentation](/resources/quickstart/network-coverage#btc-connect).
 - `walletOptions`, which contains:  
       - `visible`, a Boolean determining whether or not Particle Network's embedded wallet modal will be shown after a user connects their Bitcoin wallet. If set to `true`, users will have direct access to their associated smart accounts through this embedded interface. Otherwise, if `false`, developers will need to retrieve and reflect wallet information, such as balances, independently.
 

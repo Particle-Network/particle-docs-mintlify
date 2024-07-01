@@ -31,11 +31,11 @@ Collectively, these allow for the unification of interactions across all chains,
 
 ### Universal Accounts
 
-Particle Network’s [Universal Accounts](doc:universal-accounts) aggregate token balances across all chains by automatically routing and executing atomic cross-chain transactions.
+Particle Network’s [Universal Accounts](/resources/modular-l1/universal-accounts) aggregate token balances across all chains by automatically routing and executing atomic cross-chain transactions.
 
-These accounts, which in turn leverage Particle’s [Universal Liquidity](doc:universal-liquidity), can be understood as specialized Smart Account implementations deployed and coordinated across all chains. A Universal Account can be created and managed by simply connecting and assigning a wallet derived from either social logins through Particle Network’s [Modular Smart Wallet-as-a-Service](doc:modular-smart-waas) or a Web3 wallet, such as MetaMask, UniSat, Keplr, etc. 
+These accounts, which in turn leverage Particle’s [Universal Liquidity](/resources/modular-l1/universal-liquidity), can be understood as specialized Smart Account implementations deployed and coordinated across all chains. A Universal Account can be created and managed by simply connecting and assigning a wallet derived from either social logins through Particle Network’s [Modular Smart Wallet-as-a-Service](doc:modular-smart-waas) or a Web3 wallet, such as MetaMask, UniSat, Keplr, etc. 
 
-Universal Accounts automatically use Particle Network to maintain a unified state and, through the usage of [Universal Liquidity](doc:universal-liquidity). Universal Accounts act as an interface on top of existing wallets, allowing users to deposit and use funds across the chain-abstracted ecosystem. Developers will be able to leverage Universal Accounts within their dApps by simply implementing Particle Network’s Universal SDKs.
+Universal Accounts automatically use Particle Network to maintain a unified state and, through the usage of [Universal Liquidity](/resources/modular-l1/universal-liquidity). Universal Accounts act as an interface on top of existing wallets, allowing users to deposit and use funds across the chain-abstracted ecosystem. Developers will be able to leverage Universal Accounts within their dApps by simply implementing Particle Network’s Universal SDKs.
 
 <img
   className="block dark:hidden"
@@ -50,7 +50,7 @@ Universal Accounts automatically use Particle Network to maintain a unified stat
 
 ### Universal Liquidity
 
-[Universal Liquidity](doc:universal-liquidity) refers to the aggregation of balances across all chains. The architecture of Universal Liquidity is directly driven by atomic cross-chain transactions and swaps coordinated by Particle Network. These atomic transaction sequences are powered by Bundler nodes, which execute UserOperations on their target chains using Liquidity Providers to move intermediary tokens –such as USDC and USDT– between chains through token pools. 
+[Universal Liquidity](/resources/modular-l1/universal-liquidity) refers to the aggregation of balances across all chains. The architecture of Universal Liquidity is directly driven by atomic cross-chain transactions and swaps coordinated by Particle Network. These atomic transaction sequences are powered by Bundler nodes, which execute UserOperations on their target chains using Liquidity Providers to move intermediary tokens –such as USDC and USDT– between chains through token pools. 
 
 An example of this can be seen through the usage of USDC on multiple chains to purchase an NFT (priced in ETH) on Base. In this scenario:
 
