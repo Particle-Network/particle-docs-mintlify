@@ -2,6 +2,22 @@
 
 This repository holds the content for the Particle Network's docs. It handles `mdx` format files for the content and OpenAPI specs for the API reference.
 
+## Table of contents
+
+- [Particle Network Minltify](#particle-network-minltify)
+  - [Local Quickstart](#local-quickstart)
+  - [Development](#development)
+  - [Project's structure](#projects-structure)
+    - [mint.json](#mintjson)
+      - [General considerations](#general-considerations)
+      - [Main sections (tabs) management](#main-sections-tabs-management)
+    - [Managing Sections and Pages in `mint.json`](#managing-sections-and-pages-in-mintjson)
+      - [Overview of Navigation Structure](#overview-of-navigation-structure)
+      - [How It Works](#how-it-works)
+      - [Notes](#notes)
+    - [APIs and OpenAPI schemas](#apis-and-openapi-schemas)
+    - [Troubleshooting](#troubleshooting)
+
 ## Local Quickstart
 
 To preview the documentation changes locally, install the [Mintlify CLI](https://www.npmjs.com/package/mintlify) using the following command.
