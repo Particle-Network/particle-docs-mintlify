@@ -9,7 +9,7 @@ Within Particle Network's SDKs, errors are almost always caught for SDK-related 
 
 For non-SDK related issues that may stem from external factors within your application (such as webpack/vite/etc. configurations, npm or yarn problems, etc.), you'll need to troubleshoot these manually or reach out to us through the [Particle Network Discord](https://discord.com/invite/2y44qr6CR2). 
 
-Additionally, the error you're looking for may be present within [Common API Errors](doc:common-api-errors).
+Additionally, the error you're looking for may be present within [Common API Errors](/api/debug/api).
 
 ***
 
@@ -20,7 +20,7 @@ Additionally, the error you're looking for may be present within [Common API Err
 | "You need set project info" OR "Init AuthCore failed" OR "Param error, see doc for more info"                                                                                                                      | This error occurs when attempting to initialize Particle Auth without including your `projectId`, `clientKey`, and `appId`. Head over to the [Particle dashboard](https://dashboard.particle.network) to retrieve and set these.                  | \*         |
 | "chain is required when authorization is provided"                                                                                                                                                                 | If initiating social login with `authorization` on Particle Auth Core, `chain` is required and should be a `ChainInfo` object imported from `@particle-network/chains`. Otherwise this error will be thrown.                                      | useConnect |
 | "Please init first!" (or some derivative of this)                                                                                                                                                                  | A request for initialization (or init) will be thrown when attempting to access methods that require an underlying account. Ensure you've initialized Particle Auth before calling other methods within the SDK.                                  | \*         |
-| "The chainId: {} is not supported." (or some derivative of this)                                                                                                                                                   | This will be thrown when attempting to pass a chain ID into a specific function (commonly `sendTransaction`) that isn't supported by Particle Auth. For the full list of supported chains, head to [Network Coverage](doc:network-coverage).      | \*         |
+| "The chainId: {} is not supported." (or some derivative of this)                                                                                                                                                   | This will be thrown when attempting to pass a chain ID into a specific function (commonly `sendTransaction`) that isn't supported by Particle Auth. For the full list of supported chains, head to [Network Coverage](/resources/quickstart/network-coverage).      | \*         |
 | "WebSocket connection closed abnormally with code: 3000 (Authorization error: Unauthorized: invalid key)" OR "WebSocket connection closed abnormally with code: 3000 (Authorization error: Project ID is missing)" | This occurs when using Particle Connect and failing to include a valid WalletConnect project ID within `evmWallets`, or specific wallet adapters. To retrieve this value, head to the [WalletConnect dashboard](https://cloud.walletconnect.com). | \*         |
 
 ***
@@ -43,5 +43,5 @@ Additionally, the error you're looking for may be present within [Common API Err
 
 <Tip>
 <p>More targeted error codes may present themselves while using the SDK</p>
-<p>These aren't covered within this document (example: `personalSign error: {specific error description}`) and often stem from parameter issues or underlying RPC errors (see [Common API Errors](doc:common-api-errors)).</p>
+<p>These aren't covered within this document (example: `personalSign error: {specific error description}`) and often stem from parameter issues or underlying RPC errors (see [Common API Errors](/api/debug/api)).</p>
 </Tip>
