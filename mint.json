@@ -35,6 +35,11 @@
     {
       "name": "APIs & SDKs",
       "url": "api"
+    },
+    {
+      "name": "Changelog",
+      "url": "changelog",
+      "isDefaultHidden": true
     }
   ],
   "anchors": [
@@ -52,9 +57,13 @@
       "name": "GitHub",
       "icon": "github",
       "url": "https://github.com/Particle-Network"
+    },    {
+      "name": "Changelog",
+      "icon": "megaphone",
+      "url": "changelog/logs"
     }
   ],
-  "navigation": [
+  "navigation": [    
     {
       "group": "OVERVIEW",
       "pages": [
@@ -64,35 +73,29 @@
       ]
     },
     {
-      "group": "GETTING STARTED",
-      "pages": [
-        "resources/overview"
-      ]
-    },
-    {
       "group": "TECHNOLOGY",
       "pages": [
         {
           "group": "Modular L1",
           "pages": [
-            "resources/modular-l1/introduction",
-            "resources/modular-l1/universal-accounts",
-            "resources/modular-l1/universal-liquidity",
-            "resources/modular-l1/universal-gas"
+            "landing/modular-l1/introduction",
+            "landing/modular-l1/universal-accounts",
+            "landing/modular-l1/universal-liquidity",
+            "landing/modular-l1/universal-gas"
           ]
         },
         {
           "group": "Wallet Abstraction",
           "pages": [
-            "resources/wallet-abstraction/btc-connect",
+            "landing/wallet-abstraction/btc-connect",
             {
               "group": "Smart Wallet-as-a-Service",
               "pages": [
-                "resources/wallet-abstraction/waas/overview",
-                "resources/wallet-abstraction/waas/mpc-tss",
-                "resources/wallet-abstraction/waas/bundler",
-                "resources/wallet-abstraction/waas/omni-paymaster",
-                "resources/wallet-abstraction/waas/differentiators"
+                "landing/wallet-abstraction/waas/overview",
+                "landing/wallet-abstraction/waas/mpc-tss",
+                "landing/wallet-abstraction/waas/bundler",
+                "landing/wallet-abstraction/waas/omni-paymaster",
+                "landing/wallet-abstraction/waas/differentiators"
               ]
             }
           ]
@@ -100,35 +103,38 @@
       ]
     },
     {
+      "group": "MISCELLANEOUS",
+      "pages": [
+        "landing/more/audits",
+        "landing/more/assets"
+      ]
+    },
+    {
+      "group": "TUTORIALS & DEMOS",
+      "pages": [
+        "landing/tutorials-and-demos/list",
+        "landing/tutorials-and-demos/repositories",
+        "landing/tutorials-and-demos/videos"
+      ]
+    },
+    {
+      "group": "GETTING STARTED",
+      "pages": [
+        "resources/overview",
+        "resources/network-coverage"
+      ]
+    },
+    {
       "group": "QUICKSTART: WALLET ABSTRACTION",
       "pages": [
         "resources/quickstart/intro",
-        "resources/quickstart/network-coverage",
         "resources/quickstart/dashboard",
-        {
-          "group": "Connection Kits",
-          "pages": [
-            "resources/quickstart/connection-kits/solana",
-            "resources/quickstart/connection-kits/rainbow",
-            "resources/quickstart/connection-kits/particle-connect",
-            "resources/quickstart/connection-kits/web3modal",
-            "resources/quickstart/connection-kits/web3-onboard"
-          ]
-        },
         {
           "group": "Wallet-as-a-Service",
           "pages": [
             "resources/quickstart/waas/understanding-waas",
-            "resources/quickstart/waas/components",
             "resources/quickstart/waas/web-quickstart",
             "resources/quickstart/waas/mobile-quickstart"
-          ]
-        },
-        {
-          "group": "Customization",
-          "pages": [
-            "resources/quickstart/customization/auth",
-            "resources/quickstart/customization/wallet"
           ]
         },
         {
@@ -138,6 +144,22 @@
             "resources/quickstart/aa/mobile-aa",
             "resources/quickstart/aa/bundler",
             "resources/quickstart/aa/paymaster"
+          ]
+        },
+        {
+          "group": "Connection Kits",
+          "pages": [
+            "resources/quickstart/connection-kits/rainbow",
+            "resources/quickstart/connection-kits/particle-connect",
+            "resources/quickstart/connection-kits/web3modal",
+            "resources/quickstart/connection-kits/web3-onboard"
+          ]
+        },
+        {
+          "group": "Customization",
+          "pages": [
+            "resources/quickstart/customization/auth",
+            "resources/quickstart/customization/wallet"
           ]
         }
       ]
@@ -162,13 +184,6 @@
           ]
         },
         {
-          "group": "Nodes & Data Services",
-          "pages": [
-            "resources/integrations/nodes/nodes",
-            "resources/integrations/nodes/data"
-          ]
-        },
-        {
           "group": "Platform Coverage",
           "pages": [
             "resources/integrations/platform/web",
@@ -188,26 +203,10 @@
             "resources/integrations/partners/alchemy",
             "resources/integrations/partners/openfort",
             "resources/integrations/partners/biconomy",
-            "resources/integrations/partners/berachain",
-            "resources/integrations/partners/covalent",
+            
             "resources/integrations/partners/bob"
           ]
-        },
-        "resources/integrations/repositories",
-        "resources/integrations/videos"
-      ]
-    },
-    {
-      "group": "EXTERNAL DOCUMENTS",
-      "pages": [
-        "resources/external/list"
-      ]
-    },
-    {
-      "group": "MORE RESOURCES",
-      "pages": [
-        "resources/more/audits",
-        "resources/more/assets"
+        }
       ]
     },
     {
@@ -438,6 +437,11 @@
       "pages": [
         "api/debug/sdk",
         "api/debug/api"
+      ]
+    },   {
+      "group": "CHANGELOG",
+      "pages": [
+        "changelog/logs"
       ]
     }
   ],

@@ -6,7 +6,7 @@ mode: "wide"
 
 ***
 
-<Note>Note: This chapter refers only to Particle's live [Modular Smart WaaS](/resources/wallet-abstraction/waas/overview) stack. As we release additional components, it'll be expanded to cover their unique aspects too. As a first-of-its-kind product, [BTC Connect](/resources/wallet-abstraction/btc-connect) is not covered here either.</Note>
+<Note>Note: This chapter refers only to Particle's live [Modular Smart WaaS](/landing/wallet-abstraction/waas/overview) stack. As we release additional components, it'll be expanded to cover their unique aspects too. As a first-of-its-kind product, [BTC Connect](/landing/wallet-abstraction/btc-connect) is not covered here either.</Note>
 
 Particle Network is designed to stand out in areas that we consider critical for developer and end-user experience, as well as security. These are:
 
@@ -29,19 +29,19 @@ The information above is summarized in the following table:
 <Frame caption="Comparison of the performance of different key management solutions in critical areas.">
 <img
   className="block dark:hidden"
-  src="/resources/wallet-abstraction/waas/images/comparison.png"
+  src="/landing/wallet-abstraction/waas/images/comparison.png"
   alt="Comparison of the performance of different key management solutions in critical areas."
 />
 <img
   className="hidden dark:block"
-  src="/resources/wallet-abstraction/waas/images/comparison.png"
+  src="/landing/wallet-abstraction/waas/images/comparison.png"
   alt="Comparison of the performance of different key management solutions in critical areas."
 />
 </Frame>
 
 ### Particle Network's solution
 
-<Tip>For a deeper dive into Particle's MPC-TSS solution, [click here](/resources/wallet-abstraction/waas/mpc-tss).</Tip>
+<Tip>For a deeper dive into Particle's MPC-TSS solution, [click here](/landing/wallet-abstraction/waas/mpc-tss).</Tip>
 
 Particle Network provides a 2/2 advanced TSS approach that ensures that the private key's security is never concentrated in a single location or entity throughout its lifecycle. This method involves splitting the key into two independent shares, stored separately, ensuring that each share reveals nothing about the full key. One of these shares is stored locally by the user, and the other by Particle’s Trusted Execution Environment. All cryptographic operations are executed without combining these shares, maintaining key integrity. 
 
@@ -50,12 +50,12 @@ Particle also allows the user to create a Master Password, which is used to encr
 <Frame caption="Particle Network's MPC-TSS private key management solution.">
 <img
   className="block dark:hidden"
-  src="/resources/wallet-abstraction/waas/images/mpc-tss.png"
+  src="/landing/wallet-abstraction/waas/images/mpc-tss.png"
   alt="Particle Network's MPC-TSS private key management solution."
 />
 <img
   className="hidden dark:block"
-  src="/resources/wallet-abstraction/waas/images/mpc-tss.png"
+  src="/landing/wallet-abstraction/waas/images/mpc-tss.png"
   alt="Particle Network's MPC-TSS private key management solution."
 />
 </Frame>
@@ -72,8 +72,8 @@ When it comes to WaaS, some AA tools and components critical to making dApps fri
 
 - **Smart contract wallets:** AA enables the creation of programmable smart contracts acting as non-custodial wallets for advanced automation capabilities. This can allow for a more flexible and user-centric approach to managing digital assets​.
 - **Session keys:** This facilitates transactions that do not require signatures, simplifying the transaction process and enhancing user experience​. This feature also allows transactions to be pre-approved, streamlining the transaction process and making the system more user-friendly​.
-- **Paymasters:** One of the prominent use cases of AA is the ability for dApps to sponsor gas fees for users, which Paymasters enable. This makes particular sense in solutions hosted in L2s, which typically have low costs for users. Paymasters can allow your dApp to accept gas fee payments in any native (not bridged) token, preventing users from constantly needing to acquire gas tokens. Particle has built a dedicated [Omnichain Paymaster](/resources/wallet-abstraction/waas/omni-paymaster) as a part of its AA stack. 
-- **Bundlers:** Bundlers aggregate user actions for efficient blockchain interactions, potentially leading to reduced transaction fees and faster transaction confirmations​. Bundlers can result in better cost-efficiency for end-users and better performance for developers. Particle has also developed [an open-source Bundler](/resources/wallet-abstraction/waas/bundler), natively integrated into our AA stack.
+- **Paymasters:** One of the prominent use cases of AA is the ability for dApps to sponsor gas fees for users, which Paymasters enable. This makes particular sense in solutions hosted in L2s, which typically have low costs for users. Paymasters can allow your dApp to accept gas fee payments in any native (not bridged) token, preventing users from constantly needing to acquire gas tokens. Particle has built a dedicated [Omnichain Paymaster](/landing/wallet-abstraction/waas/omni-paymaster) as a part of its AA stack. 
+- **Bundlers:** Bundlers aggregate user actions for efficient blockchain interactions, potentially leading to reduced transaction fees and faster transaction confirmations​. Bundlers can result in better cost-efficiency for end-users and better performance for developers. Particle has also developed [an open-source Bundler](/landing/wallet-abstraction/waas/bundler), natively integrated into our AA stack.
 - **Social recovery:** AA can enable social recovery features, allowing users to recover their wallets with the help of whitelisted accounts instead of seed phrases, potentially improving security and user experience​.
 
  Particle is also working on an [Omnichain implementation of account abstraction](https://particlenetwork.readme.io/docs/omnichain-account-abstraction), aiming to create a unified framework between AA solutions deployed in different chains, a feature currently overlooked by the Web3 ecosystem due to the nascent nature of the AA field. 
@@ -87,12 +87,12 @@ Particle introduces modular compatibility with different self-developed and thir
 <Frame caption="Native and external implementations in Modular Smart WaaS.">
 <img
   className="block dark:hidden"
-  src="/resources/wallet-abstraction/waas/images/implementations.png"
+  src="/landing/wallet-abstraction/waas/images/implementations.png"
   alt="Native and external implementations in Modular Smart WaaS."
 />
 <img
   className="hidden dark:block"
-  src="/resources/wallet-abstraction/waas/images/implementations.png"
+  src="/landing/wallet-abstraction/waas/images/implementations.png"
   alt="Native and external implementations in Modular Smart WaaS."
 />
 </Frame>
@@ -110,12 +110,12 @@ Well-designed modular approaches result in flexibility and scalability, allowing
 <Frame caption="Particle Network's modular infrastructure.">
 <img
   className="block dark:hidden"
-  src="/resources/wallet-abstraction/waas/images/modular-waas.png"
+  src="/landing/wallet-abstraction/waas/images/modular-waas.png"
   alt="Particle Network's modular infrastructure."
 />
 <img
   className="hidden dark:block"
-  src="/resources/wallet-abstraction/waas/images/modular-waas.png"
+  src="/landing/wallet-abstraction/waas/images/modular-waas.png"
   alt="Particle Network's modular infrastructure."
 />
 </Frame>
