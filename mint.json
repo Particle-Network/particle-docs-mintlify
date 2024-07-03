@@ -60,7 +60,7 @@
     },    {
       "name": "Changelog",
       "icon": "megaphone",
-      "url": "changelog/logs"
+      "url": "https://particlenetwork.mintlify.app/changelog/logs"
     }
   ],
   "navigation": [    
