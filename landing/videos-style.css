@@ -1,76 +1,14 @@
-body {
-    background-color: #242e34; /* Dark mode background */
-    color: #ffffff; /* Light text color for readability */
-}
-
-.video-gallery-container {
-    font-family: Arial, sans-serif;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 20px;
-}
-
-.category {
-    width: 100%;
-    margin-bottom: 30px;
-}
-
-.category-header {
-    font-size: 1.5em;
-    margin-bottom: 15px;
-    color: #cccccc; /* Light color for headings */
-}
-
-.gallery {
+.grid-container {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
-}
-
-.video {
-    background: #2d3942; /* Dark mode card background */
-    border: 1px solid #3f4954; /* Darker border for contrast */
-    box-shadow: 0 5px 15px rgba(0,0,0,0.3), 0 0 10px rgba(0, 123, 255, 0.5); /* Adjusted for dark mode */
-    border-radius: 10px;
-    overflow: hidden;
-    position: relative;
-    transition: transform 0.2s; /* Smooth transform effect */
-}
-
-.video:hover {
-    transform: scale(1.05); /* Slight scale effect on hover */
-}
-
-.video a {
+    gap: 20px; /* Adjust the gap between items as needed */
+    padding: 20px;
+  }
+  .grid-container a {
     display: block;
-    height: 100%;
-}
-
-.video img {
+    text-align: center; /* Center align the images */
+  }
+  .grid-container img {
     width: 100%;
     height: auto;
-    display: block;
-    border-radius: 10px;
-    transition: opacity 0.3s; /* Smooth opacity transition */
-}
-
-.video:hover img {
-    opacity: 0.8; /* Dim the image slightly on hover */
-}
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
-    .gallery {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-
-@media (max-width: 480px) {
-    .category-header {
-        font-size: 1.2em;
-    }
-    .gallery {
-        grid-template-columns: 1fr;
-    }
-}
+  }
