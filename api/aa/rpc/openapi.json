@@ -1,176 +1,40 @@
 {
-    "openapi": "3.0.0",
-    "info": {
-      "title": "Particle Network Account Abstraction RPC",
-      "version": "1.0.0"
-    },
-    "servers": [
-      {
-        "url": "https://rpc.particle.network/evm-chain"
-      }
-    ],
-    "security": [
-      {
-        "BasicAuth": []
-      }
-    ],
-    "paths": {
-      "/#particle_aa_getSmartAccount": {
-        "post": {
-          "summary": "getSmartAccount",
-          "operationId": "getSmartAccount",
-          "requestBody": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/GetSmartAccountRequest"
-                }
-              }
-            }
-          },
-          "responses": {
-            "200": {
-              "description": "Success",
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "$ref": "#/components/schemas/GetSmartAccountResponse"
-                  }
-                }
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Particle Network Account Abstraction RPC",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://rpc.particle.network/evm-chain"
+    }
+  ],
+  "security": [
+    {
+      "BasicAuth": []
+    }
+  ],
+  "paths": {
+    "/#particle_aa_getSmartAccount": {
+      "post": {
+        "summary": "getSmartAccount",
+        "operationId": "getSmartAccount",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetSmartAccountRequest"
               }
             }
           }
-        }
-      },
-      "/#particle_aa_getFeeQuotes": {
-        "post": {
-          "summary": "getFeeQuotes",
-          "operationId": "getFeeQuotes",
-          "requestBody": {
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/GetFeeQuotesRequest"
-                }
-              }
-            }
-          },
-          "responses": {
-            "200": {
-              "description": "Success",
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "$ref": "#/components/schemas/GetFeeQuotesResponse"
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "/#particle_aa_createUserOp": {
-        "post": {
-          "summary": "createUserOp",
-          "operationId": "createUserOp",
-          "requestBody": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CreateUserOpRequest"
-                }
-              }
-            }
-          },
-          "responses": {
-            "200": {
-              "description": "Success",
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "$ref": "#/components/schemas/CreateUserOpResponse"
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "/#particle_aa_sendUserOp": {
-        "post": {
-          "summary": "sendUserOp",
-          "operationId": "sendUserOp",
-          "requestBody": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/SendUserOpRequest"
-                }
-              }
-            }
-          },
-          "responses": {
-            "200": {
-              "description": "Success",
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "$ref": "#/components/schemas/SendUserOpResponse"
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "/#particle_aa_createSessions": {
-        "post": {
-          "summary": "createSessions",
-          "operationId": "particle_aa_createSessions",
-          "requestBody": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CreateSessionsRequest"
-                }
-              }
-            }
-          },
-          "responses": {
-            "200": {
-              "description": "Success",
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "$ref": "#/components/schemas/CreateSessionsResponse"
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "/#particle_aa_validateSession": {
-        "post": {
-          "summary": "validateSession",
-          "operationId": "particle_aa_validateSession",
-          "requestBody": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ValidateSessionRequest"
-                }
-              }
-            }
-          },
-          "responses": {
-            "200": {
-              "description": "Success",
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "$ref": "#/components/schemas/ValidateSessionResponse"
-                  }
+                  "$ref": "#/components/schemas/GetSmartAccountResponse"
                 }
               }
             }
@@ -178,212 +42,466 @@
         }
       }
     },
-    "components": {
-      "securitySchemes": {
-        "BasicAuth": {
-          "type": "http",
-          "scheme": "basic"
+    "/#particle_aa_getFeeQuotes": {
+      "post": {
+        "summary": "getFeeQuotes",
+        "operationId": "getFeeQuotes",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetFeeQuotesRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetFeeQuotesResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/#particle_aa_createUserOp": {
+      "post": {
+        "summary": "createUserOp",
+        "operationId": "createUserOp",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateUserOpRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateUserOpResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/#particle_aa_sendUserOp": {
+      "post": {
+        "summary": "sendUserOp",
+        "operationId": "sendUserOp",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SendUserOpRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SendUserOpResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/#particle_aa_createSessions": {
+      "post": {
+        "summary": "createSessions",
+        "operationId": "particle_aa_createSessions",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateSessionsRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateSessionsResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/#particle_aa_validateSession": {
+      "post": {
+        "summary": "validateSession",
+        "operationId": "particle_aa_validateSession",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ValidateSessionRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidateSessionResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "BasicAuth": {
+        "type": "http",
+        "scheme": "basic"
+      }
+    },
+    "schemas": {
+      "RPCRequest": {
+        "type": "object",
+        "required": [
+          "jsonrpc",
+          "id",
+          "method",
+          "params"
+        ],
+        "properties": {
+          "jsonrpc": {
+            "type": "string",
+            "default": 2
+          },
+          "id": {
+            "type": "integer",
+            "default": 1
+          },
+          "method": {
+            "type": "string"
+          },
+          "params": {
+            "type": "array"
+          }
         }
       },
-      "schemas": {
-        "RPCRequest": {
-          "type": "object",
-          "required": [
-            "jsonrpc",
-            "id",
-            "method",
-            "params"
-          ],
-          "properties": {
-            "jsonrpc": {
-              "type": "string",
-              "default": 2
-            },
-            "id": {
-              "type": "integer",
-              "default": 1
-            },
-            "method": {
-              "type": "string"
-            },
-            "params": {
-              "type": "array"
-            }
+      "RPCResponse": {
+        "type": "object",
+        "required": [
+          "jsonrpc",
+          "id",
+          "result"
+        ],
+        "properties": {
+          "jsonrpc": {
+            "type": "string",
+            "default": 2
+          },
+          "id": {
+            "type": "integer",
+            "default": 1
+          },
+          "result": {
+            "type": "object"
+          },
+          "chainId": {
+            "type": "integer",
+            "example": 80001
           }
-        },
-        "RPCResponse": {
-          "type": "object",
-          "required": [
-            "jsonrpc",
-            "id",
-            "result"
-          ],
-          "properties": {
-            "jsonrpc": {
-              "type": "string",
-              "default": 2
-            },
-            "id": {
-              "type": "integer",
-              "default": 1
-            },
-            "result": {
-              "type": "object"
-            },
-            "chainId": {
-              "type": "integer",
-              "example": 80001
-            }
-          }
-        },
-        "GetSmartAccountRequest": {
-          "allOf": [
-            {
-              "$ref": "#/components/schemas/RPCRequest"
-            },
-            {
-              "type": "object",
-              "properties": {
-                "method": {
-                  "enum": [
-                    "particle_aa_getSmartAccount"
-                  ]
-                },
-                "params": {
+        }
+      },
+      "GetSmartAccountRequest": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/RPCRequest"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "method": {
+                "enum": [
+                  "particle_aa_getSmartAccount"
+                ]
+              },
+              "params": {
+                "type": "array",
+                "items": {
                   "type": "array",
                   "items": {
-                    "type": "array",
-                    "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        ]
+      },
+      "GetSmartAccountResponse": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/RPCResponse"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "result": {
+                "type": "array",
+                "items": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        ]
+      },
+      "GetFeeQuotesRequest": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/RPCRequest"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "method": {
+                "enum": [
+                  "particle_aa_getFeeQuotes"
+                ]
+              },
+              "params": {
+                "type": "array",
+                "items": {
+                  "oneOf": [
+                    {
                       "type": "string"
+                    },
+                    {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "to": {
+                            "type": "string"
+                          },
+                          "value": {
+                            "type": "string"
+                          },
+                          "data": {
+                            "type": "string"
+                          }
+                        }
+                      }
                     }
-                  }
+                  ]
                 }
               }
             }
-          ]
-        },
-        "GetSmartAccountResponse": {
-          "allOf": [
-            {
-              "$ref": "#/components/schemas/RPCResponse"
-            },
-            {
-              "type": "object",
-              "properties": {
-                "result": {
-                  "type": "array",
-                  "items": {
+          }
+        ]
+      },
+      "GetFeeQuotesResponse": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/RPCResponse"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "result": {
+                "type": "object",
+                "properties": {
+                  "verifyingPaymasterGasless": {
+                    "type": "object"
+                  },
+                  "verifyingPaymasterNative": {
+                    "type": "object"
+                  },
+                  "tokenPaymaster": {
                     "type": "object"
                   }
                 }
               }
             }
-          ]
-        },
-        "GetFeeQuotesRequest": {
-          "allOf": [
-            {
-              "$ref": "#/components/schemas/RPCRequest"
-            },
-            {
-              "type": "object",
-              "properties": {
-                "method": {
-                  "enum": [
-                    "particle_aa_getFeeQuotes"
-                  ]
-                },
-                "params": {
-                  "type": "array",
-                  "items": {
-                    "oneOf": [
-                      {
-                        "type": "string"
-                      },
-                      {
-                        "type": "array",
-                        "items": {
-                          "type": "object",
-                          "properties": {
-                            "to": {
-                              "type": "string"
-                            },
-                            "value": {
-                              "type": "string"
-                            },
-                            "data": {
-                              "type": "string"
+          }
+        ]
+      },
+      "CreateSessionsRequest": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/RPCRequest"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "method": {
+                "enum": [
+                  "particle_aa_createSessions"
+                ]
+              },
+              "params": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "oneOf": [
+                    {
+                      "properties": {
+                        "name": {
+                          "type": "string"
+                        },
+                        "version": {
+                          "type": "string"
+                        },
+                        "ownerAddress": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "validUntil": {
+                            "type": "integer"
+                          },
+                          "validAfter": {
+                            "type": "integer"
+                          },
+                          "sessionValidationModule": {
+                            "type": "string"
+                          },
+                          "sessionKeyDataInAbi": {
+                            "type": "array",
+                            "items": {
+                              "oneOf": [
+                                {
+                                  "type": "array",
+                                  "items": {
+                                    "type": "string"
+                                  }
+                                },
+                                {
+                                  "type": "array",
+                                  "items": {
+                                    "type": "string"
+                                  }
+                                }
+                              ]
                             }
                           }
                         }
                       }
-                    ]
-                  }
+                    }
+                  ]
                 }
               }
             }
-          ]
-        },
-        "GetFeeQuotesResponse": {
-          "allOf": [
-            {
-              "$ref": "#/components/schemas/RPCResponse"
-            },
-            {
-              "type": "object",
-              "properties": {
-                "result": {
-                  "type": "object",
-                  "properties": {
-                    "verifyingPaymasterGasless": {
+          }
+        ]
+      },
+      "CreateSessionsResponse": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/RPCResponse"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "result": {
+                "type": "object",
+                "properties": {
+                  "verifyingPaymasterGasless": {
+                    "type": "object"
+                  },
+                  "verifyingPaymasterNative": {
+                    "type": "object"
+                  },
+                  "tokenPaymaster": {
+                    "type": "object"
+                  },
+                  "sessions": {
+                    "type": "array",
+                    "items": {
                       "type": "object"
-                    },
-                    "verifyingPaymasterNative": {
-                      "type": "object"
-                    },
-                    "tokenPaymaster": {
+                    }
+                  },
+                  "transactions": {
+                    "type": "array",
+                    "items": {
                       "type": "object"
                     }
                   }
                 }
               }
             }
-          ]
-        },
-        "CreateSessionsRequest": {
-          "allOf": [
-            {
-              "$ref": "#/components/schemas/RPCRequest"
-            },
-            {
-              "type": "object",
-              "properties": {
-                "method": {
-                  "enum": [
-                    "particle_aa_createSessions"
-                  ]
-                },
-                "params": {
-                  "type": "array",
-                  "items": {
-                    "type": "object",
-                    "oneOf": [
-                      {
-                        "properties": {
-                          "name": {
-                            "type": "string"
-                          },
-                          "version": {
-                            "type": "string"
-                          },
-                          "ownerAddress": {
-                            "type": "string"
-                          }
+          }
+        ]
+      },
+      "ValidateSessionRequest": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/RPCRequest"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "method": {
+                "enum": [
+                  "particle_aa_validateSession"
+                ]
+              },
+              "params": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "oneOf": [
+                    {
+                      "properties": {
+                        "name": {
+                          "type": "string"
+                        },
+                        "version": {
+                          "type": "string"
+                        },
+                        "ownerAddress": {
+                          "type": "string"
                         }
-                      },
-                      {
-                        "type": "array",
-                        "items": {
+                      }
+                    },
+                    {
+                      "properties": {
+                        "sessions": {
+                          "type": "array",
+                          "items": {
+                            "type": "object"
+                          }
+                        },
+                        "targetSession": {
                           "type": "object",
                           "properties": {
                             "validUntil": {
@@ -417,338 +535,216 @@
                           }
                         }
                       }
-                    ]
-                  }
-                }
-              }
-            }
-          ]
-        },
-        "CreateSessionsResponse": {
-          "allOf": [
-            {
-              "$ref": "#/components/schemas/RPCResponse"
-            },
-            {
-              "type": "object",
-              "properties": {
-                "result": {
-                  "type": "object",
-                  "properties": {
-                    "verifyingPaymasterGasless": {
-                      "type": "object"
-                    },
-                    "verifyingPaymasterNative": {
-                      "type": "object"
-                    },
-                    "tokenPaymaster": {
-                      "type": "object"
-                    },
-                    "sessions": {
-                      "type": "array",
-                      "items": {
-                        "type": "object"
-                      }
-                    },
-                    "transactions": {
-                      "type": "array",
-                      "items": {
-                        "type": "object"
-                      }
                     }
-                  }
-                }
-              }
-            }
-          ]
-        },
-        "ValidateSessionRequest": {
-          "allOf": [
-            {
-              "$ref": "#/components/schemas/RPCRequest"
-            },
-            {
-              "type": "object",
-              "properties": {
-                "method": {
-                  "enum": [
-                    "particle_aa_validateSession"
                   ]
-                },
-                "params": {
-                  "type": "array",
-                  "items": {
-                    "type": "object",
-                    "oneOf": [
-                      {
-                        "properties": {
-                          "name": {
-                            "type": "string"
-                          },
-                          "version": {
-                            "type": "string"
-                          },
-                          "ownerAddress": {
-                            "type": "string"
-                          }
-                        }
-                      },
-                      {
-                        "properties": {
-                          "sessions": {
-                            "type": "array",
-                            "items": {
-                              "type": "object"
-                            }
-                          },
-                          "targetSession": {
-                            "type": "object",
-                            "properties": {
-                              "validUntil": {
-                                "type": "integer"
-                              },
-                              "validAfter": {
-                                "type": "integer"
-                              },
-                              "sessionValidationModule": {
-                                "type": "string"
-                              },
-                              "sessionKeyDataInAbi": {
-                                "type": "array",
-                                "items": {
-                                  "oneOf": [
-                                    {
-                                      "type": "array",
-                                      "items": {
-                                        "type": "string"
-                                      }
-                                    },
-                                    {
-                                      "type": "array",
-                                      "items": {
-                                        "type": "string"
-                                      }
-                                    }
-                                  ]
-                                }
-                              }
-                            }
-                          }
-                        }
-                      }
-                    ]
-                  }
                 }
               }
             }
-          ]
-        },
-        "ValidateSessionResponse": {
-          "allOf": [
-            {
-              "$ref": "#/components/schemas/RPCResponse"
-            },
-            {
-              "type": "object",
-              "properties": {
-                "result": {
-                  "type": "boolean"
-                },
-                "chainId": {
-                  "type": "integer"
-                }
+          }
+        ]
+      },
+      "ValidateSessionResponse": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/RPCResponse"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "result": {
+                "type": "boolean"
+              },
+              "chainId": {
+                "type": "integer"
               }
             }
-          ]
-        },
-        "CreateUserOpRequest": {
-          "allOf": [
-            {
-              "$ref": "#/components/schemas/RPCRequest"
-            },
-            {
-              "type": "object",
-              "properties": {
-                "method": {
-                  "enum": [
-                    "particle_aa_createUserOp"
-                  ]
-                },
-                "params": {
-                  "type": "array",
-                  "items": {
-                    "oneOf": [
-                      {
-                        "type": "string"
-                      },
-                      {
-                        "type": "object",
-                        "properties": {
-                          "to": {
-                            "type": "string"
-                          },
-                          "value": {
-                            "type": "string"
-                          },
-                          "data": {
-                            "type": "string"
-                          }
-                        }
-                      },
-                      {
-                        "type": "object",
-                        "properties": {
-                          "tokenInfo": {
-                            "type": "object",
-                            "properties": {
-                              "chainId": {
-                                "type": "number"
-                              },
-                              "name": {
-                                "type": "string"
-                              },
-                              "symbol": {
-                                "type": "string"
-                              },
-                              "decimals": {
-                                "type": "number"
-                              },
-                              "address": {
-                                "type": "string"
-                              },
-                              "logoURI": {
-                                "type": "string"
-                              }
-                            }
-                          },
-                          "fee": {
-                            "type": "string"
-                          },
-                          "balance": {
-                            "type": "string"
-                          },
-                          "premiumPercentage": {
-                            "type": "string"
-                          }
-                        }
-                      },
-                      {
-                        "type": "string"
-                      }
-                    ]
-                  }
-                }
-              }
-            }
-          ]
-        },
-        "CreateUserOpResponse": {
-          "allOf": [
-            {
-              "$ref": "#/components/schemas/RPCResponse"
-            },
-            {
-              "type": "object",
-              "properties": {
-                "result": {
-                  "type": "object",
-                  "properties": {
-                    "userOp": {
-                      "type": "object"
+          }
+        ]
+      },
+      "CreateUserOpRequest": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/RPCRequest"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "method": {
+                "enum": [
+                  "particle_aa_createUserOp"
+                ]
+              },
+              "params": {
+                "type": "array",
+                "items": {
+                  "oneOf": [
+                    {
+                      "type": "string"
                     },
-                    "userOpHash": {
+                    {
+                      "type": "object",
+                      "properties": {
+                        "to": {
+                          "type": "string"
+                        },
+                        "value": {
+                          "type": "string"
+                        },
+                        "data": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "tokenInfo": {
+                          "type": "object",
+                          "properties": {
+                            "chainId": {
+                              "type": "number"
+                            },
+                            "name": {
+                              "type": "string"
+                            },
+                            "symbol": {
+                              "type": "string"
+                            },
+                            "decimals": {
+                              "type": "number"
+                            },
+                            "address": {
+                              "type": "string"
+                            },
+                            "logoURI": {
+                              "type": "string"
+                            }
+                          }
+                        },
+                        "fee": {
+                          "type": "string"
+                        },
+                        "balance": {
+                          "type": "string"
+                        },
+                        "premiumPercentage": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    {
                       "type": "string"
                     }
+                  ]
+                }
+              }
+            }
+          }
+        ]
+      },
+      "CreateUserOpResponse": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/RPCResponse"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "result": {
+                "type": "object",
+                "properties": {
+                  "userOp": {
+                    "type": "object"
+                  },
+                  "userOpHash": {
+                    "type": "string"
                   }
                 }
               }
             }
-          ]
-        },
-        "SendUserOpRequest": {
-          "allOf": [
-            {
-              "$ref": "#/components/schemas/RPCRequest"
-            },
-            {
-              "type": "object",
-              "properties": {
-                "method": {
-                  "enum": [
-                    "particle_aa_sendUserOp"
-                  ]
-                },
-                "params": {
-                  "type": "array",
-                  "items": {
-                    "oneOf": [
-                      {
-                        "type": "string"
-                      },
-                      {
-                        "type": "object",
-                        "properties": {
-                          "sender": {
-                            "type": "string"
-                          },
-                          "nonce": {
-                            "type": "string"
-                          },
-                          "initCode": {
-                            "type": "string"
-                          },
-                          "callData": {
-                            "type": "string"
-                          },
-                          "signature": {
-                            "type": "string"
-                          },
-                          "verificationGasLimit": {
-                            "type": "string"
-                          },
-                          "callGasLimit": {
-                            "type": "string"
-                          },
-                          "preVerificationGas": {
-                            "type": "string"
-                          },
-                          "paymasterAndData": {
-                            "type": "string"
-                          },
-                          "maxFeePerGas": {
-                            "type": "string"
-                          },
-                          "maxPriorityFeePerGas": {
-                            "type": "string"
-                          }
+          }
+        ]
+      },
+      "SendUserOpRequest": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/RPCRequest"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "method": {
+                "enum": [
+                  "particle_aa_sendUserOp"
+                ]
+              },
+              "params": {
+                "type": "array",
+                "items": {
+                  "oneOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "sender": {
+                          "type": "string"
+                        },
+                        "nonce": {
+                          "type": "string"
+                        },
+                        "initCode": {
+                          "type": "string"
+                        },
+                        "callData": {
+                          "type": "string"
+                        },
+                        "signature": {
+                          "type": "string"
+                        },
+                        "verificationGasLimit": {
+                          "type": "string"
+                        },
+                        "callGasLimit": {
+                          "type": "string"
+                        },
+                        "preVerificationGas": {
+                          "type": "string"
+                        },
+                        "paymasterAndData": {
+                          "type": "string"
+                        },
+                        "maxFeePerGas": {
+                          "type": "string"
+                        },
+                        "maxPriorityFeePerGas": {
+                          "type": "string"
                         }
                       }
-                    ]
-                  }
+                    }
+                  ]
                 }
               }
             }
-          ]
-        },
-        "SendUserOpResponse": {
-          "allOf": [
-            {
-              "$ref": "#/components/schemas/RPCResponse"
-            },
-            {
-              "type": "object",
-              "properties": {
-                "result": {
-                  "type": "string"
-                }
+          }
+        ]
+      },
+      "SendUserOpResponse": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/RPCResponse"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "result": {
+                "type": "string"
               }
             }
-          ]
-        }
+          }
+        ]
       }
-    },
-    "x-readme": {
-      "explorer-enabled": true,
-      "proxy-enabled": true
     }
   }
+}
