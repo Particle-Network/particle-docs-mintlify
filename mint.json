@@ -35,6 +35,11 @@
     {
       "name": "APIs & SDKs",
       "url": "api"
+    },
+    {
+      "name": "Changelog",
+      "url": "changelog",
+      "isDefaultHidden": true
     }
   ],
   "anchors": [
@@ -52,9 +57,13 @@
       "name": "GitHub",
       "icon": "github",
       "url": "https://github.com/Particle-Network"
+    },    {
+      "name": "Changelog",
+      "icon": "megaphone",
+      "url": "changelog/logs"
     }
   ],
-  "navigation": [
+  "navigation": [    
     {
       "group": "OVERVIEW",
       "pages": [
@@ -428,6 +437,11 @@
       "pages": [
         "api/debug/sdk",
         "api/debug/api"
+      ]
+    },   {
+      "group": "CHANGELOG",
+      "pages": [
+        "changelog/logs"
       ]
     }
   ],
