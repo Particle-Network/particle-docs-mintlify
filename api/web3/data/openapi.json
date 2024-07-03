@@ -23,7 +23,52 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CrosschainGetNFTsRequest"
+                "allOf": [
+                  {
+                    "type": "object",
+                    "required": [
+                      "jsonrpc",
+                      "id",
+                      "method",
+                      "params",
+                      "chainId"
+                    ],
+                    "properties": {
+                      "jsonrpc": {
+                        "type": "string",
+                        "default": 2
+                      },
+                      "id": {
+                        "type": "integer",
+                        "default": 1
+                      },
+                      "method": {
+                        "type": "string"
+                      },
+                      "chainId": {
+                        "type": "integer",
+                        "example": 80001
+                      },
+                      "params": {
+                        "type": "array"
+                      }
+                    }
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "method": {
+                        "enum": [
+                          "particle_crosschain_getNFTs"
+                        ]
+                      },
+                      "params": {
+                        "type": "array",
+                        "items": {}
+                      }
+                    }
+                  }
+                ]
               }
             }
           }
@@ -34,7 +79,67 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CrosschainGetNFTsResponse"
+                  "allOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "jsonrpc": {
+                          "type": "string"
+                        },
+                        "id": {
+                          "type": "integer"
+                        },
+                        "result": {
+                          "type": "object"
+                        }
+                      }
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "result": {
+                          "type": "object",
+                          "properties": {
+                            "nfts": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "address": {
+                                    "type": "string"
+                                  },
+                                  "isSemiFungible": {
+                                    "type": "boolean"
+                                  },
+                                  "tokenId": {
+                                    "type": "string"
+                                  },
+                                  "tokenBalance": {
+                                    "type": "string"
+                                  },
+                                  "tokenURI": {
+                                    "type": "string"
+                                  },
+                                  "name": {
+                                    "type": "string"
+                                  },
+                                  "symbol": {
+                                    "type": "string"
+                                  },
+                                  "image": {
+                                    "type": "string"
+                                  },
+                                  "data": {
+                                    "type": "object"
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
                 }
               }
             }
@@ -55,7 +160,52 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/GetTokensAndNFTsRequest"
+                "allOf": [
+                  {
+                    "type": "object",
+                    "required": [
+                      "jsonrpc",
+                      "id",
+                      "method",
+                      "params",
+                      "chainId"
+                    ],
+                    "properties": {
+                      "jsonrpc": {
+                        "type": "string",
+                        "default": 2
+                      },
+                      "id": {
+                        "type": "integer",
+                        "default": 1
+                      },
+                      "method": {
+                        "type": "string"
+                      },
+                      "chainId": {
+                        "type": "integer",
+                        "example": 80001
+                      },
+                      "params": {
+                        "type": "array"
+                      }
+                    }
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "method": {
+                        "enum": [
+                          "particle_getTokensAndNFTs"
+                        ]
+                      },
+                      "params": {
+                        "type": "array",
+                        "items": {}
+                      }
+                    }
+                  }
+                ]
               }
             }
           }
@@ -66,7 +216,101 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/GetTokensAndNFTsResponse"
+                  "allOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "jsonrpc": {
+                          "type": "string"
+                        },
+                        "id": {
+                          "type": "integer"
+                        },
+                        "result": {
+                          "type": "object"
+                        }
+                      }
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "result": {
+                          "type": "object",
+                          "required": [
+                            "native",
+                            "tokens",
+                            "nfts"
+                          ],
+                          "properties": {
+                            "native": {
+                              "type": "string"
+                            },
+                            "tokens": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "decimals": {
+                                    "type": "integer"
+                                  },
+                                  "amount": {
+                                    "type": "string"
+                                  },
+                                  "address": {
+                                    "type": "string"
+                                  },
+                                  "name": {
+                                    "type": "string"
+                                  },
+                                  "symbol": {
+                                    "type": "string"
+                                  },
+                                  "image": {
+                                    "type": "string"
+                                  }
+                                }
+                              }
+                            },
+                            "nfts": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "address": {
+                                    "type": "string"
+                                  },
+                                  "isSemiFungible": {
+                                    "type": "boolean"
+                                  },
+                                  "tokenId": {
+                                    "type": "string"
+                                  },
+                                  "tokenBalance": {
+                                    "type": "string"
+                                  },
+                                  "tokenURI": {
+                                    "type": "string"
+                                  },
+                                  "name": {
+                                    "type": "string"
+                                  },
+                                  "symbol": {
+                                    "type": "string"
+                                  },
+                                  "image": {
+                                    "type": "string"
+                                  },
+                                  "data": {
+                                    "type": "object"
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
                 }
               }
             }
@@ -87,7 +331,52 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/GetTokensRequest"
+                "allOf": [
+                  {
+                    "type": "object",
+                    "required": [
+                      "jsonrpc",
+                      "id",
+                      "method",
+                      "params",
+                      "chainId"
+                    ],
+                    "properties": {
+                      "jsonrpc": {
+                        "type": "string",
+                        "default": 2
+                      },
+                      "id": {
+                        "type": "integer",
+                        "default": 1
+                      },
+                      "method": {
+                        "type": "string"
+                      },
+                      "chainId": {
+                        "type": "integer",
+                        "example": 80001
+                      },
+                      "params": {
+                        "type": "array"
+                      }
+                    }
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "method": {
+                        "enum": [
+                          "particle_getTokens"
+                        ]
+                      },
+                      "params": {
+                        "type": "array",
+                        "items": {}
+                      }
+                    }
+                  }
+                ]
               }
             }
           }
@@ -98,7 +387,65 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/GetTokensResponse"
+                  "allOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "jsonrpc": {
+                          "type": "string"
+                        },
+                        "id": {
+                          "type": "integer"
+                        },
+                        "result": {
+                          "type": "object"
+                        }
+                      }
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "result": {
+                          "type": "object",
+                          "required": [
+                            "native",
+                            "tokens"
+                          ],
+                          "properties": {
+                            "native": {
+                              "type": "string"
+                            },
+                            "tokens": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "decimals": {
+                                    "type": "integer"
+                                  },
+                                  "amount": {
+                                    "type": "string"
+                                  },
+                                  "address": {
+                                    "type": "string"
+                                  },
+                                  "name": {
+                                    "type": "string"
+                                  },
+                                  "symbol": {
+                                    "type": "string"
+                                  },
+                                  "image": {
+                                    "type": "string"
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
                 }
               }
             }
@@ -119,7 +466,57 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/GetPriceRequest"
+                "allOf": [
+                  {
+                    "type": "object",
+                    "required": [
+                      "jsonrpc",
+                      "id",
+                      "method",
+                      "params",
+                      "chainId"
+                    ],
+                    "properties": {
+                      "jsonrpc": {
+                        "type": "string",
+                        "default": 2
+                      },
+                      "id": {
+                        "type": "integer",
+                        "default": 1
+                      },
+                      "method": {
+                        "type": "string"
+                      },
+                      "chainId": {
+                        "type": "integer",
+                        "example": 80001
+                      },
+                      "params": {
+                        "type": "array"
+                      }
+                    }
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "method": {
+                        "enum": [
+                          "particle_getPrice"
+                        ]
+                      },
+                      "params": {
+                        "type": "array",
+                        "items": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                ]
               }
             }
           }
@@ -130,7 +527,64 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/GetPriceResponse"
+                  "allOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "jsonrpc": {
+                          "type": "string"
+                        },
+                        "id": {
+                          "type": "integer"
+                        },
+                        "result": {
+                          "type": "object"
+                        }
+                      }
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "result": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "address": {
+                                "type": "string"
+                              },
+                              "currencies": {
+                                "type": "array",
+                                "items": {
+                                  "type": "object",
+                                  "properties": {
+                                    "type": {
+                                      "type": "string"
+                                    },
+                                    "price": {
+                                      "type": "number"
+                                    },
+                                    "marketCap": {
+                                      "type": "number"
+                                    },
+                                    "24hChange": {
+                                      "type": "number"
+                                    },
+                                    "24hVol": {
+                                      "type": "number"
+                                    },
+                                    "lastUpdatedAt": {
+                                      "type": "integer"
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
                 }
               }
             }
@@ -151,7 +605,59 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/SuggestedGasFeesRequest"
+                "allOf": [
+                  {
+                    "type": "object",
+                    "required": [
+                      "jsonrpc",
+                      "id",
+                      "method",
+                      "params",
+                      "chainId"
+                    ],
+                    "properties": {
+                      "jsonrpc": {
+                        "type": "string",
+                        "default": 2
+                      },
+                      "id": {
+                        "type": "integer",
+                        "default": 1
+                      },
+                      "method": {
+                        "type": "string"
+                      },
+                      "chainId": {
+                        "type": "integer",
+                        "example": 80001
+                      },
+                      "params": {
+                        "type": "array"
+                      }
+                    }
+                  },
+                  {
+                    "type": "object",
+                    "required": [
+                      "method"
+                    ],
+                    "properties": {
+                      "method": {
+                        "type": "string",
+                        "default": "particle_suggestedGasFees",
+                        "enum": [
+                          "particle_suggestedGasFees"
+                        ]
+                      },
+                      "params": {
+                        "type": "array",
+                        "enum": [
+                          []
+                        ]
+                      }
+                    }
+                  }
+                ]
               }
             }
           }
@@ -162,7 +668,44 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/SuggestedGasFeesResponse"
+                  "allOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "jsonrpc": {
+                          "type": "string"
+                        },
+                        "id": {
+                          "type": "integer"
+                        },
+                        "result": {
+                          "type": "object"
+                        }
+                      }
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "result": {
+                          "type": "object",
+                          "properties": {
+                            "low": {
+                              "type": "object"
+                            },
+                            "medium": {
+                              "type": "object"
+                            },
+                            "high": {
+                              "type": "object"
+                            },
+                            "baseFee": {
+                              "type": "string"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
                 }
               }
             }
@@ -183,7 +726,54 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/GetTransactionsByAddressRequest"
+                "allOf": [
+                  {
+                    "type": "object",
+                    "required": [
+                      "jsonrpc",
+                      "id",
+                      "method",
+                      "params",
+                      "chainId"
+                    ],
+                    "properties": {
+                      "jsonrpc": {
+                        "type": "string",
+                        "default": 2
+                      },
+                      "id": {
+                        "type": "integer",
+                        "default": 1
+                      },
+                      "method": {
+                        "type": "string"
+                      },
+                      "chainId": {
+                        "type": "integer",
+                        "example": 80001
+                      },
+                      "params": {
+                        "type": "array"
+                      }
+                    }
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "method": {
+                        "enum": [
+                          "particle_getTransactionsByAddress"
+                        ]
+                      },
+                      "params": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                ]
               }
             }
           }
@@ -194,7 +784,86 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/GetTransactionsByAddressResponse"
+                  "allOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "jsonrpc": {
+                          "type": "string"
+                        },
+                        "id": {
+                          "type": "integer"
+                        },
+                        "result": {
+                          "type": "object"
+                        }
+                      }
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "result": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "hash": {
+                                "type": "string"
+                              },
+                              "from": {
+                                "type": "string"
+                              },
+                              "to": {
+                                "type": "string"
+                              },
+                              "value": {
+                                "type": "string"
+                              },
+                              "data": {
+                                "type": "string"
+                              },
+                              "gasLimit": {
+                                "type": "integer"
+                              },
+                              "timestamp": {
+                                "type": "integer"
+                              },
+                              "status": {
+                                "type": "integer"
+                              },
+                              "type": {
+                                "type": "integer"
+                              },
+                              "nonce": {
+                                "type": "integer"
+                              },
+                              "accessList": {
+                                "type": "array",
+                                "items": {
+                                  "type": "object"
+                                }
+                              },
+                              "maxPriorityFeePerGas": {
+                                "type": "string"
+                              },
+                              "maxFeePerGas": {
+                                "type": "string"
+                              },
+                              "gasSpent": {
+                                "type": "string"
+                              },
+                              "gasPrice": {
+                                "type": "string"
+                              },
+                              "fees": {
+                                "type": "string"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
                 }
               }
             }
@@ -215,7 +884,54 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/GetPendingTransactionsByAddressRequest"
+                "allOf": [
+                  {
+                    "type": "object",
+                    "required": [
+                      "jsonrpc",
+                      "id",
+                      "method",
+                      "params",
+                      "chainId"
+                    ],
+                    "properties": {
+                      "jsonrpc": {
+                        "type": "string",
+                        "default": 2
+                      },
+                      "id": {
+                        "type": "integer",
+                        "default": 1
+                      },
+                      "method": {
+                        "type": "string"
+                      },
+                      "chainId": {
+                        "type": "integer",
+                        "example": 80001
+                      },
+                      "params": {
+                        "type": "array"
+                      }
+                    }
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "method": {
+                        "enum": [
+                          "particle_getPendingTransactionsByAddress"
+                        ]
+                      },
+                      "params": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                ]
               }
             }
           }
@@ -226,7 +942,77 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/GetPendingTransactionsByAddressResponse"
+                  "allOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "jsonrpc": {
+                          "type": "string"
+                        },
+                        "id": {
+                          "type": "integer"
+                        },
+                        "result": {
+                          "type": "object"
+                        }
+                      }
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "result": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "hash": {
+                                "type": "string"
+                              },
+                              "from": {
+                                "type": "string"
+                              },
+                              "to": {
+                                "type": "string"
+                              },
+                              "value": {
+                                "type": "string"
+                              },
+                              "data": {
+                                "type": "string"
+                              },
+                              "gasLimit": {
+                                "type": "integer"
+                              },
+                              "timestamp": {
+                                "type": "integer"
+                              },
+                              "status": {
+                                "type": "integer"
+                              },
+                              "type": {
+                                "type": "integer"
+                              },
+                              "nonce": {
+                                "type": "integer"
+                              },
+                              "accessList": {
+                                "type": "array",
+                                "items": {
+                                  "type": "object"
+                                }
+                              },
+                              "maxPriorityFeePerGas": {
+                                "type": "string"
+                              },
+                              "maxFeePerGas": {
+                                "type": "string"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
                 }
               }
             }
@@ -247,7 +1033,66 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/ABIEncodeFunctionCallRequest"
+                "allOf": [
+                  {
+                    "type": "object",
+                    "required": [
+                      "jsonrpc",
+                      "id",
+                      "method",
+                      "params",
+                      "chainId"
+                    ],
+                    "properties": {
+                      "jsonrpc": {
+                        "type": "string",
+                        "default": 2
+                      },
+                      "id": {
+                        "type": "integer",
+                        "default": 1
+                      },
+                      "method": {
+                        "type": "string"
+                      },
+                      "chainId": {
+                        "type": "integer",
+                        "example": 80001
+                      },
+                      "params": {
+                        "type": "array"
+                      }
+                    }
+                  },
+                  {
+                    "type": "object",
+                    "required": [
+                      "method"
+                    ],
+                    "properties": {
+                      "method": {
+                        "type": "string",
+                        "default": "particle_abi_encodeFunctionCall",
+                        "enum": [
+                          "particle_abi_encodeFunctionCall"
+                        ]
+                      },
+                      "params": {
+                        "type": "array",
+                        "items": {
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "array"
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  }
+                ]
               }
             }
           }
@@ -258,7 +1103,30 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ABIEncodeFunctionCallResponse"
+                  "allOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "jsonrpc": {
+                          "type": "string"
+                        },
+                        "id": {
+                          "type": "integer"
+                        },
+                        "result": {
+                          "type": "object"
+                        }
+                      }
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "result": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  ]
                 }
               }
             }
@@ -279,7 +1147,66 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/GetContractABIRequest"
+                "allOf": [
+                  {
+                    "type": "object",
+                    "required": [
+                      "jsonrpc",
+                      "id",
+                      "method",
+                      "params",
+                      "chainId"
+                    ],
+                    "properties": {
+                      "jsonrpc": {
+                        "type": "string",
+                        "default": 2
+                      },
+                      "id": {
+                        "type": "integer",
+                        "default": 1
+                      },
+                      "method": {
+                        "type": "string"
+                      },
+                      "chainId": {
+                        "type": "integer",
+                        "example": 80001
+                      },
+                      "params": {
+                        "type": "array"
+                      }
+                    }
+                  },
+                  {
+                    "type": "object",
+                    "required": [
+                      "method"
+                    ],
+                    "properties": {
+                      "method": {
+                        "type": "string",
+                        "default": "particle_abi_getContractAbi",
+                        "enum": [
+                          "particle_abi_getContractAbi"
+                        ]
+                      },
+                      "params": {
+                        "type": "array",
+                        "items": {
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "boolean"
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  }
+                ]
               }
             }
           }
@@ -290,7 +1217,30 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/GetContractABIResponse"
+                  "allOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "jsonrpc": {
+                          "type": "string"
+                        },
+                        "id": {
+                          "type": "integer"
+                        },
+                        "result": {
+                          "type": "object"
+                        }
+                      }
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "result": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  ]
                 }
               }
             }
@@ -311,7 +1261,62 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/DeserializeTransactionRequest"
+                "allOf": [
+                  {
+                    "type": "object",
+                    "required": [
+                      "jsonrpc",
+                      "id",
+                      "method",
+                      "params",
+                      "chainId"
+                    ],
+                    "properties": {
+                      "jsonrpc": {
+                        "type": "string",
+                        "default": 2
+                      },
+                      "id": {
+                        "type": "integer",
+                        "default": 1
+                      },
+                      "method": {
+                        "type": "string"
+                      },
+                      "chainId": {
+                        "type": "integer",
+                        "example": 80001
+                      },
+                      "params": {
+                        "type": "array"
+                      }
+                    }
+                  },
+                  {
+                    "type": "object",
+                    "required": [
+                      "method"
+                    ],
+                    "properties": {
+                      "method": {
+                        "type": "string",
+                        "default": "particle_deserializeTransaction",
+                        "enum": [
+                          "particle_deserializeTransaction"
+                        ]
+                      },
+                      "params": {
+                        "type": "array",
+                        "items": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                ]
               }
             }
           }
@@ -322,7 +1327,38 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/DeserializeTransactionResponse"
+                  "allOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "jsonrpc": {
+                          "type": "string"
+                        },
+                        "id": {
+                          "type": "integer"
+                        },
+                        "result": {
+                          "type": "object"
+                        }
+                      }
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "result": {
+                          "type": "object",
+                          "properties": {
+                            "estimatedChanges": {
+                              "type": "object"
+                            },
+                            "data": {
+                              "type": "object"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
                 }
               }
             }
@@ -343,7 +1379,59 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/GetLatestBlockRequest"
+                "allOf": [
+                  {
+                    "type": "object",
+                    "required": [
+                      "jsonrpc",
+                      "id",
+                      "method",
+                      "params",
+                      "chainId"
+                    ],
+                    "properties": {
+                      "jsonrpc": {
+                        "type": "string",
+                        "default": 2
+                      },
+                      "id": {
+                        "type": "integer",
+                        "default": 1
+                      },
+                      "method": {
+                        "type": "string"
+                      },
+                      "chainId": {
+                        "type": "integer",
+                        "example": 80001
+                      },
+                      "params": {
+                        "type": "array"
+                      }
+                    }
+                  },
+                  {
+                    "type": "object",
+                    "required": [
+                      "method"
+                    ],
+                    "properties": {
+                      "method": {
+                        "type": "string",
+                        "default": "particle_getLatestBlock",
+                        "enum": [
+                          "particle_getLatestBlock"
+                        ]
+                      },
+                      "params": {
+                        "type": "array",
+                        "enum": [
+                          []
+                        ]
+                      }
+                    }
+                  }
+                ]
               }
             }
           }
@@ -354,7 +1442,104 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/GetLatestBlockResponse"
+                  "allOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "jsonrpc": {
+                          "type": "string"
+                        },
+                        "id": {
+                          "type": "integer"
+                        },
+                        "result": {
+                          "type": "object"
+                        }
+                      }
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "result": {
+                          "type": "object",
+                          "properties": {
+                            "difficulty": {
+                              "type": "string"
+                            },
+                            "extraData": {
+                              "type": "string"
+                            },
+                            "gasLimit": {
+                              "type": "string"
+                            },
+                            "gasUsed": {
+                              "type": "string"
+                            },
+                            "hash": {
+                              "type": "string"
+                            },
+                            "logsBloom": {
+                              "type": "string"
+                            },
+                            "miner": {
+                              "type": "string"
+                            },
+                            "mixHash": {
+                              "type": "string"
+                            },
+                            "nonce": {
+                              "type": "string"
+                            },
+                            "number": {
+                              "type": "string"
+                            },
+                            "parentHash": {
+                              "type": "string"
+                            },
+                            "receiptsRoot": {
+                              "type": "string"
+                            },
+                            "sha3Uncles": {
+                              "type": "string"
+                            },
+                            "size": {
+                              "type": "string"
+                            },
+                            "stateRoot": {
+                              "type": "string"
+                            },
+                            "timestamp": {
+                              "type": "string"
+                            },
+                            "totalDifficulty": {
+                              "type": "string"
+                            },
+                            "transactions": {
+                              "type": "array",
+                              "items": {
+                                "type": "object"
+                              }
+                            },
+                            "transactionsRoot": {
+                              "type": "string"
+                            },
+                            "uncles": {
+                              "type": "array",
+                              "items": {
+                                "type": "object"
+                              }
+                            },
+                            "receipts": {
+                              "type": "array",
+                              "items": {
+                                "type": "object"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
                 }
               }
             }
@@ -375,7 +1560,52 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/GetNFTsRequest"
+                "allOf": [
+                  {
+                    "type": "object",
+                    "required": [
+                      "jsonrpc",
+                      "id",
+                      "method",
+                      "params",
+                      "chainId"
+                    ],
+                    "properties": {
+                      "jsonrpc": {
+                        "type": "string",
+                        "default": 2
+                      },
+                      "id": {
+                        "type": "integer",
+                        "default": 1
+                      },
+                      "method": {
+                        "type": "string"
+                      },
+                      "chainId": {
+                        "type": "integer",
+                        "example": 80001
+                      },
+                      "params": {
+                        "type": "array"
+                      }
+                    }
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "method": {
+                        "enum": [
+                          "particle_getNFTs"
+                        ]
+                      },
+                      "params": {
+                        "type": "array",
+                        "items": {}
+                      }
+                    }
+                  }
+                ]
               }
             }
           }
@@ -386,7 +1616,67 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/GetNFTsResponse"
+                  "allOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "jsonrpc": {
+                          "type": "string"
+                        },
+                        "id": {
+                          "type": "integer"
+                        },
+                        "result": {
+                          "type": "object"
+                        }
+                      }
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "result": {
+                          "type": "object",
+                          "properties": {
+                            "nfts": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "address": {
+                                    "type": "string"
+                                  },
+                                  "isSemiFungible": {
+                                    "type": "boolean"
+                                  },
+                                  "tokenId": {
+                                    "type": "string"
+                                  },
+                                  "tokenBalance": {
+                                    "type": "string"
+                                  },
+                                  "tokenURI": {
+                                    "type": "string"
+                                  },
+                                  "name": {
+                                    "type": "string"
+                                  },
+                                  "symbol": {
+                                    "type": "string"
+                                  },
+                                  "image": {
+                                    "type": "string"
+                                  },
+                                  "data": {
+                                    "type": "object"
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
                 }
               }
             }
@@ -450,7 +1740,34 @@
       "GetTokensRequest": {
         "allOf": [
           {
-            "$ref": "#/components/schemas/RPCRequest"
+            "type": "object",
+            "required": [
+              "jsonrpc",
+              "id",
+              "method",
+              "params",
+              "chainId"
+            ],
+            "properties": {
+              "jsonrpc": {
+                "type": "string",
+                "default": 2
+              },
+              "id": {
+                "type": "integer",
+                "default": 1
+              },
+              "method": {
+                "type": "string"
+              },
+              "chainId": {
+                "type": "integer",
+                "example": 80001
+              },
+              "params": {
+                "type": "array"
+              }
+            }
           },
           {
             "type": "object",
@@ -471,7 +1788,34 @@
       "GetTokensAndNFTsRequest": {
         "allOf": [
           {
-            "$ref": "#/components/schemas/RPCRequest"
+            "type": "object",
+            "required": [
+              "jsonrpc",
+              "id",
+              "method",
+              "params",
+              "chainId"
+            ],
+            "properties": {
+              "jsonrpc": {
+                "type": "string",
+                "default": 2
+              },
+              "id": {
+                "type": "integer",
+                "default": 1
+              },
+              "method": {
+                "type": "string"
+              },
+              "chainId": {
+                "type": "integer",
+                "example": 80001
+              },
+              "params": {
+                "type": "array"
+              }
+            }
           },
           {
             "type": "object",
@@ -492,7 +1836,18 @@
       "GetTokensAndNFTsResponse": {
         "allOf": [
           {
-            "$ref": "#/components/schemas/RPCResponse"
+            "type": "object",
+            "properties": {
+              "jsonrpc": {
+                "type": "string"
+              },
+              "id": {
+                "type": "integer"
+              },
+              "result": {
+                "type": "object"
+              }
+            }
           },
           {
             "type": "object",
@@ -578,7 +1933,18 @@
       "GetTokensResponse": {
         "allOf": [
           {
-            "$ref": "#/components/schemas/RPCResponse"
+            "type": "object",
+            "properties": {
+              "jsonrpc": {
+                "type": "string"
+              },
+              "id": {
+                "type": "integer"
+              },
+              "result": {
+                "type": "object"
+              }
+            }
           },
           {
             "type": "object",
@@ -628,7 +1994,34 @@
       "GetPriceRequest": {
         "allOf": [
           {
-            "$ref": "#/components/schemas/RPCRequest"
+            "type": "object",
+            "required": [
+              "jsonrpc",
+              "id",
+              "method",
+              "params",
+              "chainId"
+            ],
+            "properties": {
+              "jsonrpc": {
+                "type": "string",
+                "default": 2
+              },
+              "id": {
+                "type": "integer",
+                "default": 1
+              },
+              "method": {
+                "type": "string"
+              },
+              "chainId": {
+                "type": "integer",
+                "example": 80001
+              },
+              "params": {
+                "type": "array"
+              }
+            }
           },
           {
             "type": "object",
@@ -654,7 +2047,34 @@
       "CrosschainGetNFTsRequest": {
         "allOf": [
           {
-            "$ref": "#/components/schemas/RPCRequest"
+            "type": "object",
+            "required": [
+              "jsonrpc",
+              "id",
+              "method",
+              "params",
+              "chainId"
+            ],
+            "properties": {
+              "jsonrpc": {
+                "type": "string",
+                "default": 2
+              },
+              "id": {
+                "type": "integer",
+                "default": 1
+              },
+              "method": {
+                "type": "string"
+              },
+              "chainId": {
+                "type": "integer",
+                "example": 80001
+              },
+              "params": {
+                "type": "array"
+              }
+            }
           },
           {
             "type": "object",
@@ -675,7 +2095,18 @@
       "CrosschainGetNFTsResponse": {
         "allOf": [
           {
-            "$ref": "#/components/schemas/RPCResponse"
+            "type": "object",
+            "properties": {
+              "jsonrpc": {
+                "type": "string"
+              },
+              "id": {
+                "type": "integer"
+              },
+              "result": {
+                "type": "object"
+              }
+            }
           },
           {
             "type": "object",
@@ -727,7 +2158,18 @@
       "GetPriceResponse": {
         "allOf": [
           {
-            "$ref": "#/components/schemas/RPCResponse"
+            "type": "object",
+            "properties": {
+              "jsonrpc": {
+                "type": "string"
+              },
+              "id": {
+                "type": "integer"
+              },
+              "result": {
+                "type": "object"
+              }
+            }
           },
           {
             "type": "object",
@@ -776,7 +2218,34 @@
       "SuggestedGasFeesRequest": {
         "allOf": [
           {
-            "$ref": "#/components/schemas/RPCRequest"
+            "type": "object",
+            "required": [
+              "jsonrpc",
+              "id",
+              "method",
+              "params",
+              "chainId"
+            ],
+            "properties": {
+              "jsonrpc": {
+                "type": "string",
+                "default": 2
+              },
+              "id": {
+                "type": "integer",
+                "default": 1
+              },
+              "method": {
+                "type": "string"
+              },
+              "chainId": {
+                "type": "integer",
+                "example": 80001
+              },
+              "params": {
+                "type": "array"
+              }
+            }
           },
           {
             "type": "object",
@@ -804,7 +2273,18 @@
       "SuggestedGasFeesResponse": {
         "allOf": [
           {
-            "$ref": "#/components/schemas/RPCResponse"
+            "type": "object",
+            "properties": {
+              "jsonrpc": {
+                "type": "string"
+              },
+              "id": {
+                "type": "integer"
+              },
+              "result": {
+                "type": "object"
+              }
+            }
           },
           {
             "type": "object",
@@ -833,7 +2313,34 @@
       "GetTransactionsByAddressRequest": {
         "allOf": [
           {
-            "$ref": "#/components/schemas/RPCRequest"
+            "type": "object",
+            "required": [
+              "jsonrpc",
+              "id",
+              "method",
+              "params",
+              "chainId"
+            ],
+            "properties": {
+              "jsonrpc": {
+                "type": "string",
+                "default": 2
+              },
+              "id": {
+                "type": "integer",
+                "default": 1
+              },
+              "method": {
+                "type": "string"
+              },
+              "chainId": {
+                "type": "integer",
+                "example": 80001
+              },
+              "params": {
+                "type": "array"
+              }
+            }
           },
           {
             "type": "object",
@@ -856,7 +2363,18 @@
       "GetTransactionsByAddressResponse": {
         "allOf": [
           {
-            "$ref": "#/components/schemas/RPCResponse"
+            "type": "object",
+            "properties": {
+              "jsonrpc": {
+                "type": "string"
+              },
+              "id": {
+                "type": "integer"
+              },
+              "result": {
+                "type": "object"
+              }
+            }
           },
           {
             "type": "object",
@@ -927,7 +2445,34 @@
       "GetPendingTransactionsByAddressRequest": {
         "allOf": [
           {
-            "$ref": "#/components/schemas/RPCRequest"
+            "type": "object",
+            "required": [
+              "jsonrpc",
+              "id",
+              "method",
+              "params",
+              "chainId"
+            ],
+            "properties": {
+              "jsonrpc": {
+                "type": "string",
+                "default": 2
+              },
+              "id": {
+                "type": "integer",
+                "default": 1
+              },
+              "method": {
+                "type": "string"
+              },
+              "chainId": {
+                "type": "integer",
+                "example": 80001
+              },
+              "params": {
+                "type": "array"
+              }
+            }
           },
           {
             "type": "object",
@@ -950,7 +2495,18 @@
       "GetPendingTransactionsByAddressResponse": {
         "allOf": [
           {
-            "$ref": "#/components/schemas/RPCResponse"
+            "type": "object",
+            "properties": {
+              "jsonrpc": {
+                "type": "string"
+              },
+              "id": {
+                "type": "integer"
+              },
+              "result": {
+                "type": "object"
+              }
+            }
           },
           {
             "type": "object",
@@ -1012,7 +2568,34 @@
       "ABIEncodeFunctionCallRequest": {
         "allOf": [
           {
-            "$ref": "#/components/schemas/RPCRequest"
+            "type": "object",
+            "required": [
+              "jsonrpc",
+              "id",
+              "method",
+              "params",
+              "chainId"
+            ],
+            "properties": {
+              "jsonrpc": {
+                "type": "string",
+                "default": 2
+              },
+              "id": {
+                "type": "integer",
+                "default": 1
+              },
+              "method": {
+                "type": "string"
+              },
+              "chainId": {
+                "type": "integer",
+                "example": 80001
+              },
+              "params": {
+                "type": "array"
+              }
+            }
           },
           {
             "type": "object",
@@ -1047,7 +2630,18 @@
       "ABIEncodeFunctionCallResponse": {
         "allOf": [
           {
-            "$ref": "#/components/schemas/RPCResponse"
+            "type": "object",
+            "properties": {
+              "jsonrpc": {
+                "type": "string"
+              },
+              "id": {
+                "type": "integer"
+              },
+              "result": {
+                "type": "object"
+              }
+            }
           },
           {
             "type": "object",
@@ -1062,7 +2656,34 @@
       "GetContractABIRequest": {
         "allOf": [
           {
-            "$ref": "#/components/schemas/RPCRequest"
+            "type": "object",
+            "required": [
+              "jsonrpc",
+              "id",
+              "method",
+              "params",
+              "chainId"
+            ],
+            "properties": {
+              "jsonrpc": {
+                "type": "string",
+                "default": 2
+              },
+              "id": {
+                "type": "integer",
+                "default": 1
+              },
+              "method": {
+                "type": "string"
+              },
+              "chainId": {
+                "type": "integer",
+                "example": 80001
+              },
+              "params": {
+                "type": "array"
+              }
+            }
           },
           {
             "type": "object",
@@ -1097,7 +2718,18 @@
       "GetContractABIResponse": {
         "allOf": [
           {
-            "$ref": "#/components/schemas/RPCResponse"
+            "type": "object",
+            "properties": {
+              "jsonrpc": {
+                "type": "string"
+              },
+              "id": {
+                "type": "integer"
+              },
+              "result": {
+                "type": "object"
+              }
+            }
           },
           {
             "type": "object",
@@ -1112,7 +2744,34 @@
       "DeserializeTransactionRequest": {
         "allOf": [
           {
-            "$ref": "#/components/schemas/RPCRequest"
+            "type": "object",
+            "required": [
+              "jsonrpc",
+              "id",
+              "method",
+              "params",
+              "chainId"
+            ],
+            "properties": {
+              "jsonrpc": {
+                "type": "string",
+                "default": 2
+              },
+              "id": {
+                "type": "integer",
+                "default": 1
+              },
+              "method": {
+                "type": "string"
+              },
+              "chainId": {
+                "type": "integer",
+                "example": 80001
+              },
+              "params": {
+                "type": "array"
+              }
+            }
           },
           {
             "type": "object",
@@ -1143,7 +2802,18 @@
       "DeserializeTransactionResponse": {
         "allOf": [
           {
-            "$ref": "#/components/schemas/RPCResponse"
+            "type": "object",
+            "properties": {
+              "jsonrpc": {
+                "type": "string"
+              },
+              "id": {
+                "type": "integer"
+              },
+              "result": {
+                "type": "object"
+              }
+            }
           },
           {
             "type": "object",
@@ -1166,7 +2836,34 @@
       "GetLatestBlockRequest": {
         "allOf": [
           {
-            "$ref": "#/components/schemas/RPCRequest"
+            "type": "object",
+            "required": [
+              "jsonrpc",
+              "id",
+              "method",
+              "params",
+              "chainId"
+            ],
+            "properties": {
+              "jsonrpc": {
+                "type": "string",
+                "default": 2
+              },
+              "id": {
+                "type": "integer",
+                "default": 1
+              },
+              "method": {
+                "type": "string"
+              },
+              "chainId": {
+                "type": "integer",
+                "example": 80001
+              },
+              "params": {
+                "type": "array"
+              }
+            }
           },
           {
             "type": "object",
@@ -1194,7 +2891,18 @@
       "GetLatestBlockResponse": {
         "allOf": [
           {
-            "$ref": "#/components/schemas/RPCResponse"
+            "type": "object",
+            "properties": {
+              "jsonrpc": {
+                "type": "string"
+              },
+              "id": {
+                "type": "integer"
+              },
+              "result": {
+                "type": "object"
+              }
+            }
           },
           {
             "type": "object",
@@ -1283,7 +2991,34 @@
       "GetNFTsRequest": {
         "allOf": [
           {
-            "$ref": "#/components/schemas/RPCRequest"
+            "type": "object",
+            "required": [
+              "jsonrpc",
+              "id",
+              "method",
+              "params",
+              "chainId"
+            ],
+            "properties": {
+              "jsonrpc": {
+                "type": "string",
+                "default": 2
+              },
+              "id": {
+                "type": "integer",
+                "default": 1
+              },
+              "method": {
+                "type": "string"
+              },
+              "chainId": {
+                "type": "integer",
+                "example": 80001
+              },
+              "params": {
+                "type": "array"
+              }
+            }
           },
           {
             "type": "object",
@@ -1304,7 +3039,18 @@
       "GetNFTsResponse": {
         "allOf": [
           {
-            "$ref": "#/components/schemas/RPCResponse"
+            "type": "object",
+            "properties": {
+              "jsonrpc": {
+                "type": "string"
+              },
+              "id": {
+                "type": "integer"
+              },
+              "result": {
+                "type": "object"
+              }
+            }
           },
           {
             "type": "object",
