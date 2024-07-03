@@ -1,0 +1,132 @@
+/* Dark Mode */
+@media (prefers-color-scheme: dark) {
+    body {
+        background-color: #1b161e; /* Slightly lighter shade than #0d0a0f */
+        color: #ffffff; /* Light text color for readability */
+    }
+
+    .github-gallery-container {
+        font-family: Arial, sans-serif;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 20px;
+    }
+
+    .category {
+        width: 100%;
+        margin-bottom: 30px;
+    }
+
+    .category-header {
+        font-size: 1.5em;
+        margin-bottom: 15px;
+        color: #ffffff; /* Light color for headings */
+    }
+
+    .gallery {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+    }
+
+    .repo {
+        background: #1f1c21; /* Slightly lighter shade for dark mode card background */
+        border: 1px solid #3f4954; /* Darker border for contrast */
+        padding: 20px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.3), 0 0 10px rgba(201, 67, 199, 0.5); /* Adjusted for dark mode */
+        border-radius: 10px;
+    }
+
+    .repo h2 {
+        margin-top: 0;
+        color: #e1e1e1; /* Lighter text color for headings */
+    }
+
+    .repo p {
+        font-size: 0.9em;
+        color: #cccccc; /* Lighter text color for paragraphs */
+    }
+
+    .repo a {
+        text-decoration: none;
+        color: #00b0ff; /* Bright link color for contrast */
+        font-weight: bold;
+    }
+}
+
+/* Light Mode */
+@media (prefers-color-scheme: light) {
+    body {
+        background-color: #f5f5f5; /* Very light, modern grey */
+        color: #000000; /* Dark text color for readability */
+    }
+
+    .github-gallery-container {
+        font-family: Arial, sans-serif;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 20px;
+    }
+
+    .category {
+        width: 100%;
+        margin-bottom: 30px;
+    }
+
+    .category-header {
+        font-size: 1.5em;
+        margin-bottom: 15px;
+        color: #333333; /* Dark color for headings */
+    }
+
+    .gallery {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+    }
+
+    .repo {
+        background: #ffffff; /* Light mode card background */
+        border: 1px solid #dddddd; /* Light border for contrast */
+        padding: 20px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1), 0 0 10px rgba(201, 67, 199, 0.5); /* Adjusted for light mode */
+        border-radius: 10px;
+    }
+
+    .repo h2 {
+        margin-top: 0;
+        color: #333333; /* Dark text color for headings */
+    }
+
+    .repo p {
+        font-size: 0.9em;
+        color: #666666; /* Dark text color for paragraphs */
+    }
+
+    .repo a {
+        text-decoration: none;
+        color: #007bff; /* Bright link color for contrast */
+        font-weight: bold;
+    }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .gallery {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 480px) {
+    .category-header {
+        font-size: 1.2em;
+    }
+    .gallery {
+        grid-template-columns: 1fr;
+    }
+    .repo p {
+        font-size: 0.8em;
+    }
+}

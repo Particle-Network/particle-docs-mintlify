@@ -1,5 +1,5 @@
 ---
-title: "Particle L1 architecture"
+title: "Particle L1 Architecture"
 mode: "wide"
 ---
 
@@ -7,21 +7,21 @@ mode: "wide"
 
 Built with the Cosmos SDK, Particle Network exists to coordinate and settle cross-chain transactions within a high-performance EVM execution environment (with this EVM-compatibility powered by Berachain's BeaconKit). This L1 enables three core functionalities:
 
-1. [Universal Accounts](/resources/modular-l1/universal-accounts)
-2. [Universal Liquidity](/resources/modular-l1/universal-liquidity)
-3. [Universal Gas](/resources/modular-l1/universal-gas)
+1. [Universal Accounts](/landing/modular-l1/universal-accounts)
+2. [Universal Liquidity](/landing/modular-l1/universal-liquidity)
+3. [Universal Gas](/landing/modular-l1/universal-gas)
 
 
 Collectively, these allow for the unification of interactions across all chains, providing users with a single balance and account state. To achieve this, Particle Network coordinates and settles the atomic cross-chain transactions needed to fulfill users’ goals, moving funds across chains automatically.
 
 <img
   className="block dark:hidden"
-  src="/resources/modular-l1/images/particle-chain.jpg"
+  src="/landing/modular-l1/images/particle-chain.jpg"
   alt="Particle Chain"
 />
 <img
   className="hidden dark:block"
-  src="/resources/modular-l1/images/particle-chain.jpg"
+  src="/landing/modular-l1/images/particle-chain.jpg"
   alt="Particle Chain"
 />
 
@@ -31,26 +31,26 @@ Collectively, these allow for the unification of interactions across all chains,
 
 ### Universal Accounts
 
-Particle Network’s [Universal Accounts](/resources/modular-l1/universal-accounts) aggregate token balances across all chains by automatically routing and executing atomic cross-chain transactions.
+Particle Network’s [Universal Accounts](/landing/modular-l1/universal-accounts) aggregate token balances across all chains by automatically routing and executing atomic cross-chain transactions.
 
-These accounts, which in turn leverage Particle’s [Universal Liquidity](/resources/modular-l1/universal-liquidity), can be understood as specialized Smart Account implementations deployed and coordinated across all chains. A Universal Account can be created and managed by simply connecting and assigning a wallet derived from either social logins through Particle Network’s [Modular Smart Wallet-as-a-Service](doc:modular-smart-waas) or a Web3 wallet, such as MetaMask, UniSat, Keplr, etc. 
+These accounts, which in turn leverage Particle’s [Universal Liquidity](/landing/modular-l1/universal-liquidity), can be understood as specialized Smart Account implementations deployed and coordinated across all chains. A Universal Account can be created and managed by simply connecting and assigning a wallet derived from either social logins through Particle Network’s [Modular Smart Wallet-as-a-Service](doc:modular-smart-waas) or a Web3 wallet, such as MetaMask, UniSat, Keplr, etc. 
 
-Universal Accounts automatically use Particle Network to maintain a unified state and, through the usage of [Universal Liquidity](/resources/modular-l1/universal-liquidity). Universal Accounts act as an interface on top of existing wallets, allowing users to deposit and use funds across the chain-abstracted ecosystem. Developers will be able to leverage Universal Accounts within their dApps by simply implementing Particle Network’s Universal SDKs.
+Universal Accounts automatically use Particle Network to maintain a unified state and, through the usage of [Universal Liquidity](/landing/modular-l1/universal-liquidity). Universal Accounts act as an interface on top of existing wallets, allowing users to deposit and use funds across the chain-abstracted ecosystem. Developers will be able to leverage Universal Accounts within their dApps by simply implementing Particle Network’s Universal SDKs.
 
 <img
   className="block dark:hidden"
-  src="/resources/modular-l1/images/functionalities.png"
+  src="/landing/modular-l1/images/functionalities.png"
   alt="Particle Chain"
 />
 <img
   className="hidden dark:block"
-  src="/resources/modular-l1/images/functionalities.png"
+  src="/landing/modular-l1/images/functionalities.png"
   alt="Particle Chain"
 />
 
 ### Universal Liquidity
 
-[Universal Liquidity](/resources/modular-l1/universal-liquidity) refers to the aggregation of balances across all chains. The architecture of Universal Liquidity is directly driven by atomic cross-chain transactions and swaps coordinated by Particle Network. These atomic transaction sequences are powered by Bundler nodes, which execute UserOperations on their target chains using Liquidity Providers to move intermediary tokens –such as USDC and USDT– between chains through token pools. 
+[Universal Liquidity](/landing/modular-l1/universal-liquidity) refers to the aggregation of balances across all chains. The architecture of Universal Liquidity is directly driven by atomic cross-chain transactions and swaps coordinated by Particle Network. These atomic transaction sequences are powered by Bundler nodes, which execute UserOperations on their target chains using Liquidity Providers to move intermediary tokens –such as USDC and USDT– between chains through token pools. 
 
 An example of this can be seen through the usage of USDC on multiple chains to purchase an NFT (priced in ETH) on Base. In this scenario:
 
@@ -61,12 +61,12 @@ An example of this can be seen through the usage of USDC on multiple chains to p
 <Frame caption="Transaction flow for cross-chain UserOperations, between Polygon and Base as an example.">
 <img
   className="block dark:hidden"
-  src="/resources/modular-l1/images/transaction-flow.png"
+  src="/landing/modular-l1/images/transaction-flow.png"
   alt="Transaction flow"
 />
 <img
   className="hidden dark:block"
-  src="/resources/modular-l1/images/transaction-flow.png"
+  src="/landing/modular-l1/images/transaction-flow.png"
   alt="Transaction flow"
 />
 </Frame>
@@ -80,12 +80,12 @@ Historically, maintaining gas fee balances across chains has been a significant 
 <Frame caption="Stack of core functionalities provided by Particle Network's Modular L1.">
 <img
   className="block dark:hidden"
-  src="/resources/modular-l1/images/core-stack.jpg"
+  src="/landing/modular-l1/images/core-stack.jpg"
   alt="Core functionalities stack"
 />
 <img
   className="hidden dark:block"
-  src="/resources/modular-l1/images/core-stack.jpg"
+  src="/landing/modular-l1/images/core-stack.jpg"
   alt="Core functionalities stack"
 />
 </Frame>
@@ -129,12 +129,12 @@ Furthermore, Watchtower Nodes provide execution proofs, and in some cases, fraud
 <Frame caption="Architecture of the Particle Network Modular L1.">
 <img
   className="block dark:hidden"
-  src="/resources/modular-l1/images/particle-architecture.png"
+  src="/landing/modular-l1/images/particle-architecture.png"
   alt="Architecture of Particle Networks' L1"
 />
 <img
   className="hidden dark:block"
-  src="/resources/modular-l1/images/particle-architecture.png"
+  src="/landing/modular-l1/images/particle-architecture.png"
   alt="Architecture of Particle Networks' L1"
 />
 </Frame>
@@ -155,12 +155,12 @@ Each of the above DA solutions brings unique benefits and performance priorities
 
 <img
   className="block dark:hidden"
-  src="/resources/modular-l1/images/aggda.jpeg"
+  src="/landing/modular-l1/images/aggda.jpeg"
   alt="Aggregated Data Availability on Particle"
 />
 <img
   className="hidden dark:block"
-  src="/resources/modular-l1/images/aggda.jpeg"
+  src="/landing/modular-l1/images/aggda.jpeg"
   alt="Aggregated Data Availability on Particle"
 />
 
@@ -176,11 +176,11 @@ A model of this nature significantly reduces pressure and security dependence on
 
 <img
   className="block dark:hidden"
-  src="/resources/modular-l1/images/dual-staking.jpeg"
+  src="/landing/modular-l1/images/dual-staking.jpeg"
   alt="Dual staking on Particle"
 />
 <img
   className="hidden dark:block"
-  src="/resources/modular-l1/images/dual-staking.jpeg"
+  src="/landing/modular-l1/images/dual-staking.jpeg"
   alt="Dual staking on Particle"
 />

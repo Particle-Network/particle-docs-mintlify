@@ -7,19 +7,19 @@ ___
 
 Particle Network’s Universal Accounts play a crucial role within Particle Network’s implementation of chain abstraction, providing users with a single address, balance, and interaction point across the multi-chain Web3 ecosystem.
 
-Users leveraging a Universal Account maintain one balance and account state across every blockchain. Particle’s Universal Accounts leverage [Universal Liquidity](/resources/modular-l1/universal-liquidity) to automatically execute atomic cross-chain transactions and pool funds from a user's balance across chains to meet the conditions of a given operation. This creates a unified UX, agnostic to any specific blockchain.
+Users leveraging a Universal Account maintain one balance and account state across every blockchain. Particle’s Universal Accounts leverage [Universal Liquidity](/landing/modular-l1/universal-liquidity) to automatically execute atomic cross-chain transactions and pool funds from a user's balance across chains to meet the conditions of a given operation. This creates a unified UX, agnostic to any specific blockchain.
 
 By using a Universal Account, user’s not only unify their interface with the EVM and non-EVM ecosystem, but have the ability to deposit and use funds on any blockchain– represented and used as if it existed on a single chain.
 
 <Frame caption="User flow of Particle Network's Universal Accounts.">
 <img
   className="block dark:hidden"
-  src="/resources/modular-l1/images/universal-accounts.jpg"
+  src="/landing/modular-l1/images/universal-accounts.jpg"
   alt="Universal Accounts"
 />
 <img
   className="hidden dark:block"
-  src="/resources/modular-l1/images/universal-accounts.jpg"
+  src="/landing/modular-l1/images/universal-accounts.jpg"
   alt="Universal Accounts"
 />
 </Frame>
@@ -28,19 +28,19 @@ By using a Universal Account, user’s not only unify their interface with the E
 
 # Understanding Universal Accounts
 
-At the foundation of Universal Accounts is Particle Network's [Universal Liquidity](/resources/modular-l1/universal-liquidity) technology, which coordinates cross-chain transactions atomically on a per-transaction basis.
+At the foundation of Universal Accounts is Particle Network's [Universal Liquidity](/landing/modular-l1/universal-liquidity) technology, which coordinates cross-chain transactions atomically on a per-transaction basis.
 
-[Particle Network](/resources/modular-l1/introduction) coordinates and acts as the settlement layer for these transactions, managing Universal Accounts and relaying cross-chain interactions through a globally distributed network of Modular Nodes collectively contributing to the bundling, relaying, and verification of cross-chain transactions.
+[Particle Network](/landing/modular-l1/introduction) coordinates and acts as the settlement layer for these transactions, managing Universal Accounts and relaying cross-chain interactions through a globally distributed network of Modular Nodes collectively contributing to the bundling, relaying, and verification of cross-chain transactions.
 
 <Frame caption="Composition of Universal Accounts.">
 <img
   className="block dark:hidden"
-  src="/resources/modular-l1/images/composition.png"
+  src="/landing/modular-l1/images/composition.png"
   alt="Universal Accounts"
 />
 <img
   className="hidden dark:block"
-  src="/resources/modular-l1/images/composition.png"
+  src="/landing/modular-l1/images/composition.png"
   alt="Universal Accounts"
 />
 </Frame>
@@ -49,7 +49,7 @@ At the foundation of Universal Accounts is Particle Network's [Universal Liquidi
 
 Universal Accounts are essentially ERC-4337 smart account implementations attached to a pre-existing EOA (Externally Owned Address).
 
-Protocols implementing Particle’s Universal SDK will assign or resolve a Universal Account attached to a given EOA address, retrieved either via social logins with Particle Network’s [Modular Smart Wallet-as-a-Service](/resources/wallet-abstraction/waas/overview) or by connecting a typical Web3 wallet (or even a native Bitcoin wallet via [BTC Connect](/resources/wallet-abstraction/btc-connect). This account will then be used as the core interface to interact with this application, as well as any other application leveraging Particle Network’s SDKs.
+Protocols implementing Particle’s Universal SDK will assign or resolve a Universal Account attached to a given EOA address, retrieved either via social logins with Particle Network’s [Modular Smart Wallet-as-a-Service](/landing/wallet-abstraction/waas/overview) or by connecting a typical Web3 wallet (or even a native Bitcoin wallet via [BTC Connect](/landing/wallet-abstraction/btc-connect). This account will then be used as the core interface to interact with this application, as well as any other application leveraging Particle Network’s SDKs.
 
 The following example walks through this process for an end-user:
 
@@ -60,5 +60,5 @@ The following example walks through this process for an end-user:
 
 <Tip>
 Try Universal Accounts
-<p>Particle Network’s Testnet is currently live, alongside the [Particle Pioneer campaign](https://pioneer.particle.network) which demos Universal Accounts alongside [Universal Gas](/resources/modular-l1/universal-gas).</p>
+<p>Particle Network’s Testnet is currently live, alongside the [Particle Pioneer campaign](https://pioneer.particle.network) which demos Universal Accounts alongside [Universal Gas](/landing/modular-l1/universal-gas).</p>
 </Tip>
