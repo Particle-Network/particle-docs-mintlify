@@ -27,16 +27,18 @@ Configuring webhooks allows developers to accurately control which UserOP can be
 Every time a Webhook request is made, a signature for the body is generated, which developers can verify to determine whether the request was sent by Particle Network. A unique public and private key (RSA-2048) is generated for each project. This key can be downloaded from the users’ [Particle dashboard page](https://dashboard.particle.network/#/login) for verification.
 
 <Frame caption="Webhooks in the Particle Network dashboard.">
+<div className="flex justify-center">
 <img
-  className="block dark:hidden"
+  className="block h-64 dark:hidden"
   src="/landing/wallet-abstraction/waas/images/webhooks.png"
   alt="Webhooks in the Particle Network dashboard."
 />
 <img
-  className="hidden dark:block"
+  className="hidden h-64 dark:block"
   src="/landing/wallet-abstraction/waas/images/webhooks.png"
   alt="Webhooks in the Particle Network dashboard."
 />
+</div>
 </Frame>
 
 ### Webhook: `before_paymaster_sign`

@@ -1,5 +1,5 @@
 body {
-  font-family: 'Arial', sans-serif;
+  font-family: Arial, sans-serif;
   background-color: #fffff2;
   color: #000000;
 }
@@ -9,26 +9,34 @@ body {
   color: #ffffff;
 }
 
+.yearly-calendar-wrapper {
+  display: flex;
+  overflow-x: auto;
+  white-space: nowrap;
+  padding-bottom: 20px; /* Add some padding for better scroll experience */
+}
+
 .calendar {
-  max-width: 600px;
-  margin: 0 auto;
-  padding: 20px;
-  border: 1px solid #ccc;
-  border-radius: 12px;
+  flex: 0 0 auto; /* Ensures the calendar takes up its width and doesn't shrink */
+  min-width: 320px; /* Adjust as needed */
+  margin-right: 20px;
   background-color: #f0f0f0;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  border: 1px solid #9d32de;
+  border-radius: 10px; /* Rounded corners */
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Subtle shadow for depth */
 }
 
 .dark .calendar {
-  border: 1px solid #444;
-  background-color: #2c2c2c;
+  background-color: #000;
+  border: 1px solid #e040d7;
 }
 
 .calendar-header {
+  font-weight: bold;
+  font-size: 1.5em;
   text-align: center;
   margin-bottom: 20px;
-  font-size: 24px;
-  font-weight: bold;
   color: #000000;
 }
 
@@ -39,34 +47,30 @@ body {
 .calendar-grid {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  gap: 10px;
+  gap: 10px; /* Increase the gap between days */
 }
 
 .calendar-day {
-  padding: 20px;
-  background-color: #f9f9f9;
-  border: 1px solid #ddd;
-  border-radius: 8px;
+  border: 2px solid transparent; /* Add transparent border to maintain size */
+  border-radius: 10px; /* Rounded corners */
+  background-color: #f9f9f9; /* Light background for days */
+  color: #000000; /* Black text color */
+  padding: 15px; /* Adjust padding for better size match */
   text-align: center;
-  color: #000000;
+  font-size: 1.2em; /* Larger font size */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: background-color 0.3s, border-color 0.3s, transform 0.3s, box-shadow 0.3s; /* Smooth transition for hover effect */
+  box-sizing: border-box; /* Ensures padding is included in the element's total width and height */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
   cursor: default;
-  transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
 }
 
 .dark .calendar-day {
-  background-color: #3e3e3e;
+  background-color: #3e3e3e; /* Dark background for days */
   border: 1px solid #555;
-  color: #ffffff;
-}
-
-.calendar-day:hover {
-  background-color: #e0e0e0;
-  transform: scale(1.05);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-}
-
-.dark .calendar-day:hover {
-  background-color: #4e4e4e;
+  color: #ffffff; /* White text color */
 }
 
 .calendar-day.has-updates {
@@ -81,6 +85,16 @@ body {
   border: 1px solid #e040d7;
 }
 
+.calendar-day:hover {
+  background-color: #e0e0e0; /* Lighter background on hover */
+  transform: scale(1.05); /* Slightly enlarge on hover */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Increase shadow on hover */
+}
+
+.dark .calendar-day:hover {
+  background-color: #4e4e4e;
+}
+
 .calendar-day.has-updates:hover {
   background-color: #7f39fb;
   transform: scale(1.05);
@@ -91,8 +105,23 @@ body {
   background-color: #a740de;
 }
 
-.calendar-day a {
-  text-decoration: none;
-  color: inherit;
-  display: block;
+.calendar-day.current-day {
+  border-color: #f39c12; /* Highlight the current day */
+}
+
+@media (max-width: 768px) {
+  .calendar {
+    min-width: 100%;
+    margin-right: 0;
+  }
+
+  .calendar-grid {
+    grid-template-columns: repeat(4, 1fr); /* Adjust for smaller screens */
+  }
+}
+
+@media (max-width: 480px) {
+  .calendar-grid {
+    grid-template-columns: repeat(2, 1fr); /* Adjust for even smaller screens */
+  }
 }
