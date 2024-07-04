@@ -96,17 +96,20 @@
           "jsonrpc": {
             "type": "string",
             "description": "Version of the JSON-RPC protocol, should be 2.0.",
-            "example": "2.0"
+            "example": "2.0",
+            "default": "2.0"
           },
           "id": {
             "type": "integer",
             "description": "The request identifier.",
-            "example": 1
+            "example": 1,
+            "default": 1
           },
           "method": {
             "type": "string",
             "description": "API method being called, should be getUserInfo.",
-            "example": "getUserInfo"
+            "example": "getUserInfo",
+            "default": "getUserInfo"
           },
           "params": {
             "type": "array",
@@ -115,6 +118,10 @@
             },
             "description": "Parameters for the API method call, including the user's UUID and session token.",
             "example": [
+              "UUID",
+              "Token"
+            ],
+            "default": [
               "UUID",
               "Token"
             ]
@@ -279,7 +286,7 @@
                     },
                     "publicAddress": {
                       "type": "string",
-                      "example": 6.244165809882205e+47
+                      "example": "0x6D5fCEd0C74F22a1B145ef48B25527Ce9BF829bF"
                     }
                   }
                 }
@@ -294,17 +301,20 @@
           "jsonrpc": {
             "type": "string",
             "description": "Version of the JSON-RPC protocol, should be 2.0.",
-            "example": "2.0"
+            "example": "2.0",
+            "default": "2.0"
           },
           "id": {
             "type": "integer",
             "description": "The request identifier.",
-            "example": 0
+            "example": 0,
+            "default": 0
           },
           "method": {
             "type": "string",
             "description": "API method being called, should be isProjectUser.",
-            "example": "isProjectUser"
+            "example": "isProjectUser",
+            "default": "isProjectUser"
           },
           "params": {
             "type": "array",
@@ -313,6 +323,10 @@
             },
             "description": "Parameters for the API method call, including an indicator determining Solana or EVM and wallet address.",
             "example": [
+              "evm_chain",
+              "0x6D5fCEd0C74F22a1B145ef48B25527Ce9BF829bF"
+            ],
+            "default": [
               "evm_chain",
               "0x6D5fCEd0C74F22a1B145ef48B25527Ce9BF829bF"
             ]

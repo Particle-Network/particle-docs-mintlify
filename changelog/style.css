@@ -109,6 +109,51 @@ body {
   border-color: #f39c12; /* Highlight the current day */
 }
 
+.year-calendar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px; /* Added margin for better spacing */
+}
+
+.month-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px; /* Gap between month buttons */
+}
+
+.month-button {
+  border: 2px solid transparent; /* Add transparent border to maintain size */
+  border-radius: 10px; /* Rounded corners */
+  background-color: #3e3e3e; /* Dark background for months */
+  color: #ffffff; /* White text color */
+  padding: 20px; /* Adjust padding for better size match */
+  text-align: center;
+  font-size: 1.2em; /* Larger font size */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: background-color 0.3s, border-color 0.3s, transform 0.3s, box-shadow 0.3s; /* Smooth transition for hover effect */
+  box-sizing: border-box; /* Ensures padding is included in the element's total width and height */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
+  text-decoration: none; /* Remove underline */
+}
+
+.month-button:hover {
+  background-color: #9d32de; /* Color on hover */
+  transform: scale(1.05); /* Slightly enlarge on hover */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Increase shadow on hover */
+}
+
+.dark .month-button {
+  background-color: #3e3e3e;
+  border: 1px solid #555;
+}
+
+.dark .month-button:hover {
+  background-color: #9d32de; /* Color on hover for dark mode */
+}
+
 @media (max-width: 768px) {
   .calendar {
     min-width: 100%;
@@ -118,10 +163,18 @@ body {
   .calendar-grid {
     grid-template-columns: repeat(4, 1fr); /* Adjust for smaller screens */
   }
+
+  .month-grid {
+    grid-template-columns: repeat(2, 1fr); /* Adjust for smaller screens */
+  }
 }
 
 @media (max-width: 480px) {
   .calendar-grid {
     grid-template-columns: repeat(2, 1fr); /* Adjust for even smaller screens */
+  }
+
+  .month-grid {
+    grid-template-columns: repeat(1, 1fr); /* Adjust for even smaller screens */
   }
 }

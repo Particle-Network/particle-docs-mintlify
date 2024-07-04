@@ -53,7 +53,7 @@
                       "chainId": {
                         "type": "integer",
                         "description": "The chain ID.",
-                        "example": 80001
+                        "example": 1
                       },
                       "params": {
                         "type": "array",
@@ -212,7 +212,7 @@
                       "chainId": {
                         "type": "integer",
                         "description": "The chain ID.",
-                        "example": 80001
+                        "example": 1
                       },
                       "params": {
                         "type": "array",
@@ -413,7 +413,7 @@
                       "chainId": {
                         "type": "integer",
                         "description": "The chain ID.",
-                        "example": 80001
+                        "example": 1
                       },
                       "params": {
                         "type": "array",
@@ -568,7 +568,7 @@
                       "chainId": {
                         "type": "integer",
                         "description": "The chain ID.",
-                        "example": 80001
+                        "example": 1
                       },
                       "params": {
                         "type": "array",
@@ -728,7 +728,7 @@
                       "chainId": {
                         "type": "integer",
                         "description": "The chain ID.",
-                        "example": 80001
+                        "example": 1
                       },
                       "params": {
                         "type": "array",
@@ -865,7 +865,7 @@
                       "chainId": {
                         "type": "integer",
                         "description": "The chain ID.",
-                        "example": 80001
+                        "example": 1
                       },
                       "params": {
                         "type": "array",
@@ -1052,7 +1052,7 @@
                       "chainId": {
                         "type": "integer",
                         "description": "The chain ID.",
-                        "example": 80001
+                        "example": 1
                       },
                       "params": {
                         "type": "array",
@@ -1227,7 +1227,7 @@
                       "chainId": {
                         "type": "integer",
                         "description": "The chain ID.",
-                        "example": 80001
+                        "example": 1
                       },
                       "params": {
                         "type": "array",
@@ -1354,7 +1354,7 @@
                       "chainId": {
                         "type": "integer",
                         "description": "The chain ID.",
-                        "example": 80001
+                        "example": 1
                       },
                       "params": {
                         "type": "array",
@@ -1481,7 +1481,7 @@
                       "chainId": {
                         "type": "integer",
                         "description": "The chain ID.",
-                        "example": 80001
+                        "example": 1
                       },
                       "params": {
                         "type": "array",
@@ -1613,7 +1613,7 @@
                       "chainId": {
                         "type": "integer",
                         "description": "The chain ID.",
-                        "example": 80001
+                        "example": 1
                       },
                       "params": {
                         "type": "array",
@@ -1827,7 +1827,7 @@
                       "chainId": {
                         "type": "integer",
                         "description": "The chain ID.",
-                        "example": 80001
+                        "example": 1
                       },
                       "params": {
                         "type": "array",
@@ -1980,7 +1980,7 @@
           },
           "chainId": {
             "type": "integer",
-            "example": 80001,
+            "example": 1,
             "description": "The chain ID."
           },
           "params": {
@@ -2038,7 +2038,7 @@
               },
               "chainId": {
                 "type": "integer",
-                "example": 80001,
+                "example": 1,
                 "description": "The chain ID."
               },
               "params": {
@@ -2093,7 +2093,7 @@
               },
               "chainId": {
                 "type": "integer",
-                "example": 80001,
+                "example": 1,
                 "description": "The chain ID."
               },
               "params": {
@@ -2342,7 +2342,7 @@
               },
               "chainId": {
                 "type": "integer",
-                "example": 80001,
+                "example": 1,
                 "description": "The chain ID."
               },
               "params": {
@@ -2402,7 +2402,7 @@
               },
               "chainId": {
                 "type": "integer",
-                "example": 80001,
+                "example": 1,
                 "description": "The chain ID."
               },
               "params": {
@@ -2609,7 +2609,7 @@
               },
               "chainId": {
                 "type": "integer",
-                "example": 80001,
+                "example": 1,
                 "description": "The chain ID."
               },
               "params": {
@@ -2720,7 +2720,7 @@
               },
               "chainId": {
                 "type": "integer",
-                "example": 80001,
+                "example": 1,
                 "description": "The chain ID."
               },
               "params": {
@@ -2881,7 +2881,7 @@
               },
               "chainId": {
                 "type": "integer",
-                "example": 80001,
+                "example": 1,
                 "description": "The chain ID."
               },
               "params": {
@@ -3030,7 +3030,7 @@
               },
               "chainId": {
                 "type": "integer",
-                "example": 80001,
+                "example": 1,
                 "description": "The chain ID."
               },
               "params": {
@@ -3131,7 +3131,7 @@
               },
               "chainId": {
                 "type": "integer",
-                "example": 80001,
+                "example": 1,
                 "description": "The chain ID."
               },
               "params": {
@@ -3232,7 +3232,7 @@
               },
               "chainId": {
                 "type": "integer",
-                "example": 80001,
+                "example": 1,
                 "description": "The chain ID."
               },
               "params": {
@@ -3338,7 +3338,7 @@
               },
               "chainId": {
                 "type": "integer",
-                "example": 80001,
+                "example": 1,
                 "description": "The chain ID."
               },
               "params": {
@@ -3526,7 +3526,7 @@
               },
               "chainId": {
                 "type": "integer",
-                "example": 80001,
+                "example": 1,
                 "description": "The chain ID."
               },
               "params": {
