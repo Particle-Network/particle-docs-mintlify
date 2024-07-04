@@ -36,21 +36,28 @@
                     "properties": {
                       "jsonrpc": {
                         "type": "string",
-                        "default": 2
+                        "default": 2,
+                        "description": "Version of the JSON-RPC protocol, should be 2.0.",
+                        "example": "2.0"
                       },
                       "id": {
                         "type": "integer",
-                        "default": 1
+                        "default": 1,
+                        "description": "The request identifier.",
+                        "example": 1
                       },
                       "method": {
-                        "type": "string"
+                        "type": "string",
+                        "description": "API method being called."
                       },
                       "chainId": {
                         "type": "integer",
+                        "description": "The chain ID.",
                         "example": 80001
                       },
                       "params": {
-                        "type": "array"
+                        "type": "array",
+                        "description": "Parameters for the API method call."
                       }
                     }
                   },
@@ -84,13 +91,18 @@
                       "type": "object",
                       "properties": {
                         "jsonrpc": {
-                          "type": "string"
+                          "type": "string",
+                          "description": "Version of the JSON-RPC protocol, should be 2.0.",
+                          "example": "2.0"
                         },
                         "id": {
-                          "type": "integer"
+                          "type": "integer",
+                          "description": "The request identifier.",
+                          "example": 1
                         },
                         "result": {
-                          "type": "object"
+                          "type": "object",
+                          "description": "Result of the API call."
                         }
                       }
                     },
@@ -102,35 +114,45 @@
                           "properties": {
                             "nfts": {
                               "type": "array",
+                              "description": "Array of NFTs.",
                               "items": {
                                 "type": "object",
                                 "properties": {
                                   "address": {
-                                    "type": "string"
+                                    "type": "string",
+                                    "description": "NFT contract address."
                                   },
                                   "isSemiFungible": {
-                                    "type": "boolean"
+                                    "type": "boolean",
+                                    "description": "Indicates if the NFT is semi-fungible."
                                   },
                                   "tokenId": {
-                                    "type": "string"
+                                    "type": "string",
+                                    "description": "Token ID of the NFT."
                                   },
                                   "tokenBalance": {
-                                    "type": "string"
+                                    "type": "string",
+                                    "description": "Token balance of the NFT."
                                   },
                                   "tokenURI": {
-                                    "type": "string"
+                                    "type": "string",
+                                    "description": "Token URI of the NFT."
                                   },
                                   "name": {
-                                    "type": "string"
+                                    "type": "string",
+                                    "description": "Name of the NFT."
                                   },
                                   "symbol": {
-                                    "type": "string"
+                                    "type": "string",
+                                    "description": "Symbol of the NFT."
                                   },
                                   "image": {
-                                    "type": "string"
+                                    "type": "string",
+                                    "description": "Image URL of the NFT."
                                   },
                                   "data": {
-                                    "type": "object"
+                                    "type": "object",
+                                    "description": "Additional data of the NFT."
                                   }
                                 }
                               }
@@ -173,21 +195,28 @@
                     "properties": {
                       "jsonrpc": {
                         "type": "string",
-                        "default": 2
+                        "default": 2,
+                        "description": "Version of the JSON-RPC protocol, should be 2.0.",
+                        "example": "2.0"
                       },
                       "id": {
                         "type": "integer",
-                        "default": 1
+                        "default": 1,
+                        "description": "The request identifier.",
+                        "example": 1
                       },
                       "method": {
-                        "type": "string"
+                        "type": "string",
+                        "description": "API method being called."
                       },
                       "chainId": {
                         "type": "integer",
+                        "description": "The chain ID.",
                         "example": 80001
                       },
                       "params": {
-                        "type": "array"
+                        "type": "array",
+                        "description": "Parameters for the API method call."
                       }
                     }
                   },
@@ -221,13 +250,18 @@
                       "type": "object",
                       "properties": {
                         "jsonrpc": {
-                          "type": "string"
+                          "type": "string",
+                          "description": "Version of the JSON-RPC protocol, should be 2.0.",
+                          "example": "2.0"
                         },
                         "id": {
-                          "type": "integer"
+                          "type": "integer",
+                          "description": "The request identifier.",
+                          "example": 1
                         },
                         "result": {
-                          "type": "object"
+                          "type": "object",
+                          "description": "Result of the API call."
                         }
                       }
                     },
@@ -243,65 +277,83 @@
                           ],
                           "properties": {
                             "native": {
-                              "type": "string"
+                              "type": "string",
+                              "description": "Native token balance."
                             },
                             "tokens": {
                               "type": "array",
+                              "description": "Array of tokens.",
                               "items": {
                                 "type": "object",
                                 "properties": {
                                   "decimals": {
-                                    "type": "integer"
+                                    "type": "integer",
+                                    "description": "Number of decimals for the token."
                                   },
                                   "amount": {
-                                    "type": "string"
+                                    "type": "string",
+                                    "description": "Amount of tokens."
                                   },
                                   "address": {
-                                    "type": "string"
+                                    "type": "string",
+                                    "description": "Token contract address."
                                   },
                                   "name": {
-                                    "type": "string"
+                                    "type": "string",
+                                    "description": "Name of the token."
                                   },
                                   "symbol": {
-                                    "type": "string"
+                                    "type": "string",
+                                    "description": "Symbol of the token."
                                   },
                                   "image": {
-                                    "type": "string"
+                                    "type": "string",
+                                    "description": "Image URL of the token."
                                   }
                                 }
                               }
                             },
                             "nfts": {
                               "type": "array",
+                              "description": "Array of NFTs.",
                               "items": {
                                 "type": "object",
                                 "properties": {
                                   "address": {
-                                    "type": "string"
+                                    "type": "string",
+                                    "description": "NFT contract address."
                                   },
                                   "isSemiFungible": {
-                                    "type": "boolean"
+                                    "type": "boolean",
+                                    "description": "Indicates if the NFT is semi-fungible."
                                   },
                                   "tokenId": {
-                                    "type": "string"
+                                    "type": "string",
+                                    "description": "Token ID of the NFT."
                                   },
                                   "tokenBalance": {
-                                    "type": "string"
+                                    "type": "string",
+                                    "description": "Token balance of the NFT."
                                   },
                                   "tokenURI": {
-                                    "type": "string"
+                                    "type": "string",
+                                    "description": "Token URI of the NFT."
                                   },
                                   "name": {
-                                    "type": "string"
+                                    "type": "string",
+                                    "description": "Name of the NFT."
                                   },
                                   "symbol": {
-                                    "type": "string"
+                                    "type": "string",
+                                    "description": "Symbol of the NFT."
                                   },
                                   "image": {
-                                    "type": "string"
+                                    "type": "string",
+                                    "description": "Image URL of the NFT."
                                   },
                                   "data": {
-                                    "type": "object"
+                                    "type": "object",
+                                    "description": "Additional data of the NFT."
                                   }
                                 }
                               }
@@ -344,21 +396,28 @@
                     "properties": {
                       "jsonrpc": {
                         "type": "string",
-                        "default": 2
+                        "default": 2,
+                        "description": "Version of the JSON-RPC protocol, should be 2.0.",
+                        "example": "2.0"
                       },
                       "id": {
                         "type": "integer",
-                        "default": 1
+                        "default": 1,
+                        "description": "The request identifier.",
+                        "example": 1
                       },
                       "method": {
-                        "type": "string"
+                        "type": "string",
+                        "description": "API method being called."
                       },
                       "chainId": {
                         "type": "integer",
+                        "description": "The chain ID.",
                         "example": 80001
                       },
                       "params": {
-                        "type": "array"
+                        "type": "array",
+                        "description": "Parameters for the API method call."
                       }
                     }
                   },
@@ -392,13 +451,18 @@
                       "type": "object",
                       "properties": {
                         "jsonrpc": {
-                          "type": "string"
+                          "type": "string",
+                          "description": "Version of the JSON-RPC protocol, should be 2.0.",
+                          "example": "2.0"
                         },
                         "id": {
-                          "type": "integer"
+                          "type": "integer",
+                          "description": "The request identifier.",
+                          "example": 1
                         },
                         "result": {
-                          "type": "object"
+                          "type": "object",
+                          "description": "Result of the API call."
                         }
                       }
                     },
@@ -413,30 +477,38 @@
                           ],
                           "properties": {
                             "native": {
-                              "type": "string"
+                              "type": "string",
+                              "description": "Native token balance."
                             },
                             "tokens": {
                               "type": "array",
+                              "description": "Array of tokens.",
                               "items": {
                                 "type": "object",
                                 "properties": {
                                   "decimals": {
-                                    "type": "integer"
+                                    "type": "integer",
+                                    "description": "Number of decimals for the token."
                                   },
                                   "amount": {
-                                    "type": "string"
+                                    "type": "string",
+                                    "description": "Amount of tokens."
                                   },
                                   "address": {
-                                    "type": "string"
+                                    "type": "string",
+                                    "description": "Token contract address."
                                   },
                                   "name": {
-                                    "type": "string"
+                                    "type": "string",
+                                    "description": "Name of the token."
                                   },
                                   "symbol": {
-                                    "type": "string"
+                                    "type": "string",
+                                    "description": "Symbol of the token."
                                   },
                                   "image": {
-                                    "type": "string"
+                                    "type": "string",
+                                    "description": "Image URL of the token."
                                   }
                                 }
                               }
@@ -479,21 +551,28 @@
                     "properties": {
                       "jsonrpc": {
                         "type": "string",
-                        "default": 2
+                        "default": 2,
+                        "description": "Version of the JSON-RPC protocol, should be 2.0.",
+                        "example": "2.0"
                       },
                       "id": {
                         "type": "integer",
-                        "default": 1
+                        "default": 1,
+                        "description": "The request identifier.",
+                        "example": 1
                       },
                       "method": {
-                        "type": "string"
+                        "type": "string",
+                        "description": "API method being called."
                       },
                       "chainId": {
                         "type": "integer",
+                        "description": "The chain ID.",
                         "example": 80001
                       },
                       "params": {
-                        "type": "array"
+                        "type": "array",
+                        "description": "Parameters for the API method call."
                       }
                     }
                   },
@@ -532,13 +611,18 @@
                       "type": "object",
                       "properties": {
                         "jsonrpc": {
-                          "type": "string"
+                          "type": "string",
+                          "description": "Version of the JSON-RPC protocol, should be 2.0.",
+                          "example": "2.0"
                         },
                         "id": {
-                          "type": "integer"
+                          "type": "integer",
+                          "description": "The request identifier.",
+                          "example": 1
                         },
                         "result": {
-                          "type": "object"
+                          "type": "object",
+                          "description": "Result of the API call."
                         }
                       }
                     },
@@ -547,34 +631,43 @@
                       "properties": {
                         "result": {
                           "type": "array",
+                          "description": "Array of token price details.",
                           "items": {
                             "type": "object",
                             "properties": {
                               "address": {
-                                "type": "string"
+                                "type": "string",
+                                "description": "Token contract address."
                               },
                               "currencies": {
                                 "type": "array",
+                                "description": "Array of currency details.",
                                 "items": {
                                   "type": "object",
                                   "properties": {
                                     "type": {
-                                      "type": "string"
+                                      "type": "string",
+                                      "description": "Currency type."
                                     },
                                     "price": {
-                                      "type": "number"
+                                      "type": "number",
+                                      "description": "Price of the token."
                                     },
                                     "marketCap": {
-                                      "type": "number"
+                                      "type": "number",
+                                      "description": "Market capitalization."
                                     },
                                     "24hChange": {
-                                      "type": "number"
+                                      "type": "number",
+                                      "description": "24-hour price change."
                                     },
                                     "24hVol": {
-                                      "type": "number"
+                                      "type": "number",
+                                      "description": "24-hour trading volume."
                                     },
                                     "lastUpdatedAt": {
-                                      "type": "integer"
+                                      "type": "integer",
+                                      "description": "Timestamp of the last update."
                                     }
                                   }
                                 }
@@ -618,21 +711,28 @@
                     "properties": {
                       "jsonrpc": {
                         "type": "string",
-                        "default": 2
+                        "default": 2,
+                        "description": "Version of the JSON-RPC protocol, should be 2.0.",
+                        "example": "2.0"
                       },
                       "id": {
                         "type": "integer",
-                        "default": 1
+                        "default": 1,
+                        "description": "The request identifier.",
+                        "example": 1
                       },
                       "method": {
-                        "type": "string"
+                        "type": "string",
+                        "description": "API method being called."
                       },
                       "chainId": {
                         "type": "integer",
+                        "description": "The chain ID.",
                         "example": 80001
                       },
                       "params": {
-                        "type": "array"
+                        "type": "array",
+                        "description": "Parameters for the API method call."
                       }
                     }
                   },
@@ -673,13 +773,18 @@
                       "type": "object",
                       "properties": {
                         "jsonrpc": {
-                          "type": "string"
+                          "type": "string",
+                          "description": "Version of the JSON-RPC protocol, should be 2.0.",
+                          "example": "2.0"
                         },
                         "id": {
-                          "type": "integer"
+                          "type": "integer",
+                          "description": "The request identifier.",
+                          "example": 1
                         },
                         "result": {
-                          "type": "object"
+                          "type": "object",
+                          "description": "Result of the API call."
                         }
                       }
                     },
@@ -690,16 +795,20 @@
                           "type": "object",
                           "properties": {
                             "low": {
-                              "type": "object"
+                              "type": "object",
+                              "description": "Low gas fee estimate."
                             },
                             "medium": {
-                              "type": "object"
+                              "type": "object",
+                              "description": "Medium gas fee estimate."
                             },
                             "high": {
-                              "type": "object"
+                              "type": "object",
+                              "description": "High gas fee estimate."
                             },
                             "baseFee": {
-                              "type": "string"
+                              "type": "string",
+                              "description": "Base gas fee."
                             }
                           }
                         }
@@ -739,21 +848,28 @@
                     "properties": {
                       "jsonrpc": {
                         "type": "string",
-                        "default": 2
+                        "default": 2,
+                        "description": "Version of the JSON-RPC protocol, should be 2.0.",
+                        "example": "2.0"
                       },
                       "id": {
                         "type": "integer",
-                        "default": 1
+                        "default": 1,
+                        "description": "The request identifier.",
+                        "example": 1
                       },
                       "method": {
-                        "type": "string"
+                        "type": "string",
+                        "description": "API method being called."
                       },
                       "chainId": {
                         "type": "integer",
+                        "description": "The chain ID.",
                         "example": 80001
                       },
                       "params": {
-                        "type": "array"
+                        "type": "array",
+                        "description": "Parameters for the API method call."
                       }
                     }
                   },
@@ -789,13 +905,18 @@
                       "type": "object",
                       "properties": {
                         "jsonrpc": {
-                          "type": "string"
+                          "type": "string",
+                          "description": "Version of the JSON-RPC protocol, should be 2.0.",
+                          "example": "2.0"
                         },
                         "id": {
-                          "type": "integer"
+                          "type": "integer",
+                          "description": "The request identifier.",
+                          "example": 1
                         },
                         "result": {
-                          "type": "object"
+                          "type": "object",
+                          "description": "Result of the API call."
                         }
                       }
                     },
@@ -804,59 +925,76 @@
                       "properties": {
                         "result": {
                           "type": "array",
+                          "description": "Array of transactions.",
                           "items": {
                             "type": "object",
                             "properties": {
                               "hash": {
-                                "type": "string"
+                                "type": "string",
+                                "description": "Transaction hash."
                               },
                               "from": {
-                                "type": "string"
+                                "type": "string",
+                                "description": "Sender address."
                               },
                               "to": {
-                                "type": "string"
+                                "type": "string",
+                                "description": "Receiver address."
                               },
                               "value": {
-                                "type": "string"
+                                "type": "string",
+                                "description": "Transaction value."
                               },
                               "data": {
-                                "type": "string"
+                                "type": "string",
+                                "description": "Transaction data."
                               },
                               "gasLimit": {
-                                "type": "integer"
+                                "type": "integer",
+                                "description": "Gas limit for the transaction."
                               },
                               "timestamp": {
-                                "type": "integer"
+                                "type": "integer",
+                                "description": "Timestamp of the transaction."
                               },
                               "status": {
-                                "type": "integer"
+                                "type": "integer",
+                                "description": "Status of the transaction."
                               },
                               "type": {
-                                "type": "integer"
+                                "type": "integer",
+                                "description": "Type of the transaction."
                               },
                               "nonce": {
-                                "type": "integer"
+                                "type": "integer",
+                                "description": "Nonce of the transaction."
                               },
                               "accessList": {
                                 "type": "array",
+                                "description": "Access list for the transaction.",
                                 "items": {
                                   "type": "object"
                                 }
                               },
                               "maxPriorityFeePerGas": {
-                                "type": "string"
+                                "type": "string",
+                                "description": "Max priority fee per gas."
                               },
                               "maxFeePerGas": {
-                                "type": "string"
+                                "type": "string",
+                                "description": "Max fee per gas."
                               },
                               "gasSpent": {
-                                "type": "string"
+                                "type": "string",
+                                "description": "Gas spent for the transaction."
                               },
                               "gasPrice": {
-                                "type": "string"
+                                "type": "string",
+                                "description": "Gas price for the transaction."
                               },
                               "fees": {
-                                "type": "string"
+                                "type": "string",
+                                "description": "Transaction fees."
                               }
                             }
                           }
@@ -897,21 +1035,28 @@
                     "properties": {
                       "jsonrpc": {
                         "type": "string",
-                        "default": 2
+                        "default": 2,
+                        "description": "Version of the JSON-RPC protocol, should be 2.0.",
+                        "example": "2.0"
                       },
                       "id": {
                         "type": "integer",
-                        "default": 1
+                        "default": 1,
+                        "description": "The request identifier.",
+                        "example": 1
                       },
                       "method": {
-                        "type": "string"
+                        "type": "string",
+                        "description": "API method being called."
                       },
                       "chainId": {
                         "type": "integer",
+                        "description": "The chain ID.",
                         "example": 80001
                       },
                       "params": {
-                        "type": "array"
+                        "type": "array",
+                        "description": "Parameters for the API method call."
                       }
                     }
                   },
@@ -947,13 +1092,18 @@
                       "type": "object",
                       "properties": {
                         "jsonrpc": {
-                          "type": "string"
+                          "type": "string",
+                          "description": "Version of the JSON-RPC protocol, should be 2.0.",
+                          "example": "2.0"
                         },
                         "id": {
-                          "type": "integer"
+                          "type": "integer",
+                          "description": "The request identifier.",
+                          "example": 1
                         },
                         "result": {
-                          "type": "object"
+                          "type": "object",
+                          "description": "Result of the API call."
                         }
                       }
                     },
@@ -962,50 +1112,64 @@
                       "properties": {
                         "result": {
                           "type": "array",
+                          "description": "Array of pending transactions.",
                           "items": {
                             "type": "object",
                             "properties": {
                               "hash": {
-                                "type": "string"
+                                "type": "string",
+                                "description": "Transaction hash."
                               },
                               "from": {
-                                "type": "string"
+                                "type": "string",
+                                "description": "Sender address."
                               },
                               "to": {
-                                "type": "string"
+                                "type": "string",
+                                "description": "Receiver address."
                               },
                               "value": {
-                                "type": "string"
+                                "type": "string",
+                                "description": "Transaction value."
                               },
                               "data": {
-                                "type": "string"
+                                "type": "string",
+                                "description": "Transaction data."
                               },
                               "gasLimit": {
-                                "type": "integer"
+                                "type": "integer",
+                                "description": "Gas limit for the transaction."
                               },
                               "timestamp": {
-                                "type": "integer"
+                                "type": "integer",
+                                "description": "Timestamp of the transaction."
                               },
                               "status": {
-                                "type": "integer"
+                                "type": "integer",
+                                "description": "Status of the transaction."
                               },
                               "type": {
-                                "type": "integer"
+                                "type": "integer",
+                                "description": "Type of the transaction."
                               },
                               "nonce": {
-                                "type": "integer"
+                                "type": "integer",
+                                "description": "Nonce of the transaction."
                               },
                               "accessList": {
                                 "type": "array",
+                                "description": "Access list for the transaction.",
                                 "items": {
                                   "type": "object"
                                 }
                               },
                               "maxPriorityFeePerGas": {
-                                "type": "string"
+                                "type": "string",
+                                "description": "Max priority fee per gas."
                               },
                               "maxFeePerGas": {
-                                "type": "string"
+                                "type": "string",
+                                "description": "Max fee per gas."
                               }
                             }
                           }
@@ -1046,21 +1210,28 @@
                     "properties": {
                       "jsonrpc": {
                         "type": "string",
-                        "default": 2
+                        "default": 2,
+                        "description": "Version of the JSON-RPC protocol, should be 2.0.",
+                        "example": "2.0"
                       },
                       "id": {
                         "type": "integer",
-                        "default": 1
+                        "default": 1,
+                        "description": "The request identifier.",
+                        "example": 1
                       },
                       "method": {
-                        "type": "string"
+                        "type": "string",
+                        "description": "API method being called."
                       },
                       "chainId": {
                         "type": "integer",
+                        "description": "The chain ID.",
                         "example": 80001
                       },
                       "params": {
-                        "type": "array"
+                        "type": "array",
+                        "description": "Parameters for the API method call."
                       }
                     }
                   },
@@ -1108,13 +1279,18 @@
                       "type": "object",
                       "properties": {
                         "jsonrpc": {
-                          "type": "string"
+                          "type": "string",
+                          "description": "Version of the JSON-RPC protocol, should be 2.0.",
+                          "example": "2.0"
                         },
                         "id": {
-                          "type": "integer"
+                          "type": "integer",
+                          "description": "The request identifier.",
+                          "example": 1
                         },
                         "result": {
-                          "type": "object"
+                          "type": "object",
+                          "description": "Result of the API call."
                         }
                       }
                     },
@@ -1122,7 +1298,8 @@
                       "type": "object",
                       "properties": {
                         "result": {
-                          "type": "string"
+                          "type": "string",
+                          "description": "Encoded function call data."
                         }
                       }
                     }
@@ -1160,21 +1337,28 @@
                     "properties": {
                       "jsonrpc": {
                         "type": "string",
-                        "default": 2
+                        "default": 2,
+                        "description": "Version of the JSON-RPC protocol, should be 2.0.",
+                        "example": "2.0"
                       },
                       "id": {
                         "type": "integer",
-                        "default": 1
+                        "default": 1,
+                        "description": "The request identifier.",
+                        "example": 1
                       },
                       "method": {
-                        "type": "string"
+                        "type": "string",
+                        "description": "API method being called."
                       },
                       "chainId": {
                         "type": "integer",
+                        "description": "The chain ID.",
                         "example": 80001
                       },
                       "params": {
-                        "type": "array"
+                        "type": "array",
+                        "description": "Parameters for the API method call."
                       }
                     }
                   },
@@ -1222,13 +1406,18 @@
                       "type": "object",
                       "properties": {
                         "jsonrpc": {
-                          "type": "string"
+                          "type": "string",
+                          "description": "Version of the JSON-RPC protocol, should be 2.0.",
+                          "example": "2.0"
                         },
                         "id": {
-                          "type": "integer"
+                          "type": "integer",
+                          "description": "The request identifier.",
+                          "example": 1
                         },
                         "result": {
-                          "type": "object"
+                          "type": "object",
+                          "description": "Result of the API call."
                         }
                       }
                     },
@@ -1236,7 +1425,8 @@
                       "type": "object",
                       "properties": {
                         "result": {
-                          "type": "string"
+                          "type": "string",
+                          "description": "Contract ABI."
                         }
                       }
                     }
@@ -1274,21 +1464,28 @@
                     "properties": {
                       "jsonrpc": {
                         "type": "string",
-                        "default": 2
+                        "default": 2,
+                        "description": "Version of the JSON-RPC protocol, should be 2.0.",
+                        "example": "2.0"
                       },
                       "id": {
                         "type": "integer",
-                        "default": 1
+                        "default": 1,
+                        "description": "The request identifier.",
+                        "example": 1
                       },
                       "method": {
-                        "type": "string"
+                        "type": "string",
+                        "description": "API method being called."
                       },
                       "chainId": {
                         "type": "integer",
+                        "description": "The chain ID.",
                         "example": 80001
                       },
                       "params": {
-                        "type": "array"
+                        "type": "array",
+                        "description": "Parameters for the API method call."
                       }
                     }
                   },
@@ -1332,13 +1529,18 @@
                       "type": "object",
                       "properties": {
                         "jsonrpc": {
-                          "type": "string"
+                          "type": "string",
+                          "description": "Version of the JSON-RPC protocol, should be 2.0.",
+                          "example": "2.0"
                         },
                         "id": {
-                          "type": "integer"
+                          "type": "integer",
+                          "description": "The request identifier.",
+                          "example": 1
                         },
                         "result": {
-                          "type": "object"
+                          "type": "object",
+                          "description": "Result of the API call."
                         }
                       }
                     },
@@ -1349,10 +1551,12 @@
                           "type": "object",
                           "properties": {
                             "estimatedChanges": {
-                              "type": "object"
+                              "type": "object",
+                              "description": "Estimated changes resulting from the transaction."
                             },
                             "data": {
-                              "type": "object"
+                              "type": "object",
+                              "description": "Data of the transaction."
                             }
                           }
                         }
@@ -1392,21 +1596,28 @@
                     "properties": {
                       "jsonrpc": {
                         "type": "string",
-                        "default": 2
+                        "default": 2,
+                        "description": "Version of the JSON-RPC protocol, should be 2.0.",
+                        "example": "2.0"
                       },
                       "id": {
                         "type": "integer",
-                        "default": 1
+                        "default": 1,
+                        "description": "The request identifier.",
+                        "example": 1
                       },
                       "method": {
-                        "type": "string"
+                        "type": "string",
+                        "description": "API method being called."
                       },
                       "chainId": {
                         "type": "integer",
+                        "description": "The chain ID.",
                         "example": 80001
                       },
                       "params": {
-                        "type": "array"
+                        "type": "array",
+                        "description": "Parameters for the API method call."
                       }
                     }
                   },
@@ -1447,13 +1658,18 @@
                       "type": "object",
                       "properties": {
                         "jsonrpc": {
-                          "type": "string"
+                          "type": "string",
+                          "description": "Version of the JSON-RPC protocol, should be 2.0.",
+                          "example": "2.0"
                         },
                         "id": {
-                          "type": "integer"
+                          "type": "integer",
+                          "description": "The request identifier.",
+                          "example": 1
                         },
                         "result": {
-                          "type": "object"
+                          "type": "object",
+                          "description": "Result of the API call."
                         }
                       }
                     },
@@ -1464,73 +1680,94 @@
                           "type": "object",
                           "properties": {
                             "difficulty": {
-                              "type": "string"
+                              "type": "string",
+                              "description": "Difficulty of the block."
                             },
                             "extraData": {
-                              "type": "string"
+                              "type": "string",
+                              "description": "Extra data of the block."
                             },
                             "gasLimit": {
-                              "type": "string"
+                              "type": "string",
+                              "description": "Gas limit of the block."
                             },
                             "gasUsed": {
-                              "type": "string"
+                              "type": "string",
+                              "description": "Gas used in the block."
                             },
                             "hash": {
-                              "type": "string"
+                              "type": "string",
+                              "description": "Hash of the block."
                             },
                             "logsBloom": {
-                              "type": "string"
+                              "type": "string",
+                              "description": "Logs bloom filter of the block."
                             },
                             "miner": {
-                              "type": "string"
+                              "type": "string",
+                              "description": "Miner of the block."
                             },
                             "mixHash": {
-                              "type": "string"
+                              "type": "string",
+                              "description": "Mix hash of the block."
                             },
                             "nonce": {
-                              "type": "string"
+                              "type": "string",
+                              "description": "Nonce of the block."
                             },
                             "number": {
-                              "type": "string"
+                              "type": "string",
+                              "description": "Number of the block."
                             },
                             "parentHash": {
-                              "type": "string"
+                              "type": "string",
+                              "description": "Parent hash of the block."
                             },
                             "receiptsRoot": {
-                              "type": "string"
+                              "type": "string",
+                              "description": "Receipts root of the block."
                             },
                             "sha3Uncles": {
-                              "type": "string"
+                              "type": "string",
+                              "description": "SHA3 uncles hash of the block."
                             },
                             "size": {
-                              "type": "string"
+                              "type": "string",
+                              "description": "Size of the block."
                             },
                             "stateRoot": {
-                              "type": "string"
+                              "type": "string",
+                              "description": "State root of the block."
                             },
                             "timestamp": {
-                              "type": "string"
+                              "type": "string",
+                              "description": "Timestamp of the block."
                             },
                             "totalDifficulty": {
-                              "type": "string"
+                              "type": "string",
+                              "description": "Total difficulty of the block."
                             },
                             "transactions": {
                               "type": "array",
+                              "description": "Array of transactions in the block.",
                               "items": {
                                 "type": "object"
                               }
                             },
                             "transactionsRoot": {
-                              "type": "string"
+                              "type": "string",
+                              "description": "Transactions root of the block."
                             },
                             "uncles": {
                               "type": "array",
+                              "description": "Array of uncles in the block.",
                               "items": {
                                 "type": "object"
                               }
                             },
                             "receipts": {
                               "type": "array",
+                              "description": "Array of receipts in the block.",
                               "items": {
                                 "type": "object"
                               }
@@ -1573,21 +1810,28 @@
                     "properties": {
                       "jsonrpc": {
                         "type": "string",
-                        "default": 2
+                        "default": 2,
+                        "description": "Version of the JSON-RPC protocol, should be 2.0.",
+                        "example": "2.0"
                       },
                       "id": {
                         "type": "integer",
-                        "default": 1
+                        "default": 1,
+                        "description": "The request identifier.",
+                        "example": 1
                       },
                       "method": {
-                        "type": "string"
+                        "type": "string",
+                        "description": "API method being called."
                       },
                       "chainId": {
                         "type": "integer",
+                        "description": "The chain ID.",
                         "example": 80001
                       },
                       "params": {
-                        "type": "array"
+                        "type": "array",
+                        "description": "Parameters for the API method call."
                       }
                     }
                   },
@@ -1621,13 +1865,18 @@
                       "type": "object",
                       "properties": {
                         "jsonrpc": {
-                          "type": "string"
+                          "type": "string",
+                          "description": "Version of the JSON-RPC protocol, should be 2.0.",
+                          "example": "2.0"
                         },
                         "id": {
-                          "type": "integer"
+                          "type": "integer",
+                          "description": "The request identifier.",
+                          "example": 1
                         },
                         "result": {
-                          "type": "object"
+                          "type": "object",
+                          "description": "Result of the API call."
                         }
                       }
                     },
@@ -1639,35 +1888,45 @@
                           "properties": {
                             "nfts": {
                               "type": "array",
+                              "description": "Array of NFTs.",
                               "items": {
                                 "type": "object",
                                 "properties": {
                                   "address": {
-                                    "type": "string"
+                                    "type": "string",
+                                    "description": "NFT contract address."
                                   },
                                   "isSemiFungible": {
-                                    "type": "boolean"
+                                    "type": "boolean",
+                                    "description": "Indicates if the NFT is semi-fungible."
                                   },
                                   "tokenId": {
-                                    "type": "string"
+                                    "type": "string",
+                                    "description": "Token ID of the NFT."
                                   },
                                   "tokenBalance": {
-                                    "type": "string"
+                                    "type": "string",
+                                    "description": "Token balance of the NFT."
                                   },
                                   "tokenURI": {
-                                    "type": "string"
+                                    "type": "string",
+                                    "description": "Token URI of the NFT."
                                   },
                                   "name": {
-                                    "type": "string"
+                                    "type": "string",
+                                    "description": "Name of the NFT."
                                   },
                                   "symbol": {
-                                    "type": "string"
+                                    "type": "string",
+                                    "description": "Symbol of the NFT."
                                   },
                                   "image": {
-                                    "type": "string"
+                                    "type": "string",
+                                    "description": "Image URL of the NFT."
                                   },
                                   "data": {
-                                    "type": "object"
+                                    "type": "object",
+                                    "description": "Additional data of the NFT."
                                   }
                                 }
                               }
@@ -1705,21 +1964,28 @@
         "properties": {
           "jsonrpc": {
             "type": "string",
-            "default": 2
+            "default": 2,
+            "description": "Version of the JSON-RPC protocol, should be 2.0.",
+            "example": "2.0"
           },
           "id": {
             "type": "integer",
-            "default": 1
+            "default": 1,
+            "description": "The request identifier.",
+            "example": 1
           },
           "method": {
-            "type": "string"
+            "type": "string",
+            "description": "API method being called."
           },
           "chainId": {
             "type": "integer",
-            "example": 80001
+            "example": 80001,
+            "description": "The chain ID."
           },
           "params": {
-            "type": "array"
+            "type": "array",
+            "description": "Parameters for the API method call."
           }
         }
       },
@@ -1727,13 +1993,18 @@
         "type": "object",
         "properties": {
           "jsonrpc": {
-            "type": "string"
+            "type": "string",
+            "description": "Version of the JSON-RPC protocol, should be 2.0.",
+            "example": "2.0"
           },
           "id": {
-            "type": "integer"
+            "type": "integer",
+            "description": "The request identifier.",
+            "example": 1
           },
           "result": {
-            "type": "object"
+            "type": "object",
+            "description": "Result of the API call."
           }
         }
       },
@@ -1751,21 +2022,28 @@
             "properties": {
               "jsonrpc": {
                 "type": "string",
-                "default": 2
+                "default": 2,
+                "description": "Version of the JSON-RPC protocol, should be 2.0.",
+                "example": "2.0"
               },
               "id": {
                 "type": "integer",
-                "default": 1
+                "default": 1,
+                "description": "The request identifier.",
+                "example": 1
               },
               "method": {
-                "type": "string"
+                "type": "string",
+                "description": "API method being called."
               },
               "chainId": {
                 "type": "integer",
-                "example": 80001
+                "example": 80001,
+                "description": "The chain ID."
               },
               "params": {
-                "type": "array"
+                "type": "array",
+                "description": "Parameters for the API method call."
               }
             }
           },
@@ -1799,21 +2077,28 @@
             "properties": {
               "jsonrpc": {
                 "type": "string",
-                "default": 2
+                "default": 2,
+                "description": "Version of the JSON-RPC protocol, should be 2.0.",
+                "example": "2.0"
               },
               "id": {
                 "type": "integer",
-                "default": 1
+                "default": 1,
+                "description": "The request identifier.",
+                "example": 1
               },
               "method": {
-                "type": "string"
+                "type": "string",
+                "description": "API method being called."
               },
               "chainId": {
                 "type": "integer",
-                "example": 80001
+                "example": 80001,
+                "description": "The chain ID."
               },
               "params": {
-                "type": "array"
+                "type": "array",
+                "description": "Parameters for the API method call."
               }
             }
           },
@@ -1839,13 +2124,18 @@
             "type": "object",
             "properties": {
               "jsonrpc": {
-                "type": "string"
+                "type": "string",
+                "description": "Version of the JSON-RPC protocol, should be 2.0.",
+                "example": "2.0"
               },
               "id": {
-                "type": "integer"
+                "type": "integer",
+                "description": "The request identifier.",
+                "example": 1
               },
               "result": {
-                "type": "object"
+                "type": "object",
+                "description": "Result of the API call."
               }
             }
           },
@@ -1861,65 +2151,83 @@
                 ],
                 "properties": {
                   "native": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Native token balance."
                   },
                   "tokens": {
                     "type": "array",
+                    "description": "Array of tokens.",
                     "items": {
                       "type": "object",
                       "properties": {
                         "decimals": {
-                          "type": "integer"
+                          "type": "integer",
+                          "description": "Number of decimals for the token."
                         },
                         "amount": {
-                          "type": "string"
+                          "type": "string",
+                          "description": "Amount of tokens."
                         },
                         "address": {
-                          "type": "string"
+                          "type": "string",
+                          "description": "Token contract address."
                         },
                         "name": {
-                          "type": "string"
+                          "type": "string",
+                          "description": "Name of the token."
                         },
                         "symbol": {
-                          "type": "string"
+                          "type": "string",
+                          "description": "Symbol of the token."
                         },
                         "image": {
-                          "type": "string"
+                          "type": "string",
+                          "description": "Image URL of the token."
                         }
                       }
                     }
                   },
                   "nfts": {
                     "type": "array",
+                    "description": "Array of NFTs.",
                     "items": {
                       "type": "object",
                       "properties": {
                         "address": {
-                          "type": "string"
+                          "type": "string",
+                          "description": "NFT contract address."
                         },
                         "isSemiFungible": {
-                          "type": "boolean"
+                          "type": "boolean",
+                          "description": "Indicates if the NFT is semi-fungible."
                         },
                         "tokenId": {
-                          "type": "string"
+                          "type": "string",
+                          "description": "Token ID of the NFT."
                         },
                         "tokenBalance": {
-                          "type": "string"
+                          "type": "string",
+                          "description": "Token balance of the NFT."
                         },
                         "tokenURI": {
-                          "type": "string"
+                          "type": "string",
+                          "description": "Token URI of the NFT."
                         },
                         "name": {
-                          "type": "string"
+                          "type": "string",
+                          "description": "Name of the NFT."
                         },
                         "symbol": {
-                          "type": "string"
+                          "type": "string",
+                          "description": "Symbol of the NFT."
                         },
                         "image": {
-                          "type": "string"
+                          "type": "string",
+                          "description": "Image URL of the NFT."
                         },
                         "data": {
-                          "type": "object"
+                          "type": "object",
+                          "description": "Additional data of the NFT."
                         }
                       }
                     }
@@ -1936,13 +2244,18 @@
             "type": "object",
             "properties": {
               "jsonrpc": {
-                "type": "string"
+                "type": "string",
+                "description": "Version of the JSON-RPC protocol, should be 2.0.",
+                "example": "2.0"
               },
               "id": {
-                "type": "integer"
+                "type": "integer",
+                "description": "The request identifier.",
+                "example": 1
               },
               "result": {
-                "type": "object"
+                "type": "object",
+                "description": "Result of the API call."
               }
             }
           },
@@ -1957,30 +2270,38 @@
                 ],
                 "properties": {
                   "native": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Native token balance."
                   },
                   "tokens": {
                     "type": "array",
+                    "description": "Array of tokens.",
                     "items": {
                       "type": "object",
                       "properties": {
                         "decimals": {
-                          "type": "integer"
+                          "type": "integer",
+                          "description": "Number of decimals for the token."
                         },
                         "amount": {
-                          "type": "string"
+                          "type": "string",
+                          "description": "Amount of tokens."
                         },
                         "address": {
-                          "type": "string"
+                          "type": "string",
+                          "description": "Token contract address."
                         },
                         "name": {
-                          "type": "string"
+                          "type": "string",
+                          "description": "Name of the token."
                         },
                         "symbol": {
-                          "type": "string"
+                          "type": "string",
+                          "description": "Symbol of the token."
                         },
                         "image": {
-                          "type": "string"
+                          "type": "string",
+                          "description": "Image URL of the token."
                         }
                       }
                     }
@@ -2005,21 +2326,28 @@
             "properties": {
               "jsonrpc": {
                 "type": "string",
-                "default": 2
+                "default": 2,
+                "description": "Version of the JSON-RPC protocol, should be 2.0.",
+                "example": "2.0"
               },
               "id": {
                 "type": "integer",
-                "default": 1
+                "default": 1,
+                "description": "The request identifier.",
+                "example": 1
               },
               "method": {
-                "type": "string"
+                "type": "string",
+                "description": "API method being called."
               },
               "chainId": {
                 "type": "integer",
-                "example": 80001
+                "example": 80001,
+                "description": "The chain ID."
               },
               "params": {
-                "type": "array"
+                "type": "array",
+                "description": "Parameters for the API method call."
               }
             }
           },
@@ -2058,21 +2386,28 @@
             "properties": {
               "jsonrpc": {
                 "type": "string",
-                "default": 2
+                "default": 2,
+                "description": "Version of the JSON-RPC protocol, should be 2.0.",
+                "example": "2.0"
               },
               "id": {
                 "type": "integer",
-                "default": 1
+                "default": 1,
+                "description": "The request identifier.",
+                "example": 1
               },
               "method": {
-                "type": "string"
+                "type": "string",
+                "description": "API method being called."
               },
               "chainId": {
                 "type": "integer",
-                "example": 80001
+                "example": 80001,
+                "description": "The chain ID."
               },
               "params": {
-                "type": "array"
+                "type": "array",
+                "description": "Parameters for the API method call."
               }
             }
           },
@@ -2098,13 +2433,18 @@
             "type": "object",
             "properties": {
               "jsonrpc": {
-                "type": "string"
+                "type": "string",
+                "description": "Version of the JSON-RPC protocol, should be 2.0.",
+                "example": "2.0"
               },
               "id": {
-                "type": "integer"
+                "type": "integer",
+                "description": "The request identifier.",
+                "example": 1
               },
               "result": {
-                "type": "object"
+                "type": "object",
+                "description": "Result of the API call."
               }
             }
           },
@@ -2116,35 +2456,45 @@
                 "properties": {
                   "nfts": {
                     "type": "array",
+                    "description": "Array of NFTs.",
                     "items": {
                       "type": "object",
                       "properties": {
                         "address": {
-                          "type": "string"
+                          "type": "string",
+                          "description": "NFT contract address."
                         },
                         "isSemiFungible": {
-                          "type": "boolean"
+                          "type": "boolean",
+                          "description": "Indicates if the NFT is semi-fungible."
                         },
                         "tokenId": {
-                          "type": "string"
+                          "type": "string",
+                          "description": "Token ID of the NFT."
                         },
                         "tokenBalance": {
-                          "type": "string"
+                          "type": "string",
+                          "description": "Token balance of the NFT."
                         },
                         "tokenURI": {
-                          "type": "string"
+                          "type": "string",
+                          "description": "Token URI of the NFT."
                         },
                         "name": {
-                          "type": "string"
+                          "type": "string",
+                          "description": "Name of the NFT."
                         },
                         "symbol": {
-                          "type": "string"
+                          "type": "string",
+                          "description": "Symbol of the NFT."
                         },
                         "image": {
-                          "type": "string"
+                          "type": "string",
+                          "description": "Image URL of the NFT."
                         },
                         "data": {
-                          "type": "object"
+                          "type": "object",
+                          "description": "Additional data of the NFT."
                         }
                       }
                     }
@@ -2161,13 +2511,18 @@
             "type": "object",
             "properties": {
               "jsonrpc": {
-                "type": "string"
+                "type": "string",
+                "description": "Version of the JSON-RPC protocol, should be 2.0.",
+                "example": "2.0"
               },
               "id": {
-                "type": "integer"
+                "type": "integer",
+                "description": "The request identifier.",
+                "example": 1
               },
               "result": {
-                "type": "object"
+                "type": "object",
+                "description": "Result of the API call."
               }
             }
           },
@@ -2176,34 +2531,43 @@
             "properties": {
               "result": {
                 "type": "array",
+                "description": "Array of token price details.",
                 "items": {
                   "type": "object",
                   "properties": {
                     "address": {
-                      "type": "string"
+                      "type": "string",
+                      "description": "Token contract address."
                     },
                     "currencies": {
                       "type": "array",
+                      "description": "Array of currency details.",
                       "items": {
                         "type": "object",
                         "properties": {
                           "type": {
-                            "type": "string"
+                            "type": "string",
+                            "description": "Currency type."
                           },
                           "price": {
-                            "type": "number"
+                            "type": "number",
+                            "description": "Price of the token."
                           },
                           "marketCap": {
-                            "type": "number"
+                            "type": "number",
+                            "description": "Market capitalization."
                           },
                           "24hChange": {
-                            "type": "number"
+                            "type": "number",
+                            "description": "24-hour price change."
                           },
                           "24hVol": {
-                            "type": "number"
+                            "type": "number",
+                            "description": "24-hour trading volume."
                           },
                           "lastUpdatedAt": {
-                            "type": "integer"
+                            "type": "integer",
+                            "description": "Timestamp of the last update."
                           }
                         }
                       }
@@ -2229,21 +2593,28 @@
             "properties": {
               "jsonrpc": {
                 "type": "string",
-                "default": 2
+                "default": 2,
+                "description": "Version of the JSON-RPC protocol, should be 2.0.",
+                "example": "2.0"
               },
               "id": {
                 "type": "integer",
-                "default": 1
+                "default": 1,
+                "description": "The request identifier.",
+                "example": 1
               },
               "method": {
-                "type": "string"
+                "type": "string",
+                "description": "API method being called."
               },
               "chainId": {
                 "type": "integer",
-                "example": 80001
+                "example": 80001,
+                "description": "The chain ID."
               },
               "params": {
-                "type": "array"
+                "type": "array",
+                "description": "Parameters for the API method call."
               }
             }
           },
@@ -2276,13 +2647,18 @@
             "type": "object",
             "properties": {
               "jsonrpc": {
-                "type": "string"
+                "type": "string",
+                "description": "Version of the JSON-RPC protocol, should be 2.0.",
+                "example": "2.0"
               },
               "id": {
-                "type": "integer"
+                "type": "integer",
+                "description": "The request identifier.",
+                "example": 1
               },
               "result": {
-                "type": "object"
+                "type": "object",
+                "description": "Result of the API call."
               }
             }
           },
@@ -2293,16 +2669,20 @@
                 "type": "object",
                 "properties": {
                   "low": {
-                    "type": "object"
+                    "type": "object",
+                    "description": "Low gas fee estimate."
                   },
                   "medium": {
-                    "type": "object"
+                    "type": "object",
+                    "description": "Medium gas fee estimate."
                   },
                   "high": {
-                    "type": "object"
+                    "type": "object",
+                    "description": "High gas fee estimate."
                   },
                   "baseFee": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Base gas fee."
                   }
                 }
               }
@@ -2324,21 +2704,28 @@
             "properties": {
               "jsonrpc": {
                 "type": "string",
-                "default": 2
+                "default": 2,
+                "description": "Version of the JSON-RPC protocol, should be 2.0.",
+                "example": "2.0"
               },
               "id": {
                 "type": "integer",
-                "default": 1
+                "default": 1,
+                "description": "The request identifier.",
+                "example": 1
               },
               "method": {
-                "type": "string"
+                "type": "string",
+                "description": "API method being called."
               },
               "chainId": {
                 "type": "integer",
-                "example": 80001
+                "example": 80001,
+                "description": "The chain ID."
               },
               "params": {
-                "type": "array"
+                "type": "array",
+                "description": "Parameters for the API method call."
               }
             }
           },
@@ -2366,13 +2753,18 @@
             "type": "object",
             "properties": {
               "jsonrpc": {
-                "type": "string"
+                "type": "string",
+                "description": "Version of the JSON-RPC protocol, should be 2.0.",
+                "example": "2.0"
               },
               "id": {
-                "type": "integer"
+                "type": "integer",
+                "description": "The request identifier.",
+                "example": 1
               },
               "result": {
-                "type": "object"
+                "type": "object",
+                "description": "Result of the API call."
               }
             }
           },
@@ -2381,59 +2773,76 @@
             "properties": {
               "result": {
                 "type": "array",
+                "description": "Array of transactions.",
                 "items": {
                   "type": "object",
                   "properties": {
                     "hash": {
-                      "type": "string"
+                      "type": "string",
+                      "description": "Transaction hash."
                     },
                     "from": {
-                      "type": "string"
+                      "type": "string",
+                      "description": "Sender address."
                     },
                     "to": {
-                      "type": "string"
+                      "type": "string",
+                      "description": "Receiver address."
                     },
                     "value": {
-                      "type": "string"
+                      "type": "string",
+                      "description": "Transaction value."
                     },
                     "data": {
-                      "type": "string"
+                      "type": "string",
+                      "description": "Transaction data."
                     },
                     "gasLimit": {
-                      "type": "integer"
+                      "type": "integer",
+                      "description": "Gas limit for the transaction."
                     },
                     "timestamp": {
-                      "type": "integer"
+                      "type": "integer",
+                      "description": "Timestamp of the transaction."
                     },
                     "status": {
-                      "type": "integer"
+                      "type": "integer",
+                      "description": "Status of the transaction."
                     },
                     "type": {
-                      "type": "integer"
+                      "type": "integer",
+                      "description": "Type of the transaction."
                     },
                     "nonce": {
-                      "type": "integer"
+                      "type": "integer",
+                      "description": "Nonce of the transaction."
                     },
                     "accessList": {
                       "type": "array",
+                      "description": "Access list for the transaction.",
                       "items": {
                         "type": "object"
                       }
                     },
                     "maxPriorityFeePerGas": {
-                      "type": "string"
+                      "type": "string",
+                      "description": "Max priority fee per gas."
                     },
                     "maxFeePerGas": {
-                      "type": "string"
+                      "type": "string",
+                      "description": "Max fee per gas."
                     },
                     "gasSpent": {
-                      "type": "string"
+                      "type": "string",
+                      "description": "Gas spent for the transaction."
                     },
                     "gasPrice": {
-                      "type": "string"
+                      "type": "string",
+                      "description": "Gas price for the transaction."
                     },
                     "fees": {
-                      "type": "string"
+                      "type": "string",
+                      "description": "Transaction fees."
                     }
                   }
                 }
@@ -2456,21 +2865,28 @@
             "properties": {
               "jsonrpc": {
                 "type": "string",
-                "default": 2
+                "default": 2,
+                "description": "Version of the JSON-RPC protocol, should be 2.0.",
+                "example": "2.0"
               },
               "id": {
                 "type": "integer",
-                "default": 1
+                "default": 1,
+                "description": "The request identifier.",
+                "example": 1
               },
               "method": {
-                "type": "string"
+                "type": "string",
+                "description": "API method being called."
               },
               "chainId": {
                 "type": "integer",
-                "example": 80001
+                "example": 80001,
+                "description": "The chain ID."
               },
               "params": {
-                "type": "array"
+                "type": "array",
+                "description": "Parameters for the API method call."
               }
             }
           },
@@ -2498,13 +2914,18 @@
             "type": "object",
             "properties": {
               "jsonrpc": {
-                "type": "string"
+                "type": "string",
+                "description": "Version of the JSON-RPC protocol, should be 2.0.",
+                "example": "2.0"
               },
               "id": {
-                "type": "integer"
+                "type": "integer",
+                "description": "The request identifier.",
+                "example": 1
               },
               "result": {
-                "type": "object"
+                "type": "object",
+                "description": "Result of the API call."
               }
             }
           },
@@ -2513,50 +2934,64 @@
             "properties": {
               "result": {
                 "type": "array",
+                "description": "Array of pending transactions.",
                 "items": {
                   "type": "object",
                   "properties": {
                     "hash": {
-                      "type": "string"
+                      "type": "string",
+                      "description": "Transaction hash."
                     },
                     "from": {
-                      "type": "string"
+                      "type": "string",
+                      "description": "Sender address."
                     },
                     "to": {
-                      "type": "string"
+                      "type": "string",
+                      "description": "Receiver address."
                     },
                     "value": {
-                      "type": "string"
+                      "type": "string",
+                      "description": "Transaction value."
                     },
                     "data": {
-                      "type": "string"
+                      "type": "string",
+                      "description": "Transaction data."
                     },
                     "gasLimit": {
-                      "type": "integer"
+                      "type": "integer",
+                      "description": "Gas limit for the transaction."
                     },
                     "timestamp": {
-                      "type": "integer"
+                      "type": "integer",
+                      "description": "Timestamp of the transaction."
                     },
                     "status": {
-                      "type": "integer"
+                      "type": "integer",
+                      "description": "Status of the transaction."
                     },
                     "type": {
-                      "type": "integer"
+                      "type": "integer",
+                      "description": "Type of the transaction."
                     },
                     "nonce": {
-                      "type": "integer"
+                      "type": "integer",
+                      "description": "Nonce of the transaction."
                     },
                     "accessList": {
                       "type": "array",
+                      "description": "Access list for the transaction.",
                       "items": {
                         "type": "object"
                       }
                     },
                     "maxPriorityFeePerGas": {
-                      "type": "string"
+                      "type": "string",
+                      "description": "Max priority fee per gas."
                     },
                     "maxFeePerGas": {
-                      "type": "string"
+                      "type": "string",
+                      "description": "Max fee per gas."
                     }
                   }
                 }
@@ -2579,21 +3014,28 @@
             "properties": {
               "jsonrpc": {
                 "type": "string",
-                "default": 2
+                "default": 2,
+                "description": "Version of the JSON-RPC protocol, should be 2.0.",
+                "example": "2.0"
               },
               "id": {
                 "type": "integer",
-                "default": 1
+                "default": 1,
+                "description": "The request identifier.",
+                "example": 1
               },
               "method": {
-                "type": "string"
+                "type": "string",
+                "description": "API method being called."
               },
               "chainId": {
                 "type": "integer",
-                "example": 80001
+                "example": 80001,
+                "description": "The chain ID."
               },
               "params": {
-                "type": "array"
+                "type": "array",
+                "description": "Parameters for the API method call."
               }
             }
           },
@@ -2633,13 +3075,18 @@
             "type": "object",
             "properties": {
               "jsonrpc": {
-                "type": "string"
+                "type": "string",
+                "description": "Version of the JSON-RPC protocol, should be 2.0.",
+                "example": "2.0"
               },
               "id": {
-                "type": "integer"
+                "type": "integer",
+                "description": "The request identifier.",
+                "example": 1
               },
               "result": {
-                "type": "object"
+                "type": "object",
+                "description": "Result of the API call."
               }
             }
           },
@@ -2647,7 +3094,8 @@
             "type": "object",
             "properties": {
               "result": {
-                "type": "string"
+                "type": "string",
+                "description": "Encoded function call data."
               }
             }
           }
@@ -2667,21 +3115,28 @@
             "properties": {
               "jsonrpc": {
                 "type": "string",
-                "default": 2
+                "default": 2,
+                "description": "Version of the JSON-RPC protocol, should be 2.0.",
+                "example": "2.0"
               },
               "id": {
                 "type": "integer",
-                "default": 1
+                "default": 1,
+                "description": "The request identifier.",
+                "example": 1
               },
               "method": {
-                "type": "string"
+                "type": "string",
+                "description": "API method being called."
               },
               "chainId": {
                 "type": "integer",
-                "example": 80001
+                "example": 80001,
+                "description": "The chain ID."
               },
               "params": {
-                "type": "array"
+                "type": "array",
+                "description": "Parameters for the API method call."
               }
             }
           },
@@ -2721,13 +3176,18 @@
             "type": "object",
             "properties": {
               "jsonrpc": {
-                "type": "string"
+                "type": "string",
+                "description": "Version of the JSON-RPC protocol, should be 2.0.",
+                "example": "2.0"
               },
               "id": {
-                "type": "integer"
+                "type": "integer",
+                "description": "The request identifier.",
+                "example": 1
               },
               "result": {
-                "type": "object"
+                "type": "object",
+                "description": "Result of the API call."
               }
             }
           },
@@ -2735,7 +3195,8 @@
             "type": "object",
             "properties": {
               "result": {
-                "type": "string"
+                "type": "string",
+                "description": "Contract ABI."
               }
             }
           }
@@ -2755,21 +3216,28 @@
             "properties": {
               "jsonrpc": {
                 "type": "string",
-                "default": 2
+                "default": 2,
+                "description": "Version of the JSON-RPC protocol, should be 2.0.",
+                "example": "2.0"
               },
               "id": {
                 "type": "integer",
-                "default": 1
+                "default": 1,
+                "description": "The request identifier.",
+                "example": 1
               },
               "method": {
-                "type": "string"
+                "type": "string",
+                "description": "API method being called."
               },
               "chainId": {
                 "type": "integer",
-                "example": 80001
+                "example": 80001,
+                "description": "The chain ID."
               },
               "params": {
-                "type": "array"
+                "type": "array",
+                "description": "Parameters for the API method call."
               }
             }
           },
@@ -2805,13 +3273,18 @@
             "type": "object",
             "properties": {
               "jsonrpc": {
-                "type": "string"
+                "type": "string",
+                "description": "Version of the JSON-RPC protocol, should be 2.0.",
+                "example": "2.0"
               },
               "id": {
-                "type": "integer"
+                "type": "integer",
+                "description": "The request identifier.",
+                "example": 1
               },
               "result": {
-                "type": "object"
+                "type": "object",
+                "description": "Result of the API call."
               }
             }
           },
@@ -2822,10 +3295,12 @@
                 "type": "object",
                 "properties": {
                   "estimatedChanges": {
-                    "type": "object"
+                    "type": "object",
+                    "description": "Estimated changes resulting from the transaction."
                   },
                   "data": {
-                    "type": "object"
+                    "type": "object",
+                    "description": "Data of the transaction."
                   }
                 }
               }
@@ -2847,21 +3322,28 @@
             "properties": {
               "jsonrpc": {
                 "type": "string",
-                "default": 2
+                "default": 2,
+                "description": "Version of the JSON-RPC protocol, should be 2.0.",
+                "example": "2.0"
               },
               "id": {
                 "type": "integer",
-                "default": 1
+                "default": 1,
+                "description": "The request identifier.",
+                "example": 1
               },
               "method": {
-                "type": "string"
+                "type": "string",
+                "description": "API method being called."
               },
               "chainId": {
                 "type": "integer",
-                "example": 80001
+                "example": 80001,
+                "description": "The chain ID."
               },
               "params": {
-                "type": "array"
+                "type": "array",
+                "description": "Parameters for the API method call."
               }
             }
           },
@@ -2894,13 +3376,18 @@
             "type": "object",
             "properties": {
               "jsonrpc": {
-                "type": "string"
+                "type": "string",
+                "description": "Version of the JSON-RPC protocol, should be 2.0.",
+                "example": "2.0"
               },
               "id": {
-                "type": "integer"
+                "type": "integer",
+                "description": "The request identifier.",
+                "example": 1
               },
               "result": {
-                "type": "object"
+                "type": "object",
+                "description": "Result of the API call."
               }
             }
           },
@@ -2911,73 +3398,94 @@
                 "type": "object",
                 "properties": {
                   "difficulty": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Difficulty of the block."
                   },
                   "extraData": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Extra data of the block."
                   },
                   "gasLimit": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Gas limit of the block."
                   },
                   "gasUsed": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Gas used in the block."
                   },
                   "hash": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Hash of the block."
                   },
                   "logsBloom": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Logs bloom filter of the block."
                   },
                   "miner": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Miner of the block."
                   },
                   "mixHash": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Mix hash of the block."
                   },
                   "nonce": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Nonce of the block."
                   },
                   "number": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Number of the block."
                   },
                   "parentHash": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Parent hash of the block."
                   },
                   "receiptsRoot": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Receipts root of the block."
                   },
                   "sha3Uncles": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "SHA3 uncles hash of the block."
                   },
                   "size": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Size of the block."
                   },
                   "stateRoot": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "State root of the block."
                   },
                   "timestamp": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Timestamp of the block."
                   },
                   "totalDifficulty": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Total difficulty of the block."
                   },
                   "transactions": {
                     "type": "array",
+                    "description": "Array of transactions in the block.",
                     "items": {
                       "type": "object"
                     }
                   },
                   "transactionsRoot": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Transactions root of the block."
                   },
                   "uncles": {
                     "type": "array",
+                    "description": "Array of uncles in the block.",
                     "items": {
                       "type": "object"
                     }
                   },
                   "receipts": {
                     "type": "array",
+                    "description": "Array of receipts in the block.",
                     "items": {
                       "type": "object"
                     }
@@ -3002,21 +3510,28 @@
             "properties": {
               "jsonrpc": {
                 "type": "string",
-                "default": 2
+                "default": 2,
+                "description": "Version of the JSON-RPC protocol, should be 2.0.",
+                "example": "2.0"
               },
               "id": {
                 "type": "integer",
-                "default": 1
+                "default": 1,
+                "description": "The request identifier.",
+                "example": 1
               },
               "method": {
-                "type": "string"
+                "type": "string",
+                "description": "API method being called."
               },
               "chainId": {
                 "type": "integer",
-                "example": 80001
+                "example": 80001,
+                "description": "The chain ID."
               },
               "params": {
-                "type": "array"
+                "type": "array",
+                "description": "Parameters for the API method call."
               }
             }
           },
@@ -3042,13 +3557,18 @@
             "type": "object",
             "properties": {
               "jsonrpc": {
-                "type": "string"
+                "type": "string",
+                "description": "Version of the JSON-RPC protocol, should be 2.0.",
+                "example": "2.0"
               },
               "id": {
-                "type": "integer"
+                "type": "integer",
+                "description": "The request identifier.",
+                "example": 1
               },
               "result": {
-                "type": "object"
+                "type": "object",
+                "description": "Result of the API call."
               }
             }
           },
@@ -3060,35 +3580,45 @@
                 "properties": {
                   "nfts": {
                     "type": "array",
+                    "description": "Array of NFTs.",
                     "items": {
                       "type": "object",
                       "properties": {
                         "address": {
-                          "type": "string"
+                          "type": "string",
+                          "description": "NFT contract address."
                         },
                         "isSemiFungible": {
-                          "type": "boolean"
+                          "type": "boolean",
+                          "description": "Indicates if the NFT is semi-fungible."
                         },
                         "tokenId": {
-                          "type": "string"
+                          "type": "string",
+                          "description": "Token ID of the NFT."
                         },
                         "tokenBalance": {
-                          "type": "string"
+                          "type": "string",
+                          "description": "Token balance of the NFT."
                         },
                         "tokenURI": {
-                          "type": "string"
+                          "type": "string",
+                          "description": "Token URI of the NFT."
                         },
                         "name": {
-                          "type": "string"
+                          "type": "string",
+                          "description": "Name of the NFT."
                         },
                         "symbol": {
-                          "type": "string"
+                          "type": "string",
+                          "description": "Symbol of the NFT."
                         },
                         "image": {
-                          "type": "string"
+                          "type": "string",
+                          "description": "Image URL of the NFT."
                         },
                         "data": {
-                          "type": "object"
+                          "type": "object",
+                          "description": "Additional data of the NFT."
                         }
                       }
                     }
@@ -3102,3 +3632,4 @@
     }
   }
 }
+

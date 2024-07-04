@@ -3,29 +3,45 @@ title: Introduction
 mode: "wide"
 ---
 
+import "./style.css";
+
+<a href="/landing/what-is-particle-network">
+  <div className="video-container">
+    <h2>Introduction to Particle Network</h2>
+    <video
+      autoPlay
+      muted
+      loop
+      playsInline
+      src="/images/waves-bg.mp4"
+    ></video>
+  </div>
+</a>
+
+<div className="chain-abstraction">
+  <a href="modular-l1/introduction">Modular L1</a> • 
+  <a href="modular-l1/universal-accounts">Universal Accounts</a> • 
+  <a href="modular-l1/universal-liquidity">Universal Liquidity</a> • 
+  <a href="modular-l1/universal-gas">Universal Gas</a>
+</div>
+
 <CardGroup cols={3}>
-  <Card title="Account Abstraction" icon="credit-card">
+  <Card title="Account Abstraction" icon="credit-card" href="../api/aa">
     Modularly tap into ERC-4337 AA within your dApp. Leverage Particle’s Bundler, Paymaster, and compatibility with Smart Account implementations.
   </Card>
-  <Card title="Particle Auth" icon="shield">
+  <Card title="Particle Auth" icon="shield" href="../api/auth">
     Onboard users in one click through a Web 2.0-adjacent interface. Compatible with phone, email, Google, X, and many more.
   </Card>
-  <Card title="Embedded Wallet" icon="wallet">
+  <Card title="Embedded Wallet" icon="wallet" href="../api/wallet">
     A Web3 wallet, right within your dApp. Allow your users to focus on your product rather than navigating a typical wallet.
   </Card>
-  <Card title="Particle Connect" icon="link">
+  <Card title="Particle Connect" icon="link" href="api/connect">
     Connect to both Web 2.0 accounts and mainstream wallets, enhancing accessibility through a unified interface.
   </Card>
-    <Card title="BTC Connect" icon="btc">
+  <Card title="BTC Connect" icon="btc" href="../api/btc">
     The first account abstraction protocol for Bitcoin. Control a Smart Account on an EVM-compatible L2 using your Bitcoin wallet.
   </Card>
-  <Card title="Web3 Services" icon="webhook">
+  <Card title="Web3 Services" icon="webhook" href="../api/web3">
     Connect to both Web 2.0 accounts and mainstream wallets, enhancing accessibility through a unified interface.
   </Card>
 </CardGroup>
-
-
-# Chain Abstraction
-
-**[Modular L1](#)** • [Universal Accounts](#) • [Universal Liquidity](#) • [Universal Gas](#)
-

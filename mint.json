@@ -38,8 +38,7 @@
     },
     {
       "name": "Changelog",
-      "url": "changelog",
-      "isDefaultHidden": true
+      "url": "changelog"
     }
   ],
   "anchors": [
@@ -57,13 +56,9 @@
       "name": "GitHub",
       "icon": "github",
       "url": "https://github.com/Particle-Network"
-    },    {
-      "name": "Changelog",
-      "icon": "megaphone",
-      "url": "https://particlenetwork.mintlify.app/changelog/logs"
     }
   ],
-  "navigation": [    
+  "navigation": [
     {
       "group": "OVERVIEW",
       "pages": [
@@ -104,10 +99,7 @@
     },
     {
       "group": "MISCELLANEOUS",
-      "pages": [
-        "landing/more/audits",
-        "landing/more/assets"
-      ]
+      "pages": ["landing/more/audits", "landing/more/assets"]
     },
     {
       "group": "TUTORIALS & DEMOS",
@@ -119,10 +111,7 @@
     },
     {
       "group": "GETTING STARTED",
-      "pages": [
-        "resources/overview",
-        "resources/network-coverage"
-      ]
+      "pages": ["resources/overview", "resources/network-coverage"]
     },
     {
       "group": "QUICKSTART: WALLET ABSTRACTION",
@@ -203,7 +192,7 @@
             "resources/integrations/partners/alchemy",
             "resources/integrations/partners/openfort",
             "resources/integrations/partners/biconomy",
-            
+
             "resources/integrations/partners/bob"
           ]
         }
@@ -211,9 +200,7 @@
     },
     {
       "group": "APIs & SDKs",
-      "pages": [
-        "api/introduction"
-      ]
+      "pages": ["api/introduction"]
     },
     {
       "group": "PARTICLE AUTH",
@@ -228,10 +215,7 @@
         },
         {
           "group": "SDKs (Desktop)",
-          "pages": [
-            "api/auth/desktop-sdks/web",
-            "api/auth/desktop-sdks/unity"
-          ]
+          "pages": ["api/auth/desktop-sdks/web", "api/auth/desktop-sdks/unity"]
         },
         {
           "group": "SDKs (Mobile)",
@@ -246,9 +230,7 @@
         },
         {
           "group": "SDKs (Multi-platform)",
-          "pages": [
-            "api/auth/multi/unreal"
-          ]
+          "pages": ["api/auth/multi/unreal"]
         }
       ]
     },
@@ -258,9 +240,7 @@
         "api/connect/introduction",
         {
           "group": "SDKs (Desktop)",
-          "pages": [
-            "api/connect/desktop/web"
-          ]
+          "pages": ["api/connect/desktop/web"]
         },
         {
           "group": "SDKs (Mobile)",
@@ -280,9 +260,7 @@
         "api/wallet/introduction",
         {
           "group": "SDKs (Desktop)",
-          "pages": [
-            "api/wallet/desktop/web"
-          ]
+          "pages": ["api/wallet/desktop/web"]
         },
         {
           "group": "SDKs (Mobile)",
@@ -302,9 +280,7 @@
         "api/btc/introduction",
         {
           "group": "SDKs (Desktop)",
-          "pages": [
-            "api/btc/desktop/web"
-          ]
+          "pages": ["api/btc/desktop/web"]
         },
         {
           "group": "BTC Connect RPC",
@@ -319,23 +295,6 @@
       "group": "WEB3 SERVICES",
       "pages": [
         "api/web3/introduction",
-        {
-          "group": "NFT Market API (EVM-Compatible Blockchains)",
-          "pages": [
-            "api/web3/nft/getcollection",
-            "api/web3/nft/getcollectionactivities",
-            "api/web3/nft/getcollectionactivitiesbyaddress",
-            "api/web3/nft/refreshcollectionmetadata",
-            "api/web3/nft/getcollectiontokens",
-            "api/web3/nft/getcollectiontokencount",
-            "api/web3/nft/gettoken",
-            "api/web3/nft/gettokenactivities",
-            "api/web3/nft/uploadorder",
-            "api/web3/nft/buildorder",
-            "api/web3/nft/getcollectionlist",
-            "api/web3/nft/trackcollection"
-          ]
-        },
         {
           "group": "Enhanced RPC (Data API)",
           "pages": [
@@ -416,9 +375,7 @@
         },
         {
           "group": "SDKs (Desktop)",
-          "pages": [
-            "api/aa/sdks/desktop/web"
-          ]
+          "pages": ["api/aa/sdks/desktop/web"]
         },
         {
           "group": "SDKs (Mobile)",
@@ -434,15 +391,11 @@
     },
     {
       "group": "DEBUGGING",
-      "pages": [
-        "api/debug/sdk",
-        "api/debug/api"
-      ]
-    },   {
+      "pages": ["api/debug/sdk", "api/debug/api"]
+    },
+    {
       "group": "CHANGELOG",
-      "pages": [
-        "changelog/logs"
-      ]
+      "pages": ["changelog/logs"]
     }
   ],
   "footerSocials": {

@@ -25,6 +25,7 @@
           }
         ],
         "requestBody": {
+          "description": "Request parameters for retrieving user information.",
           "content": {
             "application/json": {
               "schema": {
@@ -35,7 +36,7 @@
         },
         "responses": {
           "200": {
-            "description": "Success",
+            "description": "Successful response with user information.",
             "content": {
               "application/json": {
                 "schema": {
@@ -57,6 +58,7 @@
           }
         ],
         "requestBody": {
+          "description": "Request to check if a user is part of your project based on an address.",
           "content": {
             "application/json": {
               "schema": {
@@ -67,7 +69,7 @@
         },
         "responses": {
           "200": {
-            "description": "Success",
+            "description": "Boolean response indicating if the user is part of the project.",
             "content": {
               "application/json": {
                 "schema": {
@@ -93,14 +95,17 @@
         "properties": {
           "jsonrpc": {
             "type": "string",
+            "description": "Version of the JSON-RPC protocol, should be 2.0.",
             "example": "2.0"
           },
           "id": {
             "type": "integer",
+            "description": "The request identifier.",
             "example": 1
           },
           "method": {
             "type": "string",
+            "description": "API method being called, should be getUserInfo.",
             "example": "getUserInfo"
           },
           "params": {
@@ -108,6 +113,7 @@
             "items": {
               "type": "string"
             },
+            "description": "Parameters for the API method call, including the user's UUID and session token.",
             "example": [
               "UUID",
               "Token"
@@ -287,14 +293,17 @@
         "properties": {
           "jsonrpc": {
             "type": "string",
+            "description": "Version of the JSON-RPC protocol, should be 2.0.",
             "example": "2.0"
           },
           "id": {
             "type": "integer",
+            "description": "The request identifier.",
             "example": 0
           },
           "method": {
             "type": "string",
+            "description": "API method being called, should be isProjectUser.",
             "example": "isProjectUser"
           },
           "params": {
@@ -302,6 +311,7 @@
             "items": {
               "type": "string"
             },
+            "description": "Parameters for the API method call, including an indicator determining Solana or EVM and wallet address.",
             "example": [
               "evm_chain",
               "0x6D5fCEd0C74F22a1B145ef48B25527Ce9BF829bF"

@@ -20,6 +20,7 @@
         "summary": "getSmartAccount",
         "operationId": "getSmartAccount",
         "requestBody": {
+          "description": "Request to retrieve smart account information.",
           "content": {
             "application/json": {
               "schema": {
@@ -30,7 +31,7 @@
         },
         "responses": {
           "200": {
-            "description": "Success",
+            "description": "Successful response with smart account information.",
             "content": {
               "application/json": {
                 "schema": {
@@ -47,6 +48,7 @@
         "summary": "getFeeQuotes",
         "operationId": "getFeeQuotes",
         "requestBody": {
+          "description": "Request to retrieve fee quotes for operations.",
           "content": {
             "application/json": {
               "schema": {
@@ -57,7 +59,7 @@
         },
         "responses": {
           "200": {
-            "description": "Success",
+            "description": "Successful response with fee quotes.",
             "content": {
               "application/json": {
                 "schema": {
@@ -74,6 +76,7 @@
         "summary": "createUserOp",
         "operationId": "createUserOp",
         "requestBody": {
+          "description": "Request to create a user operation.",
           "content": {
             "application/json": {
               "schema": {
@@ -84,7 +87,7 @@
         },
         "responses": {
           "200": {
-            "description": "Success",
+            "description": "Successful response with created user operation details.",
             "content": {
               "application/json": {
                 "schema": {
@@ -101,6 +104,7 @@
         "summary": "sendUserOp",
         "operationId": "sendUserOp",
         "requestBody": {
+          "description": "Request to send a user operation.",
           "content": {
             "application/json": {
               "schema": {
@@ -111,7 +115,7 @@
         },
         "responses": {
           "200": {
-            "description": "Success",
+            "description": "Successful response with the result of the user operation.",
             "content": {
               "application/json": {
                 "schema": {
@@ -128,6 +132,7 @@
         "summary": "createSessions",
         "operationId": "particle_aa_createSessions",
         "requestBody": {
+          "description": "Request to create sessions.",
           "content": {
             "application/json": {
               "schema": {
@@ -138,7 +143,7 @@
         },
         "responses": {
           "200": {
-            "description": "Success",
+            "description": "Successful response with created session details.",
             "content": {
               "application/json": {
                 "schema": {
@@ -155,6 +160,7 @@
         "summary": "validateSession",
         "operationId": "particle_aa_validateSession",
         "requestBody": {
+          "description": "Request to validate a session.",
           "content": {
             "application/json": {
               "schema": {
@@ -165,7 +171,7 @@
         },
         "responses": {
           "200": {
-            "description": "Success",
+            "description": "Successful response indicating the session validity.",
             "content": {
               "application/json": {
                 "schema": {
@@ -197,17 +203,23 @@
         "properties": {
           "jsonrpc": {
             "type": "string",
-            "default": 2
+            "default": "2.0",
+            "description": "Version of the JSON-RPC protocol, should be 2.0.",
+            "example": "2.0"
           },
           "id": {
             "type": "integer",
-            "default": 1
+            "default": 1,
+            "description": "The request identifier.",
+            "example": 1
           },
           "method": {
-            "type": "string"
+            "type": "string",
+            "description": "API method being called."
           },
           "params": {
-            "type": "array"
+            "type": "array",
+            "description": "Parameters for the API method call."
           }
         }
       },
@@ -221,17 +233,23 @@
         "properties": {
           "jsonrpc": {
             "type": "string",
-            "default": 2
+            "default": "2.0",
+            "description": "Version of the JSON-RPC protocol, should be 2.0.",
+            "example": "2.0"
           },
           "id": {
             "type": "integer",
-            "default": 1
+            "default": 1,
+            "description": "The request identifier.",
+            "example": 1
           },
           "result": {
-            "type": "object"
+            "type": "object",
+            "description": "Result of the API call."
           },
           "chainId": {
             "type": "integer",
+            "description": "The blockchain chain ID.",
             "example": 80001
           }
         }
@@ -251,10 +269,12 @@
               },
               "params": {
                 "type": "array",
+                "description": "Parameters for retrieving a smart account.",
                 "items": {
                   "type": "array",
                   "items": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Account details as a string."
                   }
                 }
               }
@@ -272,6 +292,7 @@
             "properties": {
               "result": {
                 "type": "array",
+                "description": "Array of smart account details.",
                 "items": {
                   "type": "object"
                 }
@@ -295,6 +316,7 @@
               },
               "params": {
                 "type": "array",
+                "description": "Parameters for retrieving fee quotes.",
                 "items": {
                   "oneOf": [
                     {
@@ -306,13 +328,19 @@
                         "type": "object",
                         "properties": {
                           "to": {
-                            "type": "string"
+                            "type": "string",
+                            "description": "Recipient address.",
+                            "example": "0xRecipientAddress"
                           },
                           "value": {
-                            "type": "string"
+                            "type": "string",
+                            "description": "Amount value.",
+                            "example": "1000000000000000000"
                           },
                           "data": {
-                            "type": "string"
+                            "type": "string",
+                            "description": "Transaction data.",
+                            "example": "0xTransactionData"
                           }
                         }
                       }
@@ -336,15 +364,256 @@
                 "type": "object",
                 "properties": {
                   "verifyingPaymasterGasless": {
-                    "type": "object"
+                    "type": "object",
+                    "description": "Gasless fee quote."
                   },
                   "verifyingPaymasterNative": {
-                    "type": "object"
+                    "type": "object",
+                    "description": "Native token fee quote."
                   },
                   "tokenPaymaster": {
-                    "type": "object"
+                    "type": "object",
+                    "description": "Token fee quote."
                   }
                 }
+              }
+            }
+          }
+        ]
+      },
+      "CreateUserOpRequest": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/RPCRequest"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "method": {
+                "enum": [
+                  "particle_aa_createUserOp"
+                ]
+              },
+              "params": {
+                "type": "array",
+                "description": "Parameters for creating a user operation.",
+                "items": {
+                  "oneOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "to": {
+                          "type": "string",
+                          "description": "Recipient address.",
+                          "example": "0xRecipientAddress"
+                        },
+                        "value": {
+                          "type": "string",
+                          "description": "Amount value.",
+                          "example": "1000000000000000000"
+                        },
+                        "data": {
+                          "type": "string",
+                          "description": "Transaction data.",
+                          "example": "0xTransactionData"
+                        }
+                      }
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "tokenInfo": {
+                          "type": "object",
+                          "description": "Token information.",
+                          "properties": {
+                            "chainId": {
+                              "type": "number",
+                              "description": "Chain ID.",
+                              "example": 80001
+                            },
+                            "name": {
+                              "type": "string",
+                              "description": "Token name.",
+                              "example": "Example Token"
+                            },
+                            "symbol": {
+                              "type": "string",
+                              "description": "Token symbol.",
+                              "example": "EXT"
+                            },
+                            "decimals": {
+                              "type": "number",
+                              "description": "Token decimals.",
+                              "example": 18
+                            },
+                            "address": {
+                              "type": "string",
+                              "description": "Token address.",
+                              "example": "0xTokenAddress"
+                            },
+                            "logoURI": {
+                              "type": "string",
+                              "description": "Token logo URI.",
+                              "example": "https://example.com/logo.png"
+                            }
+                          }
+                        },
+                        "fee": {
+                          "type": "string",
+                          "description": "Fee amount.",
+                          "example": "0.01"
+                        },
+                        "balance": {
+                          "type": "string",
+                          "description": "Balance amount.",
+                          "example": "1000000000000000000"
+                        },
+                        "premiumPercentage": {
+                          "type": "string",
+                          "description": "Premium percentage.",
+                          "example": "1"
+                        }
+                      }
+                    },
+                    {
+                      "type": "string"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        ]
+      },
+      "CreateUserOpResponse": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/RPCResponse"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "result": {
+                "type": "object",
+                "properties": {
+                  "userOp": {
+                    "type": "object",
+                    "description": "User operation details."
+                  },
+                  "userOpHash": {
+                    "type": "string",
+                    "description": "User operation hash.",
+                    "example": "0xUserOpHash"
+                  }
+                }
+              }
+            }
+          }
+        ]
+      },
+      "SendUserOpRequest": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/RPCRequest"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "method": {
+                "enum": [
+                  "particle_aa_sendUserOp"
+                ]
+              },
+              "params": {
+                "type": "array",
+                "description": "Parameters for sending a user operation.",
+                "items": {
+                  "oneOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "sender": {
+                          "type": "string",
+                          "description": "Sender address.",
+                          "example": "0xSenderAddress"
+                        },
+                        "nonce": {
+                          "type": "string",
+                          "description": "Nonce value.",
+                          "example": "0x1"
+                        },
+                        "initCode": {
+                          "type": "string",
+                          "description": "Initialization code.",
+                          "example": "0xInitCode"
+                        },
+                        "callData": {
+                          "type": "string",
+                          "description": "Call data.",
+                          "example": "0xCallData"
+                        },
+                        "signature": {
+                          "type": "string",
+                          "description": "Signature.",
+                          "example": "0xSignature"
+                        },
+                        "verificationGasLimit": {
+                          "type": "string",
+                          "description": "Gas limit for verification.",
+                          "example": "0x5208"
+                        },
+                        "callGasLimit": {
+                          "type": "string",
+                          "description": "Gas limit for the call.",
+                          "example": "0x5208"
+                        },
+                        "preVerificationGas": {
+                          "type": "string",
+                          "description": "Gas cost for pre-verification.",
+                          "example": "0x5208"
+                        },
+                        "paymasterAndData": {
+                          "type": "string",
+                          "description": "Paymaster and data.",
+                          "example": "0xPaymasterData"
+                        },
+                        "maxFeePerGas": {
+                          "type": "string",
+                          "description": "Maximum fee per gas unit.",
+                          "example": "0x3B9ACA00"
+                        },
+                        "maxPriorityFeePerGas": {
+                          "type": "string",
+                          "description": "Maximum priority fee per gas unit.",
+                          "example": "0x3B9ACA00"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        ]
+      },
+      "SendUserOpResponse": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/RPCResponse"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "result": {
+                "type": "string",
+                "description": "Result of the user operation.",
+                "example": "0xResult"
               }
             }
           }
@@ -365,19 +634,26 @@
               },
               "params": {
                 "type": "array",
+                "description": "Parameters for creating sessions.",
                 "items": {
                   "type": "object",
                   "oneOf": [
                     {
                       "properties": {
                         "name": {
-                          "type": "string"
+                          "type": "string",
+                          "description": "Session name.",
+                          "example": "Example Session"
                         },
                         "version": {
-                          "type": "string"
+                          "type": "string",
+                          "description": "Session version.",
+                          "example": "1.0"
                         },
                         "ownerAddress": {
-                          "type": "string"
+                          "type": "string",
+                          "description": "Owner address.",
+                          "example": "0xOwnerAddress"
                         }
                       }
                     },
@@ -387,16 +663,23 @@
                         "type": "object",
                         "properties": {
                           "validUntil": {
-                            "type": "integer"
+                            "type": "integer",
+                            "description": "Session validity end timestamp.",
+                            "example": 1700000000
                           },
                           "validAfter": {
-                            "type": "integer"
+                            "type": "integer",
+                            "description": "Session validity start timestamp.",
+                            "example": 1600000000
                           },
                           "sessionValidationModule": {
-                            "type": "string"
+                            "type": "string",
+                            "description": "Session validation module.",
+                            "example": "0xValidationModule"
                           },
                           "sessionKeyDataInAbi": {
                             "type": "array",
+                            "description": "Session key data in ABI format.",
                             "items": {
                               "oneOf": [
                                 {
@@ -436,22 +719,27 @@
                 "type": "object",
                 "properties": {
                   "verifyingPaymasterGasless": {
-                    "type": "object"
+                    "type": "object",
+                    "description": "Gasless fee quote."
                   },
                   "verifyingPaymasterNative": {
-                    "type": "object"
+                    "type": "object",
+                    "description": "Native token fee quote."
                   },
                   "tokenPaymaster": {
-                    "type": "object"
+                    "type": "object",
+                    "description": "Token fee quote."
                   },
                   "sessions": {
                     "type": "array",
+                    "description": "Array of session objects.",
                     "items": {
                       "type": "object"
                     }
                   },
                   "transactions": {
                     "type": "array",
+                    "description": "Array of transaction objects.",
                     "items": {
                       "type": "object"
                     }
@@ -477,19 +765,26 @@
               },
               "params": {
                 "type": "array",
+                "description": "Parameters for validating a session.",
                 "items": {
                   "type": "object",
                   "oneOf": [
                     {
                       "properties": {
                         "name": {
-                          "type": "string"
+                          "type": "string",
+                          "description": "Session name.",
+                          "example": "Example Session"
                         },
                         "version": {
-                          "type": "string"
+                          "type": "string",
+                          "description": "Session version.",
+                          "example": "1.0"
                         },
                         "ownerAddress": {
-                          "type": "string"
+                          "type": "string",
+                          "description": "Owner address.",
+                          "example": "0xOwnerAddress"
                         }
                       }
                     },
@@ -497,24 +792,33 @@
                       "properties": {
                         "sessions": {
                           "type": "array",
+                          "description": "Array of session objects.",
                           "items": {
                             "type": "object"
                           }
                         },
                         "targetSession": {
                           "type": "object",
+                          "description": "Target session details.",
                           "properties": {
                             "validUntil": {
-                              "type": "integer"
+                              "type": "integer",
+                              "description": "Session validity end timestamp.",
+                              "example": 1700000000
                             },
                             "validAfter": {
-                              "type": "integer"
+                              "type": "integer",
+                              "description": "Session validity start timestamp.",
+                              "example": 1600000000
                             },
                             "sessionValidationModule": {
-                              "type": "string"
+                              "type": "string",
+                              "description": "Session validation module.",
+                              "example": "0xValidationModule"
                             },
                             "sessionKeyDataInAbi": {
                               "type": "array",
+                              "description": "Session key data in ABI format.",
                               "items": {
                                 "oneOf": [
                                   {
@@ -552,194 +856,14 @@
             "type": "object",
             "properties": {
               "result": {
-                "type": "boolean"
+                "type": "boolean",
+                "description": "Indicates if the session is valid.",
+                "example": true
               },
               "chainId": {
-                "type": "integer"
-              }
-            }
-          }
-        ]
-      },
-      "CreateUserOpRequest": {
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/RPCRequest"
-          },
-          {
-            "type": "object",
-            "properties": {
-              "method": {
-                "enum": [
-                  "particle_aa_createUserOp"
-                ]
-              },
-              "params": {
-                "type": "array",
-                "items": {
-                  "oneOf": [
-                    {
-                      "type": "string"
-                    },
-                    {
-                      "type": "object",
-                      "properties": {
-                        "to": {
-                          "type": "string"
-                        },
-                        "value": {
-                          "type": "string"
-                        },
-                        "data": {
-                          "type": "string"
-                        }
-                      }
-                    },
-                    {
-                      "type": "object",
-                      "properties": {
-                        "tokenInfo": {
-                          "type": "object",
-                          "properties": {
-                            "chainId": {
-                              "type": "number"
-                            },
-                            "name": {
-                              "type": "string"
-                            },
-                            "symbol": {
-                              "type": "string"
-                            },
-                            "decimals": {
-                              "type": "number"
-                            },
-                            "address": {
-                              "type": "string"
-                            },
-                            "logoURI": {
-                              "type": "string"
-                            }
-                          }
-                        },
-                        "fee": {
-                          "type": "string"
-                        },
-                        "balance": {
-                          "type": "string"
-                        },
-                        "premiumPercentage": {
-                          "type": "string"
-                        }
-                      }
-                    },
-                    {
-                      "type": "string"
-                    }
-                  ]
-                }
-              }
-            }
-          }
-        ]
-      },
-      "CreateUserOpResponse": {
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/RPCResponse"
-          },
-          {
-            "type": "object",
-            "properties": {
-              "result": {
-                "type": "object",
-                "properties": {
-                  "userOp": {
-                    "type": "object"
-                  },
-                  "userOpHash": {
-                    "type": "string"
-                  }
-                }
-              }
-            }
-          }
-        ]
-      },
-      "SendUserOpRequest": {
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/RPCRequest"
-          },
-          {
-            "type": "object",
-            "properties": {
-              "method": {
-                "enum": [
-                  "particle_aa_sendUserOp"
-                ]
-              },
-              "params": {
-                "type": "array",
-                "items": {
-                  "oneOf": [
-                    {
-                      "type": "string"
-                    },
-                    {
-                      "type": "object",
-                      "properties": {
-                        "sender": {
-                          "type": "string"
-                        },
-                        "nonce": {
-                          "type": "string"
-                        },
-                        "initCode": {
-                          "type": "string"
-                        },
-                        "callData": {
-                          "type": "string"
-                        },
-                        "signature": {
-                          "type": "string"
-                        },
-                        "verificationGasLimit": {
-                          "type": "string"
-                        },
-                        "callGasLimit": {
-                          "type": "string"
-                        },
-                        "preVerificationGas": {
-                          "type": "string"
-                        },
-                        "paymasterAndData": {
-                          "type": "string"
-                        },
-                        "maxFeePerGas": {
-                          "type": "string"
-                        },
-                        "maxPriorityFeePerGas": {
-                          "type": "string"
-                        }
-                      }
-                    }
-                  ]
-                }
-              }
-            }
-          }
-        ]
-      },
-      "SendUserOpResponse": {
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/RPCResponse"
-          },
-          {
-            "type": "object",
-            "properties": {
-              "result": {
-                "type": "string"
+                "type": "integer",
+                "description": "Blockchain chain ID.",
+                "example": 80001
               }
             }
           }
