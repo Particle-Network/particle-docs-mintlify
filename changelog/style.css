@@ -14,6 +14,7 @@ body {
   overflow-x: auto;
   white-space: nowrap;
   padding-bottom: 20px; /* Add some padding for better scroll experience */
+  border: 1px solid #9d32de;
 }
 
 .calendar {
@@ -152,6 +153,13 @@ body {
 
 .dark .month-button:hover {
   background-color: #9d32de; /* Color on hover for dark mode */
+}
+
+.calendar-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px; /* Added margin for better spacing */
 }
 
 @media (max-width: 768px) {
