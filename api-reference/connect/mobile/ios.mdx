@@ -16,12 +16,12 @@ Before diving into the configuration and utilization process, if you'd like to l
 <div className="flex justify-center">
 <img
   className="block h-64 dark:hidden"
-  src="/api/connect/mobile/images/wallet.png"
+  src="/api-reference/connect/mobile/images/wallet.png"
   alt="Particle Connect Wallet."
 />
 <img
   className="hidden h-64 dark:block"
-  src="/api/connect/mobile/images/wallet.png"
+  src="/api-reference/connect/mobile/images/wallet.png"
   alt="Particle Connect Wallet."
 />
 </div>
@@ -49,12 +49,12 @@ Additionally, before diving in, you'll need to retrieve three universally requir
 <div className="flex justify-center">
 <img
   className="block h-64 dark:hidden"
-  src="/api/auth/desktop-sdks/images/login.png"
+  src="/api-reference/auth/desktop-sdks/images/login.png"
   alt="Particle Network login."
 />
 <img
   className="hidden h-64 dark:block"
-  src="/api/auth/desktop-sdks/images/login.png"
+  src="/api-reference/auth/desktop-sdks/images/login.png"
   alt="Particle Network login."
 />
 </div>
@@ -64,12 +64,12 @@ Additionally, before diving in, you'll need to retrieve three universally requir
 <div className="flex justify-center">
 <img
   className="block h-64 dark:hidden"
-  src="/api/auth/desktop-sdks/images/project.png"
+  src="/api-reference/auth/desktop-sdks/images/project.png"
   alt="Particle Network project."
 />
 <img
   className="hidden h-64 dark:block"
-  src="/api/auth/desktop-sdks/images/project.png"
+  src="/api-reference/auth/desktop-sdks/images/project.png"
   alt="Particle Network project."
 />
 </div>
@@ -79,12 +79,12 @@ Additionally, before diving in, you'll need to retrieve three universally requir
 <div className="flex justify-center">
 <img
   className="block h-64 dark:hidden"
-  src="/api/auth/mobile-sdks/images/ios.png"
+  src="/api-reference/auth/mobile-sdks/images/ios.png"
   alt="Particle Network project."
 />
 <img
   className="hidden h-64 dark:block"
-  src="/api/auth/mobile-sdks/images/ios.png"
+  src="/api-reference/auth/mobile-sdks/images/ios.png"
   alt="Particle Network project."
 />
 </div>
@@ -94,12 +94,12 @@ Additionally, before diving in, you'll need to retrieve three universally requir
 <div className="flex justify-center">
 <img
   className="block h-64 dark:hidden"
-  src="/api/auth/desktop-sdks/images/credentials.png"
+  src="/api-reference/auth/desktop-sdks/images/credentials.png"
   alt="Particle Network app credentials."
 />
 <img
   className="hidden h-64 dark:block"
-  src="/api/auth/desktop-sdks/images/credentials.png"
+  src="/api-reference/auth/desktop-sdks/images/credentials.png"
   alt="Particle Network app credentials."
 />
 </div>
@@ -492,7 +492,7 @@ adapter.signMessage(publicAddress: address, message: message).subscribe { [weak 
 As an alternative to `signMessage`, for **EVM chains**, you can request that a user signs typed (structured) data rather than purely a raw string. To do this, you can use `adapter.signTypedData` (equivalent to `eth_signTypedData` V4). This takes the following parameters:
 
 - `address`, the user address to target for signature initiation.
-- `data`, the typed data to be signed; see the [Web (JavaScript/TypeScript)](/api/auth/desktop-sdks/web) page for additional guidance.
+- `data`, the typed data to be signed; see the [Web (JavaScript/TypeScript)](/api-reference/auth/desktop-sdks/web) page for additional guidance.
 
 E.g.:
 
