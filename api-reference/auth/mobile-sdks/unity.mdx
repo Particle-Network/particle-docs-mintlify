@@ -1,0 +1,689 @@
+---
+title: "Unity (C#) - Auth"
+description: "Interacting with Particle Auth on Unity (Mobile) Using C#."
+---
+
+## Particle Auth for Unity (Mobile)
+
+In addition to the Windows/macOS Unity SDK, Particle Auth also extends to standard Unity for Mobile platforms (through C#). This SDK includes all the standard functions required for initializing and interacting with Particle Auth to craft a Web2-adjacent onboarding flow within your Unity games.
+
+Instructions setting up, and a rundown of some common functions and examples are covered below.
+
+***
+
+## Getting Started
+
+### Prerequisites
+
+Your Unity project needs to meet several requirements to avoid any compatibility issues. These requirements will be, in some capacity, dependent on the platform that you've decided to use. They are:
+
+- **Unity 2021.3.35f1** or higher.
+- If you're using iOS:
+  - **Xcode 15.0** or higher.
+  - **CocoaPods 1.14.3** or higher.
+  - **iOS 14** or higher.
+- If you're using Android:
+  - **Minimum API level 23** or higher.
+  - **Targets API level 33** or higher.
+  - **Java SDK version 11**.
+
+
+### Setting up the Particle dashboard
+
+Once you've ensured that your project meets the above prerequisites, you'll also need three key values from the [Particle dashboard](https://dashboard.particle.network): your `projectId`, `clientKey`, and `appId`. These connect your Unity project with the Particle dashboard, enabling customization, analytics, tracking, etc. To retrieve these, you'll need to head into the dashboard and create a new project, then a new application, as shown below:
+
+1. Sign up/log in to the [Particle dashboard](https://dashboard.particle.network/).
+
+<div className="flex justify-center">
+<img
+  className="block h-64 dark:hidden"
+  src="/api-reference/auth/desktop-sdks/images/login.png"
+  alt="Particle Network login."
+/>
+<img
+  className="hidden h-64 dark:block"
+  src="/api-reference/auth/desktop-sdks/images/login.png"
+  alt="Particle Network login."
+/>
+</div>
+
+2. Create a new project or enter an existing project.
+
+<div className="flex justify-center">
+<img
+  className="block h-64 dark:hidden"
+  src="/api-reference/auth/desktop-sdks/images/project.png"
+  alt="Particle Network project."
+/>
+<img
+  className="hidden h-64 dark:block"
+  src="/api-reference/auth/desktop-sdks/images/project.png"
+  alt="Particle Network project."
+/>
+</div>
+
+3. Create a new web application, or skip this step if you already have one.
+
+<div className="flex justify-center">
+<img
+  className="block h-64 dark:hidden"
+  src="/api-reference/auth/mobile-sdks/images/apps.png"
+  alt="Particle Network app."
+/>
+<img
+  className="hidden h-64 dark:block"
+  src="/api-reference/auth/mobile-sdks/images/apps.png"
+  alt="Particle Network app."
+/>
+</div>
+
+4. Retrieve the project ID (`projectId`), the client key (`clientKey`), and the application ID (`appId`).
+
+<div className="flex justify-center">
+<img
+  className="block h-64 dark:hidden"
+  src="/api-reference/auth/desktop-sdks/images/credentials.png"
+  alt="Particle Network app credentials."
+/>
+<img
+  className="hidden h-64 dark:block"
+  src="/api-reference/auth/desktop-sdks/images/credentials.png"
+  alt="Particle Network app credentials."
+/>
+</div>
+
+### Configuration
+
+With these values retrieved, you can move on to initial configuration and dependency management. This will vary in complexity depending on the platform in question. To begin, you'll need to download and install the Particle Unity package, which includes the necessary files for both Particle Connect and Particle Auth. 
+
+Head over to the [`particle-unity` GitHub repository](https://github.com/Particle-Network/particle-unity/releases), and download the latest release (`.unitypackage`), then import it into your project.
+
+#### iOS configuration
+
+If you're building a Unity game on iOS, you must follow a specific configuration process to ensure that Particle Connect functions. The first step within this process is to set up a scheme URL within the Unity editor.
+
+1. Head into the [iOS Player Settings](https://docs.unity3d.com/Manual/class-PlayerSettingsiOS.html) menu (`Edit` -> `Project Settings` -> `Player Settings` -> `iOS`).
+2. From here, select `Other`, then scroll down to `Configuration`.
+3. Open the `Supported URL schemes` section, and within the `Element 0` field, paste in your `projectId` with a prefix of `pn`.
+   1. For example, if your `projectId` (from the [Particle dashboard](https://dashboard.particle.network)) is something like `63bfa427-cf5f-4742-9ff1-e8f5a1b9828f`, then the scheme URL would be `pn63bfa427-cf5f-4742-9ff1-e8f5a1b9828f`.
+
+<Note>
+<p>Remove other services, if needed</p>
+<p></p>
+<p>Within `ParticleNetworkIOSBridge.cs`, you'll have a number of services included in the SDK:</p>
+<p></p>
+<p>- `ParticleNetworkBase` - required universally.</p>
+<p>- `ParticleAuthCore` - required for Particle Auth Core.</p>
+<p>- `ParticleConnect`-  required for Particle Connect.</p>
+<p>- `ParticleWalletGUI` - usage of the Particle Wallet UI, contains all services.</p>
+<p>- Requires [`SkeletonView`](https://github.com/SunZhiC/SkeletonView.git).</p>
+</Note>
+
+You'll also need to configure your Podfile if you haven't already. If you don't have a Podfile, go to the root of your project directory and run `pod init`, which will generate a Podfile.
+
+<Note>
+<p>Copy our example Podfile</p>
+<p></p>
+<p>You can copy our examole [Podfile](https://github.com/Particle-Network/particle-unity/blob/main/ios-build/Podfile), it will always use the latest version.</p>
+</Note>
+
+Open this Podfile, and insert the specific pods (services) you'd like to use within your project. In this case, `ParticleConnect` and `CommonConnect` will generally suffice, but additional services can be added if needed.
+
+Additionally, you'll need to paste the code snippet below for installation handling:
+
+```groovy Podfile
+  # Particle Network Base
+  pod 'ParticleNetworkBase', '1.4.6'
+  
+  # Particle Connect Service
+  pod 'ConnectCommon', '0.2.24'
+  pod 'ConnectEVMAdapter', '0.2.24'
+  pod 'ConnectSolanaAdapter', '0.2.24'
+  pod 'ConnectWalletConnectAdapter', '0.2.24'
+  pod 'ConnectPhantomAdapter', '0.2.24'
+  pod 'ParticleConnect', '0.2.24'
+
+  # Particle Wallet Service
+  pod 'ParticleWalletConnect', '1.4.6'
+  pod 'ParticleWalletAPI', '1.4.6'
+  pod 'ParticleWalletGUI', '1.4.6'
+  
+  # Particle AA
+  pod 'ParticleAA', '1.4.6'
+  
+  # Particle Auth Core
+  pod 'AuthCoreAdapter', '1.4.7'
+  pod 'ParticleAuthCore', '1.4.7'
+  pod 'ParticleMPCCore', '1.4.7'
+  pod 'Thresh', '1.4.7'
+    
+  pod 'SkeletonView', :git => 'https://github.com/SunZhiC/SkeletonView.git', :branch => 'main'
+  pod 'SwiftyUserDefaults', :git => 'https://github.com/SunZhiC/SwiftyUserDefaults.git', :branch => 'master'
+  pod 'WalletConnectSwiftV2', :git => 'https://github.com/SunZhiC/WalletConnectSwiftV2.git', :branch => 'particle'
+  
+// Paste this
+post_install do |installer|
+installer.pods_project.targets.each do |target|
+  target.build_configurations.each do |config|
+  config.build_settings['BUILD_LIBRARY_FOR_DISTRIBUTION'] = 'YES'
+    end
+  end
+ end
+```
+
+Also you can copy the example [Podfile](https://github.com/Particle-Network/particle-unity/blob/main/ios-build/Podfile) .
+
+With your Podfile set, you'll need to run `pod install` and open your `.xcworkspace` file, such as is shown below:
+
+```shell Terminal
+pod install --repo-update
+
+open {your project}.xcworkspace
+```
+
+Finally, for iOS, you'll need to formally use the `projectId`, `clientKey`, and `appId` previously retrieved. To do this, head into the root of your Xcode project and create a file, `ParticleNetwork-Info.plist`. Within this file, paste the following text (then replace the placeholders):
+
+```xml ParticleNetwork-Info.plist
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>PROJECT_UUID</key>
+	<string>YOUR_PROJECT_UUID</string>
+	<key>PROJECT_CLIENT_KEY</key>
+	<string>YOUR_PROJECT_CLIENT_KEY</string>
+	<key>PROJECT_APP_UUID</key>
+	<string>YOUR_PROJECT_APP_UUID</string>
+</dict>
+</plist>
+```
+Follow the steps to configure your  Xcode workspace.
+
+1. Download UnityManger.swift, Unity-iPhone-Bridging-Header.h and AppDelegate.swift from under github /Assets/Plugins/iOS/.Swift , Copy files into the root of your Xcode project. Xcode will ask you if auto create Bridging file, click yes.
+
+    <img
+    className="block dark:hidden"
+    src="/api-reference/auth/mobile-sdks/images/unity-config.png"
+    alt="Particle Network Unity config."
+    />
+    <img
+    className="hidden dark:block"
+    src="/api-reference/auth/mobile-sdks/images/unity-config.png"
+    alt="Particle Network Unity config."
+    />
+
+2. Make sure Build Settings, Swift Compiler - General, has Objective-C Bridging Header, its connect is Unity-iPhone-Bridging-Header.h 's local path.
+
+        <img
+    className="block dark:hidden"
+    src="/api-reference/auth/mobile-sdks/images/unity-configure-2.png"
+    alt="Particle Network Unity config."
+    />
+    <img
+    className="hidden dark:block"
+    src="/api-reference/auth/mobile-sdks/images/unity-configure-2.png"
+    alt="Particle Network Unity config."
+    />
+
+3. Remove main.mm under MainApp folder.
+4. Under [/Assets/Plugins/iOS](https://github.com/Particle-Network/particle-unity/tree/main/Assets/Plugins/iOS) are NativeCallProxy files and Swift files , they are required by Unity to interact with iOS code. Remove code under Particle Wallet GUI if you don't need wallet service.
+5. In `UnityManger.swift`, it has implemented methods defined in `NativeCallProxy.h`.
+6. Select `NativeCallProxy.h`, in the file inspector, check public in Target Membership.
+7. If you want to use `ParticleConnect`, you should add `LSApplicationQueriesSchemes` to info.plist. 
+
+```
+<key>LSApplicationQueriesSchemes</key>  
+<array>  
+    <string>metamask</string>  
+    <string>phantom</string>  
+    <string>bitkeep</string>  
+    <string>imtokenv2</string>  
+    <string>rainbow</string>  
+    <string>trust</string>  
+    <string>zerion</string>  
+    <string>mathwallet</string>  
+    <string>1inch</string>  
+    <string>awallet</string>  
+    <string>okex</string>  
+</array>
+```
+
+#### Android configuration
+
+Alternatively, if you're building your Unity game for Android, you'll just need to configure two files before you're ready to go. The first of these two files can be found at `Assets/Plugins/Android/launcherTemplate.gradle` within your project. Here, you'll need to ensure that you have the necessary dependencies.
+
+Specifically, you'll need the following dependencies at a minimum:
+
+- `network.particle:auth-service`if you're planning on using Particle Auth Directly
+- `network.particle:unity-bridge`, required universally
+- The full list of `network.particle` packages can be found [here](https://central.sonatype.com/search?q=g:network.particle&smo=true).
+
+```groovy launcherTemplate.gradle
+dependencies {
+    implementation project(':unityLibrary') 
+    implementation "network.particle:auth-service:${sdkVersion}"
+    implementation "network.particle:unity-bridge:${sdkVersion}"
+  	implementation "network.particle:connect:${sdkVersion}"
+  	// Other dependencies
+}
+```
+
+Finally, for Android, you'll need to place your `projectId`, `clientKey`, and `appId` within `gradleTemplate.properties`, found at `Assets/Plugins/Android/gradleTemplate.properties`.
+
+```groovy gradleTemplate.properties
+particle.network.project_client_key=Your Client Key
+particle.network.project_id=Your Project ID
+particle.network.app_id=Your App ID
+```
+
+***
+
+### Initialization
+
+Before you can call core functions within the SDK, you'll need to initialize `ParticleNetwork`. For the Unity SDK, this is handled by calling `init` on `ParticleNetwork`, which is derived from `Network.Particle.Scripts.Core`) and passing in information about the primary chain being used. This is generally pulled from a child of `ChainInfo`.
+
+<Tip>The Particle Auth Unity SDK does not require authentication from the [Particle dashboard](https://dashboard.particle.network).</Tip>
+
+```csharp C#
+ParticleNetwork.Init(ChainInfo.Ethereum); 
+ParticleAuthCoreInteraction.Init();
+```
+
+#### Add the prefab to your scene
+
+Additionally, you'll need to ensure `ParticleAuthCore.prefab` is added to your main scene. This is required as Particle Auth Core will not function otherwise. 
+
+***
+
+## Examples of Utilization
+
+### Connect
+
+With Particle Auth Core configured and included within your first scene, you can leverage Particle Auth Core to initiate the social login onboarding process and thus unlock the remaining functions within the SDK (post-login).
+
+This is achieved and configured via `ParticleAuthCore.Instance.Connect`. Once this method is called, a corresponding login popup will be displayed requesting user authentication before returning to the application in a signed-in state.
+
+`ParticleAuthCore.Instance.Connect` takes the following parameters:
+
+- `loginType`, the mechanism of social login to be thrown; such as email, Google, Twitter, etc.
+  - `LoginType.EMAIL`
+  - `LoginType.PHONE`
+  - `LoginType.GOOGLE`
+  - `LoginType.FACEBOOK`
+  - `LoginType.APPLE`
+  - `LoginType.TWITTER`
+  - `LoginType.DISCORD`
+  - `LoginType.GITHUB`
+  - `LoginType.TWITCH`
+  - `LoginType.MICROSOFT`
+  - `LoginType.LINKEDIN`
+  - `LoginType.JWT`
+- `account`, for predetermined/expected phone numbers or emails (optional). If you're using custom authentication with JWTs, this field is required with the expected JWT.
+- `supportLoginTypes`, the authentication types to be supported in the authentication popup, only applicable for `LoginType.EMAIL` and `LoginType.PHONE`. The types listed here will be available as additional buttons in the generalized popup within email and phone-based login.
+  - `SupportLoginType.PHONE`
+  - `SupportLoginType.EMAIL`
+  - `SupportLoginType.APPLE`
+  - `SupportLoginType.GOOGLE`
+  - `SupportLoginType.FACEBOOK`
+  - `SupportLoginType.DISCORD`
+  - `SupportLoginType.GITHUB`
+  - `SupportLoginType.TWITCH`
+  - `SupportLoginType.MICROSOFT`
+  - `SupportLoginType.LINKEDIN`
+  - `SupportLoginType.TWITTER`
+- `loginPageConfig` , for customizing the login page when loginType is email or phone. 
+
+```csharp C#
+var loginConfig = new LoginPageConfig("Particle Unity Example", "Welcome to login", 
+                            "https://connect.particle.network/icons/512.png");
+List<SupportLoginType> allSupportLoginTypes =
+                    new List<SupportLoginType>(Enum.GetValues(typeof(SupportLoginType)) as SupportLoginType[]);
+await ParticleAuthCore.Instance.Connect(LoginType.EMAIL, null, SupportAuthType.ALL, SocialLoginPrompt.SelectAccount, loginConfig);
+```
+
+### Disconnect
+
+Once a user has been logged in, you can programmatically initiate logout through `ParticleAuthCore.Instance.Disconnect`.
+
+```csharp C#
+await ParticleAuthService.Instance.Disconnect();
+```
+
+### IsConnected
+
+Whether or not a user is logged in may need to be retrieved, specifically in cases where a user stays logged in after refreshing an application due to the continuation of a given session. To check the currently active login status, you can call `ParticleAuthCore.Instance.IsConnected`.
+
+```csharp C#
+await ParticleAuthCore.Instance.IsConnected();
+```
+
+### GetUserInfo
+
+After connected, you can call `ParticleAuthCoreInteraction.GetUserInfo`.
+
+```csharp C#
+var userInfo = ParticleAuthCoreInteraction.GetUserInfo()
+```
+
+### GetAddress
+
+To retrieve the address of the currently active account (either EVM or Solana, depending on the previously selected chain), `ParticleAuthCoreInteraction.EvmGetAddress` or `ParticleAuthCoreInteraction.SolanaGetAddress` can be called.
+
+```csharp C#
+var evmAddress = ParticleAuthCoreInteraction.EvmGetAddress()
+var solanaAddress = ParticleAuthCoreInteraction.SolanaGetAddress()
+```
+
+### SignMessage
+
+Simple message signing can be achieved by calling `ParticleAuthCore.Instance.EvmPersonalSign` or `ParticleAuthCore.Instance.SolanaPersonalSign` and passing in a standard string (no need for encoding on this method) with the message you'd like to be prompted for signature.
+
+```csharp C#
+var message = "Hello Particle!";
+
+await ParticleAuthCore.Instance.EvmPersonalSign(message);
+await ParticleAuthCore.Instance.EvmPersonalSignUnique(message);
+
+await ParticleAuthCore.Instance.SolanaPersonalSign(message);
+```
+
+### SignTransaction
+
+Similarly, for signing a transaction, you'll need to call `ParticleAuthCore.Instance.SolanaSignTransaction` and pass in a serialized (string) standard transaction object to be prompted for signature. This is a **Solana-specific** method.
+
+```csharp C#
+var transaction = "your transaction";
+await ParticleAuthCore.Instance.SolanaSignTransaction(transaction);
+```
+
+### SignAllTransactions
+
+`ParticleAuthCore.Instance.SolanaSignAllTransactions` is another **Solana-specific** method that functions adjacent to the former but instead signs multiple (a list of) transactions represented as strings.
+
+```csharp C#
+var transaction1 = "transaction1";
+var transaction2 = "transaction2";
+
+string[] transactions = new[] { transaction1, transaction2 };
+  
+await ParticleAuthCore.Instance.SolanaSignAllTransactions(transactions);
+```
+
+### SignAndSendTransaction
+
+`ParticleAuthCore.Instance.EvmSendTransaction` and `ParticleAuthCore.Instance.SolanaSignAndSendTransaction`are the primary methods within the SDK for sending transactions as it immediately sends a given transaction after requesting signature (confirmation). This will also take a serialized (string) representation of a transaction,
+
+```csharp C#
+var transaction = "transaction";
+  
+var nativeResultData = await ParticleAuthCore.Instance.EvmSendTransaction(transaction);
+
+var nativeResultData = await ParticleAuthCore.Instance.SolanaSendTransaction(transaction);
+```
+
+### SignTypedData
+
+`ParticleAuthCore.Instance.EvmSignTypedData` is an **EVM-specific** method for signing structured (typed) data. For more information on `signTypedData`, see the [Web (JavaScript/TypeScript)](/api-reference/auth/desktop-sdks/web) page.
+
+```csharp C#
+string typedData = "your typedata";
+  
+await ParticleAuthService.Instance.SignTypedData(typedData);
+```
+
+### SetChainInfo
+
+If you'd like to set the primary chain after initial configuration, you'll need to use `ParticleNetwork.SetChainInfo`, which simply takes a `chainInfo` object parallel to the type of object passed into the original `ParticleNetwork.Init` call.
+
+```csharp C#
+ParticleNetwork.SetChainInfo(_chainInfo);
+
+// Asynchronous, used for switch from evm to solana, or switch from solana to evm.
+await ParticleAuthCore.Instance.SwitchChain(_chainInfo);
+```
+
+### HasMasterPassword, HasPaymentPassword, HasSecurityAccount
+
+Now that we've explored some general interaction examples, **security options** are also an important component of utilization, given you'd like either knowledge or control over the level of security a given user has opted in for on their account.
+
+`ParticleAuthCoreInteraction.HasMasterPassword` will return a Boolean based on whether or not a user has set a master password (a non-recoverable password required upon every fresh login).
+
+`ParticleAuthCoreInteraction.HasPaymentPassword` will return a Boolean based on whether or not a user has set a payment password (a pin required upon every transaction).
+
+```csharp C#
+ParticleAuthCoreInteraction.HasMasterPassword();
+
+ParticleAuthCoreInteraction.HasPaymentPassword();
+```
+
+### ChangeMasterPassword
+
+If you'd like to set or change master password, you can call `ParticleAuthCore.Instance.ChangeMasterPassword` .
+
+```csharp C#
+await ParticleAuthCore.Instance.ChangeMasterPassword();
+```
+
+### OpenAccountAndSecurity
+
+If you'd like to set or change payment password, you can call `ParticleAuthCoreInteraction.OpenAccountAndSecurity` 
+
+```csharp C#
+await ParticleAuthCore.Instance.OpenAccountAndSecurity();
+```
+
+***
+
+## `EvmService` utilization examples
+
+In addition to `ParticleAuthCore` for authentication and interaction with Particle's Wallet-as-a-Service, the Unity mobile SDK also includes a class, `EvmService`, for general interaction with EVM chains.
+
+### Write Contract
+
+`EvmService.WriteContract` allows you to execute a write contract call defined by a specific method and set of parameters. This requires a corresponding ABI, contract address, and requester public address.
+
+```csharp C#
+// your public address
+string from = "";
+// your contract address
+string contractAddress = "";
+// should add custom_ before your method name. like "custom_mint", "custom_balanceOf"
+string methodName = "custom_method";
+// List your method's parameters 
+List<object> parameters = new List<object> { };
+// This is your contact abjJsonString, you can get it from your contract developer.
+string abiJsonString = "";
+
+var transaction = await EvmService.WriteContract(from, contractAddress, methodName, parameters,
+                abiJsonString);
+```
+
+### Read Contract
+
+`EvmService.ReadContract` allows you to execute a read-only contract call defined by a specific method and set of parameters. This requires a corresponding ABI, contract address, and requester public address.
+
+```csharp C#
+// your public address
+string from = "";
+// your contract address
+string contractAddress = "";
+// should add custom_ before your method name. like "custom_mint", "custom_balanceOf"
+string methodName = "custom_method";
+// List your method's parameters 
+List<object> parameters = new List<object> { };
+// This is your contact abjJsonString, you can get it from your contract developer.
+string abiJsonString = "";
+
+// read contract
+string rpcResult =
+  await EvmService.ReadContract(from, contractAddress, methodName, parameters, abiJsonString);
+
+var result = (string)JObject.Parse(rpcResult)["result"];
+```
+
+### Create Transaction
+
+`EvmService.CreateTransaction` facilitates the construction of a transaction object derived from the standard `from`, `to` (`receiver` in this example), `amount` (`value`), and `data` fields. This transaction, once constructed with `EvmService.CreateTransaction`, can be passed for in-UI proposal with `ParticleAuthCore.Instance.EvmSendTransaction`.
+
+```csharp C#
+// your public address
+string from = "";
+// your receiver address
+string reciver = "";
+// if send native, data should be "0x", if send tokens or nft, you should get if from Evm.Erc20Transfer or Evm.Erc721SafeTransferFrom
+string data = "0x";
+// native value 
+BigInteger value = 1000000000;
+
+var transaction = await EvmService.CreateTransaction(from, data, value, reciver);
+
+Debug.Log($"transaction = {transaction}");
+```
+
+### Estimate Gas
+
+Given a standard transaction structure (detached set of values, as shown below), gas estimations can be ran to simulate and retrieve the volume of gas to be consumed by a specified transaction (wrapper for `eth_estimateGas`). This is done through `EvmService.EstimateGas`.
+
+```csharp C#
+final result = await EvmService.EstimateGas(from, to, value, data);
+```
+
+### Get Suggested Gas Fees
+
+To retrieve categorized gas price suggestions (3 categories scaling from low to high) based upon current network conditions, you can call `EvmService.SuggestedGasFees`.
+
+```csharp C#
+await EvmService.SuggestedGasFees();
+```
+
+### Get Tokens and NFTs
+
+`EvmService` also extends to Data API methods such as `GetTokensAndNFTs`, which returns a highly detailed JSON list of ERC20 tokens and ERC721 NFTs belonging to a specified address. This is accessible through `EvmService.GetTokensAndNFTs`, passing in the public address to retrieve the tokens and NFTs of.
+
+`tokenAddresses` is an optional parameter, for get the specific tokens.
+
+```csharp C#
+await EvmService.GetTokensAndNFTs(publicAddress, tokenAddresses);
+await EvmService.GetTokens(publicAddress, tokenAddresses)
+await EvmService.GetNFTs(publicAddress)
+```
+
+### Get Transactions by Address
+
+Similar to the former method, `EvmService.GetTransactionsByAddress` enables the retrieval of a detailed JSON response containing a complete list of transactions involving a specified address.
+
+```csharp C#
+await EvmService.GetTransactionsByAddress(publicAddress);
+```
+
+### Get price
+
+To retrieve token price based upon current network conditions, you can call `EvmService.GetPrice`.
+
+```csharp C#
+ await EvmService.GetPrice(tokenAddresses, currencies);
+```
+
+### Basic rpc method
+
+Call any basic EVM rpc method through `EvmService.Rpc`
+
+```csharp C#
+await EvmService.Rpc(method, params);
+```
+
+## `SolanaService` utilization examples
+
+In addition to `ParticleAuthCore` for authentication and interaction with Particle's Wallet-as-a-Service, the Unity mobile SDK also includes a class, `SolanaService`, for general interaction with Solana chains.
+
+### Get Tokens and NFTs
+
+`SolanaService` also extends to Data API methods such as `GetTokensAndNFTs`, which returns a highly detailed JSON list of SPL tokens and NFTs belonging to a specified address. This is accessible through `SolanaService.GetTokensAndNFTs`, passing in the public address to retrieve the tokens and NFTs of.
+
+```csharp C#
+await SolanaService.GetTokensAndNFTs(publicAddress, true);
+```
+
+### Serialize Transactions
+
+`SolanaService.SerializeSOLTransaction`  facilitates the construction of a SOL transaction object. 
+
+These transactions, once constructed , can be passed for in-UI proposal with `ParticleAuthCore.Instance.SolanaSendTransaction`.
+
+```csharp C#
+string receiver = "";
+long amount = 10000000;
+SerializeSOLTransReq req = new SerializeSOLTransReq(sender, receiver, amount);
+var result = await SolanaService.SerializeSOLTransaction(req);
+
+var resultData = JObject.Parse(result);
+var transaction = (string)resultData["result"]["transaction"]["serialized"];
+```
+
+### Get price
+
+To retrieve token price based upon current network conditions, you can call `SolanaService.GetPrice`.
+
+```csharp C#
+ await SolanaService.GetPrice(tokenAddresses, currencies);
+```
+
+### Get transactions by address
+
+To retrieve transactions from a address, you can call `SolanaService.getTransactionsByAddress`.
+
+```csharp C#
+await SolanaService.GetTransactionsByAddress(address);
+```
+
+### Get token by token address
+
+To obtain the balance of a specified token at a specified address, you can call `SolanaService.GetTokenByTokenAddresses`
+
+```csharp C#
+await SolanaService.GetTokenByTokenAddresses(address, tokenAddresses);
+```
+
+### Basic rpc method
+
+Call any basic Solana rpc method through `SolanaService.Rpc`
+
+```csharp C#
+await SolanaService.Rpc(method, params);
+```
+
+## Master reference
+
+For a direct, raw view into every method provided through `ParticleNetwork`, `ParticleAuthService`, and `ParticleAuthServiceInteraction`, below is a table containing every relevant method, alongside specific parameters and a short description. For methods listed that weren't covered in the above examples, live implementation often mimics the common structure covered throughout this document.
+
+| Class                       | Methods                      | Parameters (\* indicates optional)                                           |
+| --------------------------- | ---------------------------- | ---------------------------------------------------------------------------- |
+| ParticleAuthCore            | Connect                      | loginType, account\*, supportAuthTypes, socialLoginPrompt, loginPageConfig\* |
+| ParticleAuthCore            | Disconnect                   |                                                                              |
+| ParticleAuthCore            | IsConnected                  |                                                                              |
+| ParticleAuthCore            | SwitchChain                  | chainInfo                                                                    |
+| ParticleAuthCore            | ChangeMasterPassword         |                                                                              |
+| ParticleAuthCore            | OpenAccountAndSecurity       |                                                                              |
+| ParticleAuthCore            | EvmPersonalSign              | message                                                                      |
+| ParticleAuthCore            | EvmPersonalSignUnique        | message                                                                      |
+| ParticleAuthCore            | EvmSignTypedData             | typedData                                                                    |
+| ParticleAuthCore            | EvmSignTypedDataUnique       | typedData                                                                    |
+| ParticleAuthCore            | EvmSendTransaction           | transaction, feeMode\*                                                       |
+| ParticleAuthCore            | BatchSendTransactions        | transactions, feeMode\*                                                      |
+| ParticleAuthCore            | SolanaSignMessage            | message                                                                      |
+| ParticleAuthCore            | SolanaSignTransaction        | transaction                                                                  |
+| ParticleAuthCore            | SolanaSignAllTransactions    | transactions                                                                 |
+| ParticleAuthCore            | SolanaSignAndSendTransaction | transaction                                                                  |
+| ParticleAuthCoreInteraction | Init                         |                                                                              |
+| ParticleAuthCoreInteraction | GetUserInfo                  |                                                                              |
+| ParticleAuthCoreInteraction | HasMasterPassword            |                                                                              |
+| ParticleAuthCoreInteraction | HasPaymentPassword           |                                                                              |
+| ParticleAuthCoreInteraction | EvmGetAddress                |                                                                              |
+| ParticleAuthCoreInteraction | SolanaGetAddress             |                                                                              |
+| ParticleNetwork             | Init                         | chainInfo, env                                                               |
+| ParticleNetwork             | SetChainInfo                 | chainInfo                                                                    |
+| ParticleNetwork             | GetChainInfo                 |                                                                              |
+| ParticleNetwork             | SetAppearance                | style                                                                        |
+| ParticleNetwork             | SetLanguage                  | language                                                                     |
+| ParticleNetwork             | SetFiatCoin                  | fiatCoin                                                                     |
+| ParticleNetwork             | SetSecurityAccountConfig     | config                                                                       |

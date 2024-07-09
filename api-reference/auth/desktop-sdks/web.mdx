@@ -1,0 +1,1066 @@
+---
+title: "Web (JavaScript/TypeScript) - Auth"
+sidebarTitle: "Web (JS/TS) - Auth"
+description: "Interacting with Particle Auth within web applications using either JavaScript or TypeScript."
+---
+
+<Note>This SDK powers the majority of our web demo, which you can find at https://core-demo.particle.network</Note>
+
+# Particle Auth for Web Applications
+
+Among all of the SDKs for Particle Auth, the Web SDK, or `@particle-network/auth-core-modal` (alongside the now deprecated `@particle-network/auth`) is by far the most widely used and thus offers extensive support and flexibility in facilitating interaction with Particle's Wallet-as-a-Service.
+
+The Particle Auth Core SDK is one of the primary mechanisms of **configuring** and **using** Particle. **Whether you're starting from scratch** or **already have an onboarding or authentication flow set up within your application**, the Particle Auth Core Web SDK is a simple yet powerful integration.
+
+***
+
+## Getting Started
+
+To get started with the Particle Auth Web SDK, you can add `@particle-network/auth-core-modal` or `@particle-network/auth` to your project using either of the two following mechanisms:
+
+```shell @particle-network/auth-core-modal
+npm install @particle-network/auth-core-modal
+
+yarn add @particle-network/auth-core-modal
+```
+```shell @particle-network/auth
+yarn add @particle-network/auth
+
+npm install @particle-network/auth
+
+# Additional packages which can be installed alongside @particle-network/auth:
+# @particle-network/provider - for conversion of Particle Auth into an EIP-1193 provider object.
+# @particle-network/solana-wallet - to natively construct and execute Solana transactions.
+```
+
+> ❔ How do I decide between `@particle-network/auth` and `@particle-network/auth-core-modal`?
+> 
+> If you're **new to using Particle Auth**, you'll likely want to use `@particle-network/auth-core-modal` - this is our React-based SDK which takes a simple and refined approach to configuration and implementation.
+> 
+> Otherwise, **if you're using an older project** or can't use the `@particle-network/auth-core-modal` due to its dependence on React, you may find `@particle-network/auth` more convenient, albeit deprecated.
+
+***
+
+## Configuration
+
+Before interacting with Particle, you'll need to import and configure your master configuration object; this'll be used to not only customize the embedded wallet modal which is optionally shown after logging in, but also will allow you to define required keys and authenticate your project.
+
+Although before we import and configure this object, you'll need to retrieve the aforementioned keys. To do so, take a look at the following process:
+
+1. Sign up/log in to the [Particle dashboard](https://dashboard.particle.network/).
+
+<div className="flex justify-center">
+<img
+  className="block h-64 dark:hidden"
+  src="/api-reference/auth/desktop-sdks/images/login.png"
+  alt="Particle Network login."
+/>
+<img
+  className="hidden h-64 dark:block"
+  src="/api-reference/auth/desktop-sdks/images/login.png"
+  alt="Particle Network login."
+/>
+</div>
+
+2. Create a new project or enter an existing project.
+
+<div className="flex justify-center">
+<img
+  className="block h-64 dark:hidden"
+  src="/api-reference/auth/desktop-sdks/images/project.png"
+  alt="Particle Network project."
+/>
+<img
+  className="hidden h-64 dark:block"
+  src="/api-reference/auth/desktop-sdks/images/project.png"
+  alt="Particle Network project."
+/>
+</div>
+
+3. Create a new web application, or skip this step if you already have one.
+
+<div className="flex justify-center">
+<img
+  className="block h-64 dark:hidden"
+  src="/api-reference/auth/desktop-sdks/images/app.png"
+  alt="Particle Network app."
+/>
+<img
+  className="hidden h-64 dark:block"
+  src="/api-reference/auth/desktop-sdks/images/app.png"
+  alt="Particle Network app."
+/>
+</div>
+
+4. Retrieve the project ID (`projectId`), the client key (`clientKey`), and the application ID (`appId`).
+
+<div className="flex justify-center">
+<img
+  className="block h-64 dark:hidden"
+  src="/api-reference/auth/desktop-sdks/images/credentials.png"
+  alt="Particle Network app credentials."
+/>
+<img
+  className="hidden h-64 dark:block"
+  src="/api-reference/auth/desktop-sdks/images/credentials.png"
+  alt="Particle Network app credentials."
+/>
+</div>
+
+Now that you’ve retrieved your project ID, client key, and application ID from the [Particle dashboard](https://dashboard.particle.network/), you can move on to initializing and configuring your master configuration object. Regardless of the Particle Auth SDK you use, you'll have the opportunity to define your `projectId`, `clientKey`, and `appId` to authenticate your instance of Particle Auth. In addition to this, customizations can be applied to the resulting wallet modal.
+
+<Tip>
+<p>Structural differences between `@particle-network/auth-core-modal` and `@particle-network/auth`</p>
+<p>`@particle-network/auth-core-modal` is React-based, therefore its master configuration object, `AuthCoreContextProvider`, is a React component which should wrap either your core application logic or the component in which your application exists.</p>
+<p>Alternatively, `@particle-network/auth` handles configuration through a standard `ParticleNetwork` class, simply requiring initialization; the instance of `ParticleNetwork` you define will be used directly for social login initiation.</p>
+</Tip>
+
+<CodeGroup>
+```typescript @particle-network/auth-core-modal
+import React from 'react'
+import ReactDOM from 'react-dom/client'
+import { AuthType } from '@particle-network/auth-core';
+import { EthereumGoerli } from '@particle-network/chains';
+import { AuthCoreContextProvider, PromptSettingType } from '@particle-network/auth-core-modal';
+import App from './App'
+
+import('buffer').then(({ Buffer }) => {
+  window.Buffer = Buffer;
+});
+
+ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
+  <React.StrictMode>
+    <AuthCoreContextProvider
+      options={{
+        projectId: process.env.REACT_APP_PROJECT_ID,
+        clientKey: process.env.REACT_APP_CLIENT_KEY,
+        appId: process.env.REACT_APP_APP_ID,
+        authTypes: [AuthType.email, AuthType.google, AuthType.twitter],
+        themeType: 'dark',
+        fiatCoin: 'USD',
+        language: 'en',
+        erc4337: {
+          name: 'SIMPLE',
+          version: '1.0.0',
+        },
+        promptSettingConfig: {
+          promptPaymentPasswordSettingWhenSign: PromptSettingType.first,
+          promptMasterPasswordSettingWhenLogin: PromptSettingType.first,
+        },
+        wallet: {
+          visible: true,
+          customStyle: {
+            supportChains: [EthereumGoerli],
+          }
+        },
+      }}
+    >
+    <App />
+      </AuthCoreContextProvider>
+  </React.StrictMode>
+)
+```
+```typescript @particle-network/auth
+import { ParticleNetwork, WalletEntryPosition } from "@particle-network/auth";
+import { Ethereum } from "@particle-network/chains"; // Optional
+
+const particle = new ParticleNetwork({
+  projectId: "xx",
+  clientKey: "xx",
+  appId: "xx",
+  chainName: Ethereum.name, // Optional: resolves to 'ethereum' both in this case & by default
+  chainId: Ethereum.id, // Optional: resolves to 1 both in this case & by default
+  wallet: {   // Optional: object controlling additional configurations
+    displayWalletEntry: true,  // Whether or not the wallet popup is shown on-screen after login
+    defaultWalletEntryPosition: WalletEntryPosition.BR, // If the former is true, the position in which the popup appears
+    uiMode: "dark",  // Light or dark, if left blank, aligns with web auth default
+    supportChains: [{ id: 1, name: "Ethereum"}, { id: 5, name: "Ethereum"}], // Restricts the chains available within the web wallet interface
+    customStyle: {}, // If applicable, custom wallet style in JSON
+  },
+  securityAccount: { // Optional: Configuration of security requirements upon login
+    // If, and in what frequency, will the user be prompted to set a payment password
+    // 0: None, 1: Once (default), 2: Always
+    promptSettingWhenSign: 1,
+    // If, and in what frequency, will the user be prompted to set a master password
+    // 0: None (default), 1: Once, 2: Always
+    promptMasterPasswordSettingWhenLogin: 1
+  },
+});
+```
+</CodeGroup>
+
+***
+
+# Interaction with Web3
+
+Now that you've configured an instance of Particle Auth, it's time to leverage Particle to facilitate social logins and interactions with Web3.
+
+To begin, you'll need to choose between the three following interaction mechanisms:
+
+1. **Ethers.js**.
+2. **Web3.js**.
+3. **viem**.
+4. **Particle native**.
+
+All three will achieve the same end goal of facilitating interaction with Web3, although they will result in a slightly different initialization process. If you've chosen **Particle native**, no initialization of this nature past configuring `AuthCoreContextProvider` or `ParticleNetwork` is needed.
+
+<CodeGroup>
+```typescript Ethers.js
+import { ethers } from "ethers";
+
+// Particle Auth Core
+import { useEthereum } from '@particle-network/auth-core-modal';
+
+const { provider } = useEthereum();
+
+const ethersProvider = new ethers.providers.Web3Provider(provider, "any");
+
+// Particle Auth (old)
+const particleProvider = new ParticleProvider(particle.auth);
+
+const ethersProvider = new ethers.providers.Web3Provider(particleProvider, "any");
+```
+```typescript Web3.js
+import { Web3 } from "web3";
+
+// Particle Auth Core
+const { provider } = useEthereum();
+
+window.web3 = new Web3(provider);
+
+// Particle Auth (old)
+const particleProvider = new ParticleProvider(particle.auth);
+
+window.web3 = new Web3(particleProvider);
+```
+```typescript viem
+import { createWalletClient, custom } from 'viem'
+import { mainnet } from 'viem/chains
+
+// Particle Auth Core
+import { useEthereum } from '@particle-network/auth-core-modal';
+
+const { provider } = useEthereum();
+
+const viemProvider = createWalletClient({
+  chain: mainnet,
+  transport: custom(provider)
+})
+
+// Particle Auth (old)
+const particleProvider = new ParticleProvider(particle.auth);
+
+const viemProvider = createWalletClient({
+  chain: mainnet,
+  transport: custom(particleProvider)
+})
+```
+</CodeGroup>
+
+***
+
+## Initiating Social Login
+
+To enable interaction with a given user's account (wallet), they'll first need to log in with Particle Auth (or [Particle Connect](/api-reference/connect/desktop/web)), akin to the requirement of entering a password and opening MetaMask. Before interaction is possible, a user must either already be logged in (an application needs to be able to recognize this), go through the login process.
+
+Both of the above can be achieved through the following snippet:
+
+```typescript
+// Particle Auth Core
+import { useConnect } from '@particle-network/auth-core-modal';
+
+const { connect, connected } = useConnect();
+if (connected) {
+	const userInfo = await connect();
+}
+
+// Particle Auth (old)
+if (!particle.auth.isLogin()) { // Boolean based upon login state of session
+    // Request user login if needed, returns current user info, such as name, email, etc.
+    const userInfo = await particle.auth.login();
+}
+```
+
+<Tip>
+<p>Give it a try yourself (embedded demo)</p>
+<Frame>
+<iframe 
+width="100%"
+height="500" 
+src="https://particle-docs-demo.replit.app"
+href="https://particle-docs-demo.replit.app">
+</iframe>
+</Frame>
+</Tip>
+
+Additionally, specific configurations can be set within `connect()` or `particle.auth.login()` to customize the login experience beyond UI-based changes through the [Particle dashboard](https://dashboard.particle.network/).
+
+```typescript TypeScript
+// Particle Auth Core
+const userInfo = connect({
+		// socialType, if set, will skip the auth modal shown above and will instead automatically redirect to a chosen social login
+    // 'email' | 'phone' | 'google' | 'apple' | 'twitter' | 'facebook' | 'microsoft' | 'linkedin' | 'github' | 'twitch' | 'discord' | 'jwt'
+  	socialType: 'google',
+  	jwt: 'xxxxxxxxxx', // If applicable, JWT value
+   	phone: '+1xxxxxxxx', // Optional, E.164 format
+    code: 'xxxxxx', // Optional
+  	authorization: {
+        uniq: true,  // Optional: Defaults to false
+        message: 'base58 string', // Signature message in hex or base58 for Solana
+    }
+})
+
+// Particle Auth (old)
+const userInfo = particle.auth.login({
+    // preferredAuthType, if set, will skip the auth modal shown above and will instead automatically redirect to a chosen social login
+    // 'email' | 'phone' | 'google' | 'apple' | 'twitter' | 'facebook' | 'microsoft' | 'linkedin' | 'github' | 'twitch' | 'discord' | 'jwt'
+    preferredAuthType?: AuthType,
+    // If JWT usage is setup and set ('jwt') as preferredAuthType, Particle Auth will auto login
+    account?: string, // If applicable, JWT value
+    supportAuthTypes?: string, // If you'd like the Particle Auth UI to only offer select social login types, defaults to 'all'. Split with ','
+    hideLoading?: boolean, // Hides Particle loading animation when use JWT authorization
+    socialLoginPrompt?: string, // Specified social login prompt. 'none' | 'consent' | 'select_account'
+    authorization: { // Optional: Login with authorization signature
+        message: '0x...', // Signature message in hex or base58 for Solana
+        uniq: false, // Optional: Defaults to false
+    }
+  })
+```
+
+<Note>`web3.eth.getAccounts` will also initiate login automatically if user isn't already logged in.</Note>
+
+***
+
+## Retrieving Public Address
+
+Retrieving the public address associated with a given user's account (assuming you're not pulling it from the login via `userInfo`) can be achieved through the following:
+
+<CodeGroup>
+```typescript Web3.js
+import Web3 from 'web3';
+
+// Particle Auth Core
+import { useEthereum } from '@particle-network/auth-core-modal';
+const { provider } = useEthereum();
+
+// Particle Auth (old)
+import { ParticleProvider } from "@particle-network/provider";
+const provider = new ParticleProvider(particle.auth);
+
+
+const web3 = new Web3(provider);
+// Assuming Web3 is not already initialized
+
+const accounts = await web3.eth.getAccounts();
+```
+```typescript Ethers.js
+import { ethers } from "ethers";
+
+// Particle Auth Core
+import { useEthereum } from '@particle-network/auth-core-modal';
+const { provider } = useEthereum();
+
+// Particle Auth (old)
+import { ParticleProvider } from "@particle-network/provider";
+const provider = new ParticleProvider(particle.auth);
+
+
+const ethersProvider = new ethers.providers.Web3Provider(provider, "any");
+// Assuming Ethers is not already initialized
+
+const accounts = await ethersProvider.listAccounts();
+```
+```typescript Particle (EVM)
+import { useEthereum } from '@particle-network/auth-core-modal'; // Particle Auth Cor
+import { ParticleProvider } from "@particle-network/provider"; // Particle Auth (old)
+
+// For Particle Auth Core, after configuring AuthCoreContextProvider and logging in
+const { address, provider } = useEthereum();
+
+// For Particle Auth, after configuring ParticleNetwork and logging in
+const account = await particle.evm.getAddress()
+
+// Or, alternatively, send a JSON-RPC request to the provider
+const provider = new ParticleProvider(particle.auth); // Only if using Particle Auth
+
+const accounts = await provider.request({ method: 'eth_accounts'});
+```
+```typescript Particle (Solana)
+import { useSolana } from '@particle-network/auth-core-modal'; // Particle Auth Core
+import { SolanaWallet } from "@particle-network/solana-wallet"; // Particle Auth (old)
+
+// For Particle Auth Core, after configuring AuthCoreContextProvider and logging in
+const { address } = useSolana();
+
+// For Particle Auth, after configuring ParticleNetwork and logging in
+const account = await particle.solana.getAddress()
+
+// Or, alternatively, leverage SolanaWallet for interaction (old, meant for the previous Particle Auth SDK)
+const solanaWallet = new SolanaWallet(pn.auth);
+const publicKey = solanaWallet.publicKey;
+const account = publicKey?.toBase58();
+```
+</CodeGroup>
+
+***
+
+## Sending Transactions
+
+Sending transactions using Particle as the Signer/underlying wallet is also quite simple. If you're using **Ethers.js** or **Web3.js**, you're already set —as long as a user has logged in with Particle, transactions can be sent as you would with any other wallet.
+
+When a given transaction is sent and a signature is needed for authentication, a standard confirmation popup (also customizable through the Particle dashboard) will appear directly within the application. Transactions can be sent through the following:
+
+<CodeGroup>
+```typescript Web3.js
+window.web3.eth.sendTransaction(txnParams, (error, txnHash) => {
+    if (error) throw error;
+    console.log(txnHash);
+});
+```
+```typescript Ethers.js
+const signer = ethersProvider.getSigner();
+
+signer.sendTransaction(txnParams)
+  .then(tx => {
+    console.log(tx);
+  })
+  .catch(error => {
+    throw error;
+  });
+```
+```typescript Particle (EVM)
+// For Particle Auth Core, after configuring AuthCoreContextProvider and logging in
+import { useEthereum } from '@particle-network/auth-core-modal';
+const { sendTransaction } = useEthereum();
+
+const txnHash = await sendTransaction(txnParams);
+
+// For Particle Auth, after configuring ParticleNetwork and logging in (old)
+const txnHash = await particle.evm.sendTransaction(txnParams);
+```
+```typescript Particle (Solana)
+import { useSolana } from '@particle-network/auth-core-modal'; // Particle Auth Core
+import { SolanaWallet } from "@particle-network/solana-wallet"; // Particle Auth alternative
+
+// For Particle Auth Core, after configuring AuthCoreContextProvider and logging in
+const { signAndSendTransaction } = useSolana();
+
+const result = await signAndSendTransaction(transaction);
+
+
+// For Particle Auth, after configuring ParticleNetwork and logging in (old)
+const result = await particle.solana.signAndSendTransaction(transaction)
+
+// Or, alternatively, leverage SolanaWallet for interaction (old, meant to be used with the previous Particle Auth SDK)
+const solanaWallet = new SolanaWallet(pn.auth);
+solanaWallet.signAndSendTransaction(transaction)
+```
+</CodeGroup>
+
+<Note>
+<p>To the end-user, sending transactions, regardless of the chosen method, looks like this (depending on customization outlined in the [Particle dashboard](https://dashboard.particle.network/)).</p>
+<Frame>
+<img
+  className="block dark:hidden"
+  src="/api-reference/auth/desktop-sdks/images/example.png"
+  alt="Particle Network example."
+/>
+<img
+  className="hidden dark:block"
+  src="/api-reference/auth/desktop-sdks/images/example.png"
+  alt="Particle Network example."
+/>
+</Frame>
+</Note>
+
+***
+
+## Data Signing
+
+In cases where you'd like to sign either a raw string (personal) or typed data (`eth_signTypedData`), the process is quite straightforward. It can be done either as standard through libraries such as Ethers or Web3.js, or by using Particle natively. Both of these scenarios are shown within the various examples below.
+
+Similar to sending transactions, signatures will be formatted and displayed to your user in a popup request for confirmation and for applicable data in UTF-8.
+
+### Personal Signatures
+
+<CodeGroup>
+```typescript Web3.js
+const msg = "GM, Particle!";
+const accounts = await window.web3.eth.getAccounts();
+
+window.web3.eth.personal
+  .sign(msg, accounts[0])
+  .then((result) => {
+    console.log("personal_sign", result);
+  })
+  .catch((error) => {
+    console.error("personal_sign", error);
+  });
+```
+```typescript Ethers.js
+const msg = "GM, Particle!";
+const signer = ethersProvider.getSigner();
+const accounts = await signer.getAddress();
+
+signer.signMessage(msg)
+  .then((result) => {
+    console.log("personal_sign", result);
+  })
+  .catch((error) => {
+    console.error("personal_sign", error);
+  });
+
+```
+```typescript Particle (EVM)
+const msg = "GM, Particle!";
+
+// For Particle Auth Core, after configuring AuthCoreContextProvider and logging in
+const { signMessage } = useEthereum();
+
+const result = await signMessage(msg);
+
+
+// For Particle Auth, after configuring ParticleNetwork and logging in (old)
+const result = await particle.evm.personalSign(`0x${Buffer.from(msg).toString('hex')}`);
+```
+```typescript Particle (Solana)
+import { useSolana } from "@particle-network/auth-core-modal"; // Particle Auth Core
+import { SolanaWallet } from "@particle-network/solana-wallet"; // Particle Auth alternative (old)
+
+// For Particle Auth Core, after configuring AuthCoreContextProvider and logging in
+const { signMessage } = useSolana();
+
+// For Particle Auth, after configuring ParticleNetwork and logging in (old)
+const result = await particle.solana.signMessage('base58 string');
+
+const result = await signMessage('base58 string');
+
+// Or, alternatively, leverage SolanaWallet for interaction (old, meant to be used with the previous Particle Auth SDK)
+const solanaWallet = new SolanaWallet(pn.auth);
+solanaWallet.signMessage('base58 string');
+```
+</CodeGroup>
+
+### Sign Typed Data (V1)
+
+<CodeGroup>
+```typescript Web3.js
+const accounts = await window.web3.eth.getAccounts();
+const from = accounts[0];
+
+// Placeholder data
+const msg = [
+    {
+      type: "string",
+      name: "fullName",
+      value: "John Doe",
+    },
+    {
+      type: "uint32",
+      name: "userId",
+      value: "1234",
+    },
+  ];
+
+const params = [msg, from];
+const method = "eth_signTypedData_v1";
+
+// .request can also be called directly through a ParticleProvider instance
+window.web3.currentProvider
+  .request({
+    method,
+    params,
+  })
+  .then((result) => {
+    console.log("signTypedData result", result);
+  })
+  .catch((err) => {
+    console.log("signTypedData error", err);
+  });
+```
+```typescript Ethers.js
+const signer = provider.getSigner();
+
+// Placeholder data
+const msg = [
+  {
+    name: 'fullName',
+    type: 'string',
+    value: 'John Doe',
+  },
+  {
+    name: 'userId',
+    type: 'uint32',
+    value: '1234',
+  },
+];
+
+(async () => {
+  try {
+    const accounts = await provider.listAccounts();
+    const from = accounts[0];
+
+    const types = msg.map(entry => entry.type);
+    const values = msg.map(entry => entry.value);
+
+    const hash = utils.keccak256(utils.defaultAbiCoder.encode(types, values));
+
+    const signingKey = new utils.SigningKey(await signer.privateKey);
+    const signature = signingKey.signDigest(hash);
+
+    console.log('Signed hash:', signature);
+  } catch (err) {
+    console.log('Error:', err);
+  }
+})();
+```
+```typescript Particle (EVM)
+// Placeholder data
+const msg = [
+    {
+      type: "string",
+      name: "fullName",
+      value: "John Doe",
+    },
+    {
+      type: "uint32",
+      name: "userId",
+      value: "1234",
+    },
+  ];
+
+// For Particle Auth Core, after configuring AuthCoreContextProvider and logging in
+const { signTypedData } = useEthereum();
+
+const result = await signTypedData({ data: JSON.parse(msg), version: 'V1' });
+
+
+// For Particle Auth, after configuring ParticleNetwork and logging in
+const result = await particle.evm.signTypedData({ data: JSON.parse(msg), version: 'V1' });
+```
+</CodeGroup>
+
+***
+
+
+## Particle Native (`@particle-network/auth-core-modal`)
+
+As you've likely seen throughout this docume, Particle Auth Core acts as a modern implementation of Particle Auth, featuring increased flexibility and a more natural, embedded utilization flow for end-users compared to the older SDK. The way in which the Auth Core SDK is used deviates significantly from the previous Particle Auth SDK. Both achieve the same end-goal, but through different processes and intricacies.
+
+Below is a collection of examples relating to the different hooks available with Particle Auth Core, facilitating both social login and native application-level interaction (such as message signing, sending transactions, etc.) directly through Particle Auth Core.
+
+### Boilerplate
+
+If you'd like to begin exploring Particle Auth Core, we have a React boilerplate available for usage through any of the following commands:
+
+```shell
+npm init @particle-network/auth-core-modal@latest
+
+pnpm create @particle-network/auth-core-modal@latest
+
+yarn create @particle-network/auth-core-modal
+```
+
+### useConnect
+
+`useConnect` acts as the primary hook for facilitating login (connection) with Particle Auth Core, equivalent to `particle.auth.login`, `particle.auth.isLogin`, and `particle.auth.logout` within the older Particle Auth SDK.
+
+```typescript TypeScript
+import { useConnect } from '@particle-network/auth-core-modal';
+
+const { connect, disconnect, connected, connectionStatus, requestConnectCaptcha, setSocialConnectCallback } = useConnect();
+
+const userInfo = await connect();
+
+const isLoggedIn = connected;
+
+await disconnect();
+```
+
+### useEthereum
+
+`useEthereum` provides direct interaction with a given EVM chain, acting as an alternative to using a traditional library such as ethers or Web3.js.
+
+```typescript TypeScript
+const { provider,   // EIP1193 provider
+        address,    // EVM public address
+        chainId,    // Current chain
+        chainInfo,
+        switchChain,
+        signMessage,
+        signTypedData,
+        sendTransaction,
+        enable } = useEthereum();
+
+const txHash = await sendTransaction({
+    to: '0xe8fc0baE43aA264064199dd494d0f6630E692e73',
+    value: '1000000',
+});
+
+const signature = await signMessage(message);
+
+const signature = await signTypedData(typedData);
+
+await switchChain('0x1'); // Also takes a standard number
+```
+
+### useSolana
+
+Alike the prior, `useSolana` is meant to replace `particle.solana` (from the previous Particle Auth SDK) and facilitate end-to-end interaction with Solana natively through the SDK. This is one of the primary ways to use Solana with Particle Auth Core if you aren't using an external connection modal such as `wallet-adapter`.
+
+```typescript TypeScript
+import { useSolana } from '@particle-network/auth-core-modal';
+
+const { address,  // Solana public address
+        chainId,  // Current chain (Mainnet, Testnet, Devnet)
+        chainInfo,
+        switchChain,
+        signMessage,
+        signTransaction,
+        signAllTransactions,
+        signAndSendTransaction,
+        enable } = useSolana();
+
+const txHash = await signAndSendTransaction(txData);
+
+const signature = await signMessage(message);
+```
+
+### useAuthCore
+
+`useAuthCore` is used for alternative functions such as the retrieval of `userInfo` (post-login), forcing the different account menus open, opening the on-ramp page, and so on.
+
+```typescript TypeScript
+import { useAuthCore } from '@particle-network/auth-core-modal';
+
+const {
+    userInfo,                       // Standard user info, null is returned if not connected
+    needRestoreWallet,              // Whether or not a master password is needed from the current user
+    openAccountAndSecurity,         // Opens account and security modal
+    openSetMasterPassword,          // Opens set master password modal
+    openChangeMasterPassword,       // Opens change master password modal
+    openRestoreByMasterPassword,    // Opens input master password modal
+    openSetPaymentPassword,         // Opens set payment password modal
+    openChangePaymentPassword,      // Opens change payment password modal
+    openSetSecurityAccount,         // Opens set security account modal
+    openLinkLoginAccount,           // Opens link login account modal
+    openWallet,                     // Opens wallet in iframe
+    buildWalletUrl,                 // Retrieves wallet url, used for opening the wallet modal in a custom iframe
+    openBuy,                        // Opens the onramp aggregation page
+} = useAuthCore();
+```
+
+### useCustomize
+
+`useCustomize` provides a number of methods used for customizing the wallet modal, such as the theme type (light or dark), a custom style, language, etc.
+
+```typescript TypeScript
+
+import { useCustomize } from '@particle-network/auth-core-modal';
+
+const { 
+    setThemeType,       // Sets theme type, 'light' or 'dark'
+    setCustomStyle,     // Sets custom modal styles
+    setWalletOptions,   // Sets wallet modal options
+    setLanguage,        // Sets language being used
+    setFiatCoin,        // Sets fiat coin being used
+    setERC4337          // Sets whether the modal has ERC-4337 enabled
+} = useCustomize();
+
+```
+
+## Particle Native (`@particle-network/auth`)
+
+Alternatively, as you may have noticed throughout this page, `ParticleNetwork` from the previous Particle Auth SDK has a range of functions, including (but not limited to) directly facilitating Web3 interaction. 
+
+**Below is a list of examples pertaining to this range of functions**, diving into some of the most common ways `@particle-network/auth` is used.
+
+<Tip>
+<p>`ParticleNetwork` is meant to act as a 'master object' for configuration, interaction, and other key functions within Particle WaaS.</p>
+<p>Other SDKs (such as Particle Auth Core and Particle Connect) use hooks to achieve equivalent functionality. Instead, this version of Particle Auth centralizes everything through an instance of `ParticleNetwork`.</p>
+</Tip>
+
+### Login
+
+<CodeGroup>
+```typescript Standalone
+await particle.auth.login(params) // Params is optional; see introduction for more detailed explanation
+```
+```typescript Example
+import { ParticleNetwork } from "@particle-network/auth";
+
+const particle = new ParticleNetwork({...});
+
+let userInfo;
+if (!particle.auth.isLogin()) {
+    userInfo = await particle.auth.login(params);
+} else {
+    userInfo = particle.auth.getUserInfo();
+}
+```
+</CodeGroup>
+
+### Is User Logged In
+
+<CodeGroup>
+```typescript Standalone
+particle.auth.isLogin() // Returns boolean
+
+// Or, alternatively, check also if token is valid; will refresh user security account info
+await particle.auth.isLoginAsync()
+```
+```typescript Example
+import { ParticleNetwork } from "@particle-network/auth";
+
+const particle = new ParticleNetwork({...});
+
+const result = particle.auth.isLogin()
+```
+</CodeGroup>
+
+### Get User Info
+
+<Tip>
+<p>getUserInfo API endpoint available</p>
+<p>[An API endpoint for getUserInfo is also available](../server/getuserinfo).</p>
+</Tip>
+
+<CodeGroup>
+```typescript Standalone
+particle.auth.getUserInfo(); // Pulls from user active/logged in within instance; returns null if none
+```
+```typescript Example
+import { ParticleNetwork } from "@particle-network/auth";
+
+const particle = new ParticleNetwork({...});
+
+const info = particle.auth.getUserInfo();
+```
+</CodeGroup>
+
+### Status Listeners
+
+Particle native usage also supports opening listeners for specific events: `connect`, `disconnect`, and `chainChanged`. `connect` returns `userInfo` (same as `getUserInfo`),`disconnect` returns nothing, and`chainChanged` returns the chain that was connected to.
+
+<CodeGroup>
+```typescript connect
+particle.auth.on('connect', (userInfo) => {
+    console.log("particle userInfo", userInfo);
+});
+```
+```typescript disconnect
+particle.auth.on('disconnect', () => {
+    console.log("particle disconnect");
+});
+```
+```typescript chainChanged
+particle.auth.on('chainChanged', (chain) => {
+    console.log("particle chainChanged", chain);
+});
+```
+</CodeGroup>
+
+### Set Auth Theme
+
+The theme of the authentication menu, wallet modal, and confirmation popup can also be altered retroactively through `setAuthTheme`.
+
+<CodeGroup>
+```typescript Standalone
+particle.setAuthTheme({
+  uiMode: "dark",
+  displayCloseButton: true,
+  displayWallet: true, // Display wallet entrance
+  modalBorderRadius: 10, // Auth & wallet modal border radius. default is 10
+});
+```
+```typescript Example
+import { ParticleNetwork } from "@particle-network/auth";
+
+const particle = new ParticleNetwork({...});
+particle.setAuthTheme({
+  uiMode: "dark",
+  displayCloseButton: true,
+  displayWallet: true,
+  modalBorderRadius: 10,
+});
+```
+</CodeGroup>
+
+### Set Language
+
+```typescript TypeScript
+// Supports languages: en, zh-CN, zh-TW, zh-HK, ja, ko
+particle.setLanguage('en');
+```
+
+### Set Fiat Denomination
+
+```typescript TypeScript
+// Supports fiat coin values: 'USD' | 'CNY' | 'JPY' | 'HKD' | 'INR' | 'KRW'
+particle.setFiatCoin('USD');
+```
+
+### Set ERC-4337 Mode (in-UI)
+
+As a result of Particle's native ERC-4337 account abstraction compatibility, if you're using this integration (and specifically the associated smart account implementation(s)), "ERC-4337 Mode" can be set within the Particle Wallet UI, displaying the smart account of the user rather than the default EOA.
+
+```typescript TypeScript
+// Enable ERC-4337 in-UI, openWallet will open Account Abstraction Wallet
+particle.setERC4337(true);
+```
+
+### Switch Chain Info
+
+<CodeGroup>
+```typescript Standalone
+// Retroactive configuration of chainName and chainId from ParticleNetwork
+particle.switchChain({
+    name: Polygon.name, // Optional: resolves to 'polygon'
+    id: Polygon.id, // Optional: resolves to 137
+})
+```
+```typescript Example
+import { ParticleNetwork } from "@particle-network/auth";
+import { Polygon } from "@particle-network/chains";
+
+const particle = new ParticleNetwork({...});
+particle.switchChain({
+    name: Polygon.name,
+    id: Polygon.id,
+})
+```
+</CodeGroup>
+
+### Security Account
+
+A user's security account is the primary mechanism for introducing additional security layers onto their MPC-based account. After configuring the security account within `ParticleNetwork` (if applicable), further information can be retrieved afterward, such as Booleans based upon whether a user has a master password, payment password, or other associated security mechanisms enabled. 
+
+#### Open Security Account UI
+
+<CodeGroup>
+```typescript Standalone
+particle.auth.openAccountAndSecurity()
+```
+```typescript Example
+import { ParticleNetwork } from "@particle-netwok/auth";
+
+const particle = new ParticleNetwork({...});
+particle.auth.openAccountAndSecurity().catch((error) => {
+    if (error.code === 4011) {
+        // Ignore window close
+    } else if (error.code === 10005) {
+        // Invalid token
+    } else if (error.code === 8005) {
+        // User not logged in
+    }
+});
+```
+</CodeGroup>
+
+#### Retrieve Security Account
+
+```typescript TypeScript
+const securityAccount = await particle.auth.getSecurityAccount();
+```
+
+#### Security Feature Status
+
+<CodeGroup>
+```typescript Master Password
+particle.auth.hasMasterPassword();
+```
+```typescript Payment Password
+particle.auth.hasPaymentPassword();
+```
+```typescript Security Account
+particle.auth.hasSecurityAccount();
+```
+</CodeGroup>
+
+### Open Particle Web Wallet
+
+If you've chosen not to include the wallet popup in-UI or are just looking for an intentional mechanism for opening the wallet UI, you can do so through the example below:
+
+<CodeGroup>
+```typescript Standalone
+particle.openWallet(target?: string, features?: string)
+```
+```typescript Example
+import { ParticleNetwork } from "@particle-network/auth";
+
+const particle = new ParticleNetwork({...});
+
+// Need check login state when open wallet.
+// To set target and features for custom window style, it's the same as window.open().
+particle.openWallet(target?: string, features?: string)
+
+
+// Open wallet in iframe
+const url = pn.buildWalletUrl({
+    // Optional: Left top menu style, close or fullscreen
+    // "fullscreen": Wallet will be fullscreen when users click.
+    // "close": Developer will need to handle click event
+    topMenuType: "close"   
+});
+
+const iframe = document.createElement("iframe");
+iframe.src = url;
+// If topMenuType is "close"
+window.addEventListener("message", (event) => {
+    if (event.data === "PARTICLE_WALLET_CLOSE_IFRAME") {
+        //close click event
+    }
+})
+
+```
+</CodeGroup>
+
+### Open On-ramp (Buy Crypto) Page
+
+The Particle Wallet features a built-in on-ramp aggregator, facilitating the usage of various on-ramp providers to buy tokens with a debit card or directly through a bank account. This popup can be programmatically initiated through the following:
+
+<CodeGroup>
+```typescript Standalone
+particle.openBuy(options?: OpenBuyOptions, target?: string, features?: string)
+```
+```typescript Example
+import { ParticleNetwork } from "@particle-network/auth";
+
+const particle = new ParticleNetwork({...});
+                                      
+// To set target and features for custom window style, it's the same as window.open().
+particle.openBuy(options?: OpenBuyOptions, target?: string, features?: string)
+```
+</CodeGroup>
+
+`options` (type `OpenBuyOptions`) includes a diverse set of parameters, outlined as follows:
+
+| Name          | Description                                                             | Type   | Required                                 |
+| :------------ | :---------------------------------------------------------------------- | :----- | :--------------------------------------- |
+| network       | [Solana, Ethereum, Binance Smart Chain, Polygon, Tron, Optimism, etc.]  | string | False _(True if Particle not connected)_ |
+| fiatCoin      | Fiat currency denomination                                              | string | False                                    |
+| cryptoCoin    | Cryptocurrency denomination                                             | string | False                                    |
+| fiatAmt       | The amount of fiat to be automatically filled in as the purchase volume | number | False                                    |
+| bool          | Lock fiat currency in the buy menu                                      | bool   | False                                    |
+| fixCryptoCoin | Lock cryptocurrency in the buy menu                                     | bool   | False                                    |
+| fixFiatAmt    | Lock fiat amount in the buy menu                                        | bool   | False                                    |
+| walletAddress | The wallet address to receive the cryptocurrency                        | string | False _(True if Particle not connected)_ |
+
+# Integration Examples
+
+Integrating and leveraging Particle Auth isn't only bound to interfaces provided by Particle Network, rather it's built to fit into nearly every implementation scenario. Whether you're using RainbowKit, Web3Modal, Solana's `wallet-adapter`, or would instead like to have a standalone social login button within your application, Particle Auth can be used. 
+
+<CardGroup cols={3}>
+  <Card title="RainbowKit" href="/resources/quickstart/connection-kits/rainbow">
+    Particle Auth through RainbowKit, by Rainbow.
+  </Card>
+  <Card title="Web3Modal" href="/resources/quickstart/connection-kits/web3modal">
+    Particle Auth through Web3Modal, by WalletConnect.
+  </Card>
+  <Card title="Particle Connect" href="/resources/quickstart/connection-kits/particle-connect">
+    Particle Auth through Particle Connect.
+  </Card>
+  <Card title="Web3-Onboard" href="/resources/quickstart/connection-kits/web3-onboard">
+    Particle Auth through Web3-Onboard, by Blocknative.
+  </Card>
+</CardGroup>

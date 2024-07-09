@@ -1,0 +1,296 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Particle Network BTC Connect",
+    "version": "1.6.0"
+  },
+  "servers": [
+    {
+      "url": "https://rpc.particle.network/evm-chain"
+    }
+  ],
+  "security": [
+    {
+      "basicAuth": []
+    }
+  ],
+  "paths": {
+    "/#particle_aa_getBTCAccount": {
+      "post": {
+        "summary": "Get BTC Account",
+        "operationId": "getBTCAccount",
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ],
+        "requestBody": {
+          "description": "Request to calculate and return information of a smart account tied to a BTC public key.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/getBTCAccountRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response with the smart account details.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/getBTCAccountResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/#particle_aa_getBTCAccountsByAddress": {
+      "post": {
+        "summary": "Get BTC Accounts By Address",
+        "operationId": "getBTCAccountsByAddress",
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ],
+        "requestBody": {
+          "description": "Request to return smart account btcAddress and its smart account address.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/getBTCAccountsByAddressRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response with BTC and smart account addresses.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/getBTCAccountsByAddressResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "basicAuth": {
+        "type": "http",
+        "scheme": "basic"
+      }
+    },
+    "schemas": {
+      "getBTCAccountRequest": {
+        "type": "object",
+        "description": "Defines the structure for BTC account request data.",
+        "properties": {
+          "jsonrpc": {
+            "type": "string",
+            "default": "2.0",
+            "description": "JSON-RPC protocol version, should be 2.0."
+          },
+          "id": {
+            "type": "integer",
+            "default": 1,
+            "description": "Identifier for the request."
+          },
+          "method": {
+            "type": "string",
+            "default": "particle_aa_getBTCAccount",
+            "description": "The method to be invoked on the RPC server."
+          },
+          "params": {
+            "type": "array",
+            "description": "Array containing parameters for the method.",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "default": "BTC",
+                  "description": "Specifies the account type, only 'BTC' is valid."
+                },
+                "version": {
+                  "type": "string",
+                  "default": "2.0.0",
+                  "description": "Version of the account configuration."
+                },
+                "btcPublicKey": {
+                  "type": "string",
+                  "description": "BTC public key associated with the account."
+                },
+                "btcAddress": {
+                  "type": "string",
+                  "description": "Optional BTC address to associate with the account."
+                }
+              },
+              "required": ["name", "version", "btcPublicKey"]
+            }
+          }
+        },
+        "required": ["jsonrpc", "id", "method", "params"]
+      },
+      "getBTCAccountResponse": {
+        "type": "object",
+        "description": "Response schema for getBTCAccount.",
+        "properties": {
+          "jsonrpc": {
+            "type": "string",
+            "description": "JSON-RPC protocol version used in the response."
+          },
+          "id": {
+            "type": "integer",
+            "description": "Identifier matching the request."
+          },
+          "result": {
+            "type": "object",
+            "description": "Contains the smart account information derived from the BTC public key.",
+            "properties": {
+              "chainId": {
+                "type": "integer",
+                "description": "Blockchain chain ID where the account is deployed."
+              },
+              "isDeployed": {
+                "type": "boolean",
+                "description": "Indicates whether the smart account is deployed on the blockchain."
+              },
+              "eoaAddress": {
+                "type": "string",
+                "description": "Externally owned account address associated with the smart account."
+              },
+              "factoryAddress": {
+                "type": "string",
+                "description": "Address of the factory contract used to deploy the smart account."
+              },
+              "entryPointAddress": {
+                "type": "string",
+                "description": "Address of the entry point contract for interacting with the smart account."
+              },
+              "smartAccountAddress": {
+                "type": "string",
+                "description": "Address of the smart account itself."
+              },
+              "owner": {
+                "type": "string",
+                "description": "Owner of the smart account."
+              },
+              "name": {
+                "type": "string",
+                "description": "Name of the smart account, always 'BTC' for these accounts."
+              },
+              "version": {
+                "type": "string",
+                "description": "Version of the smart account system used."
+              },
+              "index": {
+                "type": "integer",
+                "description": "Index number of the smart account in the system."
+              },
+              "btcPublicKey": {
+                "type": "string",
+                "description": "BTC public key associated with the smart account."
+              }
+            }
+          }
+        }
+      },
+      "getBTCAccountsByAddressRequest": {
+        "type": "object",
+        "description": "Request schema for getBTCAccountsByAddress method.",
+        "properties": {
+          "jsonrpc": {
+            "type": "string",
+            "default": "2.0",
+            "description": "JSON-RPC protocol version, should be 2.0."
+          },
+          "id": {
+            "type": "integer",
+            "default": 1,
+            "description": "Identifier for the request."
+          },
+          "method": {
+            "type": "string",
+            "default": "particle_aa_getBTCAccountsByAddress",
+            "description": "The method to be invoked on the RPC server."
+          },
+          "params": {
+            "type": "array",
+            "description": "Array containing parameters for querying BTC accounts by address.",
+            "items": {
+              "type": "object",
+              "properties": {
+                "btcAddress": {
+                  "type": "string",
+                  "description": "BTC address to query for associated smart account address."
+                }
+              },
+              "required": ["btcAddress"]
+            }
+          }
+        },
+        "required": ["jsonrpc", "id", "method", "params"]
+      },
+      "getBTCAccountsByAddressResponse": {
+        "type": "object",
+        "description": "Response schema for getBTCAccountsByAddress.",
+        "properties": {
+          "jsonrpc": {
+            "type": "string",
+            "description": "JSON-RPC protocol version used in the response."
+          },
+          "id": {
+            "type": "integer",
+            "description": "Identifier matching the request."
+          },
+          "result": {
+            "type": "array",
+            "description": "List of BTC and smart account addresses associated with the queried address.",
+            "items": {
+              "type": "object",
+              "properties": {
+                "btcAddress": {
+                  "type": "string",
+                  "description": "BTC address associated with the smart account."
+                },
+                "chainId": {
+                  "type": "integer",
+                  "description": "Blockchain chain ID where the account is deployed."
+                },
+                "version": {
+                  "type": "string",
+                  "description": "Version of the smart account system used."
+                },
+                "aaAddress": {
+                  "type": "string",
+                  "description": "Smart account address associated with the BTC address."
+                },
+                "createdAt": {
+                  "type": "string",
+                  "description": "Timestamp of when the smart account was created."
+                },
+                "publicKey": {
+                  "type": "string",
+                  "description": "Public key associated with the smart account."
+                },
+                "updatedAt": {
+                  "type": "string",
+                  "description": "Timestamp of the last update to the smart account."
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

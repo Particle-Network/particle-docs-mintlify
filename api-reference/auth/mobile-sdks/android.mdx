@@ -1,0 +1,421 @@
+---
+title: "Android (Kotlin) SDK - Auth"
+description: "Interacting with Particle Auth on Android using Kotlin."
+---
+
+# Particle Auth for Android
+
+The Particle Auth Android SDK is the flagship mechanism for integrating Particle's Wallet-as-a-Service within Android applications. This SDK, for most applications, acts as the sole facilitator of integration on Android, built for simplicity. As with the other Particle Auth SDKs, it requires only a few lines of code.
+
+Unlike the Unity SDK and Web SDK, the Android SDK deviates in installation and configuration; these specific intricacies and setup processes **are detailed below**.
+
+***
+
+## Getting Started
+
+Utilizing the Particle Auth Android SDK is quite straightforward, although it requires a few prerequisite version minimums to get started and ensure compatibility. 
+
+### Prerequisites
+
+- minSdkVersion **23** or higher.
+- minSdkVersion **23** or higher; compileSdkVersion, targetSdkVersion **33** or higher.
+- JavaVersion **11**.
+- [Jetpack (AndroidX)](https://developer.android.com/jetpack/androidx/migrate?authuser=0).
+
+### Configuration
+
+Before you begin using the Particle Auth Android SDK, you'll need a few required values that are universal across all Particle Auth SDKs. These values are `projectId`, `clientKey`, and `appId`. All three can be retrieved by heading over to the [Particle dashboard](https://dashboard.particle.network) and doing the following:
+
+1. Sign up/log in to the [Particle dashboard](https://dashboard.particle.network/).
+
+<div className="flex justify-center">
+<img
+  className="block h-64 dark:hidden"
+  src="/api-reference/auth/desktop-sdks/images/login.png"
+  alt="Particle Network login."
+/>
+<img
+  className="hidden h-64 dark:block"
+  src="/api-reference/auth/desktop-sdks/images/login.png"
+  alt="Particle Network login."
+/>
+</div>
+
+2. Create a new project or enter an existing project.
+
+<div className="flex justify-center">
+<img
+  className="block h-64 dark:hidden"
+  src="/api-reference/auth/desktop-sdks/images/project.png"
+  alt="Particle Network project."
+/>
+<img
+  className="hidden h-64 dark:block"
+  src="/api-reference/auth/desktop-sdks/images/project.png"
+  alt="Particle Network project."
+/>
+</div>
+
+3. Create a new Android application, or skip this step if you already have one.
+
+<div className="flex justify-center">
+<img
+  className="block h-64 dark:hidden"
+  src="/api-reference/auth/mobile-sdks/images/android.png"
+  alt="Particle Network project."
+/>
+<img
+  className="hidden h-64 dark:block"
+  src="/api-reference/auth/mobile-sdks/images/android.png"
+  alt="Particle Network project."
+/>
+</div>
+
+4. Retrieve the project ID (`projectId`), the client key (`clientKey`), and the application ID (`appId`).
+
+<div className="flex justify-center">
+<img
+  className="block h-64 dark:hidden"
+  src="/api-reference/auth/desktop-sdks/images/credentials.png"
+  alt="Particle Network app credentials."
+/>
+<img
+  className="hidden h-64 dark:block"
+  src="/api-reference/auth/desktop-sdks/images/credentials.png"
+  alt="Particle Network app credentials."
+/>
+</div>
+
+### Installation
+
+With a project and application created on the Particle Dashboard, you can move on to installing and initializing `ParticleNetwork`. For the former, you must begin by declaring the Particle Auth SDK in your Gradle file.
+
+```kotlin Kotlin
+repositories {
+  google()
+  mavenCentral()
+  maven { setUrl("https://jitpack.io") }
+  //...
+}
+
+dependencies {
+  implementation("network.particle:auth-core:${latest_version}")
+ 
+  
+  // Alternatively, to use Auth Service (deprecated) 
+  // implementation("network.particle:auth-service:${latest_version}")
+  
+  // Find the latest version of the SDK:
+  // https://search.maven.org/search?q=g:network.particle
+}
+```
+
+<Tip>For release updates, subscribe to the [GitHub repository](https://github.com/Particle-Network/particle-android).</Tip>
+
+Additionally, you'll need to go ahead and declare specific configurations, such as the insertion of aforementioned values `projectId`, `clientKey`, and `appId` within the relevant `AndroidManifest.xml` file. 
+
+An example of such configuration is attached below- placeholders such as `pn_project_id` would need to be filled in.
+
+```xml XML
+ <!-- AuthCore need add android:fullBackupContent  -->
+<application
+     tools:replace="android:fullBackupContent"
+     android:fullBackupContent="@xml/pn_backup_rules"  
+             >
+   <!-- Particle Auth Service Start (deprecated)  
+  <activity
+    android:name="com.particle.network.controller.WebActivity"
+    android:exported="true"
+    android:launchMode="singleTask"
+    android:configChanges="orientation|keyboardHidden|screenSize"
+    android:theme="@style/ThemeAuthWeb">
+
+    <intent-filter>
+      <data android:scheme="pn${pn_app_id}" />
+
+      <action android:name="android.intent.action.VIEW" />
+
+      <category android:name="android.intent.category.DEFAULT" />
+      <category android:name="android.intent.category.BROWSABLE" />
+    </intent-filter>
+
+  </activity>
+  Particle Auth Service End -->
+  
+  <!-- Particle AuthCore Start -->
+  <activity
+      android:name="com.particle.auth.controller.AuthCoreWebActivity"
+      android:configChanges="orientation|keyboardHidden|screenSize"
+      android:exported="true"
+      android:launchMode="singleTask"
+      android:theme="@style/ThemeAuthWeb">
+    <intent-filter>
+      <action android:name="android.intent.action.VIEW" />
+
+      <category android:name="android.intent.category.DEFAULT" />
+
+      <category android:name="android.intent.category.BROWSABLE" />
+
+      <data android:scheme="ac${PN_APP_ID}" />
+    </intent-filter>
+  </activity>
+  <!-- Particle AuthCore End -->
+  
+  <meta-data
+    android:name="particle.network.project_id"
+    android:value="${pn_project_id}" />
+  
+  <meta-data
+    android:name="particle.network.project_client_key"
+    android:value="${pn_project_client_key}" />
+  
+  <meta-data
+    android:name="particle.network.app_id"
+    android:value="${pn_app_id}" />
+  
+</application>
+```
+
+***
+
+## Examples of utilization
+
+### Initialize the SDK
+
+Upon application startup, `ParticleNetwork` will need to be initialized to function properly. This can be done by calling the `init` method on `ParticleNetwork` and passing in the primary chain you intend to use within your application
+
+```kotlin Kotlin
+class App : Application() {
+
+  override fun onCreate() {
+    super.onCreate()
+    
+    // Initialize Particle Auth SDK for Ethereum
+    ParticleNetwork.init(this, Env.PRODUCTION, Ethereum)
+    
+    // If you're using Solana, initialization looks like this
+    ParticleNetwork.init(this, Env.PRODUCTION, Solana)
+  }
+}
+```
+
+### Switch Chain
+
+To switch the used chain after initial configuration, `AuthCore.switchChain` is used. This enables asynchronous switching. Similar to the initial configuration.
+
+```kotlin Kotlin
+val chainInfo = ChainInfo.Polygon
+AuthCore.switchChain(chainInfo, callback)
+
+// For switching chains synchronously, without checking login status
+ParticleNetwork.setChainInfo(chainInfo,callback)
+
+// Alternatively, to use AuthService (deprecated) 
+ParticleNetwork.switchChain(chainInfo,callback)
+```
+
+### Login
+
+`ParticleNetwork.login` throws the standard login popup, which changes depending on the associated configurations such as `loginType` (adjacent to the Web SDK's `preferredAuthType`), `supportAuthTypeValues`, and so on. This login popup acts as the primary mechanism facilitating account creation and, for existing users, account login.
+
+Specifically, `ParticleNetwork.login` takes the following parameters:
+
+- `loginType`, the social login method preferred. This supports either 'jwt,' 'email,' 'phone,' 'google,' 'apple,' or 'facebook'.
+- `account`, if the above is either 'phone,' 'email,' or 'jwt,'`account` can optionally be set to a specified expected email or phone number. If you're using 'jwt,'`account` is required and must be set to the relevant JWT.
+- `supportLoginTypes`, the list of authentication types you'd like to be available through the resulting login popup interface. By default, this will only display the login type chosen through `loginType`, although you can add additional methods to the UI, such as 'google,' by passing them into `supportAuthType`.
+- `prompt`, the prompt to be displayed following social login, such as a request to set a master password, payment password, etc. This is `null` by default.
+- `loginPageConfig`   Configure the login page's  imagePath、projectName、description.
+- `loginCallback` Callback after successful login
+
+```kotlin Kotlin
+AuthCore.connect(loginType,account,supportLoginTypes,prompt,loginPageConfig,loginCallback)
+// Alternatively, to use AuthService (deprecated) 
+// ParticleNetwork.login(
+//     loginType = LoginType.PHONE,
+//     account = "", // Optional
+//     supportAuthTypeValues = SupportAuthType.FACEBOOK.value, // Optional
+//     loginFormMode = false,  // Optional
+//     prompt = null, // Optional
+//     loginCallback )
+```
+
+### UserInfo and Address Retrieval (post-login)
+
+After the login is successful, detailed user information can be retrieved by calling the following methods.
+
+```kotlin Kotlin
+AuthCore.getUserInfo()
+AuthCore.evm.getAddress()
+AuthCore.solana.getAddress()
+
+// Alternatively, to use AuthService (deprecated) 
+// ParticleNetwork.getUserInfo()
+// ParticleNetwork.getAddress()
+```
+
+### Logout
+
+`ParticleNetwork.logout` will log a user out of their current session and return them to the previous state before login.
+
+```kotlin Kotlin
+AuthCore.disconnect(object : ResultCallback {
+  override fun success() {
+    // Handle success
+  }
+
+  override fun failure() {
+    // Handle error
+  }
+})
+
+// Alternatively, to use AuthService (deprecated) 
+// ParticleNetwork.logout(callback)
+```
+
+### Is User Logged In
+
+`AuthCore.isLogin` returns a Boolean based upon the account status of a given session (whether or not a user is logged in with Particle.
+
+```kotlin Kotlin
+AuthCore.isConnected()
+// Alternatively, to use AuthService (deprecated) 
+// ParticleNetwork.isLogin()
+```
+
+### Signatures
+
+Once `ParticleNetwork` has been initialized and a user has successfully logged in,  signatures can be proposed for confirmation through a popup; this can be facilitated via a number of different methods:
+
+- `signAndSendTransaction`: Requests a signature for a given transaction and, upon receiving it, sends the transaction and returns the signature.
+- `signTransaction`: **Solana-specific**; requests a signature for a given transaction. Upon receiving a signature, it gets immediately returned. A transaction is not automatically sent.
+- `signMessage`: Requests a signature for a basic message. On EVM chains, this can be passed as a hex-encoded string prefixed by '0x'. For Solana, this can be passed directly as a string.
+- `signTypedData`: **EVM-specific**, requests a signature for structured (typed) data- `eth_signTypedData`. For more information on `signTypedData`, see the [Web (JavaScript/TypeScript)](/api-reference/auth/desktop-sdks/web) page.
+
+<CodeGroup>
+```kotlin signAndSendTransaction (Kotlin)
+//evm chains
+AuthCore.evm.sendTransaction(transaction, callback)
+//solana
+AuthCore.solana.signAndSendTransaction(serializedTransaction: Base58String, callback)
+   
+// Alternatively, to use AuthService (deprecated) 
+// ParticleNetwork.signAndSendTransaction(transaction, callback)
+```
+```kotlin signTransaction (Kotlin)
+AuthCore.solana.signTransaction(serializedTransaction: Base58String, callback)
+
+// Alternatively, to use AuthService (deprecated) 
+
+// Expects a base58 string, Solana-specific
+// ParticleNetwork.signTransaction(transaction, callback)
+  
+// Plural version of the above
+// val allTransactions = listOf(tx1, tx2)
+// ParticleNetwork.signAllTransactions(allTransactions,callback)
+```
+```kotlin signMessage (Kotlin)
+AuthCore.evm.personalSign(hexUnSignedMessage: PrefixedHexString, callback)
+AuthCore.solana.signMessage(message: Base58String, callback)
+
+// Alternatively, to use AuthService (deprecated) 
+//ParticleNetwork.signMessage(message,callback)
+```
+```kotlin signTypedData (Kotlin)
+AuthCore.evm.signTypedData(data: PrefixedHexString, callback)
+
+// Alternatively, to use AuthService (deprecated) 
+// Expects hex string prefixed with '0x'
+//ParticleNetwork.signTypedData(message, version, callback)
+```
+</CodeGroup>
+
+### Set Display Wallet (deprecated in Auth Core)
+
+If you'd like to display the full wallet whenever a signature is requested, you can pass `true` within `ParticleNetwork.setDisplayWallet`. By default, this is set to false.
+
+```kotlin Kotlin
+// Alternatively, to use AuthService (deprecated) 
+// ParticleNetwork.setDisplayWallet(true)
+```
+
+### Open Web Wallet (deprecated in Auth Core)
+
+If you'd like to open an instance of the Wallet UI (Particle Wallet, a unified mechanism of interacting with accounts generated by `ParticleNetwork.login`), then you can do so by calling `ParticleNetwork.openWebWallet` and passing in various chosen configurations.
+
+<Tip>For specific details regarding custom style configurations, see the [Web](/api-reference/wallet/desktop/web) Wallet reference.</Tip>
+
+```kotlin Kotlin
+// Alternatively, to use AuthService (deprecated) 
+// val customStyleJson = """
+//   {
+//     "supportAddToken": false,
+//     "supportChains": [{
+//         "id": 1,
+//         "name": "Ethereum"
+//       },
+//       {
+//         "id": 5,
+//         "name": "Ethereum"
+//       }
+//     ]
+//   }
+// """
+
+// ParticleNetwork.openWebWallet(customStyleJson)
+```
+
+### Open Account and Security
+
+Additionally, if you'd like to, force the "Account and Security" options to be opened on-screen (from which you can control master passwords, payment passwords, additional accounts, and so on), on the frontend, then you can call `AuthCore.openAccountAndSecurity`.
+
+```kotlin Kotlin
+AuthCore.openAccountAndSecurity
+// Alternatively, to use AuthService (deprecated) 
+// ParticleNetwork.openAccountAndSecurity() 
+```
+
+### Set Security Account Config
+
+Within the security settings, specific popups can be set to display upon confirmation or wallet UI entrance. These popups include `promptSettingWhenSign`, which refers to payment (signature) passwords, and `promptMasterPasswordSettingWhenLogin`, which refers to a login-based master password.
+
+By default, `promptSettingWhenSign` is set to 1, which will show the prompt upon the first signature a given account conducts. If it's set to 0, it will never be shown; if it's set to 2, it will be shown upon every signature confirmation. 
+
+This same logic applies to `promptMasterPasswordSettingWhenLogin`, although by default it's set to 0.
+
+```kotlin Kotlin
+ParticleNetwork.setSecurityAccountConfig(
+  SecurityAccountConfig(
+      promptSettingWhenSign = 1,
+      promptMasterPasswordSettingWhenLogin = 2
+  )
+)
+```
+
+### Master Password and Payment Password
+
+User can set master password and payment password to protect assets, call `auth.changeMasterPassword` to set or change master password, call `AuthCore.openAccountAndSecurity()` to set or change payment password.
+
+```kotlin Kotlin
+// check user has master password or not  
+AuthCore.hasMasterPassword()
+// set or change master password  
+AuthCore.changeMasterPassword()  
+
+// check user has payment password or not  
+AuthCore.hasPaymentPassword()
+// open securiy account page
+AuthCore.openAccountAndSecurity()
+```
+
+### Language Setting
+
+`ParticleNetwork.setAppliedLanguage` will forcibly set the language of the text displayed within UI popups initiated by the SDK- this can be either 'en-US', 'ja-JP', 'ko-KR', 'zh-CN', or 'zh-TW'. Additionally, you can call `ParticleNetwork.getAppliedLanguage` to retrieve the currently active language setting.
+
+```kotlin Kotlin
+// Supports LanguageEnum.EN、LanguageEnum.JA、LanguageEnum.KO、LanguageEnum.ZH_CN、LanguageEnum.ZH_TW
+ParticleNetwork.setAppliedLanguage(LanguageEnum.EN)
+
+ParticleNetwork.getAppliedLanguage()
+```
+
+***

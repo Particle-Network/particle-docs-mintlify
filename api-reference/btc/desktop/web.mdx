@@ -1,0 +1,443 @@
+---
+title: "Web (JavaScript/TypeScript) - BTC Connect"
+sidebarTitle: "Web (JS/TS) - BTC Connect"
+description: "Using Particle Wallet within a web application."
+---
+
+# BTC Connect for Web
+
+BTC Connect is the first ERC-4337 account abstraction protocol on Bitcoin. Essentially, BTC Connect allows Layer-1 Bitcoin wallets to own and control smart accounts on Bitcoin Layer-2s. This is facilitated by a Bitcoin-specific wallet connection modal which allows a user to connect with Unisat, BitGet, OKX, Bybit, Bitget, or TokenPocket and immediately begin controlling both their native Bitcoin wallet and a directly associated smart account on various EVM-compatible chains without ever leaving the application or wallet. 
+
+Developers building with BTC Connect can seamlessly bridge interaction between Bitcoin Layer-2s (using smart accounts) and Bitcoin Layer-1, bringing the EVM landscape to their applications in under 100 lines of code and ushering in new possibilities for consumer-facing applications on Bitcoin.
+
+Currently, BTC Connect is in its initial alpha release phase, and therefore only supports Web. The BTC Connect SDK (`@particle-network/btc-connectkit`) acts as the sole library for integrating BTC Connect, facilitating wallet connection (through the aforementioned unified modal), smart account assignment and interaction, native Bitcoin transactions, etc.
+
+In this page, you'll find a complete rundown of what you need to know when using `@particle-network/btc-connectkit`.
+
+<Tip>To learn more about BTC Connect, see [Introduction to BTC Connect](/api/btc/introduction) or take a look at the [GitHub repository](https://github.com/Particle-Network/particle-btc-connect).</Tip>
+
+***
+
+## Getting Started
+
+BTC Connect follows [Particle Network's AA SDK](/api/aa/sdks/desktop/web) and [Particle Auth Core](/api/auth/desktop-sdks/web) very closely in terms of structure, so if you've used either of these SDKs before, you may find this process familiar. 
+
+Before diving into the process of configuring and initializing the SDK, you'll need to go through the installation process and retrieve a few required values from the [Particle dashboard](https://dashboard.particle.network).
+
+### Installation
+
+BTC Connect is driven by one primary SDK, `@particle-network/btc-connectkit`, and can be installed through either of the two following commands:
+
+```shell Terminal
+yarn add @particle-network/btc-connectkit
+
+# OR
+
+npm install @particle-network/btc-connectkit
+```
+
+### Setting up the Particle dashboard
+
+Every Particle Network SDK requires the retrieval of three key values, your `projectId`, `clientKey`, and `appId`. These are used primarily to authenticate API requests and tie your project to the [Particle dashboard](https://dashboard.particle.network), allowing you to track users, spin up RPC endpoints, fund your Paymaster for gasless transactions, and so on. 
+
+Follow the below process to prepare your project:
+
+1. Sign up/log in to the [Particle dashboard](https://dashboard.particle.network/).
+
+<div className="flex justify-center">
+<img
+  className="block h-64 dark:hidden"
+  src="/api/auth/desktop-sdks/images/login.png"
+  alt="Particle Network login."
+/>
+<img
+  className="hidden h-64 dark:block"
+  src="/api/auth/desktop-sdks/images/login.png"
+  alt="Particle Network login."
+/>
+</div>
+
+2. Create a new project or enter an existing project.
+
+<div className="flex justify-center">
+<img
+  className="block h-64 dark:hidden"
+  src="/api/auth/desktop-sdks/images/project.png"
+  alt="Particle Network project."
+/>
+<img
+  className="hidden h-64 dark:block"
+  src="/api/auth/desktop-sdks/images/project.png"
+  alt="Particle Network project."
+/>
+</div>
+
+3. Create a new web application, or skip this step if you already have one.
+
+<div className="flex justify-center">
+<img
+  className="block h-64 dark:hidden"
+  src="/api/auth/desktop-sdks/images/app.png"
+  alt="Particle Network app."
+/>
+<img
+  className="hidden h-64 dark:block"
+  src="/api/auth/desktop-sdks/images/app.png"
+  alt="Particle Network app."
+/>
+</div>
+
+4. Retrieve the project ID (`projectId`), the client key (`clientKey`), and the application ID (`appId`).
+
+<div className="flex justify-center">
+<img
+  className="block h-64 dark:hidden"
+  src="/api/auth/desktop-sdks/images/credentials.png"
+  alt="Particle Network app credentials."
+/>
+<img
+  className="hidden h-64 dark:block"
+  src="/api/auth/desktop-sdks/images/credentials.png"
+  alt="Particle Network app credentials."
+/>
+</div>
+
+## Initialization
+
+Now that you've installed `@particle-network/btc-connectkit`, you'll need to configure and initialize it through the `ConnectProvider` object. `ConnectProvider` should, like `AuthCoreContextProvider` from Particle Auth Core, wrap your primary `App` either directly within its JSX or through your `index` file. Essentially, `ConnectProvider` controls the EVM chains you'd like to support, the wallets available through the connection modal, and other core configurations required to initialize BTC Connect. `ConnectProvider` takes the following within its `options` parameter:
+
+- `projectId`, previously retrieved from the [Particle dashboard](https://dashboard.particle.network).
+- `clientKey`, previously retrieved from the [Particle dashboard](https://dashboard.particle.network).
+- `appId`, previously retrieved from the [Particle dashboard](https://dashboard.particle.network).
+- `aaOptions`, an object containing:
+  - `accountContracts`, which should be another object with:
+    - `BTC`, an array of objects that take:
+      - `chainIds`, an array of chain IDs representing the blockchains you intend to use within your application (these chains are also supported within `@particle-network/chains`, in which you can export dedicated objects containing the chain ID, such as `PolygonMumbai.id`).
+      - `version`, which dictates the smart account version you'd like to use. Currently, both `1.0.0` and `2.0.0` are supported, depending on the chain (`chainIds`) you define. `2.0.0` is a newer implementation with better gas optimizations.
+        - The following chain IDs are only supported with version `1.0.0`:
+          - Merlin Testnet (`686868`), Merlin Mainnet (`4200`)
+          - LumiBit Testnet (`28206`)
+          - Polygon Mumbai (`80001`)
+          - BEVM Canary Testnet (`1502`), BEVM Canary Mainnet (`1501`), BEVM (not Canary) Testnet (`11503`)
+          - MAP Mainnet (`22776`), MAP Testnet (`212`)
+          - SatoshiVM Testnet (`3110`)
+        - The following chain IDs are only supported with version `2.0.0`:
+          - BitLayer Testnet (`200810`)
+          - Botanix Testnet (`3636`)
+          - Polygon zkEVM Cardona Testnet (`2442`)
+          - B² Testnet (`1123`)
+          - Mantle Mainnet (`5000`)
+          - AINN Layer2 Testnet (`2648`)
+- `walletOptions`, an optional object containing:
+  - `visible`, a Boolean determining whether or not the Particle Wallet modal is shown after connection. In this case, the wallet modal can be used to control the smart account, although if you intend to implement equivalent functionality within your application, such as user-defined transactions, you may not need this.
+
+Then, outside of the `options` parameter (which expects the above values), you'll also need to define `connectors`, an object containing an array of wallet connector instances imported from `@particle-network/btc-connectkit`, such as:
+
+- `UnisatConnector`
+- `OKXConnector`
+- `BitgetConnector`
+- `TokenPocketConnector`
+- `BybitConnector`
+
+Below is a code snippet showcasing a complete configuration of `ConnectProvider` within a standard `index` file setup, following the structure covered above:
+
+```typescript TypeScript
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import {
+  ConnectProvider,
+  OKXConnector,
+  UnisatConnector,
+  BitgetConnector,
+  TokenPocketConnector,
+  BybitConnector
+} from '@particle-network/btc-connectkit';
+import App from './App';
+
+import { MerlinTestnet, Merlin, LumiBitTestnet, PolygonMumbai, BEVMTestnet, BEVM, MAPProtocolTestnet, MAPProtocol, SatoshiVMTestnet, BSquaredTestnet, AINNTestnet, Mantle, BitlayerTestnet, BotanixTestnet, PolygonzkEVMCardona  } from '@particle-network/chains';
+
+ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
+  <React.StrictMode>
+    <ConnectProvider
+      options={{
+        projectId: process.env.REACT_APP_PROJECT_ID, // -
+        clientKey: process.env.REACT_APP_CLIENT_KEY, // Retrieved from https://dashboard.particle.network
+        appId: process.env.REACT_APP_APP_ID, // - 
+        aaOptions: {
+          accountContracts: {
+            BTC: [
+              {
+                chainIds: [MerlinTestnet.id, Merlin.id, LumiBitTestnet.id, PolygonMumbai.id, BEVMTestnet.id, BEVM.id, MAPProtocolTestnet.id, MAPProtocol.id, SatoshiVMTestnet.id],
+                version: '1.0.0',
+              },
+            	{
+      					chainIds: [BitlayerTestnet.id, BotanixTestnet.id, PolygonzkEVMCardona.id, BSquaredTestnet.id, Mantle.id, AINNTestnet.id],
+      					version: '2.0.0',
+    					},
+            ],
+          },
+        },
+        walletOptions: {
+          visible: true,
+        }
+      }}
+      connectors={[new UnisatConnector(), new OKXConnector(), new BitgetConnector(), new TokenPocketConnector(), new BybitConnector()]} // Currently, only these five are supported
+    >
+    <App />
+    </ConnectProvider>
+  </React.StrictMode>
+);
+
+```
+
+## Examples of Utilization
+
+Like Particle Auth Core, BTC Connect functions primarily based on hooks (available from `@particle-network/btc-connectkit`) for functions such as facilitating wallet connection, using the smart account, sending BTC, etc. Below, we'll review the four primary hooks within BTC Connect.
+
+### `useConnectModal` (for wallet connection)
+
+Wallet connection within BTC Connect happens through a unified connection modal with wallet options according to your `connectors` parameter within `ConnectProvider`. `useConnectModal` exposes two functions for this:
+
+- `openConnectModal`. This will open the aforementioned modal immediately upon being called.
+- `disconnect`. Similarly, `disconnect` will reset the wallet/account state (log a user out). See the snippet below for an example of defining and using these functions from `useConnectModal`:
+
+```typescript TypeScript
+import { useConnectModal } from '@particle-network/btc-connectkit';
+
+const { openConnectModal, disconnect } = useConnectModal();
+
+// Opens the wallet connection model; this is often bound to a "Connect" button
+const onOpenConnectModal = () => {
+    openConnectModal();
+}
+
+// Disconnects the wallet; this is often bound to a "Disconnect" button
+const onDisconnect = () => {
+    disconnect();
+}
+```
+
+Upon calling `openConnectModal`, the user will be presented with a menu that looks like the following (deviating depending only on `connectors` from `ConnectProvider`).
+
+<img
+  className="block dark:hidden"
+  src="/api/btc/images/modal.png"
+  alt="Particle Network BTC Connect modal."
+/>
+<img
+  className="hidden dark:block"
+  src="/api/btc/images/modal.png"
+  alt="Particle Network BTC Connect modal."
+/>
+
+### `useAccounts` (and associated address retrieval methods)
+
+Given that with BTC Connect users will have two addresses (one for their Layer-1 Bitcoin account, and one for their EVM smart account). It's important to retrieve, reflect, and manage these addresses. 
+
+BTC Connect has three primary mechanisms in place for address retrieval: 
+
+1. BTC address retrieval through `useAccounts` or `useBTCProvider`, and:
+2. EVM account retrieval through `useETHProvider` with `account`. 
+
+`useAccounts` and `useBTCProvider` both expose `accounts`, an array of connected Bitcoin addresses (which will change based on whether a user is connected to the Livenet or Testnet). Additionally, `useETHProvider` has `account`, a string representing the associated smart account address. 
+
+Below is an example of defining each of these variables:
+
+```typescript TypeScript
+import { useAccounts, useBTCProvider, useETHProvider } from '@particle-network/btc-connectkit';
+
+// BTC accounts through useAccounts
+const { accounts } = useAccounts();
+
+// BTC accounts through useBTCProvider (returns the same as accounts from useAccounts)
+const { accounts } = useBTCProvider();
+
+// EVM account through useETHProvider
+const { account } = useETHProvider();
+
+```
+
+### `useBTCProvider` (for native Bitcoin functions)
+
+`useBTCProvider` acts as the primary hook allowing to sign messages, send transactions, and retrieve additional wallet information (such as the network, public key, etc.) with the user's native Bitcoin account. Confirmations will be routed through the same wallet as `useETHProvider`, but these transactions will be executed on either the Bitcoin Livenet or Testnet. `useBTCProvider` has the following functions:
+
+- `getNetwork`, for retrieving the current network of the wallet (Livenet or Testnet).
+- `switchNetwork`, to forcibly switch the network. Takes a string, either 'livenet' or 'testnet'.
+- `signMessage`, to request that a user signs a message. Takes any string (the message to be signed).
+- `getPublicKey`, for retrieving the public key of the wallet.
+- `sendBitcoin`, for sending a standard Bitcoin transaction. This function takes the following:
+  - `toAddress`, the recipient of the transaction.
+  - `satoshis`, the value of the transaction in satoshis.
+  - `options`, an optional object containing:
+    - `feeRate`, for adjusting transaction fees.
+
+An example of leveraging `useBTCProvider` has been included below:
+
+<CodeGroup>
+```typescript Function definition
+import { useBTCProvider } from '@particle-network/btc-connectkit';
+
+const { provider, getNetwork, switchNetwork, signMessage, getPublicKey, sendBitcoin } = useBTCProvider();
+
+// Switches the current network (either Bitcoin Livenet or Testnet)
+await switchNetwork('testnet')
+
+// Retrieves the current network
+const network = await getNetwork();
+
+// Requests a message to be signed (through the connected wallet)
+const signature = await signMessage('Hello Particle!');
+
+// Retrieves the wallets public key
+const pubKey = await getPublicKey();
+
+// Sends a standard Bitcoin transaction
+const txId = await sendBitcoin(toAddress, satoshis, options);
+
+// Additional methods enabled by provider
+provider.sendInscription(...)
+```
+```typescript Practical example
+const { accounts, sendBitcoin } = useBTCProvider();
+const { openConnectModal } = useConnectModal();
+
+const handleLogin = () => {
+	if (!accounts.length) {
+		openConnectModal();
+	}
+};
+
+const executeTxBtc = async () => {
+	const hash = await sendBitcoin(accounts[0], 1);
+    
+  notification.success({
+		message: 'Transaction Successful',
+		description: (
+    <div>
+			Transaction Hash: <a href={`https://live.blockcypher.com/btc-testnet/tx/${hash}`} target="_blank" rel="noopener noreferrer">{hash}</a>
+    </div>
+    )
+	});
+};
+```
+</CodeGroup>
+
+### `useETHProvider` (for controlling the associated smart account)
+
+Most importantly, `useETHProvider` acts as the single mechanism for driving interaction through the associated EVM smart account. Interaction is driven through one of two ways:
+
+1. With native UserOperation construction and execution functions, such as `buildUserOp` and `sendUserOp`, which will mimic similar functions found within Particle Network's [AA SDK] for managing transactions.
+2. Through the attached EIP-1193 `provider` object, enabling utilization of the smart account through a standard Web3 library such as Ethers, Web3.js, viem, etc.
+
+Below is the full list of functions derived from `useETHProvider`:
+
+- `chainId`, the ID for the currently connected chain.
+  - For a complete list of networks supported within BTC Connect, see [Network Coverage](/resources/quickstart/network-coverage).
+- `account`, the smart account address (automatically populated upon login).
+- `getSmartAccountInfo`, get smart account info(version, isDeployed, etc.).
+- `switchChain`, for forcibly changing the EVM chain used through the smart account. This takes a specific `chainId` (should be one of the aforementioned supported chains).
+- `provider`, the EIP-1193 provider object associated with the smart account.
+- `getFeeQuotes`, for retrieving fee quotes (a collection of UserOperation structures based upon different fee payment mechanisms); this is equivalent to [getFeeQuotes](/api/aa/rpc/getfeequotes).
+- `buildUserOp`, to build a execution-ready UserOperation with a standard transaction object.
+- `sendUserOp`, for sending UserOperations (either objects derived from `getFeeQuotes`/`buildUserOp`, or standard transaction objects).
+- `publicClient`, the [viem](https://github.com/wevm/viem) `PublicClient` object for making standard JSON-RPC requests.
+
+The following snippet is an example of defining and using each of these methods:
+
+<CodeGroup>
+```typescript Functional definition
+import { useETHProvider } from '@particle-network/btc-connectkit';
+
+import { MerlinTestnet } from '@particle-network/chains';
+
+import { ethers } from 'ethers';
+
+const { account, getSmartAccountInfo, sendUserOp, getFeeQuotes, chainId, switchChain, publicClient, provider } = useETHProvider();
+
+// smart account info.
+const accountInfo = await getSmartAccountInfo();
+
+// Retrieves the current chain ID
+const id = chainId;
+
+// Switches the current connected chain
+await switchChain(MerlinTestnet.id);
+
+// Balance retrieval through publicClient
+const balance = await publicClient.getBalance({ address: '0x...' });
+
+// Sends a standard UserOperation
+const tx = {
+  to: '0xe8fc0baE43aA2640.......d0f6630E692e73',
+  value: '100000000000',
+  data: '0x', // Optional
+};
+
+const hash = await sendUserOp({ tx });
+
+// Retrieves fee quotes
+const feeQuotes = await getFeeQuotes(tx);
+
+// Leverages provider to initialize an Ethers object - for 6.0.0+, this should use ethers.BrowserProvider
+const customProvider = new ethers.providers.Web3Provider(provider, "any")
+```
+```ts Practical example
+const { provider, evmAccount } = useETHProvider();
+
+const customProvider = new ethers.providers.Web3Provider(provider, "any");
+const [balanceEVM, setBalanceEVM] = useState(null);
+
+// Retrieves the balance of the smart account
+useEffect(() => {
+    if (accounts.length > 0) {
+      (async () => {
+				const balanceResponse = await customProvider.getBalance(evmAccount);
+        setBalanceEVM(ethers.utils.formatEther(balanceResponse));
+    }
+  }, [evmAccount]);
+  
+  // Burns 0.01 of the native token for the connected network
+  const executeTxEvm = async () => {
+    const signer = customProvider.getSigner();
+
+    const tx = {
+      to: "0x000000000000000000000000000000000000dEaD",
+      value: ethers.utils.parseEther('0.01'),
+      data: "0x" // Optional
+    };
+
+    const txResponse = await signer.sendTransaction(tx);
+    const txReceipt = await txResponse.wait();
+    
+    return txReceipt;
+  };
+```
+</CodeGroup>
+
+***
+
+## Master reference
+
+For a direct, raw view into every method provided through `useAccount`, `useETHProvider`, `useBTCProvider`, and `useConnectModal`, below is a table containing every relevant one alongside specific parameters and a short description. For methods listed that weren't covered in the above examples, live implementation often mimics the common structure covered throughout this document.
+
+| Hook            | Function            | Parameters (\* indicates optional)                                                       |
+| --------------- | ------------------- | ---------------------------------------------------------------------------------------- |
+| useConnectModal | openConnectModal    | N/A                                                                                      |
+| useConnectModal | disconnect          | N/A                                                                                      |
+| useAccounts     | accounts            | N/A                                                                                      |
+| useBTCProvider  | provider            | N/A                                                                                      |
+| useBTCProvider  | accounts            | N/A                                                                                      |
+| useBTCProvider  | getPublicKey        | N/A                                                                                      |
+| useBTCProvider  | signMessage         | message: string                                                                          |
+| useBTCProvider  | getNetwork          | N/A                                                                                      |
+| useBTCProvider  | switchNetwork       | network: 'livenet' \| 'testnet'                                                          |
+| useBTCProvider  | sendBitcoin         | toAddress: string, satoshis: number, options\*: `{feeRate: number} `                       |
+| useETHProvider  | account             | N/A                                                                                      |
+| useETHProvider  | getSmartAccountInfo | N/A                                                                                      |
+| useETHProvider  | provider            | N/A                                                                                      |
+| useETHProvider  | switchChain         | chainId: number                                                                          |
+| useETHProvider  | chainId             | N/A                                                                                      |
+| useETHProvider  | getFeeQuotes        | tx: Transaction \| Transaction\[]                                                        |
+| useETHProvider  | buildUserOp         | `{ tx: Transaction \| Transaction\[], feeQuote: FeeQuote, tokenPaymasterAddress: string }` |
+| useETHProvider  | sendUserOp          | params: SendTransactionParams, forceHideConfirmModal?: boolean                           |
+| useETHProvider  | publicClient        | N/A                                                                                      |

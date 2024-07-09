@@ -1,0 +1,621 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Particle Network Bundler",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://bundler.particle.network"
+    }
+  ],
+  "paths": {
+    "/#eth_supportedEntryPoints": {
+      "post": {
+        "summary": "supportedEntryPoints",
+        "operationId": "supportedEntryPoints",
+        "requestBody": {
+          "description": "Request to retrieve supported entry points for Ethereum.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SupportedEntryPointsRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response with supported entry points.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SupportedEntryPointsResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/#eth_estimateUserOperationGas": {
+      "post": {
+        "summary": "estimateUserOperationGas",
+        "operationId": "estimateUserOperationGas",
+        "requestBody": {
+          "description": "Request to estimate the gas cost of a user operation.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EstimateUserOperationGasRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response with gas estimation.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EstimateUserOperationGasResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/#eth_sendUserOperation": {
+      "post": {
+        "summary": "sendUserOperation",
+        "operationId": "sendUserOperation",
+        "requestBody": {
+          "description": "Request to send a user operation.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SendUserOperationRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response with the result of the user operation.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SendUserOperationResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/#eth_getUserOperationByHash": {
+      "post": {
+        "summary": "getUserOperationByHash",
+        "operationId": "getUserOperationByHash",
+        "requestBody": {
+          "description": "Request to retrieve a user operation by its hash.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetUserOperationByHashRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response with the user operation details.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetUserOperationByHashResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/#eth_getUserOperationReceipt": {
+      "post": {
+        "summary": "getUserOperationReceipt",
+        "operationId": "getUserOperationReceipt",
+        "requestBody": {
+          "description": "Request to retrieve the receipt of a user operation.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetUserOperationReceiptRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response with the user operation receipt.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetUserOperationReceiptResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "RPCRequest": {
+        "type": "object",
+        "required": [
+          "jsonrpc",
+          "id",
+          "method",
+          "params",
+          "chainId"
+        ],
+        "properties": {
+          "jsonrpc": {
+            "type": "string",
+            "default": "2.0",
+            "description": "Version of the JSON-RPC protocol, should be 2.0.",
+            "example": "2.0"
+          },
+          "id": {
+            "type": "integer",
+            "default": 1,
+            "description": "The request identifier.",
+            "example": 1
+          },
+          "chainId": {
+            "type": "integer",
+            "description": "The chain ID.",
+            "example": 80001
+          },
+          "method": {
+            "type": "string",
+            "description": "API method being called."
+          },
+          "params": {
+            "type": "array",
+            "description": "Parameters for the API method call."
+          }
+        }
+      },
+      "RPCResponse": {
+        "type": "object",
+        "required": [
+          "jsonrpc",
+          "id",
+          "result",
+          "chainId"
+        ],
+        "properties": {
+          "jsonrpc": {
+            "type": "string",
+            "default": "2.0",
+            "description": "Version of the JSON-RPC protocol, should be 2.0.",
+            "example": "2.0"
+          },
+          "id": {
+            "type": "integer",
+            "default": 1,
+            "description": "The request identifier.",
+            "example": 1
+          },
+          "chainId": {
+            "type": "integer",
+            "description": "The chain ID.",
+            "example": 80001
+          },
+          "result": {
+            "type": "object",
+            "description": "Result of the API call."
+          }
+        }
+      },
+      "SupportedEntryPointsRequest": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/RPCRequest"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "method": {
+                "enum": [
+                  "eth_supportedEntryPoints"
+                ]
+              },
+              "params": {
+                "type": "array",
+                "maxItems": 0,
+                "description": "No parameters are needed for this request."
+              }
+            }
+          }
+        ]
+      },
+      "SupportedEntryPointsResponse": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/RPCResponse"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "result": {
+                "type": "array",
+                "description": "List of supported entry points.",
+                "items": {
+                  "type": "string",
+                  "example": "0xEntryPoint1"
+                }
+              }
+            }
+          }
+        ]
+      },
+      "EstimateUserOperationGasRequest": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/RPCRequest"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "method": {
+                "enum": [
+                  "eth_estimateUserOperationGas"
+                ]
+              },
+              "params": {
+                "type": "array",
+                "description": "Parameters for gas estimation.",
+                "items": {
+                  "anyOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "sender": {
+                          "type": "string",
+                          "description": "Sender address.",
+                          "example": "0xSenderAddress"
+                        },
+                        "nonce": {
+                          "type": "string",
+                          "description": "Nonce value.",
+                          "example": "0x1"
+                        },
+                        "initCode": {
+                          "type": "string",
+                          "description": "Initialization code, optional.",
+                          "example": "0xInitCode"
+                        },
+                        "callData": {
+                          "type": "string",
+                          "description": "Call data.",
+                          "example": "0xCallData"
+                        },
+                        "signature": {
+                          "type": "string",
+                          "description": "Signature.",
+                          "example": "0xSignature"
+                        }
+                      }
+                    },
+                    {
+                      "type": "string"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        ]
+      },
+      "EstimateUserOperationGasResponse": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/RPCResponse"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "result": {
+                "type": "object",
+                "properties": {
+                  "maxFeePerGas": {
+                    "type": "string",
+                    "description": "Maximum fee per gas unit.",
+                    "example": "0x3B9ACA00"
+                  },
+                  "maxPriorityFeePerGas": {
+                    "type": "string",
+                    "description": "Maximum priority fee per gas unit.",
+                    "example": "0x3B9ACA00"
+                  },
+                  "preVerificationGas": {
+                    "type": "string",
+                    "description": "Gas cost for pre-verification.",
+                    "example": "0x5208"
+                  },
+                  "verificationGas": {
+                    "type": "string",
+                    "description": "Gas cost for verification.",
+                    "example": "0x5208"
+                  },
+                  "verificationGasLimit": {
+                    "type": "string",
+                    "description": "Gas limit for verification.",
+                    "example": "0x5208"
+                  },
+                  "callGasLimit": {
+                    "type": "string",
+                    "description": "Gas limit for the call.",
+                    "example": "0x5208"
+                  }
+                }
+              }
+            }
+          }
+        ]
+      },
+      "SendUserOperationRequest": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/RPCRequest"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "method": {
+                "enum": [
+                  "eth_sendUserOperation"
+                ]
+              },
+              "params": {
+                "type": "array",
+                "description": "Parameters for sending a user operation.",
+                "items": {
+                  "anyOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "sender": {
+                          "type": "string",
+                          "description": "Sender address.",
+                          "example": "0xSenderAddress"
+                        },
+                        "nonce": {
+                          "type": "string",
+                          "description": "Nonce value.",
+                          "example": "0x1"
+                        },
+                        "initCode": {
+                          "type": "string",
+                          "description": "Initialization code, optional.",
+                          "example": "0xInitCode"
+                        },
+                        "callData": {
+                          "type": "string",
+                          "description": "Call data.",
+                          "example": "0xCallData"
+                        },
+                        "callGasLimit": {
+                          "type": "string",
+                          "description": "Gas limit for the call.",
+                          "example": "0x5208"
+                        },
+                        "verificationGasLimit": {
+                          "type": "string",
+                          "description": "Gas limit for verification.",
+                          "example": "0x5208"
+                        },
+                        "maxFeePerGas": {
+                          "type": "string",
+                          "description": "Maximum fee per gas unit.",
+                          "example": "0x3B9ACA00"
+                        },
+                        "maxPriorityFeePerGas": {
+                          "type": "string",
+                          "description": "Maximum priority fee per gas unit.",
+                          "example": "0x3B9ACA00"
+                        },
+                        "paymasterAndData": {
+                          "type": "string",
+                          "description": "Paymaster and data.",
+                          "example": "0xPaymasterData"
+                        },
+                        "preVerificationGas": {
+                          "type": "string",
+                          "description": "Gas cost for pre-verification.",
+                          "example": "0x5208"
+                        },
+                        "signature": {
+                          "type": "string",
+                          "description": "Signature.",
+                          "example": "0xSignature"
+                        }
+                      }
+                    },
+                    {
+                      "type": "string"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        ]
+      },
+      "SendUserOperationResponse": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/RPCResponse"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "result": {
+                "type": "string",
+                "description": "Transaction hash of the user operation.",
+                "example": "0xTransactionHash"
+              }
+            }
+          }
+        ]
+      },
+      "GetUserOperationByHashRequest": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/RPCRequest"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "method": {
+                "enum": [
+                  "eth_getUserOperationByHash"
+                ]
+              },
+              "params": {
+                "type": "array",
+                "description": "Hash of the user operation.",
+                "items": {
+                  "type": "string",
+                  "example": "0xOperationHash"
+                }
+              }
+            }
+          }
+        ]
+      },
+      "GetUserOperationByHashResponse": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/RPCResponse"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "result": {
+                "type": "object",
+                "description": "Details of the user operation.",
+                "properties": {
+                  "userOperation": {
+                    "type": "object"
+                  },
+                  "entryPoint": {
+                    "type": "string",
+                    "example": "0xEntryPoint"
+                  },
+                  "transactionHash": {
+                    "type": "string",
+                    "example": "0xTransactionHash"
+                  },
+                  "blockHash": {
+                    "type": "string",
+                    "example": "0xBlockHash"
+                  },
+                  "blockNumber": {
+                    "type": "string",
+                    "example": "0xBlockNumber"
+                  }
+                }
+              }
+            }
+          }
+        ]
+      },
+      "GetUserOperationReceiptRequest": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/RPCRequest"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "method": {
+                "enum": [
+                  "eth_getUserOperationReceipt"
+                ]
+              },
+              "params": {
+                "type": "array",
+                "description": "Hash of the user operation.",
+                "items": {
+                  "type": "string",
+                  "example": "0xOperationHash"
+                }
+              }
+            }
+          }
+        ]
+      },
+      "GetUserOperationReceiptResponse": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/RPCResponse"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "result": {
+                "type": "object",
+                "description": "Receipt of the user operation.",
+                "properties": {
+                  "userOpHash": {
+                    "type": "string",
+                    "example": "0xUserOpHash"
+                  },
+                  "sender": {
+                    "type": "string",
+                    "example": "0xSenderAddress"
+                  },
+                  "nonce": {
+                    "type": "string",
+                    "example": "0x1"
+                  },
+                  "actualGasCost": {
+                    "type": "string",
+                    "example": "0xActualGasCost"
+                  },
+                  "actualGasUsed": {
+                    "type": "string",
+                    "example": "0xActualGasUsed"
+                  },
+                  "success": {
+                    "type": "boolean",
+                    "example": true
+                  },
+                  "logs": {
+                    "type": "array",
+                    "items": {
+                      "type": "object"
+                    }
+                  },
+                  "receipt": {
+                    "type": "object"
+                  },
+                  "isPending": {
+                    "type": "boolean",
+                    "example": false
+                  }
+                }
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
+}

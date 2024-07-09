@@ -1,0 +1,309 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Particle Network Paymaster",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://paymaster.particle.network"
+    }
+  ],
+  "paths": {
+    "/#pm_sponsorUserOperation": {
+      "post": {
+        "summary": "sponsorUserOperation",
+        "operationId": "pm_sponsorUserOperation",
+        "requestBody": {
+          "description": "Request to sponsor a user operation.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SponsorUserOperationRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response with sponsorship details.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SponsorUserOperationResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/#pm_paymasterBalance": {
+      "post": {
+        "summary": "paymasterBalance",
+        "operationId": "pm_paymasterBalance",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "projectUuid",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "UUID of the project."
+          },
+          {
+            "in": "query",
+            "name": "projectKey",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Key of the project."
+          }
+        ],
+        "requestBody": {
+          "description": "Request to retrieve the balance of the paymaster.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PaymasterBalanceRPCRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response with the paymaster balance.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaymasterBalanceResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "RPCRequest": {
+        "type": "object",
+        "required": [
+          "jsonrpc",
+          "id",
+          "method",
+          "params"
+        ],
+        "properties": {
+          "jsonrpc": {
+            "type": "string",
+            "default": "2.0",
+            "description": "Version of the JSON-RPC protocol, should be 2.0.",
+            "example": "2.0"
+          },
+          "id": {
+            "type": "integer",
+            "default": 0,
+            "description": "The request identifier.",
+            "example": 0
+          },
+          "method": {
+            "type": "string",
+            "description": "API method being called."
+          },
+          "params": {
+            "type": "array",
+            "description": "Parameters for the API method call."
+          }
+        }
+      },
+      "RPCResponse": {
+        "type": "object",
+        "required": [
+          "jsonrpc",
+          "id",
+          "result"
+        ],
+        "properties": {
+          "jsonrpc": {
+            "type": "string",
+            "default": "2.0",
+            "description": "Version of the JSON-RPC protocol, should be 2.0.",
+            "example": "2.0"
+          },
+          "id": {
+            "type": "integer",
+            "default": 0,
+            "description": "The request identifier.",
+            "example": 0
+          },
+          "result": {
+            "type": "object",
+            "description": "Result of the API call."
+          }
+        }
+      },
+      "SponsorUserOperationRequest": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/RPCRequest"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "method": {
+                "enum": [
+                  "pm_sponsorUserOperation"
+                ]
+              },
+              "params": {
+                "type": "array",
+                "description": "Parameters for sponsoring a user operation.",
+                "items": {
+                  "type": "object",
+                  "anyOf": [
+                    {
+                      "$ref": "#/components/schemas/UserOperation"
+                    },
+                    {
+                      "type": "string"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        ]
+      },
+      "UserOperation": {
+        "type": "object",
+        "properties": {
+          "sender": {
+            "type": "string",
+            "description": "Sender address.",
+            "example": "0xSenderAddress"
+          },
+          "nonce": {
+            "type": "string",
+            "description": "Nonce value.",
+            "example": "0x1"
+          },
+          "initCode": {
+            "type": "string",
+            "description": "Initialization code.",
+            "example": "0xInitCode"
+          },
+          "callData": {
+            "type": "string",
+            "description": "Call data.",
+            "example": "0xCallData"
+          },
+          "maxFeePerGas": {
+            "type": "string",
+            "description": "Maximum fee per gas unit.",
+            "example": "0x3B9ACA00"
+          },
+          "maxPriorityFeePerGas": {
+            "type": "string",
+            "description": "Maximum priority fee per gas unit.",
+            "example": "0x3B9ACA00"
+          },
+          "paymasterAndData": {
+            "type": "string",
+            "description": "Paymaster and data.",
+            "example": "0xPaymasterData"
+          },
+          "signature": {
+            "type": "string",
+            "description": "Signature.",
+            "example": "0xSignature"
+          },
+          "preVerificationGas": {
+            "type": "string",
+            "description": "Gas cost for pre-verification.",
+            "example": "0x5208"
+          },
+          "verificationGasLimit": {
+            "type": "string",
+            "description": "Gas limit for verification.",
+            "example": "0x5208"
+          },
+          "callGasLimit": {
+            "type": "string",
+            "description": "Gas limit for the call.",
+            "example": "0x5208"
+          }
+        }
+      },
+      "SponsorUserOperationResponse": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/RPCResponse"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "result": {
+                "type": "object",
+                "properties": {
+                  "paymasterAndData": {
+                    "type": "string",
+                    "description": "Paymaster and data details.",
+                    "example": "0xPaymasterData"
+                  }
+                }
+              }
+            }
+          }
+        ]
+      },
+      "PaymasterBalanceRPCRequest": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/RPCRequest"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "method": {
+                "enum": [
+                  "pm_paymasterBalance"
+                ]
+              },
+              "params": {
+                "type": "array",
+                "maxItems": 0,
+                "description": "No parameters are needed for this request."
+              }
+            }
+          }
+        ]
+      },
+      "PaymasterBalanceResponse": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/RPCResponse"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "result": {
+                "type": "object",
+                "properties": {
+                  "balance": {
+                    "type": "string",
+                    "description": "Balance of the paymaster.",
+                    "example": "0xBalance"
+                  }
+                }
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,236 @@
+---
+title: "Unity (C#) - Auth"
+description: "Interacting with Particle Auth within games built on Unity using C#."
+---
+
+# Particle Auth for Unity on Windows/macOS
+
+The Particle Auth [Unity SDK](https://github.com/Particle-Network/particle-unity) acts as the primary mechanism for integrating Particle's Wallet-as-a-Service within games built on Unity. Specifically, this SDK facilitates configuration, integration, and interaction. This means that, for most applications, the Particle Auth's Unity SDK can be the sole library backing end-to-end utilization of Particle Network facilitated by users' **email**, **phone**, or **custom JWT authentication**.
+
+The structure of this SDK follows the [Web (JavaScript/TypeScript)](/api-reference/auth/desktop-sdks/web) page closely, albeit with several deviations, **as described below**.
+
+<Warning>
+<p>Due to limitations with Webview, Particle Auth for Unity on Windows & macOS does not include most built-in social logins</p>
+<p>Options include email, phone, and custom JWT authentication (indicated by 'email', 'phone', or 'jwt').</p>
+</Warning>
+
+***
+
+# Getting Started
+
+To begin utilizing the Particle Auth Unity SDK on Windows & macOS, you'll need to meet a few prerequisites, specifically a minimum version of Unity along with a Unity package to handle authentication popups.
+
+## Prerequisites
+
+- Unity **2021.3.35f1** or later.
+
+- Requires one of the following packages: 
+
+  - ​**Recommended**: 3D WebView for Windows and macOS (Web Browser) from Vuplex, version **4.3.3** or higher.
+
+  - Other web browser packages will also work here if necessary.
+
+## Quickstart
+
+Before diving into the specifics of SDK initialization and utilization, the best way to get started and explore a live implementation of the Unity SDK is through the Windows/macOS demo included within the [GitHub repository](https://github.com/Particle-Network/particle-unity). This demo will include the initialization of the SDK and, as previously detailed, a Webview-based authentication menu for MPC-TSS login, enabling interaction with the resulting wallet.
+
+#### Quickstart demo installation
+
+To get started and begin testing the included demo, you'll need to first download the Windows/macOS demo [here](https://github.com/Particle-Network/particle-unity/tree/2e08f144327a25a1f28098defa182155d120f177/Assets/ParticleNetwork/Windows). Assuming you've previously imported the SDK, also found in the [linked repository](https://github.com/Particle-Network/particle-unity), you can initialize the demo. To do this:
+
+1. Open the Windows/macOS Auth demo scene within the Unity editor.
+
+1. Click the `Particle Init` button to initialize the SDK.
+
+1. Finally, click `Login` to initiate an account instance and enable the sample functions.
+
+## Initialize
+
+After exploring an implementation of the SDK through the demo, let's understand and dive into configuration alongside some of the structural deviations from the Web SDK.
+
+***
+
+To initialize the Particle Auth SDK, go ahead and create a `GameObject` and attach the `ParticleSystem` script, then attach a `CanvasWebViewPrefab` to `ParticleSystem` script.
+
+Put a `ParticleUnityRpc` prefab in your scene, then update it with your `project id`, `app id` and `client key`.
+
+Before utilization, you'll need to configure `ParticleSystem` (adjacent to the Web SDK's `ParticleNetwork`). This configuration can be executed by calling the `Init` method on `ParticleSystem.Instance` with parameters as follows:
+
+- `config`: contains `ParticleConfigSecurityAccount` and `ParticleConfigWallet`.
+
+- `theme`: control dark of light mode, display wallet, display close button.
+
+- `language`: String indicating the language to be used within the UI, either 'en-US', 'zh-CN', 'zh-TW', 'ja-JP', or 'ko-KR'.
+
+- `chainInfo`: A chainInfo object indicating the primary chain to be used.
+
+```csharp C#
+var supportChains = new List<SupportChain>
+                { new SupportChain(ChainInfo.EthereumSepolia.Name, ChainInfo.EthereumSepolia.Id) };
+var config = new ParticleConfig(new ParticleConfigSecurityAccount(1, 1),
+                                new ParticleConfigWallet(true, supportChains, null));
+
+var theme = new ParticleTheme
+  {
+  UiMode = "dark",
+  DisplayWallet = true,
+  DisplayCloseButton = true
+  };
+
+var language = "en-US";
+
+var chainInfo = ChainInfo.EthereumSepolia;
+
+ParticleSystem.Instance.Init(config.ToString(), theme.ToString(), language, chainInfo);
+```
+
+Among these parameters, the `ParticleUnityRpc` prefab containing `project id`, `app id` and `client key` are the most important. It directly connects your instance of Particle's Wallet-as-a-Service with your configurations in the [Particle dashboard](https://dashboard.particle.network/). You can retrieve the values for these three parameters through the following:
+
+1. Sign up/log in to the [Particle dashboard](https://dashboard.particle.network/).
+
+<div className="flex justify-center">
+<img
+  className="block h-64 dark:hidden"
+  src="/api-reference/auth/desktop-sdks/images/login.png"
+  alt="Particle Network login."
+/>
+<img
+  className="hidden h-64 dark:block"
+  src="/api-reference/auth/desktop-sdks/images/login.png"
+  alt="Particle Network login."
+/>
+</div>
+
+2. Create a new project or enter an existing project.
+
+<div className="flex justify-center">
+<img
+  className="block h-64 dark:hidden"
+  src="/api-reference/auth/desktop-sdks/images/project.png"
+  alt="Particle Network project."
+/>
+<img
+  className="hidden h-64 dark:block"
+  src="/api-reference/auth/desktop-sdks/images/project.png"
+  alt="Particle Network project."
+/>
+</div>
+
+3. Create a new web application, or skip this step if you already have one.
+
+<div className="flex justify-center">
+<img
+  className="block h-64 dark:hidden"
+  src="/api-reference/auth/desktop-sdks/images/app.png"
+  alt="Particle Network app."
+/>
+<img
+  className="hidden h-64 dark:block"
+  src="/api-reference/auth/desktop-sdks/images/app.png"
+  alt="Particle Network app."
+/>
+</div>
+
+4. Retrieve the project ID (`projectId`), the client key (`clientKey`), and the application ID (`appId`).
+
+<div className="flex justify-center">
+<img
+  className="block h-64 dark:hidden"
+  src="/api-reference/auth/desktop-sdks/images/credentials.png"
+  alt="Particle Network app credentials."
+/>
+<img
+  className="hidden h-64 dark:block"
+  src="/api-reference/auth/desktop-sdks/images/credentials.png"
+  alt="Particle Network app credentials."
+/>
+</div>
+
+### Examples of utilization
+
+#### Login
+
+`ParticleSystem.Instance.Login` displays the login popup, set to either 'email', 'phone', or custom JWT authentication with 'jwt'. This popup acts as the primary mechanism for facilitating account creation.
+
+```csharp C#
+// PreferredAuthType: email, phone, or jwt
+// Account: Required when using jwt 
+var loginResult = await ParticleSystem.Instance.Login(PreferredAuthType.email, "");
+Debug.Log($"Login result {loginResult}"); // Contains user information
+```
+
+#### SignMessage
+
+`ParticleSystem.Instance.SignMessage` enables the signing of a basic string. For EVM chains, this can be passed directly within `SignMessage`, as shown below. For Solana, you'll need to convert this string to base58 before `SignMessage` will function properly. The confirmation popup will display this string, base58 or otherwise, in UTF-8.
+
+```csharp C#
+var signature = await ParticleSystem.Instance.SignMessage("GM, Particle!");
+Debug.Log($"SignMessage signature: {signature}");
+```
+
+#### SignAndSendTransaction
+
+`ParticleSystem.Instance.SignAndSendTransaction` takes in a constructed transaction object returned from `ParticleSystem.Instance.MakeEvmTransaction` (for EVM chains), then requests a confirmation (signature) from the user. Once granted, it sends the transaction.
+
+```csharp C#
+var transaction = ParticleSystem.Instance.MakeEvmTransaction("0x16380a03f21e5a5e339c15ba8ebe581d194e0db3", "0xA719d8C4C94C1a877289083150f8AB96AD0C6aa1", "0x", "0x123123");
+var signMessageResult = await ParticleSystem.Instance.SignAndSendTransaction(transaction);
+Debug.Log($"SignAndSendTransaction signature: {signature}");
+```
+
+#### SignTypedData
+
+`ParticleSystem.Instance.SignTypedData` facilitates the signature of structured data; by default, this uses `eth_signTypedData_v4`. For more information on `signTypedData`, see the [Web (JavaScript/TypeScript)](/api-reference/auth/desktop-sdks/web) page.
+
+```csharp C#
+string typedDataV4 = "";
+var signMessageResult = await ParticleSystem.Instance.SignTypedData(typedDataV4, SignTypedDataVersion.Default);
+Debug.Log($"SignTypedData signature: {signature}");
+```
+
+#### SignTransaction
+
+`ParticleSystem.Instance.SignTransaction` is a **Solana-specific** method for requesting a signature for a given transaction. This will sign (but not send) a transaction.
+
+```csharp C#
+ string transaction = "";
+var signMessageResult = await ParticleSystem.Instance.SignTransaction(transaction);
+Debug.Log($"SignTransaction signature: {signature}");
+```
+
+#### SignAllTransactions
+
+`ParticleSystem.Instance.SignAllTransactions` is the plural of the aforementioned; this is also \*_Solana-specific_
+
+```csharp C#
+List<string> transactions = new List<string> { "" }; // base58 strings
+var signMessageResult = await ParticleSystem.Instance.SignAllTransactions(transactions);
+Debug.Log($"SignAllTransactions signature: {string.Join(", ", signatureList)}");
+```
+
+#### OpenWebWallet
+
+`ParticleSystem.Instance.OpenWebWallet` can open the web wallet.
+
+```csharp C#
+ParticleSystem.Instance.OpenWebWallet();
+// if you prefer to open wallet when AA interface, you can pass the account name, such as
+ParticleSystem.Instance.OpenWebWallet(AAAccountName.BICONOMY_V2());
+```
+
+## Master reference
+
+For a direct, raw view into every method provided through `ParticleSystem`, below is a table containing every relevant method alongside specific parameters and a short description. For methods listed that weren't covered in the above examples, live implementation often mimics the common structure covered throughout this document.
+
+| Class          | Methods                | Parameters                                  |
+| -------------- | ---------------------- | ------------------------------------------- |
+| ParticleSystem | Init                   | config, theme, language, chainName, chainId |
+| ParticleSystem | Login                  | preferredAuthType, account                  |
+| ParticleSystem | SignMessage            | message                                     |
+| ParticleSystem | SignAndSendTransaction | transaction                                 |
+| ParticleSystem | SignTypedData          | message, version                            |
+| ParticleSystem | SignTransaction        | transaction                                 |
+| ParticleSystem | SignAllTransactions    | transactions                                |
+| ParticleSystem | MakeEvmTransaction     | from, to, data, value                       |
+| ParticleSystem | UpdateChainId          | chainId                                     |
+| ParticleSystem | UpdateChainName        | chainName                                   |

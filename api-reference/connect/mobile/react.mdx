@@ -1,0 +1,414 @@
+---
+title: "React Native (JavaScript) - Connect"
+sidebarTitle: "React Native (JS) - Connect"
+description: "Leveraging Particle Connect within applications built using React Native."
+---
+
+## Particle Connect for React Native
+
+Particle Connect fully supports React Native, facilitating unified Web2 and Web3 onboarding within mobile applications leveraging React Native. Particle Connect is a custom connection modal meant to act as an "SSO for Web3," aggregating both social logins and traditional Web3 wallets (even using imported accounts) within one interface, enabling universal accessibility for both Web3 natives and typical Web2 consumers. 
+
+Details on installing, configuring, and utilizing the Particle Connect React Native SDK **are below**.
+
+## Repository
+
+A demo showcasing the utilization of the Particle Connect React Native SDK can be found within the [`particle-react-native` GitHub repository](https://github.com/Particle-Network/particle-react-native), alongside the source code powering the SDK. Before diving in, consider reviewing the code within [this repository](https://github.com/Particle-Network/particle-react-native/tree/master/particle-connect) for an initial understanding of the underlying architecture.
+
+<Warning>
+It is strongly discouraged to use a private key or the mnemonic import/generate function. If you use it, you need to secure the data yourself, as Particle doesn't have a relationship with the imported/generated mnemonic or private key.
+</Warning>
+
+## Getting Started
+
+The setup process for the Particle Connect React Native SDK is relatively straightforward but expectedly deviates depending on the platform in question. 
+
+Before diving into platform-specific configuration, all Particle Connect (& Auth) SDKs require three standard values for initialization: `projectId`, `clientKey`, and `appId`, all of which can be retrieved from the [Particle dashboard](https://dashboard.particle.network).
+
+1. Sign up/log in to the [Particle dashboard](https://dashboard.particle.network/).
+
+<div className="flex justify-center">
+<img
+  className="block h-64 dark:hidden"
+  src="/api/auth/desktop-sdks/images/login.png"
+  alt="Particle Network login."
+/>
+<img
+  className="hidden h-64 dark:block"
+  src="/api/auth/desktop-sdks/images/login.png"
+  alt="Particle Network login."
+/>
+</div>
+
+2. Create a new project or enter an existing project.
+
+<div className="flex justify-center">
+<img
+  className="block h-64 dark:hidden"
+  src="/api/auth/desktop-sdks/images/project.png"
+  alt="Particle Network project."
+/>
+<img
+  className="hidden h-64 dark:block"
+  src="/api/auth/desktop-sdks/images/project.png"
+  alt="Particle Network project."
+/>
+</div>
+
+3. Create a new web application, or skip this step if you already have one.
+
+<div className="flex justify-center">
+<img
+  className="block h-64 dark:hidden"
+  src="/api/auth/mobile-sdks/images/apps.png"
+  alt="Particle Network app."
+/>
+<img
+  className="hidden h-64 dark:block"
+  src="/api/auth/mobile-sdks/images/apps.png"
+  alt="Particle Network app."
+/>
+</div>
+
+4. Retrieve the project ID (`projectId`), the client key (`clientKey`), and the application ID (`appId`).
+
+<div className="flex justify-center">
+<img
+  className="block h-64 dark:hidden"
+  src="/api/auth/desktop-sdks/images/credentials.png"
+  alt="Particle Network app credentials."
+/>
+<img
+  className="hidden h-64 dark:block"
+  src="/api/auth/desktop-sdks/images/credentials.png"
+  alt="Particle Network app credentials."
+/>
+</div>
+
+### Adding the Particle Connect React Native SDK to your application
+
+Another constant in the setup process is the installation of `@particle-network/rn-connect`, either through npm or Yarn , depending on your preference, as is shown below.
+
+```shell Terminal
+npm install @particle-network/rn-connect
+
+// Or
+
+yarn add @particle-network/rn-connect
+```
+
+### Android configuration
+
+If you're planning on using Android for your React Native application, ensure that you meet the following prerequisites (otherwise, expect issues or non-functionality):
+
+- Targets **API Level 23** (Marshmallow) or higher.
+- Uses **Android 6.0** or higher.
+- Uses **Jetpack** (Android X).
+- Uses **Java 11**.
+
+Once you've made sure your project meets these requirements, you'll need to move on and define the aforementioned configuration values (`projectId`, `clientKey`, and `appId`) within your `build.grade` file (generally found at `${project name}/android/app/build.gradle`). These directly link your application's instance of Particle Connect with the [dashboard](https://dashboard.particle.network).
+
+Specifically, within `build.gradle`, you'll need to set four different values:
+
+1. `dataBinding`, this should be enabled with `enabled = true`.
+2. `manifestPlaceholders["PN_PROJECT_ID"]`, the `projectId` previously retrieved from the Particle dashboard.
+3. `manifestPlaceholders["PN_PROJECT_CLIENT_KEY"]`, the `clientKey` previously retrieved from the Particle dashboard.
+4. `manifestPlaceholders["PN_APP_ID"]`, the `appId` previously retrieved from the Particle dashboard.
+
+```groovy build.gradle
+android {
+  ...
+  defaultConfig {
+      ......
+      manifestPlaceholders["PN_PROJECT_ID"] = "your project id"
+      manifestPlaceholders["PN_PROJECT_CLIENT_KEY"] = "your project client key"
+      manifestPlaceholders["PN_APP_ID"] = "your app id"
+  }
+  
+  dataBinding {
+      enabled = true
+  }
+
+}
+```
+
+***
+
+### iOS configuration
+
+Alternatively, if you plan to use iOS for your React Native application, the underlying setup process differs slightly. Before diving in, ensure that your project meets the following requirements:
+
+- **Xcode 15.0** or later.
+
+- **iOS 14** or later.
+
+With these requirements set, you'll need to open an exported iOS project and find `ios/{project name}.xcworkspace`.
+
+At the root of your Xcode project, create a new file, `ParticleNetwork-Info.plist`. Ensure this is marked under "Target Membership."
+
+From here, with a fresh `ParticleNetwork-Info.plist` file, go ahead and fill it in with the following:
+
+```xml ParticleNetwork-Info.plist
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>PROJECT_UUID</key>
+	<string>YOUR_PROJECT_UUID</string>
+	<key>PROJECT_CLIENT_KEY</key>
+	<string>YOUR_PROJECT_CLIENT_KEY</string>
+	<key>PROJECT_APP_UUID</key>
+	<string>YOUR_PROJECT_APP_UUID</string>
+</dict>
+</plist>
+```
+
+Similar to the Android configuration, you'll need to fill in `PROJECT_UUID` (`projectId`), `PROJECT_CLIENT_KEY` (`clientKey`), and `PROJECT_APP_UUID` (`appId`) with the corresponding values retrieved from the [Particle dashboard](https://dashboard.particle.network).
+
+Next, you'll need to head over to your `AppDelegate.swift` file to add an import of `react_native_particle_connect`.
+
+```swift Swift
+#import <react_native_particle_connect/react_native_particle_connect-Swift.h>
+```
+
+Additionally, within your application's `application` method (as shown below), you'll need to include a handler condition derived from `ParticleConnectSchemeManager handleUrl:url`. This should be as simple as a `YES` (true) return upon a true value of `ParticleConnectSchemeManager handleUrl:url`.
+
+```swift Swift
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options {
+  if ([ParticleConnectSchemeManager handleUrl:url] == YES) {
+    return YES;
+  } else {
+    // other methods
+  }
+  return YES;
+}
+```
+
+Wrapping up, you'll need to configure your application's scheme URL. To configure this, select your application from "TARGETS" under the "Info" section, then click "+" to add a URL type.
+
+This should be set to "pn" + your `projectId` (retrieved and configured prior), resulting in a scheme URL that looks something like the following:
+
+```text
+pn63bfa427-cf5f-4742-9ff1-e8f5a1b9828f
+```
+
+Additionally, head over to your `Info.plist` file and include the following snippet.
+
+```xml XML
+<key>LSApplicationQueriesSchemes</key>
+<array>
+    <string>imtokenv2</string>
+    <string>metamask</string>
+    <string>phantom</string>
+    <string>bitkeep</string>
+    <string>trust</string>
+    <string>rainbow</string>
+    <string>zerion</string>
+    <string>mathwallet</string>
+    <string>1inch</string>
+    <string>awallet</string>
+    <string>okex</string>
+</array>
+```
+
+Finally, you'll need to edit your Podfile to ensure `particle_connect` is properly imported. Head over to the [linked guide](/api/connect/mobile/ios) to complete this if you have not already.
+
+***
+
+## Examples of Utilization
+
+### Initialization
+
+Now that you've configured your project, it's time to move on to initialization. This is required before the rest of the SDK will function. First, you'll need to import `@particle-network/rn-connect`, which generally can be imported in whole as a singular variable (in the example below, `particleConnect`.)
+
+```js JavaScript
+import * as particleConnect from '@particle-network/rn-connect';
+```
+
+Initialization happens through `init` on your imported instance of `@particle-network/rn-connect`, `particleConnect` in this case. `init` takes the following parameters:
+
+- `chainInfo`, an object containing relevant chain information determining the primary chain to be used within Particle Connect. (`ChainInfo` objects, such as `Ethereum`, `Polygon`, etc. can be imported from `@particle-network/chains`)
+- `env`, imported from `@particle-network/rn-connect`, and can be either:
+  - `Env.Production`.
+  - `Env.Staging`.
+  - `Env.Dev`.
+- `metadata`, an instance of `DappMetaData` containing the following parameters:
+  - `walletConnectProjectId`, your WalletConnect project ID retrieved from the [WalletConnect dashboard](https://cloud.walletconnect.com).
+  - `name`, the name of your project.
+  - `icon`, your project's logo, ideally 512x512.
+  - `url`, the URL of your project's website.
+  - `description`, a description of your project.
+  - `redirect`, a provided redirect; can be left blank.
+  - `verifyUrl`, a URL for verification; can be left blank.
+
+Additionally, extra chains can be configured for WalletConnect through `setWalletConnectV2SupportChainInfos`, and passing in an array of `ChainInfo`  objects representing the different chains you'd like to be supported by your instance of WalletConnect. E.g:
+
+```js JavaScript
+const chainInfo: ChainInfo = Ethereum;
+    const env = Env.Dev;
+    const metadata = {
+      walletConnectProjectId: 'your wallet connect project id, get it from wallet connect',
+      url: 'https://connect.particle.network',
+      icon: 'https://connect.particle.network/icons/512.png',
+      name: 'Particle Connect',
+      description: 'Particle Wallet'
+    }
+
+particleConnect.init(chainInfo, env, metadata);
+particleAuthCore.init();
+
+const chainInfos = [Ethereum, Polygon, EthereumSepolia];
+particleConnect.setWalletConnectV2SupportChainInfos(chainInfos);
+```
+
+### Connect
+
+To directly connect a user with a given wallet type (throwing a connection menu within the current instance), you'll need to use `connect`. Within `connect`, you'll need to pass in a given `walletType`, which should be an item selected from `WalletType`, imported from `@particle-network/rn-connect`. `WalletType` can be set to any of the following:
+
+- `Particle`, social logins through Particle Auth.
+- `AuthCore`, Particle Auth Core, an alternative to Particle Auth (`Particle`).
+- `EvmPrivateKey`, custom EVM wallet imports/exports.
+- `SolanaPrivateKey`, custom Solana wallet imports/exports.
+- `MetaMask`.
+- `Rainbow`.
+- `Trust`.
+- `ImToken`.
+- `BitKeep`.
+- `WalletConnect`.
+- `Phantom`, intended for Solana.
+- `Zerion`.
+- `Math`.
+- `Inch1`, 1inch.
+- `Zengo`.
+- `Alpha`.
+- `Bitpie`.
+- `OKX`.
+- `TokenPocket`, not supported by iOS.
+
+Additionally, if you're using Particle (`WalletType.Particle`), you'll need also pass in an instance of `ParticleConnectConfig`, which takes the following parameters:
+
+- `LoginType`, the specific login to be prompted; enum with the following choices:
+  - `EMAIL`.
+  - `PHONE`.
+  - `FACEBOOK`.
+  - `APPLE`.
+  - `TWITTER`.
+  - `DISCORD`.
+  - `GITHUB`.
+  - `TWITCH`.
+  - `MICROSOFT`.
+  - `LINKEDIN`.
+  - `JWT`.
+- `account`, if you're expecting a specific JWT, email, or phone (required for JWT).
+- `SupportAuthType`, the different authentication types to be supported by the popup modal.
+  - enum with all of the above choices for `LoginType`, except `JWT`, including `ALL`.
+- `SocialLoginPrompt`, whether or not the social login popup will be in "form mode" (simplified, minimal UI) or not. By default, this is `false`
+- `LoginAuthorization`, a string (hex for EVM, base58 for Solana) to be prompted for signature upon login as authorization (optional).
+- `LoginPageConfig`, the specific your project name, welcome description and project icon, also support base64 image, will show when loginType is email or phone.
+
+E.g:
+
+```js JavaScript
+const connectConfig = {
+  loginType: LoginType.Google,
+  supportAuthType: [SupportAuthType.Phone, SupportAuthType.Google, SupportAuthType.Apple],
+  socialLoginPrompt: SocialLoginPrompt.SelectAccount,
+  loginPageConifg: {
+    projectName: "React Native Example",
+    description: "Welcome to login",
+    imagePath: "https://connect.particle.network/icons/512.png"
+  }
+};
+
+const result = await particleConnect.connect(
+  WalletType.AuthCore,
+  connectConfig
+);
+```
+
+### Disconnect
+
+Additionally, after connecting and initiating an active session, you can programmatically disconnect a given user (defined by an address within a specified `WalletType`) from your application through `disconnect`. This requires both the relevant `WalletType` and associated address as parameters. E.g.:
+
+```js JavaScript
+particleConnect.disconnect(walletType, publicAddress);
+```
+
+### Is Connected
+
+Oftentimes, it helps to know whether or not a user is connected. This can be retrieved as a Boolean indicating connection status by calling `isConnected`, passing in the corresponding `WalletType` and address. E.g.:
+
+```js JavaScript
+particleConnect.isConnected(walletType, publicAddress);
+```
+
+### Sign Message
+
+A simple message can be signed on both EVM & Solana through `signMessage`, passing in the `WalletType`, address, and the `message` in question. `message` should be a general string to be signed. Upon calling `signMessage`, like other methods that require a signature, a popup will be thrown according to the specification of the given `WalletType`, requesting confirmation. E.g.:
+
+```js JavaScript
+particleConnect.signMessage(walletType, publicAddress, message);
+```
+
+### Sign Typed Data
+
+Alternatively, **for EVM chains**, you can prompt a signature for typed (structured) data rather than purely a raw string (as is done within `signMessage`). To do this, you can use `signTypedData` (equivalent to `eth_signTypedData`), passing in a `WalletType`, address, and the data to be signed.
+
+See the [Web (JavaScript/TypeScript)](/api/auth/desktop-sdks/web) page for additional guidance.
+
+```js JavaScript
+particleConnect.signTypedData(walletType, publicAddress, typedData)
+```
+
+### Import Wallet
+
+If you're using the`EvmPrivateKey` or `SolanaPrivateKey` wallet types, you can import wallets through either a seed phrase or private key. These methods will associate an account instance derived from these keys, allowing utilization within your application. These can be achieved through either `importPrivateKey` for importing a private key, or `importMnemonic` for importing a mnemonic (seed phrase). Both of these methods require both the `WalletType` (either `EvmPrivateKey` or `SolanaPrivateKey`) and the private key/seed phrase to be imported.
+
+Additionally, you can export one of these wallets with `exportPrivateKey`, passing in the address (of the `EvmPrivateKey` or `SolanaPrivateKey` imported/generated wallet) that you'd like to export.
+
+```js JavaScript
+particleConnect.importPrivateKey(walletType, privateKey);
+
+particleConnect.importMnemonic(walletType, mnemonic);
+
+particleConnect.exportPrivateKey(walletType, publicAddress);
+```
+
+### Get Accounts
+
+Within an active session, you can retrieve the accounts (addresses) that belong to a specific `WalletType` (connection mechanism). This is done through `getAccounts` and returns an array of addresses within the current session associated with a given `WalletType`. E.g.:
+
+```js JavaScript
+particleConnect.getAccounts(walletType);
+```
+
+***
+
+## Master reference
+
+For a direct, raw view into every method provided through `particleConnect` (`@particle-network/rn-connect`), below is a table containing every relevant one, alongside specific parameters and a short description. For methods listed that weren't covered in the above examples, live implementation often mimics the common structure covered throughout this document.
+
+<Note>
+<p>`ParticleConnect` refers to the importation and complete assignment of `@particle-network/rn-connect`</p>
+<p></p>
+<p>In this above examples, this has been referred to by `particleConnect`.</p>
+</Note>
+
+| Class           | Methods                             | Parameters (\* indicates optional)                 |
+| --------------- | ----------------------------------- | -------------------------------------------------- |
+| ParticleConnect | init                                | chainInfo, env, metadata, rpcUrl\*                 |
+| ParticleConnect | setWalletConnectV2SupportChainInfos | chainInfos                                         |
+| ParticleConnect | getAccounts                         | walletType                                         |
+| ParticleConnect | connect                             | walletType, config\*                               |
+| ParticleConnect | disconnect                          | walletType, publicAddress                          |
+| ParticleConnect | isConnected                         | walletType, publicAddress                          |
+| ParticleConnect | signMessage                         | walletType, publicAddress, message                 |
+| ParticleConnect | signTransaction                     | walletType, publicAddress, transaction             |
+| ParticleConnect | signAllTransactions                 | walletType, publicAddress, transactions            |
+| ParticleConnect | signAndSendTransaction              | walletType, publicAddress, transaction, feeMode\*  |
+| ParticleConnect | batchSendTransactions               | walletType, publicAddress, transactions, feeMode\* |
+| ParticleConnect | signTypedData                       | walletType, publicAddress, typedData               |
+| ParticleConnect | login                               | walletType, publicAddress, domain, uri             |
+| ParticleConnect | verify                              | walletType, publicAddress, message, signature      |
+| ParticleConnect | importPrivateKey                    | walletType, privateKey                             |
+| ParticleConnect | importMnemonic                      | walletType, mnemonic                               |
+| ParticleConnect | exportPrivateKey                    | walletType, publicAddress                          |
