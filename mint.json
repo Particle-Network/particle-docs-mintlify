@@ -110,6 +110,14 @@
       ]
     },
     {
+      "group": "LEGAL",
+      "pages": [
+        "landing/tos/license-agreement",
+        "landing/tos/privacy-policy",
+        "landing/tos/terms-of-use"
+      ]
+    },
+    {
       "group": "GETTING STARTED",
       "pages": ["resources/overview", "resources/network-coverage"]
     },
