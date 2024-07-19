@@ -168,6 +168,11 @@ Now that you've configured your [Particle dashboard](https://dashboard.particle.
 
 To switch the used chain after initial configuration, `auth.switchChain` is used. This enables asynchronous switching. Similar to the initial configuration, chain information derived from `ParticleNetwork.ChainInfo` can be passed as the primary parameter, determining the destination chain.
 
+| Field  | Type   | Description                                                                                              |
+|--------|--------|----------------------------------------------------------------------------------------------------------|
+| `chainInfo` | `ChainIno` | a chainInfo object, can be derived from `ParticleNetwork.ChainInfo`. |      
+
+
 ```swift Swift
 let auth = Auth()
 let result = try await auth.switchChain(chainInfo: .ethereum)
@@ -184,10 +189,10 @@ ParticleNetwork.setChainInfo(.ethereum)
 
 | Field  | Type   | Description                                                                                              |
 |--------|--------|----------------------------------------------------------------------------------------------------------|
-| `type` | `LoginType` | the specific social login to be used. This can be either `.email`, `.phone`, `.google`, `.apple`, `.jwt`, `.facebook`, `.twitter`, `.discord`, `.github`, `.twitch`, `.microsoft` or `linkedin`.                                                               |
+| `type` | `LoginType` | the specific social login to be used. This can be either `.email`, `.phone`, `.google`, `.apple`, `.jwt`, `.facebook`, `.twitter`, `.discord`, `.github`, `.twitch`, `.microsoft` or `linkedin`.|
 | `account` | `String?` | (Optional) when `type` is set to either `.email`, `.phone`, or `.jwt`, you can use the `account` parameter to pass in an expected email, phone number, or JWT. This is optional for the former two, but required for `.jwt`. The phone number must be in E.164 format. |
 | `code`| `String?`| (Optional) when `type` is set to either `.email` pr `.phone`, you can use the code parameter to pass the verification code. |
-| `socialLoginPrompt`| `SocialLoginPrompt?`| (Optional) either `'.none'`, `'.consent'`, or `'.select_account'`|
+| `socialLoginPrompt`| `SocialLoginPrompt?`| (Optional) either `.none`, `.consent`, or `.select_account`|
 
 
 ```swift Swift
@@ -215,7 +220,7 @@ let userInfo = try await auth.connect(type: .jwt, account: jwt)
 | `account` | `String?` | (Optional) when `type` is set to either `.email`, `.phone`, or `.jwt`, you can use the `account` parameter to pass in an expected email, phone number, or JWT. This is optional for the former two, but required for `.jwt`. The phone number must be in E.164 format. |
 | `supportAuthTypeode`| `[SupportAuthType]`| the methods of authentication visible on the authentication popup UI. By default, this will be exclusive to the chosen social login method, although by passing in additional types, you can expand the UI to include the ability to login with those as an alternative to type. |
 | `socialLoginPrompt`| `SocialLoginPrompt?`| (Optional) either `'.none'`, `'.consent'`, or `'.select_account'`|
-| `config`| `LoginPageConfig?` |(Optional) to customize the UI page, contains project name, icon and description  |
+| `config`| `LoginPageConfig?` |(Optional) to customize the UI page, contains project name, icon and description.|
 
 
 After connect is successful, detailed user information can be retrieved by calling `auth.getUserInfo` . 
@@ -247,20 +252,6 @@ Once a user has logged in, you'll have access to various methods such as `auth.g
 auth.getUserInfo()
 auth.evm.getAddress()
 auth.solana.getAddress()
-```
-
-### Set and Get Language
-
-You can forcibly set a specific language to be used within the UI using `ParticleNetwork.setLanguage`, with retrieval of the current active language facilitated by `ParticleNetwork.getLanguage`. By default, this is set to English.
-
-| Field  | Type   | Description                                                                                              |
-|--------|--------|----------------------------------------------------------------------------------------------------------|
-| `language` | `Language` | the specific language to be used. This can be either `.en`, `.ja`, `.zh_hans`, `.zh_hant`, `.ko`.                                                       |
-
-```swift Swift
-ParticleNetwork.setLanguage(Language.en)
-
-ParticleNetwork.getLanguage()
 ```
 
 ### Signatures
@@ -374,11 +365,13 @@ You can create a transaction with class `TxData` or `FeeMarketEIP1559TxData`, al
 
 ### Open Account and Security
 
-If you'd like to force the "Account and Security" options to be opened on-screen (from which you can control master passwords, payment passwords, additional accounts, and so on), then you can call `auth.openAccountAndSecurity`. Upon calling this method, a popup allowing the user to control security settings will appear.
+If you'd like to force the "Account and Security" options to be opened on-screen (from which you can control payment passwords, additional accounts, and so on), then you can call `auth.openAccountAndSecurity`. Upon calling this method, a popup allowing the user to control security settings will appear.
 
 ```swift Swift
 try auth.openAccountAndSecurity()
 ```
+
+---
 
 ### Set Security Account Config
 
@@ -394,6 +387,7 @@ ParticleNetwork.setSecurityAccountConfig(config:
 
 let securityAccountConfig = PartilceNetwork.getSecurityAccountConfig()
 ```
+---
 
 ### Master Password and Payment Password
 
@@ -411,25 +405,41 @@ let result = try auth.hasPaymentPassword()
 let result = try auth.openAccountAndSecurity()
 ```
 
+---
+
 ### Set appearance
+
+You can forcibly set a specific appearance to be used within the UI using `ParticleNetwork.setAppearance`. By default, it will follow current system setting.
+
+| Field  | Type   | Description                                                                                              |
+|--------|--------|----------------------------------------------------------------------------------------------------------|
+| `appearance` | `UIUserInterfaceStyle` | the specific appearance to be used. This can be either `.unspefified`, `.dark`, `.light`.
 
 ```swift Swift
 // this is the default setting  
-ParticleNetwork.setAppearence(.unspecified)  
+ParticleNetwork.setAppearance(.unspecified)  
 // dark  
-ParticleNetwork.setAppearence(.dark)  
+ParticleNetwork.setAppearance(.dark)  
 // light  
-ParticleNetwork.setAppearence(.light)
+ParticleNetwork.setAppearance(.light)
 ```
 
-### Language setting
+---
 
-Support en, ja, ko, zh_hans and zh_hant.
+### Set and Get Language
+
+You can forcibly set a specific language to be used within the UI using `ParticleNetwork.setLanguage`, with retrieval of the current active language facilitated by `ParticleNetwork.getLanguage`. By default, this is set to English.
+
+| Field  | Type   | Description                                                                                              |
+|--------|--------|----------------------------------------------------------------------------------------------------------|
+| `language` | `Language` | the specific language to be used. This can be either `.en`, `.ja`, `.zh_hans`, `.zh_hant`, `.ko`.                                                       |
 
 ```swift Swift
-ParticleNetwork.setLanguage(.ja)
-let language = ParticleNetwork.getLanguage()
+ParticleNetwork.setLanguage(Language.en)
+
+ParticleNetwork.getLanguage()
 ```
+
 
 ### Set custom UI json string
 
@@ -437,6 +447,19 @@ let language = ParticleNetwork.getLanguage()
 // Set custom ui is pass json string  
 let jsonString = "your custom ui json string, keys should be the same with customUIConfig.json in demo"  
 Auth.loadCustomUIJsonString(jsonString)
+```
+
+### Set fiatCoin
+You can forcibly set a specific fiatCoin to be used within the UI using `ParticleNetwork.setFiatCoin`, with retrieval of the current active language facilitated by `ParticleNetwork.getFiatCoin`. By default, this is set to USD.
+
+| Field  | Type   | Description                                                                                              |
+|--------|--------|----------------------------------------------------------------------------------------------------------|
+| `fiatCoin` | `FiatCoin` | the specific fiatCoin to be used. This can be either `.usd`, `.cny`, `.jpy`, `.hkd`, `.inr`, `.krw`.   
+
+```swift Swift
+ParticleNetwork.setFiatCoin(FiatCoin.usd)
+
+ParticleNetwork.getFiatCoin()
 ```
 
 ### Blind sign enable

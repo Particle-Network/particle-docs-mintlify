@@ -116,7 +116,7 @@ pod init
 
 Then, within your Podfile, you'll need to throw in a few different dependencies, the specifics of which depend on the functions of Particle Connect that you'd like to use.
 
-1. Regardless of specific functions, you'll need `ConnectCommon` and `ParticleConnect`, alongside `AuthCoreAdapter`. Optionally, if you'd like to use Particle Auth instead, you can use `ParticleAuthAdapter`.
+1. Regardless of specific functions, you'll need `ConnectCommon` and `ParticleConnect`, alongside `AuthCoreAdapter`.
 2. If you'd like to support importing (or generating fresh) wallets on EVM chains, you'll need `ConnectEVMAdapter`.
    1. To do the same on Solana, you can use `ConnectSolanaAdapter`.
 3. To support connection with Phantom (on Solana), you'll need to use `ConnectPhantomAdapter`
@@ -130,9 +130,6 @@ pod 'ConnectEVMAdapter'
 pod 'ConnectSolanaAdapter'
 pod 'ConnectPhantomAdapter'
 pod 'AuthCoreAdapter' 
-
-# Alternatively, to use ParticleAuthService (deprecated) 
-# pod 'ParticleAuthAdapter' 
 ```
 
 With this set, you can simply run the following command to ensure changes are saved:
@@ -188,9 +185,6 @@ import ConnectWalletConnectAdapter
 import ParticleNetworkBase
 import ParticleConnect
 import AuthCoreAdapter
-
-// Alternatively, to use ParticleAuthService (deprecated) 
-// import ParticleAuthAdapter
 ```
 
 ### Initialization
@@ -199,13 +193,12 @@ Now that these are set, you'll need to initialize Particle Connect itself (withi
 
 Specifically, `ParticleConnect.initialize` takes the following parameters:
 
-- `env`, the environment (production, debug, etc.) in which Particle Connect will be initialized (in this example, it's set to `.debug`).
-- `chainInfo`, the primary chain to be used within your application. This should be dictated by an overall blockchain, followed by a specific network (testnet). Within this example, it's `.ethereum`(alternatively it could be `.ethereumGoerli`, and so on.)
-- `dAppData`, metadata outlining the description of your application. This should be an instance of `DAppMetadata` with the following parameters:
-  - `name`, the name of your project.
-  - `icon`, a URL linking to the icon of your project; this should be 512x512, ideally.
-  - `url`, the URL of your project's website.
-- Finally, within the body of `initialize`, you'll need to pass in a list of adapters to be offered within the connection modal. This can be defined as a simple array containing various imported adapters (such as `ParticleAuthAdapter`, `WalletConnectAdapter`, etc.)
+| Field  | Type   | Description                                                                                              |
+|--------|--------|----------------------------------------------------------------------------------------------------------|
+| `env` | `DevEnvironment` | the specific environmennt to be used. This can be either `.debug`, `.staging`, `.production`, this should be set to `.production` when release |    
+| `chainInfo` | `ChainInfo` | the primary chain to be used within your application. This should be dictated by an overall blockchain, followed by a specific network (testnet). Within this example, it's `.ethereum`(alternatively it could be `.ethereumSepolia`, and so on.) |  
+| `dAppData` | `DAppMetadata` | metadata outlining the description of your application, This should be an instance of `DAppMetadata` with the following parameters: `name`, the name of your project. `icon`, a URL linking to the icon of your project; this should be 512x512, ideally.  `url`, the URL of your project's website. `description`, the description of your project, `redirectUniversalLink`, optional, redirect universal link of you project, default is `DAppMetadata.standard`.|
+| `adapters` | `[ConnectAdapter]` | you'll need to pass in a list of adapters to be offered within the connection modal. This can be defined as a simple array containing various imported adapters (such as `AuthCoreAdapter`, `MetaMaskConnectAdapter`, etc.) |
 
 An **example** of initialization can be found below.
 
@@ -226,24 +219,17 @@ var adapters: [ConnectAdapter] = [
        Inch1ConnectAdapter(),
        ZengoConnectAdapter(),
        AlphaConnectAdapter(),
-       OKXConnectAdapter(),
-   
-       // Alternativell, to use ParticleAuthService (deprecated) 
-       // ParticleAuthAdapter()
+       OKXConnectAdapter()
        ]
  
-ParticleConnect.initialize(env: .debug,  
- chainInfo: .ethereum,  
- dAppData: DAppMetaData(name: "Particle Connect",  
- icon: URL(string: "https://connect.particle.network/icons/512.png")!,  
- url: URL(string: "https://connect.particle.network")!)) {
-      adapters
-}
+ParticleConnect.initialize(env: .debug, chainInfo: .ethereum, dAppData: .standard) {
+            adapters
+        }
 ```
 
 ### Scheme Configuration
 
-The final step in setting up your iOS project is the configuration of a scheme URL and `LSAApplicationQueriesSchemes` within your application. Beginning with the scheme URL, add the following to your dApp's `application(\_:open:options:)` method:
+The final step in setting up your iOS project is the configuration of a scheme URL and `LSAApplicationQueriesSchemes` within your application. Beginning with the scheme URL, add the following to your dApp's `application(_:open:options:)` method:
 
 ```swift Swift
 return ParticleConnect.handleUrl(url)
@@ -282,7 +268,7 @@ If you're planning on using WalletConnect V2 as your primary method of connectio
 ```swift Swift
 ParticleConnect.setWalletConnectV2ProjectId("WalletConnect V2 Project ID")
 
-ParticleConnect.setWalletConnectV2SupportChainInfos([.ethereum, .ethereumGoerli])
+ParticleConnect.setWalletConnectV2SupportChainInfos([.ethereum, .ethereumSepolia])
 ```
 
 ### Get all Wallet Adapter
@@ -304,7 +290,7 @@ let adapters = ParticleConnect.getAdapterByAddress(publicAddress: address)
 
 ### Get Adapter Accounts
 
-`adapter.getAccounts` returns a list of accounts associated/connected with a specific adapter. `adapter` is an instance of a given wallet adapter, such as `ParticleAuthAdapter`. Each adapter has a `getAccounts` method by default. Alternatively, to retrieve smart accounts associated with a given adapter, you'll need to call `adapter.getSmartAccounts`. E.g.:
+`adapter.getAccounts` returns a list of accounts associated/connected with a specific adapter. `adapter` is an instance of a given wallet adapter, such as `AuthCoreAdapter`. Each adapter has a `getAccounts` method by default. Alternatively, to retrieve smart accounts associated with a given adapter, you'll need to call `adapter.getSmartAccounts`. E.g.:
 
 ```swift Swift
 let accounts = adapter.getAccounts()
@@ -317,7 +303,7 @@ let smartAccounts = try await adapter.getSmartAccounts()
 
 Oftentimes, the primary chain initially set through `initialize` won't be the _only_ chain used within your application; thus, to account for this and change the primary chain post-initialization, you can call `ParticleNetwork.setChainInfo`, passing in a `chainInfo` object, as shown in the example below.
 
-`WalletType.authCore` comes from Particle Auth Core and `WalletType.particle` comes from Particle Auth Service (deprecated), both of them support evm and solana, if you need switch chain for there two account, and have switch from solana to evm or evm to solana, you can call `(adapter as! ParticleAdapter).switchChain`.
+`WalletType.authCore` comes from Particle Auth Core, supports evm and solana, if you need switch chain for there two account, and have switch from solana to evm or evm to solana, you can call `(adapter as! ParticleAdapter).switchChain`.
 
 ```swift Swift
 ParticleNetwork.setChainInfo(.ethereum)
@@ -333,35 +319,59 @@ Likely one of the most important methods, specific adapters can initiate connect
 
 For `EVMConnectAdapter` and `SolanaConnectAdapter`, this will generate a fresh account (public and private key pair). Otherwise, the specific connection flow will be dependent upon the adapter in which `connect` is called. E.g.:
 
+| Field  | Type   | Description                                                                                              |
+|--------|--------|----------------------------------------------------------------------------------------------------------|
+| `config` | `ConnectConifg?` | The `ConnectConfig` will only be effective when `adapter.walletType` is `.authCore`. You can construct a valid object using the subclass `ParticleAuthCoreConfig`. When `adapter.walletType` is other value, you can pass `ConnectConfig.none`. |
+
+`ParticleAuthCoreConfig` construct method `init` support the following parameters:
+
+| Field  | Type   | Description                                                                                              |
+|--------|--------|----------------------------------------------------------------------------------------------------------|
+| `loginType` | `LoginType` | the specific social login to be used. This can be either `.email`, `.phone`, `.google`, `.apple`, `.jwt`, `.facebook`, `.twitter`, `.discord`, `.github`, `.twitch`, `.microsoft` or `linkedin`. |
+| `supportAuthType` | `[SupportAuthType]` | the methods of authentication visible on the authentication popup UI. By default, this will be exclusive to the chosen social login method, although by passing in additional types, you can expand the UI to include the ability to login with those as an alternative to type. |
+| `account` | `String?` | (Optional) when `type` is set to either `.email`, `.phone`, or `.jwt`, you can use the `account` parameter to pass in an expected email, phone number, or JWT. This is optional for the former two, but required for `.jwt`. The phone number must be in E.164 format. |
+| `code` | `String?` | (Optional) when `type` is set to either `.email` pr `.phone`, you can use the code parameter to pass the verification code. |
+| `socialLoginPrompt` | `SocialLoginPrompt?` | (Optional) either `.none`, `.consent`, or `.select_account` |
+| `loginPageConfig` | `LoginPageConfig?`| (Optional) to customize the UI page, contains project name, icon and description. |
+
 ```swift Swift
-adapter.connect().subscribe { [weak self] result in
-  guard let self = self else { return }
-  switch result {
-      case .failure(let error):
-      print(error)
-      case .success(let account):
-      print(account)
-  }.disposed(by: bag)
+
+// show connect with metamask
+let adapter = ParticleConnect.getAllAdapters().first { $0.walletType == .metaMask }!
+let account = try await adapter.connect(ConnectConfig.none).value
+
+// show conenct with particle
+let adapter = ParticleConnect.getAllAdapters().first { $0.walletType == .authCore }!
+let account = try await adapter.connect(ParticleAuthCoreConfig(loginType: .google, socialLoginPrompt: .selectAccount)).value
+```
+
+Only after connect with particle successful, you can retrieve userInfo by call `(adapter as! ParticleAdapter).getUserInfo` method, other walletType cant call this method.
+
+```swift
+let userInfo = (adapter as! ParticleAdapter).getUserInfo
 ```
 
 ### Disconnect Wallet
 
 Alternatively, if a user has already connected their wallet, you'll be able to use `disconnect` as the primary method to disconnect a user within an active session. This will be relatively universal across adapters. E.g.:
 
+| Field  | Type   | Description                                                                                              |
+|--------|--------|----------------------------------------------------------------------------------------------------------|
+| `publicAddress` | `String` | the connected public address, if `adapter.WalletType` is `.authCore`, you can pass an empty string, for other walletTypes, you need pass a connected public address. |
+
+
 ```swift Swift
-adapter.disconnect(address).subscribe { [weak self] result in
-  guard let self = self else { return }
-  switch result {
-      case .failure(let error):
-      print(error)
-      case .success(let success):
-      print(success)
-  }.disposed(by: bag)
+let result = try await adapter.disconnect(address).value
 ```
+
 
 ### Is Connected
 
 Another quite important method is `isConnected`, returning a Boolean based on whether or not a given session (user) is currently connected to a wallet (through the specific adapter instance). `adapter.isConnected` takes a given public address and returns `true` or `false` depending on it's connection status. E.g.:
+
+| Field  | Type   | Description                                                                                              |
+|--------|--------|----------------------------------------------------------------------------------------------------------|
+| `publicAddress` | `String` | the connected public address, if `adapter.WalletType` is `.authCore`, you can pass an empty string, for other walletTypes, you need pass a connected public address. |
 
 ```swift Swift
 let result = adapter.isConnected(publicAddress: address)
@@ -379,36 +389,12 @@ Additionally, you can export one of these wallets with `adapter.exportWalletPriv
 </Note>
 
 ```swift Swift
-adapter.importWalletFromPrivateKey(privateKey).subscribe { [weak self] result in
-  guard let self = self else { return }
-  switch result {
-      case .failure(let error):
-      print(error)
-      case .success(let account):
-      print(account)
-  }
-}.disposed(by: bag)
+let account = try await adapter.importWalletFromPrivateKey(privateKey).value
 
-adapter.importWalletFromMnemonic(mnemonic).subscribe { [weak self] result in
-  guard let self = self else { return }
-  switch result {
-      case .failure(let error):
-      print(error)
-      case .success(let account):
-      print(account)
-  }
-}.disposed(by: bag)
+let account = try await adapter.importWalletFromMnemonic(mnemonic).value
 
 // Exportation
-adapter.exportWalletPrivateKey(publicAddress: address).subscribe { [weak self] result in
-  guard let self = self else { return }
-  switch result {
-      case .failure(let error):
-      print(error)
-      case .success(let privateKey):
-      print(privateKey)
-  }
-}.disposed(by: bag)
+let privateKey = try await adapter.exportWalletPrivateKey(publicAddress: address).value
 ```
 
 ### Sign and Send Transaction
@@ -417,95 +403,59 @@ To initiate a transaction for signature and ultimately settlement on-chain, you'
 
 `adapter.signAndSendTransaction` takes the following parameters:
 
-- `address`, the user address to target for transaction initiation.
-- `transaction`, a stringified transaction object (containing fields like 'to', 'from', 'value', 'data', etc.)
-
-E.g.:
+| Field  | Type   | Description                                                                                              |
+|--------|--------|----------------------------------------------------------------------------------------------------------|
+| `publicAddress` | `String` | the connected public address, if `adapter.WalletType` is `.authCore`, you can pass an empty string, for other walletTypes, you need pass a connected public address. |
+| `transaction` | `String` | evm transaction is expressed as a hexadecimal string, solana transaction is expressed as a base58 string. |
 
 ```swift Swift
-adapter.signAndSendTransaction(publicAddress: address, transaction: transaction).subscribe { [weak self] result in
-  guard let self = self else { return }
-  switch result {
-      case .failure(let error):
-      print(error)
-      case .success(let signature):
-      print(signature)
-  }
-}.disposed(by: bag)
+let txHash = try await adapter.signAndSendTransaction(publicAddress: address, transaction: transaction).value
 ```
 
 ### Sign Transaction
 
 `adapter.signTransaction` is a **Solana-specific** method for signing a transaction without pushing it to the network. Specifically, this method requires the following parameters:
 
-- `address`, the user address to target for signature initiation.
-- `transaction`, a base58 string representing a transaction object.
+| Field  | Type   | Description                                                                                              |
+|--------|--------|----------------------------------------------------------------------------------------------------------|
+| `publicAddress` | `String` | the connected public address, if `adapter.WalletType` is `.authCore`, you can pass an empty string, for other walletTypes, you need pass a connected public address. |
+| `transaction` | `String` | a base58 string representing a transaction object. |
 
 This will return a popup requesting confirmation to either `SolanaConnectAdapter` or `PhantomConnectAdapter` depending on which you've defined as `adapter` (or, alternatively, a custom adapter you've set up). E.g.:
 
 ```swift Swift
-adapter.signTransaction(publicAddress: address, transaction: transaction).subscribe { [weak self] result in
-  guard let self = self else { return }
-  switch result {
-      case .failure(let error):
-      print(error)
-      case .success(let signed):
-      print(signed)
-  }
-}.disposed(by: bag)
+let signed = try await adapter.signTransaction(publicAddress: address, transaction: transaction).value
 
 // Alternatively, the plural form of this method, takes a list of transactions
-adapter.signAllTransactions(publicAddress: address, transactions: transactions).subscribe { [weak self] result in
-  guard let self = self else { return }
-  switch result {
-      case .failure(let error):
-      print(error)
-      case .success(let signed):
-      print(signed)
-  }
-}.disposed(by: bag)
+let signeds = try await adapter.signAllTransactions(publicAddress: address, transactions: transactions).value
 ```
 
 ### Sign Message
 
 To sign a basic UTF-8 message (string), you can use `adapter.signMessage` to prompt the user for a signature, alongside the message in question. `adapter.signMessage` takes the following parameters:
 
-- `address`, the user address to target for signature initiation.
-- `message`, the message you'd like the user to sign; for EVM, this should be a hex-encoded string (prefixed by '0x'), while for Solana, you can pass in a standard string (no encoding needed).
+| Field  | Type   | Description                                                                                              |
+|--------|--------|----------------------------------------------------------------------------------------------------------|
+| `publicAddress` | `String` | the connected public address, if `adapter.WalletType` is `.authCore`, you can pass an empty string, for other walletTypes, you need pass a connected public address. |
+| `message` | `String` | the message you'd like the user to sign; for EVM, this should be a hex-encoded string (prefixed by '0x'), while for Solana, you can pass in a standard string (no encoding needed). |
 
-E.g.:
 
 ```swift Swift
-adapter.signMessage(publicAddress: address, message: message).subscribe { [weak self] result in
-  guard let self = self else { return }
-  switch result {
-      case .failure(let error):
-      print(error)
-      case .success(let signed):
-      print(signed)
-  }
-}.disposed(by: bag)
+let signed = try await adapter.signMessage(publicAddress: address, message: message).value
 ```
 
 ### Sign Typed Data
 
 As an alternative to `signMessage`, for **EVM chains**, you can request that a user signs typed (structured) data rather than purely a raw string. To do this, you can use `adapter.signTypedData` (equivalent to `eth_signTypedData` V4). This takes the following parameters:
 
-- `address`, the user address to target for signature initiation.
-- `data`, the typed data to be signed; see the [Web (JavaScript/TypeScript)](/api-reference/auth/desktop-sdks/web) page for additional guidance.
+| Field  | Type   | Description                                                                                              |
+|--------|--------|----------------------------------------------------------------------------------------------------------|
+| `publicAddress` | `String` | the connected public address, if `adapter.WalletType` is `.authCore`, you can pass an empty string, for other walletTypes, you need pass a connected public address. |
+| `data` | `String` | the typed data to be signed; see the [Web (JavaScript/TypeScript)](/api-reference/auth/desktop-sdks/web) page for additional guidance. |
 
-E.g.:
 
 ```swift Swift
-connectAdapter.signTypedData(publicAddress: address, data: data).subscribe { [weak self] result in
-  guard let self = self else { return }
-  switch result {
-      case .failure(let error):
-      print(error)
-      case .success(let signed):
-      print(signed)
-  }
-}.disposed(by: bag)
+let signed = try await adapter.signTypedData(publicAddress: publicAddress, data: message).value
 ```
 
 ### Custom WalletConnect Adapter
