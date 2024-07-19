@@ -100,10 +100,6 @@ Now that you've created a project and an application within the [Particle dashbo
    pod 'ParticleAuthCore'
    pod 'ParticleMPCCore'
    pod 'Thresh'
-
-   // Alternatively, to use ParticleAuthService (deprecated) 
-   // pod 'ParticleAuthService'
-
    ```
 
 3. Install the pods, then open your .xcworkspace file to see the project in Xcode.
@@ -154,110 +150,75 @@ Now that you've configured your [Particle dashboard](https://dashboard.particle.
 
 3. Replace the placeholders with the values retrieved from your project and application within the [Particle dashboard](https://dashboard.particle.network).
 
-4. Import the `ParticleNetworkBase` and `ParticleAuthService` module in your `UIApplicationDelegate` file.
+4. Import the `ParticleNetworkBase` module in your `AppDelegate.swift` file.
 
    ```swift Swift
    import ParticleNetworkBase
-
-   // Alternatively, to use ParticleAuthService (deprecated) 
-   // import ParticleAuthService
    ```
 
 5. Initialize the ParticleNetwork service, which is typically located within your app's `application:didFinishLaunchingWithOptions` method:
 
    ```swift Swift
    // Set a primary network, derived from ChainInfo
-   let chainInfo = ParticleNetwork.ChainInfo.ethereum
-   let devEnv = ParticleNetwork.DevEnvironment.debug // For release, this can be set to DevEnvironment.production
-   let config = ParticleNetworkConfiguration(chainInfo: chainInfo, devEnv: devEnv)
-   ParticleNetwork.initialize(config: config)
+   // For release, this can be set to DevEnvironment.production
+   ParticleNetwork.initialize(config: .init(chainInfo: .ethereum, devEnv: .debug))
    ```
-
-Alternatively, to use ParticleAuthService (deprecated), two more steps.
-
-6. Add the scheme URL handle in your app's `application(\_:open:options:)` method.
-
-```swift Swift
-return ParticleAuthService.handleUrl(url) 
-```
-
-7. Then, to configure your application's scheme URL, follow the below process:
-
-1. Select your app from "TARGETS" within the "Info" section.
-2. Click the plus icon to add the URL types.
-3. Paste your scheme in "URL Schemes."
-
-<Tip>
-<p>Defining a scheme URL</p>
-<p>Your scheme URL should be "pn" concatenated with your `projectId`.</p>
-<p>For example, if your project app id is `63bfa427-cf5f-4742-9ff1-e8f5a1b9828f`, your scheme URL is `pn63bfa427-cf5f-4742-9ff1-e8f5a1b9828f`.</p>
-</Tip>
 
 ### Switch Chain
 
 To switch the used chain after initial configuration, `auth.switchChain` is used. This enables asynchronous switching. Similar to the initial configuration, chain information derived from `ParticleNetwork.ChainInfo` can be passed as the primary parameter, determining the destination chain.
 
 ```swift Swift
-let chainInfo = ParticleNetwork.ChainInfo.ethereum
 let auth = Auth()
-let result = try await auth.switchChain(chainInfo: chainInfo)
+let result = try await auth.switchChain(chainInfo: .ethereum)
 
 // For switching chains synchronously, without checking login status
-let chainInfo = ParticleNetwork.ChainInfo.ethereum
-ParticleNetwork.setChainInfo(chainInfo)
-
-
-// Alternatively, to use ParticleAuthService (deprecated) 
-// ParticleAuthService.switchChain(chainInfo).subscribe { [weak self] result in
-//  guard let self = self else { return }
-//  switch result {
-//  case .failure(let error):
-//      print(error)
-//  case .success(let userInfo):
-//      print(userInfo)
-//  }
-// }.disposed(by: bag)
+ParticleNetwork.setChainInfo(.ethereum)
 ```
 
 ## Examples of utilization
 
-### Login
+### Connect
 
-`auth.login` is the main mechanism for facilitating login (account creation or sign in) with Particle's Wallet-as-a-Service. Upon calling this method, an authentication UI will be thrown, and the user will be asked to sign in with a specified login method. Specifically, five key parameters are available within `auth.login`:
+`auth.connect` is the main mechanism for facilitating login (account creation or sign in) with Particle's Wallet-as-a-Service. Specifically, five key parameters are available within `auth.connect`:
 
-- `type`, the specific social login to be used. This can be either `.email`, `.phone`, `.google`, `.apple`, `.jwt`, or `.facebook`.
-- `account`, when `type` is set to either `.email`, `.phone`, or `.jwt`, you can use the `account` parameter to pass in an expected email, phone number, or JWT. This is optional for the former two, but required for `.jwt`. The phone number must be in E.164 format.
-- `code`, optional, when `type` is set to either `.email` pr `.phone`, you can use the code parameter to pass the verification code. 
-- `socialLoginPrompt`, either `'none'`, `'consent'`, or `'select_account'`.
+| Field  | Type   | Description                                                                                              |
+|--------|--------|----------------------------------------------------------------------------------------------------------|
+| `type` | `LoginType` | the specific social login to be used. This can be either `.email`, `.phone`, `.google`, `.apple`, `.jwt`, `.facebook`, `.twitter`, `.discord`, `.github`, `.twitch`, `.microsoft` or `linkedin`.                                                               |
+| `account` | `String?` | (Optional) when `type` is set to either `.email`, `.phone`, or `.jwt`, you can use the `account` parameter to pass in an expected email, phone number, or JWT. This is optional for the former two, but required for `.jwt`. The phone number must be in E.164 format. |
+| `code`| `String?`| (Optional) when `type` is set to either `.email` pr `.phone`, you can use the code parameter to pass the verification code. |
+| `socialLoginPrompt`| `SocialLoginPrompt?`| (Optional) either `'.none'`, `'.consent'`, or `'.select_account'`|
 
-Alternatively, to use `ParticleAuthService.login` (deprecated), two more parameters.
-
-- `supportAuthType`, the methods of authentication visible on the authentication popup UI. By default, this will be exclusive to the chosen social login method, although by passing in additional types, you can expand the UI to include the ability to login with those as an alternative to `type`.
-- `authorization`, optionally, a hex string prompting an authentication signature upon sign-in.
 
 ```swift Swift
 // connect with Google
-let userInfo = auth.connect(type: .google, socialLoginPrompt: .selectAccount)
+let userInfo = try await auth.connect(type: .google, socialLoginPrompt: .selectAccount)
+
+// send verification code to email or phone number, the phone number must be in E.164 format.
+var result = try await self.auth.sendEmailCode(email: "user@example.com")
+var result = try await self.auth.sendPhoneCode(email: "+11234567890")
 
 // connect with email or phone, the phone number must be in E.164 format.
-let userInfo = auth.connect(type: .email, account: "xx@example.com", code: "xxxxxx")
-let userInfo = auth.connect(type: .phone, account: "+11234567890", code: "xxxxxx")
+let userInfo = try await auth.connect(type: .email, account: "user@example.com", code: "xxxxxx")
+let userInfo = try await auth.connect(type: .phone, account: "+11234567890", code: "xxxxxx")
 
-// connect with jet
-let account = "json web token"
+// connect with jwt
+let jwt = "json web token"
 let userInfo = try await auth.connect(type: .jwt, account: jwt)
-
-
-// Alternatively, to use ParticleAuthService (deprecated) 
-// let userInfo = try await ParticleAuthService.login(type: .email).value
-
-// let account = "json web token"
-// let userInfo = ParticleAuthService.login(type: .jwt, account: account).value
 ```
 
-After login is successful, detailed user information can be retrieved by calling `auth.getUserInfo` . 
+`auth.presentLoginPage` is another mechanism for facilitating login (account creation or sign in) with Particle's Wallet-as-a-Service. Upon calling this method, an authentication UI will be thrown, and the user will be asked to sign in with a specified login method. Specifically, five key parameters are available within `auth.presentLoginPage`:
 
-Alternatively, to use`ParticleAuthService.getUserInfo()` (deprecated).
+| Field  | Type   | Description                                                                                              |
+|--------|--------|----------------------------------------------------------------------------------------------------------|
+| `type` | `LoginType` | the specific social login to be used. This can be either `.email`, `.phone`, `.google`, `.apple`, `.jwt`, `.facebook`, `.twitter`, `.discord`, `.github`, `.twitch`, `.microsoft` or `linkedin`.                                                               |
+| `account` | `String?` | (Optional) when `type` is set to either `.email`, `.phone`, or `.jwt`, you can use the `account` parameter to pass in an expected email, phone number, or JWT. This is optional for the former two, but required for `.jwt`. The phone number must be in E.164 format. |
+| `supportAuthTypeode`| `[SupportAuthType]`| the methods of authentication visible on the authentication popup UI. By default, this will be exclusive to the chosen social login method, although by passing in additional types, you can expand the UI to include the ability to login with those as an alternative to type. |
+| `socialLoginPrompt`| `SocialLoginPrompt?`| (Optional) either `'.none'`, `'.consent'`, or `'.select_account'`|
+| `config`| `LoginPageConfig?` |(Optional) to customize the UI page, contains project name, icon and description  |
+
+
+After connect is successful, detailed user information can be retrieved by calling `auth.getUserInfo` . 
 
 ### Is Login
 
@@ -268,23 +229,14 @@ Alternatively, to use`ParticleAuthService.getUserInfo()` (deprecated).
 let result = auth.getUserInfo() != nil
 // server side
 let result = try await auth.isConnected()
-
-// Alternatively, to use ParticleAuthService (deprecated) 
-// let result = ParticleAuthService.isLogin()
-
-// server side
-// let result = try await ParticleAuthService.isLoginAsync().value
 ```
 
 ### Logout
 
-`auth.disconnect` will simply log a user out of their existing session, assuming they're logged in. A parallel method to this exists, `ParticleAuthService.fastLogout`, which hides loading UI elements for immediate (silent) logout. Both of these methods facilitate simple session exits for logged-in users.
+`auth.disconnect` will simply log a user out of their existing session, assuming they're logged in. 
 
-```swift Logout, fast (Swift)
+```swift Swift
 let result = try await auth.disconnect()
-
-// Alternatively, to use ParticleAuthService (deprecated) 
-// let result = try await ParticleAuthService.fastLogout().value
 ```
 
 ### UserInfo and Address Retrieval (post-login)
@@ -295,31 +247,15 @@ Once a user has logged in, you'll have access to various methods such as `auth.g
 auth.getUserInfo()
 auth.evm.getAddress()
 auth.solana.getAddress()
-
-
-// Alternatively, to use ParticleAuthService (deprecated) 
-// ParticleAuthService.getUserInfo()
-// ParticleAuthService.getAddress()
-```
-
-### Custom Modal Style (deprecated in Auth Core)
-
-For the Particle Wallet modal popup, you can also specify presentation styling upon entry of the modal. This includes `.fullScreen` for a fullscreen overlay (covers the underlying application), or `.pageSheet` for a more concise, embedded display. Additionally, if `.fullScreen` is set, then this can be further configured by using medium screen with `ParticleAuthService.setMediumScreen`.
-
-```swift Swift
-// Alternatively, to use ParticleAuthService (deprecated) 
-
-// formSheet by default
-ParticleAuthService.setModalPresentStyle(.fullScreen)
-
-// Set Safari page to show in medium screen, this method works from iOS 15
-// false by default
-ParticleAuthService.setMediumScreen(true)
 ```
 
 ### Set and Get Language
 
 You can forcibly set a specific language to be used within the UI using `ParticleNetwork.setLanguage`, with retrieval of the current active language facilitated by `ParticleNetwork.getLanguage`. By default, this is set to English.
+
+| Field  | Type   | Description                                                                                              |
+|--------|--------|----------------------------------------------------------------------------------------------------------|
+| `language` | `Language` | the specific language to be used. This can be either `.en`, `.ja`, `.zh_hans`, `.zh_hant`, `.ko`.                                                       |
 
 ```swift Swift
 ParticleNetwork.setLanguage(Language.en)
@@ -329,92 +265,119 @@ ParticleNetwork.getLanguage()
 
 ### Signatures
 
-Once `ParticleNetwork` has been initialized and a user has successfully logged in, signatures can be proposed for confirmation through a popup; this can be facilitated via a few different methods:
+Once `ParticleNetwork` has been initialized and a user has successfully logged in, signatures can be proposed for confirmation through a popup
 
-- `evm.sendTransaction`: Requests a signature for a given transaction and, upon receiving it, sends the transaction and returns the signature. For EVM chains, this expects a hex-encoded string containing transaction parameters. For Solana, this expects a base58 string.
-- `evm.personalSign/evm.personalSignUnique`: Requests a signature for a basic message. On EVM chains, this can be passed as a hex-encoded string prefixed by '0x'.
-- `evm.signTypedData/evm.signTypeDataUnique`:  Requests a signature for structured (typed) data --`eth_signTypedData`. For more information on `signTypedData`, see the [Web SDK reference](/api-reference/auth/desktop-sdks/web).
-- `soalna.signAndSendTransaction`: Requests a signature for a given transaction and, upon receiving it, sends the transaction and returns the signature. For Solana, this expects a base58 string.
-- `solana.signTransaction`:  It requests a signature for a given transaction. Upon receiving a signature, it gets immediately returned (a transaction is not automatically sent). Expects a base58 string.
-- `solana.signAllTransactions`:  It requests a signature array for a given transaction array. Upon receiving a signature, it gets immediately returned (a transaction is not automatically sent). Expects a base58 string.
-- `solana.signMessage`: Requests a signature for a basic message. For Solana, this can be passed directly as a string.
+---
+### EVM
+### Signing messages (EIP191)
 
-All of the above methods have a parameter `chainInfo`, to specify the chainInfo, default value is current `chainInfo`, you can get current `chainInfo` from `ParticleNetwork.getChainInfo`.
+To request an EIP191 signature from a user's embedded wallet, you can use either the `auth.evm.personalSign` or `auth.evm.personalSignUnique` method. If you need the same message to return a unique signature each time, use the `auth.evm.personalSignUnique` method. Otherwise, the `auth.evm.personalSign` method is generally recommended.
 
-<CodeGroup>
-```swift signAndSendTransaction (Swift)
-let result = try await auth.evm.sendTransaction(transaction)
-
-let result = try await auth.solana.signAndSendTransaction(transaction)
+| Field  | Type   | Description                                                                                              |
+|--------|--------|----------------------------------------------------------------------------------------------------------|
+| `message` | `String` | either a hexadecimal string starting with '0x' or a human-readable string is required. |    
+| `chainInfo` | `ChainInfo?`| (Optional) default is current chainInfo, the specific use which chain to sign|   
 
 
-// Alternatively, to use ParticleAuthService (deprecated) 
-// let result = try await ParticleAuthService.signAndSendTransaction(transaction).value
+```swift personalSign/signMessage(Swift)
+let result = try await auth.evm.personalSign("This is the message that is being signed", chainInfo: nil)
+let result = try await auth.evm.personalSignUnique("This is the message that is being signed", chainInfo: nil)
 ```
-```swift signTransaction (Swift)
-let result = try await auth.solana.signTransaction(transaction)
-let result = try await auth.solana.signAllTransactions(transactions)
 
-// Alternatively, to use ParticleAuthService (deprecated)
-// let result = try await ParticleAuthService.signTransaction(transaction).value
-// let result = try await ParticleAuthService.signAllTransactions(transactions).value
-```
-```Text personalSign/signMessage(Swift)
-let result = try await auth.evm.personalSign(message)
-let result = try await auth.evm.personalSignUnique(message)
+### Signing typed data (EIP712)
 
-let result = try await auth.solana.signMessage(message)
+To request an EIP721 signature from a user's embedded wallet, you can use either the `auth.evm.signTypedData` or `auth.evm.signTypedDataUnique` method. If you need the same message to return a unique signature each time, use the `auth.evm.signTypedDataUnique` method. Otherwise, the `auth.evm.signTypedData` method is generally recommended.
 
-// Alternatively, to use ParticleAuthService (deprecated)
-// let result = try await ParticleAuthService.signMessage(message).value
-// let result = try await ParticleAuthService.signMessageUnique(message).value
-```
+| Field  | Type   | Description                                                                                              |
+|--------|--------|----------------------------------------------------------------------------------------------------------|
+| `message` | `String` | either a hexadecimal string starting with "0x" or a JSON string is required. |    
+| `chainInfo` | `ChainInfo?`| (Optional) default is current chainInfo, the specific use which chain to sign|  
+
 ```swift signTypedData (Swift)
-let result = auth.evm.signTypedData(message).value
-let result = auth.evm.signTypedDataUnique(message).value
-
-// Alternatively, to use ParticleAuthService (deprecated)
-// let result = try await ParticleAuthService.signTypedData(message, type: .v4).value
-// let result = try await ParticleAuthService.signTypedData(message, type: .v4Unique).value
+let result = try await auth.evm.signTypedData(message, chainInfo: nil)
+let result = try await auth.evm.signTypedDataUnique(message, chainInfo: nil)
 ```
-</CodeGroup>
 
-You can create a transaction with TxData and FeeMarketEIP1559TxData.
+---
 
-### Open Web Wallet (deprecated in Auth Core)
+### Transaction
 
-If you'd like to open an instance of the Wallet UI (Particle Wallet, a unified mechanism of interacting with accounts generated by `ParticleAuthService.login`), then you can do so by calling `ParticleAuthService.openWebWallet` and passing in various configurations.
+To send a transaction from a user's embedded wallet, you can use `auth.evm.sendTransaction`.
 
-<Tip>For specific details regarding custom style configurations, see the [Web](/api-reference/wallet/desktop/web) reference page.</Tip>
+| Field  | Type   | Description                                                                                              |
+|--------|--------|----------------------------------------------------------------------------------------------------------|
+| `transaction` | `String` | a hexadecimal string starting with "0x" is required. |    
+| `chainInfo` | `ChainInfo?`| (Optional) default is current chainInfo, the specific use which chain to sign and send|  
 
-```swift Swift
-// Alternatively, to use ParticleAuthService (deprecated) 
-let styleJsonString = """
-    {
-      "supportAddToken": false,
-      "supportChains": [{
-          "id": 1,
-          "name": "Ethereum"
-        },
-        {
-          "id": 5,
-          "name": "Ethereum"
-        }
-      ]
-    }
-"""
-// ParticleAuthService.openWebWallet(styleJsonString: styleJsonString)
+```swift signAndSendTransaction (Swift)
+let result = try await auth.evm.sendTransaction(transaction, chainInfo: nil)
 ```
+
+---
+
+### Solana
+### Signing messages
+
+To request a signature from a user's embedded wallet, you can use `auth.solana.signMessage`.
+
+| Field  | Type   | Description                                                                                              |
+|--------|--------|----------------------------------------------------------------------------------------------------------|
+| `message` | `String` | a base58 formatted string is required. |    
+| `chainInfo` | `ChainInfo?`| (Optional) default is current chainInfo, the specific use which chain to sign|   
+
+
+```swift signMessage(Swift)
+let message = Base58.encode("This is the message that is being signed".data(using: .utf8)!)
+let result = try await auth.solana.signMessage(message, chainInfo: nil)
+```
+
+---
+
+### Transaction
+
+To send a transaction from a user's embedded wallet, you can use `auth.solana.signAndSendTransaction`.
+
+| Field  | Type   | Description                                                                                              |
+|--------|--------|----------------------------------------------------------------------------------------------------------|
+| `transaction` | `String` | a base58 formatted string is required. |    
+| `chainInfo` | `ChainInfo?`| (Optional) default is current chainInfo, the specific use which chain to sign and send|  
+
+```swift signAndSendTransaction (Swift)
+let result = try await auth.solana.signAndSendTransaction(transaction, chainInfo: nil)
+```
+
+To sign a transaction from a user's embedded wallet, you can use `auth.solana.signTransaction`.
+
+| Field  | Type   | Description                                                                                              |
+|--------|--------|----------------------------------------------------------------------------------------------------------|
+| `transaction` | `String` | a base58 formatted string is required. |    
+| `chainInfo` | `ChainInfo?`| (Optional) default is current chainInfo, the specific use which chain to sign|
+
+```swift signMessage(Swift)
+let result = try await auth.solana.signTransaction(transaction, chainInfo: nil)
+```
+
+To sign multi transactions from a user's embedded wallet, you can use `auth.solana.signAllTransactions`.
+
+| Field  | Type   | Description                                                                                              |
+|--------|--------|----------------------------------------------------------------------------------------------------------|
+| `transactions` | `String` | base58 formatted strings are required. |    
+| `chainInfo` | `ChainInfo?`| (Optional) default is current chainInfo, the specific use which chain to sign|
+
+```swift signMessage(Swift)
+let result = try await auth.solana.signAllTransactions(transactions, chainInfo: nil)
+```
+
+You can create a transaction with class `TxData` or `FeeMarketEIP1559TxData`, also you can use another SDK `ParticleWalletAPI` to create transaction, you can reference the examples from [Wallet SDK reference](/api-reference/wallet/mobile/ios.mdx#create-transaction)
+
+---
 
 ### Open Account and Security
 
 If you'd like to force the "Account and Security" options to be opened on-screen (from which you can control master passwords, payment passwords, additional accounts, and so on), then you can call `auth.openAccountAndSecurity`. Upon calling this method, a popup allowing the user to control security settings will appear.
 
 ```swift Swift
-auth.openAccountAndSecurity()
-
-// Alternatively, to use ParticleAuthService (deprecated) 
-ParticleAuthService.openAccountAndSecurity()
+try auth.openAccountAndSecurity()
 ```
 
 ### Set Security Account Config
@@ -445,10 +408,10 @@ let result = try await auth.changeMasterPassword()
 // check user has payment password or not  
 let result = try auth.hasPaymentPassword()
 // open securiy account page
-let result = try await auth.openAccountAndSecurity()
+let result = try auth.openAccountAndSecurity()
 ```
 
-### Custom interface style
+### Set appearance
 
 ```swift Swift
 // this is the default setting  
