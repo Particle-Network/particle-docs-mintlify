@@ -141,16 +141,12 @@ Beginning with `ParticleWalletAPI`, you can use Particle Wallet to directly call
 
 ```swift Swift
 let addresses: [String] = ["native"]
-ParticleWalletAPI.getSolanaService().getPrice(by: addresses, currencies: ["usd"]).subscribe { [weak self] result in
-  guard let self = self else { return }
-  // handle result
-}.disposed(by: bag)
+let currencies: [String] = ["usd"]
+let tokenPrices = try await ParticleWalletAPI.getSolanaService().getPrice(by: addresses, currencies: currencies).value
 
-let addresses = ["native"]
-ParticleWalletAPI.getEvmService().getPrice(by: addresses, vsCurrencies: ["usd"]).subscribe { [weak self] _ in
-guard let self = self else { return }
-  // handle result
-}.disposed(by: bag)
+let addresses: [String] = ["native"]
+let currencies: [String] = ["usd"]
+let tokenPrices = try await ParticleWalletAPI.getEvmService().getPrice(by: addresses, currencies: currencies).value
 ```
 
 ### Tokens by Address
@@ -159,26 +155,14 @@ guard let self = self else { return }
 
 ```swift Swift
 let address: String = ""
-ParticleWalletAPI.getSolanaService().getTokensAndNFTs(by: address).subscribe { [weak self] result in
-  guard let self = self else { return }
-  // handle result
-}.disposed(by: bag)
+let tokenResult = try await ParticleWalletAPI.getSolanaService().getTokensAndNFTs(by: address).value
 
-ParticleWalletAPI.getSolanaService().getTokensAndNFTsFromDB(by: address).subscribe { [weak self] _ in
-  guard let self = self else { return }
-  // handle result
-}.disposed(by: bag)
+let tokenResult = try await ParticleWalletAPI.getSolanaService().getTokensAndNFTsFromDB(by: address).value
 
-let address = ""
-ParticleWalletAPI.getEvmService().getTokensAndNFTs(by: address).subscribe { [weak self] result in
-guard let self = self else { return }
-  // handle result
-}.disposed(by: bag)
+let address: String = ""
+let tokenResult = try await ParticleWalletAPI.getEvmService().getTokensAndNFTs(by: address).value
 
-ParticleWalletAPI.getEvmService().getTokensAndNFTsFromDB(by: address).subscribe { [weak self] result in
-guard let self = self else { return }
-  // handle result
-}.disposed(by: bag)
+let tokenResult = try await ParticleWalletAPI.getEvmService().getTokensAndNFTsFromDB(by: address).value
 ```
 
 ### Transaction History by Address
@@ -187,55 +171,48 @@ Another solid example of utilizing `ParticleWalletAPI` is the retrieval of trans
 
 ```swift Swift
 let address: String = ""
-ParticleWalletAPI.getSolanaService().getTransactions(by: address, beforeSignature: nil, untilSignature: nil, limit: 1000).subscribe { [weak self] result in
-  guard let self = self else { return }
-  // handle result
-}.disposed(by: bag)
+let result = try await ParticleWalletAPI.getSolanaService().getTransactions(by: address, beforeSignature: nil, untilSignature: nil, limit: 1000).value
 
-ParticleWalletAPI.getSolanaService().getTransactionsFromDB(by: address, beforeSignature: nil, untilSignature: nil, limit: 1000).subscribe { [weak self] result in
-  guard let self = self else { return }
-  // handle result
-}.disposed(by: bag)
+let result = try await ParticleWalletAPI.getSolanaService().getTransactionsFromDB(by: address, beforeSignature: nil, untilSignature: nil, limit: 1000).value
 
-let address = ""
-ParticleWalletAPI.getEvmService().getTransactions(by: address).subscribe { [weak self] _ in
-guard let self = self else { return }
-  // handle result
-}.disposed(by: bag)
+let address: String = ""
+let result = try await ParticleWalletAPI.getEvmService().getTransactions(by: address).value
 
-ParticleWalletAPI.getEvmService().getTransactionsFromDB(by: address).subscribe { [weak self] _ in
-guard let self = self else { return }
-  // handle result
-}.disposed(by: bag)
+let result = try await ParticleWalletAPI.getEvmService().getTransactionsFromDB(by: address).value
 ```
 
 ### Create Transaction
 
 `ParticleWalletAPI.createTransaction`facilitates the construction of a transaction object derived from the standard from, to, amount (value), and data fields. This transaction, once constructed with `ParticleWalletAPI.createTransaction`, can be passed for in-UI proposal with `auth.sendTransaction` or `adapter.signAndSendTransaction`. Specifically, eight key parameters are available within `ParticleWalletAPI.getEvmService().createTransaction`:
 
-- `from`, user public address, which to sign the transaction.
-- `to`, if you send a erc20, erc721, erc1155 or interact with a contract, this is the contract address, if you send native, this is receiver address.
-- `value`, native value, default is nil.
-- `data`, data, default is 0x
-- `contractParams`, Optional, which is mutually exclusive with `data`, used to calculate the data.
-- `type`, default is 0x2, support EIP1559
-- `gasFeeLevel`, default is medium.
-- `action`, default is normal, support cancel and speedUp.
+| Field  | Type   | Description                                                                                              |
+|--------|--------|----------------------------------------------------------------------------------------------------------|
+| `from` | `String` | user public address, which to sign the transaction. |
+| `to` | `String?` | If you send a erc20, erc721, erc1155 or interact with a contract, this is the contract address, if you send native, this is receiver address, if you want to deploy a contract, this to should be `nil` |
+| `value` | `String?` | Native value, default is nil, expressed as a hex string. |
+| `data` | `String` | If you send a erc20, erc721, erc1155 or interact with a contract, this is the data field, if you send native, this should be `0x`, default value is `0x`|
+| `contractParams` | `ContractParams?` | You can use this object to describe a write contract function |
+|`type`| `String` | default is 0x2, support EIP1559, you can ignore this parameter |
+| `gasFeeLevel` | `gasFeeLevel` | the specific gas fee level to be used. This can be either `.low`, `.medium`, `.high`, default is `.medium`|
+| `action` | `Action` | the sepcific how to send this transaction. This can be either `.normal`, `.cancel`, `.speedUp`, defualt is `.normal`, which means send a new transaction|
+
 
 <CodeGroup>
-```Text Send native
+
+```swift Text Send native
 // before send make sure you account has enough native balance.
-let sender = auth.evm.getAddress()
+let sender = auth.evm.getAddress() ?? ""
 let receiver = "0xAC6d81182998EA5c196a4424EA6AB250C7eb175b"
 // send 0.0001 native, need convert to the minimal unit.
 let amount = BDouble(0.0001 * pow(10, 18)).rounded()
 
 let transaction = try await ParticleWalletAPI.getEvmService().createTransaction(from: sender, to: receiver, value: amount.toHexString()).value 
-let signature = try await auth.evm.sendTransaction(transaction)
+let signature = try await auth.evm.sendTransaction(transaction, chainInfo: nil)
 ```
-```Text Send erc20 token
+
+```swift Text Send erc20 token
 // before send make sure you account has enough native balance for pay gasfee and enough erc20 tokens.
-let from = auth.evm.getAddress()
+let from = auth.evm.getAddress() ?? ""
 // send 0.0001 erc20 token, need convert to the minimal unit, suppose the token decimals is 18.
 let amount = BDouble(0.0001 * pow(10, 18)).rounded()
 // the erc20 token contract address
@@ -246,11 +223,12 @@ let receiver = "0xAC6d81182998EA5c196a4424EA6AB250C7eb175b"
 let contractParams = ContractParams.erc20Transfer(contractAddress: contractAddress, to: receiver, amount: amount)
 // Note the to address is the token contract address, not receiver address.
 let transaction = try await ParticleWalletAPI.getEvmService().createTransaction(from: from, to: contractAddress, value: nil, contractParams: contractParams).value 
-let signature = auth.evm.sendTransaction(transaction)
+let signature = auth.evm.sendTransaction(transaction, chainInfo: nil)
 ```
-```Text send erc721 NFT
+
+```swift Text send erc721 NFT
 // before send make sure you account has enough native balance for pay gasfee and this erc721 NFT.
-let from = auth.evm.getAddress()
+let from = auth.evm.getAddress() ?? ""
 // this is your nft contract address
 let contractAddress = "0xD18e451c11A6852Fb92291Dc59bE35a59d143836"
 // this is the receiver address
@@ -261,11 +239,12 @@ let tokenId = "2302"
 let contractParams = ContractParams.erc721SafeTransferFrom(contractAddress: contractAddress, from: from, to: receiver, tokenId: tokenId)
 // Note the to address is the nft contract address, not receiver address.
 let transaction = ParticleWalletAPI.getEvmService().createTransaction(from: from, to: contractAddress, value: nil, contractParams: contractParams).value
-let signature = try await auth.evm.sendTransaction(transaction) 
+let signature = try await auth.evm.sendTransaction(transaction, chainInfo: nil) 
 ```
-```Text send erc1155 NFT
+
+```swift Text send erc1155 NFT
 // before send make sure you account has enough native balance for pay gasfee and this erc1155 NFT.
-let from = auth.evm.getAddress()
+let from = auth.evm.getAddress() ?? ""
 // this is your nft contract address
 let contractAddress = "0xD18e451c11A6852Fb92291Dc59bE35a59d143836"
 // this is the receiver address
@@ -278,17 +257,18 @@ let tokenAmount: BInt = 10
 let contractParams = ContractParams.erc1155SafeTransferFrom(contractAddress: contractAddress, from: from, to: receiver, id: tokenId, amount: tokenAmount, data: "0x")
 // Note the to address is the nft contract address, not receiver address.
 let transaction = ParticleWalletAPI.getEvmService().createTransaction(from: from, to: contractAddress, value: nil, contractParams: contractParams).value
-let signature = try await auth.evm.sendTransaction(transaction) 
+let signature = try await auth.evm.sendTransaction(transaction, chainInfo: nil) 
 ```
-```Text deploy contract
+
+```swift Text deploy contract
 //  before send make sure you account has enough native balance for pay gasfee
 let data = getContractData() 
-let from = auth.evm.getAddress()
-let to = ""
+let from = auth.evm.getAddress() ?? ""
 
-let transacion = try await ParticleWalletAPI.getEvmService().createTransaction(from: from, to: to, data: data).value 
-let signature = try await auth.evm.sendTransaction(transaction)
+let transacion = try await ParticleWalletAPI.getEvmService().createTransaction(from: from, to: nil, data: data).value 
+let signature = try await auth.evm.sendTransaction(transaction, chainInfo: nil)
 ```
+
 </CodeGroup>
 
 ### Contract Interaction
@@ -297,13 +277,20 @@ let signature = try await auth.evm.sendTransaction(transaction)
 
 Specifically, four key parameters are available within `ParticleWalletAPI.getEvmService().readContract`:
 
-- `contractAddress`, contract address.
-- `methodName`, method name in the contract.
-- `params`, the parameters for the method, each parameter requires a hexadecimal string.
-- `abiJsonString`, the abi json string for the method. 
+| Field  | Type   | Description                                                                                              |
+|--------|--------|----------------------------------------------------------------------------------------------------------|
+| `contractAddress` | `String` | contract address. |
+| `methodName` | `String` | method name in the contract. |
+| `params` | `[Encodable]` | the parameters for the method, each parameter requires a hexadecimal string. |
+| `abiJsonString` | `String?` | (Optional) the abi json string for the method.  |
+
+Here is a abiJsonString example.
 
 ```swift Swift
-// an example for abiJsonString "[{"inputs":[{"internalType":"uint256","name":"quantity","type":"uint256"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"mint","outputs":\[],"stateMutability":"nonpayable","type":"function"}]"
+let abiJsonString = "[{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"quantity\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"mint\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}]"
+
+```
+```swift Swift
 let params = ContractParams.customAbiEncodeFunctionCall(
   contractAddress: "0xd000f000aa1f8accbd5815056ea32a54777b2fc4", 
   methodName: "balanceOf", 
@@ -434,7 +421,7 @@ To programmatically open the wallet interface, you'll need to use `PNRouter`. Th
 PNRouter.navigatorWallet()
 ```
 
-### tabViewController Embed
+### TabViewController Embed
 
 If you'd like to embed the wallet interface within your `tabViewController`, you'll need to call `PNRouter.extractWallet`, passing in optional parameters such as `hiddenBackButton` for configuration before extraction. This will return a navigation controller, which can then be used within `tabViewController.viewControllers`. E.g.:
 
@@ -492,7 +479,7 @@ If you'd like to force the NFT sending menu to open, you can use `PNRouter.navig
 - `address`, the contract address of the NFT being sent.
 - `toAddress`, the recipient's address.
 - `tokenId`, the specific token ID of the NFT you'd like to send (belonging to the collection under `address`).
-- `amount`, the volume of NFTs that you'd like to send.
+- `amount`, the volume of NFTs that you'd like to send, for NFT 721, the amount shoule always be 1.
 
 E.g.:
 

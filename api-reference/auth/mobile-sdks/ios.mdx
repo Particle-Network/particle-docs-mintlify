@@ -260,7 +260,7 @@ Once `ParticleNetwork` has been initialized and a user has successfully logged i
 
 ---
 ### EVM
-### Signing messages (EIP191)
+### Signing Messages (EIP191)
 
 To request an EIP191 signature from a user's embedded wallet, you can use either the `auth.evm.personalSign` or `auth.evm.personalSignUnique` method. If you need the same message to return a unique signature each time, use the `auth.evm.personalSignUnique` method. Otherwise, the `auth.evm.personalSign` method is generally recommended.
 
@@ -275,7 +275,7 @@ let result = try await auth.evm.personalSign("This is the message that is being 
 let result = try await auth.evm.personalSignUnique("This is the message that is being signed", chainInfo: nil)
 ```
 
-### Signing typed data (EIP712)
+### Signing Typed Data V4 (EIP712)
 
 To request an EIP721 signature from a user's embedded wallet, you can use either the `auth.evm.signTypedData` or `auth.evm.signTypedDataUnique` method. If you need the same message to return a unique signature each time, use the `auth.evm.signTypedDataUnique` method. Otherwise, the `auth.evm.signTypedData` method is generally recommended.
 
@@ -307,7 +307,7 @@ let result = try await auth.evm.sendTransaction(transaction, chainInfo: nil)
 ---
 
 ### Solana
-### Signing messages
+### Signing Messages
 
 To request a signature from a user's embedded wallet, you can use `auth.solana.signMessage`.
 
@@ -359,7 +359,7 @@ To sign multi transactions from a user's embedded wallet, you can use `auth.sola
 let result = try await auth.solana.signAllTransactions(transactions, chainInfo: nil)
 ```
 
-You can create a transaction with class `TxData` or `FeeMarketEIP1559TxData`, also you can use another SDK `ParticleWalletAPI` to create transaction, you can reference the examples from [Wallet SDK reference](/api-reference/wallet/mobile/ios.mdx#create-transaction)
+You can create en EVM transaction with class `TxData` or `FeeMarketEIP1559TxData`, also you can use another SDK `ParticleWalletAPI` to create transaction, you can reference the examples from [Wallet SDK reference](/api-reference/wallet/mobile/ios.mdx#create-transaction)
 
 ---
 
@@ -407,7 +407,7 @@ let result = try auth.openAccountAndSecurity()
 
 ---
 
-### Set appearance
+### Set Appearance
 
 You can forcibly set a specific appearance to be used within the UI using `ParticleNetwork.setAppearance`. By default, it will follow current system setting.
 
@@ -441,7 +441,7 @@ ParticleNetwork.getLanguage()
 ```
 
 
-### Set custom UI json string
+### Set Custom UI JSON string
 
 ```swift Swift
 // Set custom ui is pass json string  
@@ -462,7 +462,7 @@ ParticleNetwork.setFiatCoin(FiatCoin.usd)
 ParticleNetwork.getFiatCoin()
 ```
 
-### Blind sign enable
+### Blind Sign Enable
 
 This switch will work if the following conditions are met:
 
