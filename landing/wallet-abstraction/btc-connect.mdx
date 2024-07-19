@@ -6,7 +6,7 @@ mode: "wide"
 
 ***
 
-Particle Network has released BTC Connect— the first EVM-compatible ERC-4337 AA protocol for Bitcoin, supported by leading players in the BTC universe.
+Particle Network’s core product for the Bitcoin ecosystem is BTC Connect— the first EVM-compatible ERC-4337 AA protocol for Bitcoin.
 
 <Frame caption="BTC Connect's ecosystem.">
 <img
@@ -23,21 +23,21 @@ Particle Network has released BTC Connect— the first EVM-compatible ERC-4337 A
 
 ## Motivation and goals
 
-Bitcoin is the most valuable blockchain, as well as the industry's standard for security. Recent introductions to its ecosystem (such as Ordinals and BRC-20 "tokens") have sparked a new wave of innovation within it, bringing along various Layer-2s to expand Bitcoin beyond the computational limitations of its Turing-incomplete base chain. 
+BTC Connect is the missing link that enables chain abstraction for the Bitcoin ecosystem. It leverages account abstraction to increase Bitcoin’s connectivity and programmability.
 
-Among the above, several EVM-compatible Bitcoin L2s, such as the Merlin Chain, BEVM, and bSquared. However, while these networks represent a stepping stone for the industry, their design and supporting infrastructure still result in considerable friction at a wallet and UI/UX level when interacting across networks. This makes their adoption by a mass market seem unfeasible.
+Recent introductions to the Bitcoin ecosystem have sparked a new wave of innovation within it, bringing along various Layer-2s (some even EMV-compatible) that expand Bitcoin’s computational limitations. However, these networks still face considerable friction at a wallet and UI/UX level compared to the rest of the industry. This is due to Bitcoin and its Layer-2 ecosystem having separate ecosystems of tools and wallets –for example, UniSat users are forced to download MetaMask to interact with L2s. This makes L2s’ adoption by a mass market seem unfeasible, and results in a hard-to-bridge fragmentation of users and liquidity across ecosystems.
 
-On the other hand, ERC-4337 account abstraction is globally recognized as the standard for full-stack account abstraction, a much-needed addition to the EVM ecosystem to improve Web3's user experience (UX). By combining Bitcoin L2s and ERC-4337 AA design, users can enjoy all the UX benefits of AA on Bitcoin without the need for secondary interfaces (such as a MetaMask wallet). This will allow users to control a smart account on an EVM-compatible Bitcoin L2, with a "regular" Bitcoin wallet as its Signer. 
+Meanwhile, ERC-4337 account abstraction has brought account programmability to the EVM ecosystem, aiming to improve Web3's user experience (UX). To solve Bitcoin L2s’ UX issues and fragmentation, Particle Network has deployed ERC-4337 AA within these networks, resulting in BTC Connect: The only protocol allowing users to control smart accounts on EVM-compatible Bitcoin L2s through "regular" (native) Bitcoin wallets. 
 
 ## How BTC Connect works
 
-BTC Connect enables AA on Bitcoin by unifying users' Bitcoin accounts and EVM-based smart accounts. This happens by assigning a Bitcoin wallet as a Signer for a smart account on a Bitcoin L2 or EVM network, making users' existing Bitcoin wallets the sole point of interaction, without additional interactions or interfaces.
+BTC Connect enables AA on Bitcoin by unifying users’ Bitcoin accounts and EVM-based smart accounts. It assigns a Bitcoin wallet as a Signer for a smart account on a Bitcoin L2 or EVM network, making users’ Bitcoin wallets the sole point of interaction with L2s without additional interactions or interfaces.
 
-Our design introduces a Smart Account, Paymaster, Bundler, and a unique Bitcoin-specific wallet connection modal. The latter facilitates native Bitcoin wallet connection (through UniSat, BitGet, or OKX) by generating an EVM smart account to be “assigned” to the target Bitcoin wallet. All interactions on both the smart account and the original Bitcoin wallet are, from this point onward, controlled through the Bitcoin wallet's interface. 
+Its design introduces a Smart Account, Paymaster, Bundler, and a unique Bitcoin-specific wallet connection modal. The latter facilitates native Bitcoin wallet connectivity (through UniSat, BitGet, or OKX) by generating an EVM smart account to be “assigned” to the target Bitcoin wallet. All interactions on both the smart account and the original Bitcoin wallet are, from this point onward, controlled through the Bitcoin wallet’s interface. 
 
-Interactions by the user's Smart Account can be either funded by the account's owner directly or pre-paid by the dApps themselves (via Paymasters).  Thanks to this, the user can interact with protocols through gasless transactions or by paying gas using assets on their Smart Account (typically $BTC, but could also be other tokens, like $USDT in some cases). This allows users to access AA on EVM networks without downloading additional plugins/applications or managing different keys. 
+Interactions by the user's Smart Account can be either funded by the account’s owner directly or pre-paid by the dApps themselves (via Paymasters). Thanks to this, the user can interact with protocols through gasless transactions or paying gas using assets on their Smart Account (typically $BTC, but could also be other tokens, like $USDT in some cases). This allows Bitcoin users to access AA on EVM networks without downloading additional plugins/applications or managing different keys.
 
-BTC Connect extends the functionality of Bitcoin wallets, allowing a user to use a single wallet to send native Bitcoin transactions, interact with the Ordinal ecosystem, and execute logic (including gasless, and popup-less interactions) on compatible EVM dApps and Bitcoin L2s.
+BTC Connect implements chain abstraction on Bitcoin, allowing a user to use a single wallet to send native Bitcoin transactions, interact with the Ordinal ecosystem, and execute logic (including gasless and popup-less interactions) on compatible EVM dApps and Bitcoin L2s.
 
 The above is diagrammed below:
 
@@ -52,18 +52,6 @@ The above is diagrammed below:
   alt="BTC Connect architecture"
 />
 
-In summary, the public key of the user's connected Bitcoin wallet is used directly to execute native Bitcoin transactions, and for the generation of an EVM EOA. This EOA, in turn, is used to create a smart account with the Bitcoin wallet as its Signer. This makes the Bitcoin wallet's signatures EVM-compatible, allowing the same wallet to handle seamless AA-powered Layer-2 transactions and Layer-1 Bitcoin transactions.
-
-<Tip>To see an updated list of networks supported by BTC Connect, go to [Network Coverage](/landing/quickstart/network-coverage).</Tip>
-
-## Benefits of Bitcoin account abstraction
-
-Beyond streamlining wallet- and interface-level interactions between L2s and Bitcoin wallets, BTC Connect offers several additional benefits. In an ecosystem with a growing presence of EVM-compatible L2s, dApps integrating BTC Connect can also benefit from:
-
-- **Enhanced UX:** With simplified user interactions and transaction structures, account programmability enables popupless signatures, session keys, automated transactions, simplified paths, batched transactions, and other UX-first features currently unavailable for the Bitcoin ecosystem.
-- **Improved security:** Users could benefit from additional security layers, such as multi-signature schemes or complex conditional transaction criteria, increasing the safety of users.
-- **Privacy:** Bitcoin account abstraction can potentially incorporate more advanced privacy features (see our Confidential zkStack's design), allowing users greater control over their transaction data.
-
-Importantly, BTC Connect can also aid the adoption of the Bitcoin L2 ecosystem by simplifying the process of porting users with a streamlined onboarding and interaction path. This first-of-its-kind dynamic creates an opportunity for Bitcoin users to rapidly adopt the more advanced practices in the Web3 space without migrating to other chains.
 
 <Tip>To begin integrating BTC Connect, go to its [SDKs (Desktop)](/api/btc/desktop/web) page on our API Reference.</Tip>
+
