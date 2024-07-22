@@ -163,6 +163,12 @@ Now that you've configured your [Particle dashboard](https://dashboard.particle.
    // For release, this can be set to DevEnvironment.production
    ParticleNetwork.initialize(config: .init(chainInfo: .ethereum, devEnv: .debug))
    ```
+6. Add Privacy - Face ID Usage Description to your info.plist file, head over to your `Info.plist` file and include the following snippet:
+
+```xml
+<key>NSFaceIDUsageDescription</key>
+  <string>We use Face ID for secure access to the app.</string>
+```
 
 ### Switch Chain
 
@@ -413,7 +419,7 @@ You can forcibly set a specific appearance to be used within the UI using `Parti
 
 | Field  | Type   | Description                                                                                              |
 |--------|--------|----------------------------------------------------------------------------------------------------------|
-| `appearance` | `UIUserInterfaceStyle` | the specific appearance to be used. This can be either `.unspefified`, `.dark`, `.light`.
+| `appearance` | `UIUserInterfaceStyle` | the specific appearance to be used. This can be either `.unspefified`, `.dark`, `.light`.|
 
 ```swift Swift
 // this is the default setting  
@@ -432,7 +438,7 @@ You can forcibly set a specific language to be used within the UI using `Particl
 
 | Field  | Type   | Description                                                                                              |
 |--------|--------|----------------------------------------------------------------------------------------------------------|
-| `language` | `Language` | the specific language to be used. This can be either `.en`, `.ja`, `.zh_hans`, `.zh_hant`, `.ko`.                                                       |
+| `language` | `Language` | the specific language to be used. This can be either `.en`, `.ja`, `.zh_hans`, `.zh_hant`, `.ko`.  |
 
 ```swift Swift
 ParticleNetwork.setLanguage(Language.en)
