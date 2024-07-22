@@ -69,14 +69,9 @@ Once the Particle AA SDK has been initialized through `ParticleAAInteraction`, y
 E.g.:
 
 ```csharp C#
-var biconomyApiKeys = new Dictionary<int, string>
-{
-    { 1, "your ethereum mainnet key" },
-    { 137, "your polygon mainnet key" },
-}; // Optional
 
 // BICONOMY_V1 || BICONOMY_V2 | SIMPLE | CYBERCONNECT | LIGHT
-ParticleAAInteraction.Init(AAAccountName.BICONOMY_V1, biconomyApiKeys);
+ParticleAAInteraction.Init(AAAccountName.BICONOMY_V1);
 
 ParticleAAInteraction.EnableAAMode();
 // Inversely, ParticleAAInteraction.DisableAAMode();
@@ -89,7 +84,7 @@ ParticleAAInteraction.EnableAAMode();
 Upon initiating social login, a smart account will be assigned to your user's EOA (either a SimpleAccount, Biconomy account, or CyberConnect account), although even upon assignment, that smart account still needs to be deployed. This deployment will happen automatically upon the first UserOperation execution, as the deployment operation will be batched in with the first transaction request. Although, if you'd like to see whether an EOA's assigned smart account has been deployed or not, you can call `ParticleAA.Instance.IsDeploy`, as shown below.
 
 ```csharp C#
-var eoaAddress = ParticleAuthServiceInteraction.GetAddress();
+var evmAddress = ParticleAuthCoreInteraction.EvmGetAddress()
 var result = await ParticleAA.Instance.IsDeploy(eoaAddress);
 ```
 
@@ -105,7 +100,7 @@ var result = ParticleAAInteraction.IsAAModeEnable();
 
 As you'll see in a moment, sending a UserOperation requires the retrieval of a `feeQuote` object, containing constructed UserOperations for three different fee payment mechanisms, either gasless, native paid (native token), or token paid (ERC-20 token Paymaster). Thus, upon sending a transaction, you'll need to pass in a complete response from the `ParticleAA.Instance.RpcGetFeeQuotes` method. Specifically, `ParticleAA.Instance.RpcGetFeeQuotes` takes the following parameters:
 
-- `eoaAddress`, the address of the Signer/owner of the smart account in question (can be retrieved through `ParticleAuthServiceInteraction.GetAddress` for Particle Auth).
+- `eoaAddress`, the address of the Signer/owner of the smart account in question (can be retrieved through `ParticleAuthCoreInteraction.GetEvmAddress` for Particle Auth).
 - `transaction`, an array of multiple or a singular standard transactions to be sent from the smart account. The fee quote response will be based on the parameters defined within the transaction object.
 
 E.g.:
@@ -131,10 +126,10 @@ E.g.:
 
 ```csharp C#
 // Particle Auth, singular transaction
-var nativeResultData = await ParticleAuthService.Instance.SignAndSendTransaction(transaction, AAFeeMode.Native(JObject.Parse(feeQuotesResult.data)));
+var nativeResultData = await ParticleAuthCore.Instance.SendTransaction(transaction, AAFeeMode.Native(JObject.Parse(feeQuotesResult.data)));
 
 // Particle Auth, batched transactions
-var nativeResultData = await ParticleAuthService.Instance.BatchSendTransactions(transactions, AAFeeMode.Gasless(JObject.Parse(feeQuotesResult.data)));
+var nativeResultData = await ParticleAuthCore.Instance.BatchSendTransactions(transactions, AAFeeMode.Gasless(JObject.Parse(feeQuotesResult.data)));
 
 // Particle Connect, singular transaction
 var nativeResultData = await ParticleConnect.Instance.SignAndSendTransaction(WalletType.MetaMask, eoaAddress, transaction, AAFeeMode.Token(feeQuote, tokenPaymasterAddress));
@@ -197,16 +192,3 @@ var tokenPaymasterAddress =
 ```
 
 ***
-
-## Master reference
-
-For a direct, raw view into every method, below is a table containing every relevant one alongside specific parameters and a short description. For methods listed that weren't covered in the above examples, live implementation often mimics the previously covered common structure throughout the SDK.
-
-| Class                 | Methods         | Parameters (\* indicates optional) |
-| --------------------- | --------------- | ---------------------------------- |
-| ParticleAAInteraction | Init            | accountName, biconomyApiKeys\*     |
-| ParticleAAInteraction | EnableAAMode    |                                    |
-| ParticleAAInteraction | DisableAAMode   |                                    |
-| ParticleAAInteraction | IsAAModeEnable  |                                    |
-| ParticleAAInteraction | IsDeploy        | eoaAddress                         |
-| ParticleAAInteraction | RpcGetFeeQuotes | eoaAddress, transactions           |

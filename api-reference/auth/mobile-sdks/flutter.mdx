@@ -443,7 +443,7 @@ In addition to `ParticleAuthCore` for authentication and interaction with Partic
 | `methodName`      | `String`       | the method name that defined in the contract, such as `mint`, `balanceOf`. |
 | `parameters`      | `List<Object>` | the parameters of this method.                                             |
 | `abiJsonString`   | `String`       | the abi json string of this method.                                        |
-| `gasFeeLevel`     | `GasFeeLevel`  | the gas fee level, `high`, `medium` or `low`, default is `high`.           |
+| `gasFeeLevel`     | `GasFeeLevel`  | (Optional) the gas fee level, `high`, `medium` or `low`, default is `high`.           |
 
 
 ```dart Dart
@@ -492,7 +492,7 @@ final result = await EvmService.readContract(publicAddress, contractAddress, met
 | `data`        | `String`      | the transaction's data.                                          |
 | `value`       | `BigInt`      | the native amount.                                               |
 | `to`          | `String`      | the parameters of this method.                                   |
-| `gasFeeLevel` | `GasFeeLevel` | the gas fee level, `high`, `medium` or `low`, default is `high`. |
+| `gasFeeLevel` | `GasFeeLevel` | (Optional) the gas fee level, `high`, `medium` or `low`, default is `high`. |
 
 ```dart Dart
 String from = "your public address";

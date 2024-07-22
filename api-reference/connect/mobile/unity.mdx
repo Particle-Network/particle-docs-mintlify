@@ -114,16 +114,15 @@ If you're building a Unity game on iOS, you must follow a specific configuration
    1. For example, if your `projectId` (from the [Particle dashboard](https://dashboard.particle.network)) is something like `63bfa427-cf5f-4742-9ff1-e8f5a1b9828f`, then the scheme URL, in this case, would be `pn63bfa427-cf5f-4742-9ff1-e8f5a1b9828f`
 
 <Note>
-Remove other services, if needed:
+<p>Remove other services, if needed</p>
 <p></p>
 <p>Within `ParticleNetworkIOSBridge.cs`, you'll have a number of services included in the SDK:</p>
 <p></p>
-<p>- `ParticleNetworkBase` - required, universally.</p>
+<p>- `ParticleNetworkBase` - required universally.</p>
+<p>- `ParticleAuthCore` - required for Particle Auth Core.</p>
+<p>- `ParticleConnect`-  required for Particle Connect.</p>
 <p>- `ParticleWalletGUI` - usage of the Particle Wallet UI, contains all services.</p>
-<p>  - Requires [`SkeletonView`](https://github.com/SunZhiC/SkeletonView.git).</p>
-<p>- `ParticleConnect` - for Particle Connect.</p>
-<p>- `ParticleAuthCore` - for Particle Auth Core.</p>
-
+<p>- `ParticleAA` - usage of the Particle AA, contains all services.</p>
 </Note>
 
 You'll also need to configure your Podfile if you haven't already. If you don't have a Podfile, go to the root of your project directory and run `pod init`, this will generate a Podfile
@@ -132,11 +131,7 @@ Open this Podfile, and insert the specific pods (services) you'd like to use wit
 
 Additionally, you'll need to paste in the below code snippet for installation handling:
 
-```groovy Podfile
-pod 'ParticleWalletGUI'
-// If you're using this, also include:
-// pod 'SkeletonView', :git => 'https://github.com/SunZhiC/SkeletonView.git', :branch => 'main'
-
+```ruby Podfile
 pod 'ParticleConnect'
 pod 'CommonConnect'
 
@@ -149,6 +144,8 @@ installer.pods_project.targets.each do |target|
   end
  end
 ```
+
+Also you can copy the example [Podfile](https://github.com/Particle-Network/particle-unity/blob/main/ios-build/Podfile) .
 
 With your Podfile set, you'll need to run `pod install` and open your `.xcworkspace` file, as shown below:
 
@@ -223,35 +220,48 @@ Additionally, with WalletConnect as the underlying infrastructure for Web3 walle
 
 An example of the above process can be found below.
 
+| Field       | Type           | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| ----------- | -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `chainInfo` | `ChainInfo`    | the primary chain to be used within your application. This should be dictated by an overall blockchain, followed by a specific network (testnet). Within this example, it's `.Ethereum`(alternatively it could be `.EthereumSepolia`, and so on.)                                                                                                                                                                                                                                                                                                                               |
+| `dAppData`  | `DAppMetadata` | metadata outlining the description of your application, This should be an instance of `DAppMetadata` with the following parameters: `walletConnectProjectId`, the wallet connect project id retrieved from the [WalletConnect dashboard](https://cloud.walletconnect.com), `name`, the name of your project. `icon`, a URL linking to the icon of your project; this should be 512x512, ideally.  `url`, the URL of your project's website. `description`, the description of your project, `redirect`, optional, redirect universal link of you project, `verifyUrl`, optional |
+| `rpcUrl` | `RpcUrl?` | Customize rpc url   |
+| `env`          | `Env`           | the specific environmennt to be used. This can be either `.DEV`, `.STAGING`, `.PRODUCTION`, this should be set to `.PRODUCTION` when release  |
+
 ```csharp C#
 var metadata = new DAppMetaData(TestConfig.walletConnectProjectId,"Particle Connect",
             "https://connect.particle.network/icons/512.png",
             "https://connect.particle.network",
-            "");
+            "Particle Unity Demo");
 
-ParticleNetwork.Init(_chainInfo);
-ParticleConnectInteraction.Init(_chainInfo, metadata);
+ParticleNetwork.Init(ChainInfo.Ethereum);
+ParticleConnectInteraction.Init(ChainInfo.Ethereum, metadata);
+```
 
+Additionally, if you'd like to define multiple chains to be available through WalletConnect, you'll need to create an array of `ChainInfo` objects (`chainInfos` in this example) and use it within `ParticleConnectInteraction.SetWalletConnectV2SupportChainInfos`. E.g.:
+
+
+```csharp C#
 List<ChainInfo> chainInfos = new List<ChainInfo>
                 { ChainInfo.Ethereum, ChainInfo.EthereumSepolia, ChainInfo.EthereumSepolia };
 ParticleConnectInteraction.SetWalletConnectV2SupportChainInfos(chainInfos.ToArray());
 ```
 
+---
+
 ## Examples of Utilization
 
 ### Set Chain Info
 
-Before a user has connected, if you'd like to set the primary chain after initialization through `.Init`, you can call `ParticleNetwork.SetChainInfo`, passing in a corresponding `chainInfo` object for the chain you'd like to switch to. Alternatively, if you only support evm chains, `ParticleNetwork.SetChainInfo` is enough, you can call it anytime, if you support both evm and solana, `ParticleAuthCore.Instance.SwitchChain` or `ParticleAuthService.Instance.SetChainInfoAsync` should be called when switch from an evm chain to solana or switch from solana to an evm chain. E.g:
+Before a user has connected, if you'd like to set the primary chain after initialization through `.Init`, you can call `ParticleNetwork.SetChainInfo`, passing in a corresponding `chainInfo` object for the chain you'd like to switch to. Alternatively, if you only support evm chains, `ParticleNetwork.SetChainInfo` is enough, you can call it anytime, if you support both evm and solana, `ParticleAuthCore.Instance.SwitchChain` should be called when switch from an evm chain to solana or switch from solana to an evm chain. E.g:
 
 ```csharp C#
-ParticleNetwork.SetChainInfo(_chainInfo);
+ParticleNetwork.SetChainInfo(ChainInfo.Ethereum);
 
 // Alternatively, if you are using WalletType.authCore
-await ParticleAuthCore.Instance.SwitchChain(_chainInfo);
-
-// Alternatively, if you are using WalletType.particle
-await ParticleAuthService.Instance.SetChainInfoAsync(_chainInfo);
+await ParticleAuthCore.Instance.SwitchChain(ChainInfo.Ethereum);
 ```
+
+---
 
 ### Connect Wallet
 
@@ -268,7 +278,6 @@ Within implementations of Particle Connect, `Connect` drives connection with a w
 - `ImToken`.
 - `BitKeep`.
 - `WalletConnect`.
-- `Phantom`, intended for Solana.
 - `Zerion`.
 - `Math`.
 - `Inch1`, 1inch.
@@ -276,35 +285,34 @@ Within implementations of Particle Connect, `Connect` drives connection with a w
 - `Alpha`.
 - `OKX`.
 - `TokenPocket`, not supported by iOS.
+- `Phantom`, intended for Solana.
 
-If you're using `Particle`, you'll also need to pass in a `ConnectConfig` object containing:
+If you're using `AuthCore`, you'll also need to pass in a `ConnectConfig` object containing:
 
-- `LoginType`, the specific login to be prompted, is an enum with the following choices:
-  - `EMAIL`.
-  - `PHONE`.
-  - `FACEBOOK`.
-  - `APPLE`.
-  - `TWITTER`.
-  - `DISCORD`.
-  - `GITHUB`.
-  - `TWITCH`.
-  - `MICROSOFT`.
-  - `LINKEDIN`.
-  - `JWT`.
-- `account`, if you're expecting a specific JWT, email, or phone (required for JWT).
-- `SupportLoginType`, the different authentication types to be supported by the popup modal.
-  - enum with all of the above choices for `LoginType`, except `JWT` , including `ALL`.
-- `SocialLoginPrompt`, whether or not the social login popup will be in "form mode" (simplified, minimal UI) or not. By default, set to `false`.
-- `LoginAuthorization`, a string (hex for EVM, base58 for Solana) to be prompted for signature upon login as authorization. Optional.
 
+| Field               | Type                     | Description                                                                                                                                                                                                                                                                      |
+| ------------------- | ------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `loginType`         | `LoginType`              | the specific social login to be used. This can be either `.EMAIL`, `.PHONE`, `.GOOGLE`, `.FACEBOOK`, `.APPLE`, `.TWITTER`, `.DISCORD`, `.GITHUB`, `.TWITCH`, `.MICROSOFT`, `.LINKEDIN` or `JWT`.                                                                                 |
+| `account`           | `string?`                | (Optional) when `type` is set to either `.email`, `.phone`, or `.jwt`, you can use the `account` parameter to pass in an expected email, phone number, or JWT. This is optional for the former two, but required for `.jwt`. The phone number must be in E.164 format.           |
+| `code`              | `string?`                | (Optional) when `type` is set to either `.email` pr `.phone`, you can use the code parameter to pass the verification code.                                                                                                                                                      |
+| `supportAuthTypes`  | `List<SupportLoginType>?` | the methods of authentication visible on the authentication popup UI. By default, this will be exclusive to the chosen social login method, although by passing in additional types, you can expand the UI to include the ability to login with those as an alternative to type. |
+| `socialLoginPrompt` | `SocialLoginPrompt?`     | (Optional) either `.None`, `.Consent`, or `.SelectAccount`                                                                                                                                                                                                                      |
+| `loginPageConfig`   | `LoginPageConfig?`       | (Optional) to customize the UI page, contains project name, icon and description.                                                                                                                                                                                                |
 E.g.:
 
 ```csharp C#
-await ParticleConnect.Instance.Connect(this._walletType);
-
-ConnectConfig config = new ConnectConfig(LoginType.PHONE, null, SupportAuthType.ALL, false);
+// use particle authentication
+var supportLoginTypes = new List<SupportLoginType> { SupportLoginType.APPLE, SupportLoginType.EMAIL, SupportLoginType.PHONE, SupportLoginType.GOOGLE};
+var loginPageConfig = new LoginPageConfig("Particle Unity Example",
+                "An example description", "https://connect.particle.network/icons/512.png");
+ConnectConfig config = new ConnectConfig(LoginType.Email, "user@example.come", null, supportLoginTypes, SocialLoginPrompt.SelectAccount, loginPageConfig);
 await ParticleConnect.Instance.Connect(WalletType.Particle, config);
+
+// use metamask or other supported wallet
+await ParticleConnect.Instance.Connect(WalletType.MetaMask);
 ```
+
+---
 
 ### Disconnect Wallet
 
@@ -314,6 +322,8 @@ To disconnect an active session, identified by a specific address, you can call 
 await ParticleConnect.Instance.Disconnect(this._walletType, publicAddress);
 ```
 
+---
+
 ### Is Connected
 
 Another important method is `IsConnected`, returning a Boolean indicating whether or not a user (or, in this case, an address and `WalletType`) are currently connected to your application. This can be called through `ParticleConnectInteraction.IsConnected`. E.g.:
@@ -321,6 +331,8 @@ Another important method is `IsConnected`, returning a Boolean indicating whethe
 ```csharp C#
 ParticleConnectInteraction.IsConnected(this._walletType, publicAddress);
 ```
+
+---
 
 ### Sign and Send Transaction
 
@@ -336,6 +348,8 @@ E.g.:
 await ParticleConnect.Instance.SignAndSendTransaction(this._walletType, publicAddress, transaction);
 ```
 
+---
+
 ### Sign Transaction
 
 `ParticleConnect.Instance.SignTransaction` is a **Solana-specific** method for signing a transaction without pushing it to the network. This will behave similarly to `SignAndSendTransaction`, although it will only function on either the `Phantom` or `SolanaPrivateKey` wallet types and will purely return a signature.
@@ -349,6 +363,8 @@ await ParticleConnect.Instance.SignTransaction(this._walletType, publicAddress, 
 await ParticleConnect.Instance.SignAllTransactions(this._walletType, publicAddress, transactions);
 ```
 
+---
+
 ### Sign Message
 
 A simple message (UTF-8 string) can be signed on both EVM & Solana through `ParticleConnect.Instance.SignMessage`, passing in the `WalletType`, `address` (`publicAddress` in this example), and the `message` in question. `message` should be a general string to be signed. E.g.:
@@ -357,6 +373,8 @@ A simple message (UTF-8 string) can be signed on both EVM & Solana through `Part
 var message = "GM, Particle!";
 await ParticleConnect.Instance.SignMessage(this._walletType, publicAddress, message);
 ```
+
+---
 
 ### Sign Typed Data
 
@@ -374,6 +392,8 @@ string typedData = txtAsset.text;
 await ParticleConnect.Instance.SignTypedData(this._walletType, publicAddress, typedData);
 ```
 
+---
+
 ### Import Wallet
 
 If you're using the`EvmPrivateKey` or `SolanaPrivateKey` wallet types, you can import wallets through either a seed phrase or private key. These methods will associate an account instance derived from these keys, allowing utilization within your application. These can be achieved through either `ImportWalletFromPrivateKey` for importing a private key, or `ImportWalletFromMnemonic` for importing a mnemonic (seed phrase). Both of these methods require both the `WalletType` (either `EvmPrivateKey` or `SolanaPrivateKey`) and the private key/seed phrase to be imported.
@@ -390,41 +410,3 @@ await ParticleConnect.Instance.ExportWalletPrivateKey(this._walletType, publicAd
 ```
 
 ***
-
-# Master reference
-
-For a direct, raw view into every method provided through `ParticleConnect` and `ParticleConnectInteraction`, below is a table containing every relevant one, along with specific parameters and a short description. For methods listed that weren't covered in the above examples, live implementation often mimics the common structure covered throughout this document.
-
-| Class                      | Methods                             | Parameters (\* indicates optional)                 |
-| -------------------------- | ----------------------------------- | -------------------------------------------------- |
-| ParticleConnect            | Connect                             | walletType, config\*                               |
-| ParticleConnect            | Disconnect                          | walletType, publicAddress                          |
-| ParticleConnect            | SignMessage                         | walletType, publicAddress, message                 |
-| ParticleConnect            | SignTransaction                     | walletType, publicAddress, transaction             |
-| ParticleConnect            | SignAllTransactions                 | walletType, publicAddress, transactions            |
-| ParticleConnect            | BatchSendTransactions               | walletType, publicAddress, transactions, feeMode\* |
-| ParticleConnect            | SignAndSendTransaction              | walletType, publicAddress, transaction, feeMode\*  |
-| ParticleConnect            | SignTypedData                       | walletType, publicAddress, typedData               |
-| ParticleConnect            | Login                               | walletType, publicAddress, domain, uri             |
-| ParticleConnect            | Verify                              | walletType, publicAddress, message, signature      |
-| ParticleConnect            | ImportWalletFromPrivateKey          | walletType, privateKey                             |
-| ParticleConnect            | ImportWalletFromMnemonic            | walletType, mnemonic                               |
-| ParticleConnect            | ExportWalletPrivateKey              | walletType, publicAddress                          |
-| ParticleConnectInteraction | Init                                | chainInfo, dAppMetadata, rpcUrl\*, env             |
-| ParticleConnectInteraction | SetWalletConnectV2SupportChainInfos | chainInfos                                         |
-| ParticleConnectInteraction | Connect                             | walletType, config\*                               |
-| ParticleConnectInteraction | Disconnect                          | walletType, publicAddress                          |
-| ParticleConnectInteraction | IsConnected                         | walletType, publicAddress                          |
-| ParticleConnectInteraction | GetAccounts                         | walletType                                         |
-| ParticleConnectInteraction | SignMessage                         | walletType, publicAddress, message                 |
-| ParticleConnectInteraction | SignTransaction                     | walletType, publicAddress, transaction             |
-| ParticleConnectInteraction | SignAllTransactions                 | walletType, publicAddress, transactions            |
-| ParticleConnectInteraction | BatchSendTransactions               | walletType, publicAddress, transactions, feeMode\* |
-| ParticleConnectInteraction | SignAndSendTransaction              | walletType, publicAddress, transaction, feeMode\*  |
-| ParticleConnectInteraction | SignTypedData                       | walletType, publicAddress, message                 |
-| ParticleConnectInteraction | ImportPrivateKey                    | walletType, privateKey                             |
-| ParticleConnectInteraction | ImportMnemonic                      | walletType, mnemonic                               |
-| ParticleConnectInteraction | ExportPrivateKey                    | walletType, publicAddress                          |
-| ParticleConnectInteraction | Login                               | walletType, publicAddress, domain, uri             |
-| ParticleConnectInteraction | Verify                              | walletType, publicAddress, message, signature      |
-| ParticleConnectInteraction | GetWalletReadyState                 | walletType                                         |

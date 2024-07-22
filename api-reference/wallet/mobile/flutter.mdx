@@ -318,7 +318,7 @@ Similar to `navigatorTokenSend`, you can call `ParticleWallet.navigatorNFTSend` 
 | `mint` | `String` | (`contractAddress`) of a given NFT. |
 | `tokenId` | `String` |  the token ID of an NFT (within the collection defined by `mint`). This can be left as `null` for Solana.  |
 | `amount` | `String?` | the volume of NFT (`mint`) to be sent, ERC172 NFT should set 1 |
-| `receiveAddress` | `String` | the recipient address, a blank string by default.|
+| `receiveAddress` | `String?` | the recipient address, a blank string by default.|
 
 E.g.:
 
@@ -356,16 +356,16 @@ The specific parameters that can be used within `ParticleWallet.navigatorBuyCryp
 
 | Field  | Type   | Description                                                                                              |
 |--------|--------|----------------------------------------------------------------------------------------------------------|
-| `walletAddress` | `String?` | the wallet address to receive the cryptocurrency. |
-| `cryptoCoin` | `String?` |  cryptocurrency denomination.   |
-| `fiatCoin` | `String?` | fiat currency denomination.   |
-| `fiatAmt` | `String?` | the amount of fiat to be automatically filled in as the purchase volume.|
-| `chainInfo` | `ChainInfo?` | the chainInfo|
-| `fixFiatCoin` | `bool` | lock selection of fiat coin in the buy menu|
-| `fixCryptoCoin` | `bool` | lock selection of fiat amount in the buy menu. |
-| `theme` | `Theme` | the buy page theme, `dark` or `light`|
-| `language` | `Language` | the buy page lanuage|
-| `modalStyle` | `String` | control iOS presentation style, default is pageSheet|
+| `walletAddress` | `String?` | (Optional) the wallet address to receive the cryptocurrency, default is current user address.|
+| `cryptoCoin` | `String?` |  (Optional) cryptocurrency denomination. default is current chain native token symbol.|
+| `fiatCoin` | `String?` | (Optional) fiat currency denomination. defualt is current fiat coin.|
+| `fiatAmt` | `int?` | (Optional) the amount of fiat to be automatically filled in as the purchase volume.|
+| `chainInfo` | `ChainInfo?` |(Optional) the chainInfo, default is current chainInfo.|
+| `fixFiatCoin` | `bool` | (Optional) lock selection of fiat coin in the buy menu, default is false.|
+| `fixCryptoCoin` | `bool` | (Optional) lock selection of fiat amount in the buy menu, default is false.|
+| `theme` | `Theme` | (Optional) the buy page theme, `dark` or `light`, default is false.|
+| `language` | `Language?` | (Optional) the buy page lanuage, default is current language.|
+| `modalStyle` | `IOSModalPresentStyle?` | (Optional) control iOS presentation style, default is `pageSheet`.|
 
 ```dart Dart
 final config = BuyCryptoConfig(walletAddress:"Wallet Address", cryptoCoin:"USDT", fiatCoin:"USD", fiatAmt:1000,  chainInfo: ChainInfo.Ethereum);
