@@ -10,16 +10,22 @@
     "light": "#e44be0",
     "dark": "#9d32de"
   },
+  "feedback": {
+    "thumbsRating": true,
+    "raiseIssue": true,
+    "suggestEdit": true
+  },
+  "analytics": {
+    "ga4": {
+      "measurementId": "GA4_MEASUREMENT_ID"
+    }
+  },
   "topbarCtaButton": {
     "name": "Dashboard",
     "url": "https://dashboard.particle.network/#/login"
   },
   "repository": {
     "url": "https://github.com/TABASCOatw/particle-network-mintlify"
-  },    "feedback": {
-    "thumbsRating": true,
-    "raiseIssue": true,
-    "suggestEdit": true
   },
   "topbarLinks": [
     {
@@ -103,7 +109,10 @@
     },
     {
       "group": "MISCELLANEOUS",
-      "pages": ["landing/more/audits", "landing/more/assets"]
+      "pages": [
+        "landing/more/audits",
+        "landing/more/assets"
+      ]
     },
     {
       "group": "TUTORIALS & DEMOS",
@@ -123,7 +132,10 @@
     },
     {
       "group": "GETTING STARTED",
-      "pages": ["resources/overview", "resources/network-coverage"]
+      "pages": [
+        "resources/overview",
+        "resources/network-coverage"
+      ]
     },
     {
       "group": "QUICKSTART: WALLET ABSTRACTION",
@@ -204,7 +216,6 @@
             "resources/integrations/partners/alchemy",
             "resources/integrations/partners/openfort",
             "resources/integrations/partners/biconomy",
-
             "resources/integrations/partners/bob"
           ]
         }
@@ -212,7 +223,9 @@
     },
     {
       "group": "APIs & SDKs",
-      "pages": ["api-reference/introduction"]
+      "pages": [
+        "api-reference/introduction"
+      ]
     },
     {
       "group": "PARTICLE AUTH",
@@ -227,7 +240,10 @@
         },
         {
           "group": "SDKs (Desktop)",
-          "pages": ["api-reference/auth/desktop-sdks/web", "api-reference/auth/desktop-sdks/unity"]
+          "pages": [
+            "api-reference/auth/desktop-sdks/web",
+            "api-reference/auth/desktop-sdks/unity"
+          ]
         },
         {
           "group": "SDKs (Mobile)",
@@ -242,7 +258,9 @@
         },
         {
           "group": "SDKs (Multi-platform)",
-          "pages": ["api-reference/auth/multi/unreal"]
+          "pages": [
+            "api-reference/auth/multi/unreal"
+          ]
         }
       ]
     },
@@ -252,7 +270,9 @@
         "api-reference/connect/introduction",
         {
           "group": "SDKs (Desktop)",
-          "pages": ["api-reference/connect/desktop/web"]
+          "pages": [
+            "api-reference/connect/desktop/web"
+          ]
         },
         {
           "group": "SDKs (Mobile)",
@@ -272,7 +292,9 @@
         "api-reference/wallet/introduction",
         {
           "group": "SDKs (Desktop)",
-          "pages": ["api-reference/wallet/desktop/web"]
+          "pages": [
+            "api-reference/wallet/desktop/web"
+          ]
         },
         {
           "group": "SDKs (Mobile)",
@@ -292,7 +314,9 @@
         "api-reference/btc/introduction",
         {
           "group": "SDKs (Desktop)",
-          "pages": ["api-reference/btc/desktop/web"]
+          "pages": [
+            "api-reference/btc/desktop/web"
+          ]
         },
         {
           "group": "BTC Connect RPC",
@@ -387,7 +411,9 @@
         },
         {
           "group": "SDKs (Desktop)",
-          "pages": ["api-reference/aa/sdks/desktop/web"]
+          "pages": [
+            "api-reference/aa/sdks/desktop/web"
+          ]
         },
         {
           "group": "SDKs (Mobile)",
@@ -403,11 +429,16 @@
     },
     {
       "group": "DEBUGGING",
-      "pages": ["api-reference/debug/sdk", "api-reference/debug/api"]
+      "pages": [
+        "api-reference/debug/sdk",
+        "api-reference/debug/api"
+      ]
     },
     {
       "group": "CHANGELOG",
-      "pages": ["changelog/logs"]
+      "pages": [
+        "changelog/logs"
+      ]
     }
   ],
   "footerSocials": {

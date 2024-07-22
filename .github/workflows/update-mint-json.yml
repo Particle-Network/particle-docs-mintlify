@@ -1,0 +1,42 @@
+name: Update mint.json with GA4 Measurement ID
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  update-mint-json:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+
+      - name: Install jq
+        run: sudo apt-get install jq
+
+      - name: Update mint.json with GA4 Measurement ID
+        run: |
+          if [ -z "$GA4_MEASUREMENT_ID" ]; then
+            echo "GA4_MEASUREMENT_ID is not set"
+            exit 1
+          fi
+          jq '.analytics.ga4.measurementId = env.GA4_MEASUREMENT_ID' mint.json > mint.json.tmp
+          mv mint.json.tmp mint.json
+        env:
+          GA4_MEASUREMENT_ID: ${{ secrets.GA4_MEASUREMENT_ID }}
+
+      - name: Commit and push changes
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git add mint.json
+          git commit -m 'Update GA4 measurement ID in mint.json'
+          git push
