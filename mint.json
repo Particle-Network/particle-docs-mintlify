@@ -16,6 +16,10 @@
   },
   "repository": {
     "url": "https://github.com/TABASCOatw/particle-network-mintlify"
+  },    "feedback": {
+    "thumbsRating": true,
+    "raiseIssue": true,
+    "suggestEdit": true
   },
   "topbarLinks": [
     {
