@@ -307,7 +307,7 @@ This is achieved and configured via `ParticleAuthCore.Instance.Connect`. Once th
 
 | Field  | Type   | Description                                                                                              |
 |--------|--------|----------------------------------------------------------------------------------------------------------|
-| `loginType` | `LoginType` | the specific social login to be used. This can be either `.EMAIL`, `.PHONE`, `.GOOGLE`, `.FACEBOOK`, `.APPLE`, `.TWITTER`, `.DISCORD`, `.GITHUB`, `.TWITCH`, `.MICROSOFT`, `.LINKEDIN` or `JWT`.|
+| `loginType` | `LoginType` | The specific social login to be used. This can be either `.EMAIL`, `.PHONE`, `.GOOGLE`, `.FACEBOOK`, `.APPLE`, `.TWITTER`, `.DISCORD`, `.GITHUB`, `.TWITCH`, `.MICROSOFT`, `.LINKEDIN` or `JWT`.|
 | `account` | `String?` | (Optional) when `type` is set to either `.email`, `.phone`, or `.jwt`, you can use the `account` parameter to pass in an expected email, phone number, or JWT. This is optional for the former two, but required for `.jwt`. The phone number must be in E.164 format. |
 | `supportAuthTypeode`| `[SupportAuthType]`| the methods of authentication visible on the authentication popup UI. By default, this will be exclusive to the chosen social login method, although by passing in additional types, you can expand the UI to include the ability to login with those as an alternative to type. |
 | `socialLoginPrompt`| `SocialLoginPrompt?`| (Optional) either `.none`, `.consent`, or `.select_account`|
@@ -477,11 +477,11 @@ In addition to `ParticleAuthCore` for authentication and interaction with Partic
 
 | Field  | Type   | Description                                                                                              |
 |--------|--------|----------------------------------------------------------------------------------------------------------|
-| `from` | `string` | the user's public address|
-| `contractAddress` | `string` | the contract address|
-| `methodName` | `string` | the method name that defined in the contract, add prefix `custom_`, like `custom_balanceOf`, `custom_mint`|
-| `parameters` | `List<object>` | the method's parameters|
-| `abiJsonString` | `string?` | the method's abi json string|
+| `from` | `string` | The user's public address|
+| `contractAddress` | `string` | The contract address|
+| `methodName` | `string` | The method name that defined in the contract, add prefix `custom_`, like `custom_balanceOf`, `custom_mint`|
+| `parameters` | `List<object>` | The method's parameters|
+| `abiJsonString` | `string?` | The method's abi json string|
 | `gasFeeLevel` | `GasFeeLevel` | (Optional) the gas fee level, `High`, `Medium` or `Low`, default is `High`|
 
 ```csharp C#
@@ -498,11 +498,11 @@ var transaction = await EvmService.WriteContract(from, contractAddress, methodNa
 
 | Field  | Type   | Description                                                                                              |
 |--------|--------|----------------------------------------------------------------------------------------------------------|
-| `from` | `string` | the user's public address|
-| `contractAddress` | `string` | the contract address|
-| `methodName` | `string` | the method name that defined in the contract, add prefix `custom_`, like `custom_balanceOf`, `custom_mint`|
-| `parameters` | `List<object>` | the method's parameters|
-| `abiJsonString` | `string?` | the method's abi json string|
+| `from` | `string` | The user's public address|
+| `contractAddress` | `string` | The contract address|
+| `methodName` | `string` | The method name that defined in the contract, add prefix `custom_`, like `custom_balanceOf`, `custom_mint`|
+| `parameters` | `List<object>` | The method's parameters|
+| `abiJsonString` | `string?` | The method's abi json string|
 
 
 ```csharp C#
@@ -522,10 +522,10 @@ var result = (string)JObject.Parse(rpcResult)["result"];
 
 | Field         | Type          | Description                                                      |
 | ------------- | ------------- | ---------------------------------------------------------------- |
-| `from`        | `string`      | the user's public address.                                       |
-| `data`        | `string`      | the transaction's data.                                          |
-| `value`       | `BigInteger`  | the native amount.                                               |
-| `to`          | `String`      | the parameters of this method.                                   |
+| `from`        | `string`      | The user's public address.                                       |
+| `data`        | `string`      | The transaction's data.                                          |
+| `value`       | `BigInteger`  | The native amount.                                               |
+| `to`          | `String`      | The parameters of this method.                                   |
 | `gasFeeLevel` | `GasFeeLevel` | (Optional) the gas fee level, `High`, `Medium` or `Low`, default is `High`. |
 
 

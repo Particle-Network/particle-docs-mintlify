@@ -225,7 +225,7 @@ Finally, you'll need to edit your Podfile to ensure `particle_auth_core` is prop
 
 Before using the full extent of the SDK, you'll need to initialize it with `init`, passing in specific chain in which you intend to primary onboard to within Particle's Wallet-as-a-Service. This is represented as an object containing chain info (often derived from `ChainInfo.{Chain}`).
 
-```dart Dart
+```dart
 // set the project info, get it from dashboard.
 ParticleInfo.set(projectId, clientKey);
 // inititilze ParticleAuth and ParticleAuthCore.
@@ -241,25 +241,25 @@ This is achieved and configured through `ParticleAuthCore.connect`. Once this me
 
 `ParticleAuthCore.connect` takes the following parameters:
 
-| Field              | Type                     | Description  |
-| ------------------ | ------------------------ | -------------------------------------------- |
-| `loginType`        | `LoginType`              | the specific social login to be used. This can be either `.email`, `.phone`, `.google`, `.apple`, `.jwt`, `.facebook`, `.twitter`, `.discord`, `.github`, `.twitch`, `.microsoft` or `linkedin`.                                                                                 |
+| Field              | Type                     | Description                                                                                                                                                                                                                                                                      |
+| ------------------ | ------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `loginType`        | `LoginType`              | The specific social login to be used. This can be either `.email`, `.phone`, `.google`, `.apple`, `.jwt`, `.facebook`, `.twitter`, `.discord`, `.github`, `.twitch`, `.microsoft` or `linkedin`.                                                                                 |
 | `account`          | `String?`                | (Optional) when `type` is set to either `.email`, `.phone`, or `.jwt`, you can use the `account` parameter to pass in an expected email, phone number, or JWT. This is optional for the former two, but required for `.jwt`. The phone number must be in E.164 format.           |
-| `prompt`           | `SocialLoginPrompt?`     | (Optional) either `.none`, `.consent`, or `.select_account` |
-| `loginPageConfig`  | `LoginPageConfig?`       | (Optional) to customize the UI page, contains project name, icon and description. |
-| `supportAuthTypes` | `List<SupportAuthType>?` | the methods of authentication visible on the authentication popup UI. By default, this will be exclusive to the chosen social login method, although by passing in additional types, you can expand the UI to include the ability to login with those as an alternative to type. |
+| `prompt`           | `SocialLoginPrompt?`     | (Optional) either `.none`, `.consent`, or `.select_account`                                                                                                                                                                                                                      |
+| `loginPageConfig`  | `LoginPageConfig?`       | (Optional) to customize the UI page, contains project name, icon and description.                                                                                                                                                                                                |
+| `supportAuthTypes` | `List<SupportAuthType>?` | The methods of authentication visible on the authentication popup UI. By default, this will be exclusive to the chosen social login method, although by passing in additional types, you can expand the UI to include the ability to login with those as an alternative to type. |
 
-```dart Dart
+```dart
 ParticleAuthCore.connect(LoginType.google, prompt: SocialLoginPrompt.select_account);
 
 ParticleAuthCore.connect(LoginType.email, supportAuthTypes: SupportAuthType.values, prompt: SocialLoginPrompt.select_account);
 ```
 
-### Is connected
+### Is Connected
 
 There may be scenarios in which knowing whether a current session (a user) is currently logged in with Particle Auth or not is important. This is achieved through `ParticleAuthCore.isConnected` (server-side check).
 
-```dart Dart
+```dart
 await ParticleAuthCore.isConnected();
 ```
 
@@ -267,7 +267,7 @@ await ParticleAuthCore.isConnected();
 
 To exit an existing session (logging a user out), you can simply call `ParticleAuthCore.disconnect` .
 
-```dart Dart
+```dart
 await ParticleAuthCore.disconnect();
 ```
 
@@ -283,7 +283,7 @@ final userInfo = await ParticleAuthCore.getUserInfo();
 
 To retrieve the address, you can call `Evm.getAddress` or `Solana.getAddress`. 
 
-```dart Dart
+```dart
 final address = await Evm.getAddress();
 final address = await Solana.getAddress();
 ```
@@ -295,9 +295,9 @@ To throw a standard message for signature (meaning a user will be prompted in-UI
 
 | Field     | Type     | Description                                                                       |
 | --------- | -------- | --------------------------------------------------------------------------------- |
-| `message` | `String` | on Evm requires a hexadeciaml string, on Solana, requires a UTF-8/readable string |
+| `message` | `String` | On Evm requires a hexadeciaml string, on Solana, requires a UTF-8/readable string |
 
-```dart Dart
+```dart
 final messageHex = "0x${StringUtils.toHexString("Hello Particle")}";
 String signature = await Evm.personalSign(messageHex);
 String signature = await Evm.personalSignUnique(messageHex);
@@ -312,9 +312,9 @@ This is a **Solana-specific** method for signing a transaction without sending i
 
 | Field         | Type     | Description              |
 | ------------- | -------- | ------------------------ |
-| `transaction` | `String` | requires a base58 string |
+| `transaction` | `String` | Requires a base58 string |
 
-```dart Dart
+```dart
 final signature = await Solana.signTransaction(transaction);
 ```
 
@@ -324,10 +324,10 @@ Following the aforementioned method, you can use `Solana.signAllTransactions` to
 
 | Field          | Type           | Description                           |
 | -------------- | -------------- | ------------------------------------- |
-| `transactions` | `List<String>` | each element requires a base58 string |
+| `transactions` | `List<String>` | Each element requires a base58 string |
 
 
-```dart Dart
+```dart
 List<String> signatures = await Solana.signAllTransactions(transactions);
 ```
 
@@ -337,24 +337,24 @@ For more generalized transaction sending, `Evm.sendTransaction`and `Solana.signA
 
 | Field         | Type     | Description                                                               |
 | ------------- | -------- | ------------------------------------------------------------------------- |
-| `transaction` | `String` | on Evm requires a hexadeciaml string, on Solana, requires a base58 string |
+| `transaction` | `String` | On Evm requires a hexadeciaml string, on Solana, requires a base58 string |
 
 
-```dart Dart
+```dart
 final signature = await Evm.sendTransaction(transaction);
 final signature = await Solana.signAndSendTransaction(transaction);
 ```
 
 ### Sign Typed Data
 
-`Evm.signTypedData` is an **EVM-specific** method for signing structured (typed) data. For more information on `signTypedData`, see the [Web (JavaScript/TypeScript)](/api-reference/auth/desktop-sdks/web) page.
+`Evm.signTypedData` is an **EVM-specific** method for signing structured (typed) data.
 
 | Field     | Type     | Description                   |
 | --------- | -------- | ----------------------------- |
-| `message` | `String` | requires a hexadeciaml string |
+| `message` | `String` | Requires a hexadeciaml string |
 
 
-```dart Dart
+```dart
 // your typed data is a json string
 String typedDataHex = "0x${StringUtils.toHexString(typedData)}";
 
@@ -366,7 +366,7 @@ String signature = await Evm.signTypedDataUnique(typedDataHex);
 
 If you'd like to set the chain being utilized (after initially defining this in `init`), you can call either `ParticleBase.setChainInfo` (synchronous) or ` ParticleAuthCore.switchChain` (asynchronous), often derived from `ChainInfo.{Chain}`.
 
-```dart Dart
+```dart
 await ParticleBase.setChainInfo(ChainInfo.Ethereum);
 
 await ParticleAuthCore.switchChain(ChainInfo.Ethereum);
@@ -380,7 +380,7 @@ For the retrieval of the currently selected (primary) chain within an active ses
 - `id`, the ID of the chain in question (ex: 11155111).
 - `network`, the specific network corresponding to the chain ID (ex: Sepolia)
 
-```dart Dart
+```dart
 final chainInfo = await ParticleBase.getChainInfo();
 int id = chainInfo.id;
 String name = chainInfo.name;
@@ -393,17 +393,17 @@ Another important component of integrating the Particle Auth SDK (Wallet-as-a-Se
 
 Within the SDK, you can configure the frequency (or requirement) a user is asked to configure security settings. This is controlled with `ParticleBase.setSecurityAccountConfig` and passing in a `SecurityAccountConfig` object with two parameters:
 
-| Field                                  | Type  | Description                                     |
-| -------------------------------------- | ----- | ----------------------------------------------- |
-| `promptSettingWhenSign`                | `int` | security account config prompts (default is 1). |
-| `promptMasterPasswordSettingWhenLogin` | `int` | master password prompts (default is 0).         |
+| Field                                  | Type  | Description                                         |
+| -------------------------------------- | ----- | --------------------------------------------------- |
+| `promptSettingWhenSign`                | `int` | The security account config prompts (default is 1). |
+| `promptMasterPasswordSettingWhenLogin` | `int` | The master password prompts (default is 0).         |
 
 - `0` means a prompt is never shown requesting this setting.
 - `1` means a prompt is shown only upon the first startup.
 - `2` means a prompt is shown every time.
 - `3` means force set payment password before sign.
 
-```dart Dart
+```dart
 final config = SecurityAccountConfig(1, 2);
 ParticleBase.setSecurityAccountConfig(config);
 ```
@@ -412,7 +412,7 @@ ParticleBase.setSecurityAccountConfig(config);
 
 Following the above, if you'd like to force the opening of account/security settings (in-UI), you can do so with `ParticleAuthCore.openAccountAndSecurity`.
 
-```dart Dart
+```dart
 await ParticleAuthCore.openAccountAndSecurity();
 ```
 
@@ -422,7 +422,7 @@ Similarly to the `isConnected` function covered prior, there are various scenari
 
 With the built-in `ParticleAuthCore.hasMasterPassword`, `ParticleAuthCore.hasPaymentPassword`, and `ParticleAuthCore.changeMasterPassword` methods.
 
-```dart Dart
+```dart
 await ParticleAuthCore.hasMasterPassword();
 await ParticleAuthCore.hasPaymentPassword();
 await ParticleAuthCore.changeMasterPassword();
@@ -436,17 +436,17 @@ In addition to `ParticleAuthCore` for authentication and interaction with Partic
 
 `EvmService.writeContract` allows you to execute a write contract call defined by a specific method and set of parameters. This requires a corresponding ABI, contract address, and requester public address.
 
-| Field             | Type           | Description                                                                |
-| ----------------- | -------------- | -------------------------------------------------------------------------- |
-| `address`         | `String`       | the user's public address.                                                 |
-| `contractAddress` | `String`       | the contract address.                                                      |
-| `methodName`      | `String`       | the method name that defined in the contract, such as `mint`, `balanceOf`. |
-| `parameters`      | `List<Object>` | the parameters of this method.                                             |
-| `abiJsonString`   | `String`       | the abi json string of this method.                                        |
-| `gasFeeLevel`     | `GasFeeLevel`  | (Optional) the gas fee level, `high`, `medium` or `low`, default is `high`.           |
+| Field             | Type           | Description                                                                 |
+| ----------------- | -------------- | --------------------------------------------------------------------------- |
+| `address`         | `String`       | The user's public address.                                                  |
+| `contractAddress` | `String`       | The contract address.                                                       |
+| `methodName`      | `String`       | The method name that defined in the contract, such as `mint`, `balanceOf`.  |
+| `parameters`      | `List<Object>` | The parameters of this method.                                              |
+| `abiJsonString`   | `String`       | The abi json string of this method.                                         |
+| `gasFeeLevel`     | `GasFeeLevel`  | (Optional) the gas fee level, `high`, `medium` or `low`, default is `high`. |
 
 
-```dart Dart
+```dart
 String contractAddress = "your contract address";
 String methodName = "your method name"; // this is your contract method name, like balanceOf, mint.
 List<Object> params = <Object>["0x1"]; // this is the method params, each parameter requires a hexadecimal string.
@@ -464,13 +464,13 @@ final result = EvmService.writeContract(publicAddress, contractAddress, methodNa
 
 | Field             | Type           | Description                                                                |
 | ----------------- | -------------- | -------------------------------------------------------------------------- |
-| `address`         | `String`       | the user's public address.                                                 |
-| `contractAddress` | `String`       | the contract address.                                                      |
-| `methodName`      | `String`       | the method name that defined in the contract, such as `mint`, `balanceOf`. |
-| `parameters`      | `List<Object>` | the parameters of this method.                                             |
-| `abiJsonString`   | `String`       | the abi json string of this method.                                        |
+| `address`         | `String`       | The user's public address.                                                 |
+| `contractAddress` | `String`       | The contract address.                                                      |
+| `methodName`      | `String`       | The method name that defined in the contract, such as `mint`, `balanceOf`. |
+| `parameters`      | `List<Object>` | The parameters of this method.                                             |
+| `abiJsonString`   | `String`       | The abi json string of this method.                                        |
 
-```dart Dart
+```dart
 String publicAddress = "your public address";
 String contractAddress = "your contract address"; 
 String methodName ="your method name"; // ex: balanceOf, mint
@@ -486,30 +486,30 @@ final result = await EvmService.readContract(publicAddress, contractAddress, met
 
 `EvmService.createTransaction` facilitates the construction of a transaction object derived from the standard `from`, `to` (`receiver` in this example), `amount` (`value`), and `data` fields. This transaction, once constructed with `EvmService.createTransaction`, can be passed for in-UI proposal with `ParticleAuthCore.sendTransaction`.
 
-| Field         | Type          | Description                                                      |
-| ------------- | ------------- | ---------------------------------------------------------------- |
-| `from`        | `String`      | the user's public address.                                       |
-| `data`        | `String`      | the transaction's data.                                          |
-| `value`       | `BigInt`      | the native amount.                                               |
-| `to`          | `String`      | the parameters of this method.                                   |
+| Field         | Type          | Description                                                                 |
+| ------------- | ------------- | --------------------------------------------------------------------------- |
+| `from`        | `String`      | The user's public address.                                                  |
+| `data`        | `String`      | The transaction's data.                                                     |
+| `value`       | `BigInt`      | The native amount.                                                          |
+| `to`          | `String`      | If you send a erc20, erc721, erc1155 or interact with a contract, this is the contract address, if you send native, this is receiver address.                                              |
 | `gasFeeLevel` | `GasFeeLevel` | (Optional) the gas fee level, `high`, `medium` or `low`, default is `high`. |
 
-```dart Dart
+```dart
 String from = "your public address";
-String receiver = "to address"  
+String receiver = "receiver address"  
 String contractAddress = "contract address"
 BigInt amount = BigInt.from(1000000000000000);
 String to = contractAddress;
 final data =  await EvmService.erc20Transfer(contractAddress, receiver, amount);
 
-final transaction = await EvmService.createTransaction(from, data, BigInt.from(0), to, gasFeeLevel: GasFeeLevel.high);
+final transaction = await EvmService.createTransaction(from, data, amount, to, gasFeeLevel: GasFeeLevel.high);
 ```
 
 ### Estimate Gas
 
 Given a standard transaction structure (detached set of values, as shown below), gas estimations can be ran to simulate and retrieve the volume of gas to be consumed by a specified transaction (wrapper for `eth_estimateGas`). This is done through `EvmService.ethEstimateGas`.
 
-```dart Dart
+```dart
 final gasLimit = await EvmService.ethEstimateGas(from, to, value, data);
 ```
 
@@ -517,39 +517,51 @@ final gasLimit = await EvmService.ethEstimateGas(from, to, value, data);
 
 To retrieve categorized gas price suggestions (3 categories scaling from low to high) based upon current network conditions, you can call `EvmService.suggestedGasFees`.
 
-```dart Dart
+```dart
 final gasFees = await EvmService.suggestedGasFees();
 ```
 
 ### Get Tokens and NFTs
 
-`EvmService` also extends to Data API methods such as `getTokensAndNFTs`, which returns a highly detailed JSON list of ERC20 tokens and ERC721 NFTs belonging to a specified address. This is accessible through `EvmService.getTokensAndNFTs`, passing in the public address to retrieve the tokens and NFTs of.
+`EvmService` also extends to Data API methods such as `getTokensAndNFTs`, which returns a highly detailed JSON list of ERC20 tokens and ERC721 NFTs belonging to a specified address. This is accessible through `EvmService.getTokensAndNFTs`, passing in the public address to retrieve the tokens and NFTs of, also you can retrieve tokens from `getTokens` of NFTs from `getNFTs`
 
-```dart Dart
-final result = await EvmService.getTokensAndNFTs(publicAddress);
+| Field  | Type   | Description                                                                                              |
+|--------|--------|----------------------------------------------------------------------------------------------------------|
+| `address` | `String` | The user's public address.|
+| `tokenAddresses` | `List<String>` | The specific tokens' addresses |
+
+```dart
+final result = await EvmService.getTokensAndNFTs(publicAddress, []);
+final result = await EvmService.getTokens(publicAddress, []);
+final result = await EvmService.getNFTs(publicAddress, []);
 ```
 
 ### Get Transactions by Address
 
 Similar to the former method, `EvmService.getTransactionsByAddress` enables the retrieval of a detailed JSON response containing a complete list of transactions involving a specified address.
 
-```dart Dart
+```dart
 final result = await EvmService.getTransactionsByAddress(publicAddress);
 ```
 
-### Get price
+### Get Price
 
 To retrieve token price based upon current network conditions, you can call `EvmService.getPrice`.
 
-```dart Dart
+| Field  | Type   | Description                                                                                              |
+|--------|--------|----------------------------------------------------------------------------------------------------------|
+| `tokenAddresses` | `List<String>` | The tokens's addresses, for native token, you can pass `"native"` |
+| `currencies` | `List<String>` | The price unity, such as `"usd"` |
+
+```dart
 final result = await EvmService.getPrice(tokenAddresses, currencies);
 ```
 
-### Basic rpc method
+### Basic Rpc Method
 
 Call any basic EVM rpc method through `EvmService.rpc`
 
-```dart Dart
+```dart
 final result = await EvmService.rpc(method, params);
 ```
 
@@ -561,7 +573,13 @@ In addition to `ParticleAuth` for authentication and interaction with Particle's
 
 `SolanaService` also extends to Data API methods such as `getTokensAndNFTs`, which returns a highly detailed JSON list of SPL tokens and NFTs belonging to a specified address. This is accessible through `SolanaService.getTokensAndNFTs`, passing in the public address to retrieve the tokens and NFTs of.
 
-```dart Dart
+
+| Field  | Type   | Description                                                                                              |
+|--------|--------|----------------------------------------------------------------------------------------------------------|
+| `address` | `String` | The user's public address.|
+| `parseMetadataUri` | `bool` | if parse the nft meta data. |
+
+```dart
 final result = await SolanaService.getTokensAndNFTs(publicAddress, true);
 ```
 
@@ -577,7 +595,7 @@ These transactions, once constructed, can be passed for in-UI proposal with `Sol
 
 <CodeGroup>
 
-```dart SOL
+```dart Send sol
 final transaction = SerializeSOLTransaction();  
 transaction.lamports = TestAccount.solana.amount.toInt();  
 transaction.receiver = TestAccount.solana.publicAddress;  
@@ -587,7 +605,7 @@ final result = await SolanaService.serializeSolTransaction(transaction);
 final serializedTransaction = result["transaction"]["serialized"];
 ```
 
-```dart Spl-Token
+```dart Send spl token
 final transaction = SerializeSplTokenTransaction();
 transaction.amount = TestAccount.solana.amount.toInt();
 transaction.receiver = TestAccount.solana.publicAddress;
@@ -608,35 +626,46 @@ final serializedTransaction = result["transaction"]["serialized"];
 
 </CodeGroup>
 
-### Get price
+### Get Price
 
 To retrieve token price based upon current network conditions, you can call `SolanaService.getPrice`.
 
-```dart getPrice
+| Field  | Type   | Description                                                                                              |
+|--------|--------|----------------------------------------------------------------------------------------------------------|
+| `tokenAddresses` | `List<String>` | The tokens's addresses, for native token, you can pass `"native"` |
+| `currencies` | `List<String>` | The price unity, such as `"usd"` |
+
+
+```dart
 final result = await SolanaService.getPrice(tokenAddresses, currencies);
 ```
 
-### Get transactions by address
+### Get Transactions by address
 
 To retrieve transactions from a address, you can call `SolanaService.getTransactionsByAddress`.
 
-```dart getTransactionsByAddress
+```dart
 final result = await SolanaService.getTransactionsByAddress(address);
 ```
 
-### Get token by token address
+### Get Token by Token Address
 
 To obtain the balance of a specified token at a specified address, you can call `SolanaService.getTokenByTokenAddresses`
 
-```dart getTokenByTokenAddresses
+| Field  | Type   | Description                                                                                              |
+|--------|--------|----------------------------------------------------------------------------------------------------------|
+| `address` | `String` | The user's public address.|
+| `tokenAddresses` | `List<String>` | The tokens' addresses |
+
+```dart
 await SolanaService.getTokenByTokenAddresses(address, tokenAddresses);
 ```
 
-### Basic rpc method
+### Basic Rpc Method
 
 Call any basic Solana rpc method through `SolanaService.rpc`
 
-```dart rpc
+```dart
 await SolanaService.rpc(method, params);
 ```
 
@@ -646,9 +675,9 @@ You can forcibly set a specific appearance to be used within the UI using `Parti
 
 | Field        | Type         | Description                                                                          |
 | ------------ | ------------ | ------------------------------------------------------------------------------------ |
-| `appearance` | `Appearance` | the specific appearance to be used. This can be either `.system`, `.dark`, `.light`. |
+| `appearance` | `Appearance` | The specific appearance to be used. This can be either `.system`, `.dark`, `.light`. |
 
-```dart Dart
+```dart
 // this is the default setting  
 ParticleBase.setAppearance(Appearance.system);
 // dark  
@@ -665,9 +694,9 @@ You can forcibly set a specific language to be used within the UI using `Particl
 
 | Field      | Type       | Description                                                                                       |
 | ---------- | ---------- | ------------------------------------------------------------------------------------------------- |
-| `language` | `Language` | the specific language to be used. This can be either `.en`, `.ja`, `.zh_hans`, `.zh_hant`, `.ko`. |
+| `language` | `Language` | The specific language to be used. This can be either `.en`, `.ja`, `.zh_hans`, `.zh_hant`, `.ko`. |
 
-```dart Dart
+```dart
 ParticleBase.setLanguage(Language.en)
 
 ParticleBase.getLanguage()

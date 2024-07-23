@@ -86,17 +86,17 @@ To begin the initialization process, you must head over to the [Particle dashboa
 
 ### Installation
 
-Now that you've created a project and an application within the [Particle dashboard](https://dashboard.particle.network), you'll need to go ahead and install the Particle Auth Core SDK using CocoaPads (assuming you meet the previously mentioned minimum version requirements).
+Now that you've created a project and an application within the [Particle dashboard](https://dashboard.particle.network), you'll need to go ahead and install the Particle Auth SDK using CocoaPads (assuming you meet the previously mentioned minimum version requirements).
 
 1. If you don't already have a Podfile, create one from the root of your project directory with:
 
-   ```
+   ```shell Terminal
    pod init
    ```
 
 2. Within the newly created Podfile, add the `ParticleAuthCore` pod.
 
-   ```
+   ```ruby Podfile
    pod 'ParticleAuthCore'
    pod 'ParticleMPCCore'
    pod 'Thresh'
@@ -104,7 +104,7 @@ Now that you've created a project and an application within the [Particle dashbo
 
 3. Install the pods, then open your .xcworkspace file to see the project in Xcode.
 
-   ```
+   ```shell Terminal
    pod install --repo-update
    open your-project.xcworkspace
    ```
@@ -133,7 +133,7 @@ Now that you've configured your [Particle dashboard](https://dashboard.particle.
 
 2. Paste the following text into this file:
 
-   ```xml XML
+   ```xml ParticleNetwork-Info.plist
    <?xml version="1.0" encoding="UTF-8"?>
    <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
    <plist version="1.0">
@@ -152,23 +152,23 @@ Now that you've configured your [Particle dashboard](https://dashboard.particle.
 
 4. Import the `ParticleNetworkBase` module in your `AppDelegate.swift` file.
 
-   ```swift Swift
+   ```swift AppDelegate.swift
    import ParticleNetworkBase
    ```
 
 5. Initialize the ParticleNetwork service, which is typically located within your app's `application:didFinishLaunchingWithOptions` method:
 
-   ```swift Swift
+   ```swift AppDelegate.swift
    // Set a primary network, derived from ChainInfo
    // For release, this can be set to DevEnvironment.production
    ParticleNetwork.initialize(config: .init(chainInfo: .ethereum, devEnv: .debug))
    ```
 6. Add Privacy - Face ID Usage Description to your info.plist file, head over to your `Info.plist` file and include the following snippet:
 
-```xml
-<key>NSFaceIDUsageDescription</key>
-  <string>We use Face ID for secure access to the app.</string>
-```
+   ```xml Info.plist
+   <key>NSFaceIDUsageDescription</key>
+     <string>We use Face ID for secure access to the app.</string>
+   ```
 
 ### Switch Chain
 
@@ -176,10 +176,10 @@ To switch the used chain after initial configuration, `auth.switchChain` is used
 
 | Field       | Type       | Description                                                          |
 | ----------- | ---------- | -------------------------------------------------------------------- |
-| `chainInfo` | `ChainIno` | a chainInfo object, can be derived from `ParticleNetwork.ChainInfo`. |
+| `chainInfo` | `ChainInfo` | A chainInfo object, can be derived from `ParticleNetwork.ChainInfo`. |
 
 
-```swift Swift
+```swift
 let auth = Auth()
 let result = try await auth.switchChain(chainInfo: .ethereum)
 
@@ -195,19 +195,19 @@ ParticleNetwork.setChainInfo(.ethereum)
 
 | Field               | Type                 | Description                                                                                                                                                                                                                                                            |
 | ------------------- | -------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `type`              | `LoginType`          | the specific social login to be used. This can be either `.email`, `.phone`, `.google`, `.apple`, `.jwt`, `.facebook`, `.twitter`, `.discord`, `.github`, `.twitch`, `.microsoft` or `linkedin`.                                                                       |
+| `type`              | `LoginType`          | The specific social login to be used. This can be either `.email`, `.phone`, `.google`, `.apple`, `.jwt`, `.facebook`, `.twitter`, `.discord`, `.github`, `.twitch`, `.microsoft` or `linkedin`.                                                                       |
 | `account`           | `String?`            | (Optional) when `type` is set to either `.email`, `.phone`, or `.jwt`, you can use the `account` parameter to pass in an expected email, phone number, or JWT. This is optional for the former two, but required for `.jwt`. The phone number must be in E.164 format. |
 | `code`              | `String?`            | (Optional) when `type` is set to either `.email` pr `.phone`, you can use the code parameter to pass the verification code.                                                                                                                                            |
 | `socialLoginPrompt` | `SocialLoginPrompt?` | (Optional) either `.none`, `.consent`, or `.select_account`                                                                                                                                                                                                            |
 
 
-```swift Swift
+```swift
 // connect with Google
 let userInfo = try await auth.connect(type: .google, socialLoginPrompt: .selectAccount)
 
 // send verification code to email or phone number, the phone number must be in E.164 format.
-var result = try await self.auth.sendEmailCode(email: "user@example.com")
-var result = try await self.auth.sendPhoneCode(email: "+11234567890")
+var result = try await auth.sendEmailCode(email: "user@example.com")
+var result = try await auth.sendPhoneCode(email: "+11234567890")
 
 // connect with email or phone, the phone number must be in E.164 format.
 let userInfo = try await auth.connect(type: .email, account: "user@example.com", code: "xxxxxx")
@@ -222,31 +222,35 @@ let userInfo = try await auth.connect(type: .jwt, account: jwt)
 
 | Field                | Type                 | Description                                                                                                                                                                                                                                                                      |
 | -------------------- | -------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `type`               | `LoginType`          | the specific social login to be used. This can be either `.email`, `.phone`, `.google`, `.apple`, `.jwt`, `.facebook`, `.twitter`, `.discord`, `.github`, `.twitch`, `.microsoft` or `linkedin`.                                                                                 |
+| `type`               | `LoginType`          | The specific social login to be used. This can be either `.email`, `.phone`, `.google`, `.apple`, `.jwt`, `.facebook`, `.twitter`, `.discord`, `.github`, `.twitch`, `.microsoft` or `linkedin`.                                                                                 |
 | `account`            | `String?`            | (Optional) when `type` is set to either `.email`, `.phone`, or `.jwt`, you can use the `account` parameter to pass in an expected email, phone number, or JWT. This is optional for the former two, but required for `.jwt`. The phone number must be in E.164 format.           |
-| `supportAuthTypeode` | `[SupportAuthType]`  | the methods of authentication visible on the authentication popup UI. By default, this will be exclusive to the chosen social login method, although by passing in additional types, you can expand the UI to include the ability to login with those as an alternative to type. |
-| `socialLoginPrompt`  | `SocialLoginPrompt?` | (Optional) either `'.none'`, `'.consent'`, or `'.select_account'`                                                                                                                                                                                                                |
+| `supportAuthTypeode` | `[SupportAuthType]`  | The methods of authentication visible on the authentication popup UI. By default, this will be exclusive to the chosen social login method, although by passing in additional types, you can expand the UI to include the ability to login with those as an alternative to type. |
+| `socialLoginPrompt`  | `SocialLoginPrompt?` | (Optional) either `'.none'`, `'.consent'`, or `'.selectAccount'`                                                                                                                                                                                                                |
 | `config`             | `LoginPageConfig?`   | (Optional) to customize the UI page, contains project name, icon and description.                                                                                                                                                                                                |
 
 
-After connect is successful, detailed user information can be retrieved by calling `auth.getUserInfo` . 
+```swift
+var userInfo = try await auth.presentLoginPage(type: type, account: text, socialLoginPrompt: .selectAccount, config: config)
+```
 
-### Is Login
+After connect is successful, detailed user information can be retrieved by calling `auth.getUserInfo`.
+
+### Is Connected
 
 `auth.getUserInfo() != nil` returns a Boolean based upon the current state of a session (whether or not a user is currently logged into an account). Additionally, an adjacent method, `auth.isConnected` can be called and subscribed to, returning `userInfo` upon a status of `true`.
 
-```swift Swift
+```swift
 // local side
 let result = auth.getUserInfo() != nil
 // server side
 let result = try await auth.isConnected()
 ```
 
-### Logout
+### Disconnect
 
 `auth.disconnect` will simply log a user out of their existing session, assuming they're logged in. 
 
-```swift Swift
+```swift
 let result = try await auth.disconnect()
 ```
 
@@ -254,17 +258,17 @@ let result = try await auth.disconnect()
 
 Once a user has logged in, you'll have access to various methods such as `auth.getUserInfo` and `auth.evm.getAddress`to retrieve specific user details. The `getUserInfo` response will, by default, include both an associated EVM and Solana address, while `auth.evm.getAddress` will return an EVM address, `auth.solana.getAddress` will return a Solana address.
 
-```swift Swift
+```swift
 auth.getUserInfo()
 auth.evm.getAddress()
 auth.solana.getAddress()
 ```
+---
 
 ### Signatures
 
 Once `ParticleNetwork` has been initialized and a user has successfully logged in, signatures can be proposed for confirmation through a popup
 
----
 ### EVM
 ### Signing Messages (EIP191)
 
@@ -272,11 +276,11 @@ To request an EIP191 signature from a user's embedded wallet, you can use either
 
 | Field       | Type         | Description  |
 | ----------- | ------------ | ---------------------------------------------------------------- |
-| `message`   | `String`     | either a hexadecimal string starting with '0x' or a human-readable string is required. |
+| `message`   | `String`     | Either a hexadecimal string starting with '0x' or a human-readable string is required. |
 | `chainInfo` | `ChainInfo?` | (Optional) default is current chainInfo, the specific use which chain to sign          |
 
 
-```swift personalSign/signMessage(Swift)
+```swift
 let result = try await auth.evm.personalSign("This is the message that is being signed", chainInfo: nil)
 let result = try await auth.evm.personalSignUnique("This is the message that is being signed", chainInfo: nil)
 ```
@@ -287,10 +291,10 @@ To request an EIP712 signature from a user's embedded wallet, you can use either
 
 | Field       | Type         | Description                                                                   |
 | ----------- | ------------ | ----------------------------------------------------------------------------- |
-| `message`   | `String`     | either a hexadecimal string starting with "0x" or a JSON string is required.  |
+| `message`   | `String`     | Either a hexadecimal string starting with "0x" or a JSON string is required.  |
 | `chainInfo` | `ChainInfo?` | (Optional) default is current chainInfo, the specific use which chain to sign |
 
-```swift signTypedData (Swift)
+```swift
 let result = try await auth.evm.signTypedData(message, chainInfo: nil)
 let result = try await auth.evm.signTypedDataUnique(message, chainInfo: nil)
 ```
@@ -303,10 +307,10 @@ To send a transaction from a user's embedded wallet, you can use `auth.evm.sendT
 
 | Field         | Type         | Description                                                                            |
 | ------------- | ------------ | -------------------------------------------------------------------------------------- |
-| `transaction` | `String`     | a hexadecimal string starting with "0x" is required.                                   |
+| `transaction` | `String`     | A hexadecimal string starting with "0x" is required.                                   |
 | `chainInfo`   | `ChainInfo?` | (Optional) default is current chainInfo, the specific use which chain to sign and send |
 
-```swift signAndSendTransaction (Swift)
+```swift
 let result = try await auth.evm.sendTransaction(transaction, chainInfo: nil)
 ```
 
@@ -319,11 +323,11 @@ To request a signature from a user's embedded wallet, you can use `auth.solana.s
 
 | Field       | Type         | Description                                                                   |
 | ----------- | ------------ | ----------------------------------------------------------------------------- |
-| `message`   | `String`     | a base58 formatted string is required.                                        |
+| `message`   | `String`     | A base58 formatted string is required.                                        |
 | `chainInfo` | `ChainInfo?` | (Optional) default is current chainInfo, the specific use which chain to sign |
 
 
-```swift signMessage(Swift)
+```swift
 let message = Base58.encode("This is the message that is being signed".data(using: .utf8)!)
 let result = try await auth.solana.signMessage(message, chainInfo: nil)
 ```
@@ -336,10 +340,10 @@ To send a transaction from a user's embedded wallet, you can use `auth.solana.si
 
 | Field         | Type         | Description                                                                            |
 | ------------- | ------------ | -------------------------------------------------------------------------------------- |
-| `transaction` | `String`     | a base58 formatted string is required.                                                 |
+| `transaction` | `String`     | A base58 formatted string is required.                                                 |
 | `chainInfo`   | `ChainInfo?` | (Optional) default is current chainInfo, the specific use which chain to sign and send |
 
-```swift signAndSendTransaction (Swift)
+```swift
 let result = try await auth.solana.signAndSendTransaction(transaction, chainInfo: nil)
 ```
 
@@ -347,10 +351,10 @@ To sign a transaction from a user's embedded wallet, you can use `auth.solana.si
 
 | Field         | Type         | Description                                                                   |
 | ------------- | ------------ | ----------------------------------------------------------------------------- |
-| `transaction` | `String`     | a base58 formatted string is required.                                        |
+| `transaction` | `String`     | A base58 formatted string is required.                                        |
 | `chainInfo`   | `ChainInfo?` | (Optional) default is current chainInfo, the specific use which chain to sign |
 
-```swift signMessage(Swift)
+```swift
 let result = try await auth.solana.signTransaction(transaction, chainInfo: nil)
 ```
 
@@ -358,10 +362,10 @@ To sign multi transactions from a user's embedded wallet, you can use `auth.sola
 
 | Field          | Type         | Description                                                                   |
 | -------------- | ------------ | ----------------------------------------------------------------------------- |
-| `transactions` | `String`     | base58 formatted strings are required.                                        |
+| `transactions` | `String`     | Base58 formatted strings are required.                                        |
 | `chainInfo`    | `ChainInfo?` | (Optional) default is current chainInfo, the specific use which chain to sign |
 
-```swift signMessage(Swift)
+```swift
 let result = try await auth.solana.signAllTransactions(transactions, chainInfo: nil)
 ```
 
@@ -373,7 +377,7 @@ You can create en EVM transaction with class `TxData` or `FeeMarketEIP1559TxData
 
 If you'd like to force the "Account and Security" options to be opened on-screen (from which you can control payment passwords, additional accounts, and so on), then you can call `auth.openAccountAndSecurity`. Upon calling this method, a popup allowing the user to control security settings will appear.
 
-```swift Swift
+```swift
 try auth.openAccountAndSecurity()
 ```
 
@@ -387,7 +391,7 @@ By default, `promptSettingWhenSign` is set to 1, which will show the prompt upon
 
 This same logic applies to `promptMasterPasswordSettingWhenLogin`, which by default is set to 0.
 
-```swift Swift
+```swift
 ParticleNetwork.setSecurityAccountConfig(config:
   .init(promptSettingWhenSign: 1, promptMasterPasswordSettingWhenLogin: 2))
 
@@ -399,7 +403,7 @@ let securityAccountConfig = PartilceNetwork.getSecurityAccountConfig()
 
 User can set master password and payment password to protect assets, call `auth.changeMasterPassword` to set or change master password, call `auth.openAccountAndSecurity()` to set or change payment password.
 
-```swift Swift
+```swift
 // check user has master password or not  
 let result = try auth.hasMasterPassword()
 // set or change master password  
@@ -419,9 +423,9 @@ You can forcibly set a specific appearance to be used within the UI using `Parti
 
 | Field        | Type                   | Description                                                                               |
 | ------------ | ---------------------- | ----------------------------------------------------------------------------------------- |
-| `appearance` | `UIUserInterfaceStyle` | the specific appearance to be used. This can be either `.unspefified`, `.dark`, `.light`. |
+| `appearance` | `UIUserInterfaceStyle` | The specific appearance to be used. This can be either `.unspefified`, `.dark`, `.light`. |
 
-```swift Swift
+```swift
 // this is the default setting  
 ParticleNetwork.setAppearance(.unspecified)  
 // dark  
@@ -438,9 +442,9 @@ You can forcibly set a specific language to be used within the UI using `Particl
 
 | Field      | Type       | Description                                                                                       |
 | ---------- | ---------- | ------------------------------------------------------------------------------------------------- |
-| `language` | `Language` | the specific language to be used. This can be either `.en`, `.ja`, `.zh_hans`, `.zh_hant`, `.ko`. |
+| `language` | `Language` | The specific language to be used. This can be either `.en`, `.ja`, `.zh_hans`, `.zh_hant`, `.ko`. |
 
-```swift Swift
+```swift
 ParticleNetwork.setLanguage(Language.en)
 
 ParticleNetwork.getLanguage()
@@ -449,20 +453,20 @@ ParticleNetwork.getLanguage()
 
 ### Set Custom UI JSON string
 
-```swift Swift
+```swift
 // Set custom ui is pass json string  
 let jsonString = "your custom ui json string, keys should be the same with customUIConfig.json in demo"  
 Auth.loadCustomUIJsonString(jsonString)
 ```
 
-### Set fiatCoin
+### Set FiatCoin
 You can forcibly set a specific fiatCoin to be used within the UI using `ParticleNetwork.setFiatCoin`, with retrieval of the current active language facilitated by `ParticleNetwork.getFiatCoin`. By default, this is set to USD.
 
 | Field      | Type       | Description                                                                                          |
 | ---------- | ---------- | ---------------------------------------------------------------------------------------------------- |
-| `fiatCoin` | `FiatCoin` | the specific fiatCoin to be used. This can be either `.usd`, `.cny`, `.jpy`, `.hkd`, `.inr`, `.krw`. |
+| `fiatCoin` | `FiatCoin` | The specific fiatCoin to be used. This can be either `.usd`, `.cny`, `.jpy`, `.hkd`, `.inr`, `.krw`. |
 
-```swift Swift
+```swift
 ParticleNetwork.setFiatCoin(FiatCoin.usd)
 
 ParticleNetwork.getFiatCoin()
@@ -476,7 +480,7 @@ This switch will work if the following conditions are met:
 2. your account does not set payment password
 3. SecurityAccountConfig.promptSettingWhenSign is 0, you can call ParticleNetwork.setSecurityAccountConfig to update its value.
 
-```swift Swift
+```swift
 // set blind sign enable  
 Auth.setBlindEnable(true)  
 // get current blind sign enable state  

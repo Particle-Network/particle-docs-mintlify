@@ -139,7 +139,13 @@ pod 'SkeletonView', :git => 'https://github.com/SunZhiC/SkeletonView.git', :bran
 
 Beginning with `ParticleWalletAPI`, you can use Particle Wallet to directly call data API methods and retrieve information that may be relevant to the underlying account and wallet. One of these methods includes `getPrice` on either `ParticleWalletAPI.getSolanaService` or `ParticleWalletAPI.getEvmService`. `getPrice` is used for the retrieval of the real-time price of tokens defined within the methods first parameter, `addresses` (in which the native token is `"native"`), denominated in currencies listed within `currencies`. E.g.:
 
-```swift Swift
+
+| Field  | Type   | Description                                                                                              |
+|--------|--------|----------------------------------------------------------------------------------------------------------|
+| `addresses` | `[String]` | The tokens's addresses, for native token, you can pass `"native"` |
+| `currencies` | `[String]` | The price unity, such as `"usd"` |
+
+```swift
 let addresses: [String] = ["native"]
 let currencies: [String] = ["usd"]
 let tokenPrices = try await ParticleWalletAPI.getSolanaService().getPrice(by: addresses, currencies: currencies).value
@@ -187,14 +193,14 @@ let result = try await ParticleWalletAPI.getEvmService().getTransactionsFromDB(b
 
 | Field  | Type   | Description                                                                                              |
 |--------|--------|----------------------------------------------------------------------------------------------------------|
-| `from` | `String` | user public address, which to sign the transaction. |
+| `from` | `String` | The user's public address, which to sign the transaction. |
 | `to` | `String?` | If you send a erc20, erc721, erc1155 or interact with a contract, this is the contract address, if you send native, this is receiver address, if you want to deploy a contract, this to should be `nil` |
 | `value` | `String?` | Native value, default is nil, expressed as a hex string. |
 | `data` | `String` | If you send a erc20, erc721, erc1155 or interact with a contract, this is the data field, if you send native, this should be `0x`, default value is `0x`|
 | `contractParams` | `ContractParams?` | You can use this object to describe a write contract function |
 |`type`| `String` | default is 0x2, support EIP1559, you can ignore this parameter |
-| `gasFeeLevel` | `gasFeeLevel` | the specific gas fee level to be used. This can be either `.low`, `.medium`, `.high`, default is `.medium`|
-| `action` | `Action` | the sepcific how to send this transaction. This can be either `.normal`, `.cancel`, `.speedUp`, defualt is `.normal`, which means send a new transaction|
+| `gasFeeLevel` | `gasFeeLevel` | The specific gas fee level to be used. This can be either `.low`, `.medium`, `.high`, default is `.medium`|
+| `action` | `Action` | The sepcific how to send this transaction. This can be either `.normal`, `.cancel`, `.speedUp`, defualt is `.normal`, which means send a new transaction|
 
 
 <CodeGroup>
@@ -279,9 +285,9 @@ Specifically, four key parameters are available within `ParticleWalletAPI.getEvm
 
 | Field  | Type   | Description                                                                                              |
 |--------|--------|----------------------------------------------------------------------------------------------------------|
-| `contractAddress` | `String` | contract address. |
-| `methodName` | `String` | method name in the contract. |
-| `params` | `[Encodable]` | the parameters for the method, each parameter requires a hexadecimal string. |
+| `contractAddress` | `String` | The contract address. |
+| `methodName` | `String` | The method's name in the contract. |
+| `params` | `[Encodable]` | The parameters of the method, each parameter requires a hexadecimal string. |
 | `abiJsonString` | `String?` | (Optional) the abi json string for the method.  |
 
 Here is a abiJsonString example.
