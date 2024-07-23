@@ -101,6 +101,14 @@ repositories {
 }
 
 dependencies {
+   modules {
+        module("org.bouncycastle:bcprov-jdk15to18") {
+            replacedBy("org.bouncycastle:bcprov-jdk15on")
+        }
+        module("org.bouncycastle:bcprov-jdk18on") {
+            replacedBy("org.bouncycastle:bcprov-jdk15on")
+        }
+    }
   implementation("network.particle:auth-core:${latest_version}")
 
   // Find the latest version of the SDK:
@@ -210,16 +218,14 @@ Specifically, `AuthCore.login` takes the following parameters:
 - `loginPageConfig` Configure the login page's imagePath、projectName、description.
 - `loginCallback` Callback after successful login
 
-| **Field**         | **Type**                          | **Description**                                              |
-| ----------------- | --------------------------------- | ------------------------------------------------------------ |
-| loginType         | LoginType                         | the social login method preferred. This supports either EMAIL, PHONE, TWITTER, GOOGLE, FACEBOOK, APPLE, DISCORD, GITHUB, TWITCH, MICROSOFT, LINKEDIN, JWT. |
-| account           | String                            | Default is empty, you can use the `account` parameter to pass in an expected email, phone number, or JWT. This is optional for the former two, but required for `.jwt`. The phone number must be in E.164 format. |
+| **Field**         | **Type**                          | **Description**                                                                                                                                                                                                                          |
+| ----------------- | --------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| loginType         | LoginType                         | the social login method preferred. This supports either EMAIL, PHONE, TWITTER, GOOGLE, FACEBOOK, APPLE, DISCORD, GITHUB, TWITCH, MICROSOFT, LINKEDIN, JWT.                                                                               |
+| account           | String                            | Default is empty, you can use the `account` parameter to pass in an expected email, phone number, or JWT. This is optional for the former two, but required for `.jwt`. The phone number must be in E.164 format.                        |
 | supportLoginTypes | List<SupportLoginType>            | The default setting includes support for all SupportLoginTypes: EMAIL, PHONE, FACEBOOK, GOOGLE, APPLE, TWITTER, DISCORD, GITHUB, TWITCH, MICROSOFT, and LINKEDIN. You can also provide a specific subset of SupportLoginTypes if needed. |
-| prompt            | LoginPrompt?                      | the prompt to be displayed following social login, such as a request to set a master password, payment password, etc. This is `null` by default. |
-| loginPageConfig   | LoginPageConfig?                  | If you use a Google  to log in, you can control the Google account login prompt with this parameter: None、Consent  or SelectAccount. |
-| loginCallback     | AuthCoreServiceCallback<UserInfo> | success : wiil return UserInfo.    <br /><br />failure : will return a ErrorInfo |
-
-
+| prompt            | LoginPrompt?                      | the prompt to be displayed following social login, such as a request to set a master password, payment password, etc. This is `null` by default.                                                                                         |
+| loginPageConfig   | LoginPageConfig?                  | If you use a Google to log in, you can control the Google account login prompt with this parameter: None、Consent or SelectAccount.                                                                                                      |
+| loginCallback     | AuthCoreServiceCallback<UserInfo> | success : wiil return UserInfo. <br /><br />failure : will return a ErrorInfo                                                                                                                                                            |
 
 ```kotlin Kotlin
 AuthCore.connect(loginType,account,supportLoginTypes,prompt,loginPageConfig,loginCallback)
@@ -269,13 +275,9 @@ try{
 }
 ```
 
-
-
 ### Signatures
 
 Once `ParticleNetwork` has been initialized and a user has successfully logged in, signatures can be proposed for confirmation through a popup
-
-
 
 ### EVM
 
@@ -283,15 +285,16 @@ Once `ParticleNetwork` has been initialized and a user has successfully logged i
 
 To request an EIP191 signature from a user's embedded wallet, you can use either the `AuthCore.evm.personalSign` or `AuthCore.evm.personalSignUnique` method. If you need the same message to return a unique signature each time, use the `AuthCore.evm.personalSignUnique` method. Otherwise, the `AuthCore.evm.personalSign`method is generally recommended.
 
-| Field                 | Type                              | Description                                                  |
-| :-------------------- | :-------------------------------- | :----------------------------------------------------------- |
+| Field                 | Type                              | Description                                                                            |
+| :-------------------- | :-------------------------------- | :------------------------------------------------------------------------------------- |
 | `hexUnSignedMessage ` | `PrefixedHexString`               | either a hexadecimal string starting with '0x' or a human-readable string is required. |
-| `callback`            | AuthCoreSignCallback<SignOutput>) | Success->return signature , failed->return an ErrorInfo      |
+| `callback`            | AuthCoreSignCallback<SignOutput>) | Success->return signature , failed->return an ErrorInfo                                |
 
 ```kotlin signAndSendTransaction (Kotlin)
 AuthCore.evm.personalSign(hexUnSignedMessage: PrefixedHexString, callback)
 AuthCore.evm.personalSignUnique(hexUnSignedMessage: PrefixedHexString, callback)
 ```
+
 ### Signing Typed Data V4 (EIP712)
 
 To request an EIP712 signature from a user's embedded wallet, you can use either the `AuthCore.evm.signTypedData` or `AuthCore.evm.signTypedDataUnique` method. If you need the same message to return a unique signature each time, use the `AuthCore.evm.signTypedDataUnique` method. Otherwise, the `AuthCore.evm.signTypedData` method is generally recommended.
@@ -343,16 +346,16 @@ val message = Base58Utils.encodeFromString("This is the message that is being si
 AuthCore.solana.signMessage(message, chainInfo: nil)
 ```
 
-------
+---
 
 ### Transaction
 
 To send a transaction from a user's embedded wallet, you can use `AuthCore.solana.signAndSendTransaction`.
 
-| Field         | Type                                  | Description                                             |
-| :------------ | :------------------------------------ | :------------------------------------------------------ |
-| `transaction` | `String`                              | a base58 formatted string is required.                  |
-| `callback`    | ``AuthCoreSignCallback<SignOutput>)`` | Success->return signature , failed->return an ErrorInfo |
+| Field         | Type                                | Description                                             |
+| :------------ | :---------------------------------- | :------------------------------------------------------ |
+| `transaction` | `String`                            | a base58 formatted string is required.                  |
+| `callback`    | `AuthCoreSignCallback<SignOutput>)` | Success->return signature , failed->return an ErrorInfo |
 
 ```kotlin
 AuthCore.solana..signAndSendTransaction(transaction: Base58String, callback: AuthCoreSignCallback<SignOutput>)
@@ -423,10 +426,10 @@ AuthCore.hasPaymentPassword()
 
 You can forcibly set a specific language to be used within the UI using `ParticleNetwork.setLanguage`, with retrieval of the current active language facilitated by `ParticleNetwork.getAppliedLanguage`. By default, this is set to English.
 
-| Field          | Type           | Description                                                  |
-| -------------- | -------------- | ------------------------------------------------------------ |
-| `languageEnum` | `LanguageEnum` | the specific language to be used. This can be either ZH_CN、ZH_TW、EN、JA、KO. |
-| isRelaunch     | Boolean        | True app will relaunch,false activity will recreate          |
+| Field          | Type           | Description                                                                                                                                   |
+| -------------- | -------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
+| `languageEnum` | `LanguageEnum` | the specific language to be used. This can be either ZH_CN、ZH_TW、EN、JA、KO.                                                                |
+| isRelaunch     | Boolean        | True app will relaunch,false activity will recreate                                                                                           |
 | isInit         | Boolean        | Set isRelaunch is true, isInit is True，activity will not recreate,Called before call particle opreat(connet、signMessage、sendTraction etc.) |
 
 ```kotlin
@@ -435,8 +438,6 @@ ParticleNetwork.getLanguage()
 ```
 
 ---
-
-
 
 ### Blind Sign Enable
 
