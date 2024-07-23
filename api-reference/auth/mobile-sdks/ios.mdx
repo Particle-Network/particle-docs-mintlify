@@ -163,14 +163,20 @@ Now that you've configured your [Particle dashboard](https://dashboard.particle.
    // For release, this can be set to DevEnvironment.production
    ParticleNetwork.initialize(config: .init(chainInfo: .ethereum, devEnv: .debug))
    ```
+6. Add Privacy - Face ID Usage Description to your info.plist file, head over to your `Info.plist` file and include the following snippet:
+
+```xml
+<key>NSFaceIDUsageDescription</key>
+  <string>We use Face ID for secure access to the app.</string>
+```
 
 ### Switch Chain
 
 To switch the used chain after initial configuration, `auth.switchChain` is used. This enables asynchronous switching. Similar to the initial configuration, chain information derived from `ParticleNetwork.ChainInfo` can be passed as the primary parameter, determining the destination chain.
 
-| Field  | Type   | Description                                                                                              |
-|--------|--------|----------------------------------------------------------------------------------------------------------|
-| `chainInfo` | `ChainIno` | a chainInfo object, can be derived from `ParticleNetwork.ChainInfo`. |      
+| Field       | Type       | Description                                                          |
+| ----------- | ---------- | -------------------------------------------------------------------- |
+| `chainInfo` | `ChainIno` | a chainInfo object, can be derived from `ParticleNetwork.ChainInfo`. |
 
 
 ```swift Swift
@@ -187,12 +193,12 @@ ParticleNetwork.setChainInfo(.ethereum)
 
 `auth.connect` is the main mechanism for facilitating login (account creation or sign in) with Particle's Wallet-as-a-Service. Specifically, five key parameters are available within `auth.connect`:
 
-| Field  | Type   | Description                                                                                              |
-|--------|--------|----------------------------------------------------------------------------------------------------------|
-| `type` | `LoginType` | the specific social login to be used. This can be either `.email`, `.phone`, `.google`, `.apple`, `.jwt`, `.facebook`, `.twitter`, `.discord`, `.github`, `.twitch`, `.microsoft` or `linkedin`.|
-| `account` | `String?` | (Optional) when `type` is set to either `.email`, `.phone`, or `.jwt`, you can use the `account` parameter to pass in an expected email, phone number, or JWT. This is optional for the former two, but required for `.jwt`. The phone number must be in E.164 format. |
-| `code`| `String?`| (Optional) when `type` is set to either `.email` pr `.phone`, you can use the code parameter to pass the verification code. |
-| `socialLoginPrompt`| `SocialLoginPrompt?`| (Optional) either `.none`, `.consent`, or `.select_account`|
+| Field               | Type                 | Description                                                                                                                                                                                                                                                            |
+| ------------------- | -------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `type`              | `LoginType`          | the specific social login to be used. This can be either `.email`, `.phone`, `.google`, `.apple`, `.jwt`, `.facebook`, `.twitter`, `.discord`, `.github`, `.twitch`, `.microsoft` or `linkedin`.                                                                       |
+| `account`           | `String?`            | (Optional) when `type` is set to either `.email`, `.phone`, or `.jwt`, you can use the `account` parameter to pass in an expected email, phone number, or JWT. This is optional for the former two, but required for `.jwt`. The phone number must be in E.164 format. |
+| `code`              | `String?`            | (Optional) when `type` is set to either `.email` pr `.phone`, you can use the code parameter to pass the verification code.                                                                                                                                            |
+| `socialLoginPrompt` | `SocialLoginPrompt?` | (Optional) either `.none`, `.consent`, or `.select_account`                                                                                                                                                                                                            |
 
 
 ```swift Swift
@@ -214,13 +220,13 @@ let userInfo = try await auth.connect(type: .jwt, account: jwt)
 
 `auth.presentLoginPage` is another mechanism for facilitating login (account creation or sign in) with Particle's Wallet-as-a-Service. Upon calling this method, an authentication UI will be thrown, and the user will be asked to sign in with a specified login method. Specifically, five key parameters are available within `auth.presentLoginPage`:
 
-| Field  | Type   | Description                                                                                              |
-|--------|--------|----------------------------------------------------------------------------------------------------------|
-| `type` | `LoginType` | the specific social login to be used. This can be either `.email`, `.phone`, `.google`, `.apple`, `.jwt`, `.facebook`, `.twitter`, `.discord`, `.github`, `.twitch`, `.microsoft` or `linkedin`.                                                               |
-| `account` | `String?` | (Optional) when `type` is set to either `.email`, `.phone`, or `.jwt`, you can use the `account` parameter to pass in an expected email, phone number, or JWT. This is optional for the former two, but required for `.jwt`. The phone number must be in E.164 format. |
-| `supportAuthTypeode`| `[SupportAuthType]`| the methods of authentication visible on the authentication popup UI. By default, this will be exclusive to the chosen social login method, although by passing in additional types, you can expand the UI to include the ability to login with those as an alternative to type. |
-| `socialLoginPrompt`| `SocialLoginPrompt?`| (Optional) either `'.none'`, `'.consent'`, or `'.select_account'`|
-| `config`| `LoginPageConfig?` |(Optional) to customize the UI page, contains project name, icon and description.|
+| Field                | Type                 | Description                                                                                                                                                                                                                                                                      |
+| -------------------- | -------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `type`               | `LoginType`          | the specific social login to be used. This can be either `.email`, `.phone`, `.google`, `.apple`, `.jwt`, `.facebook`, `.twitter`, `.discord`, `.github`, `.twitch`, `.microsoft` or `linkedin`.                                                                                 |
+| `account`            | `String?`            | (Optional) when `type` is set to either `.email`, `.phone`, or `.jwt`, you can use the `account` parameter to pass in an expected email, phone number, or JWT. This is optional for the former two, but required for `.jwt`. The phone number must be in E.164 format.           |
+| `supportAuthTypeode` | `[SupportAuthType]`  | the methods of authentication visible on the authentication popup UI. By default, this will be exclusive to the chosen social login method, although by passing in additional types, you can expand the UI to include the ability to login with those as an alternative to type. |
+| `socialLoginPrompt`  | `SocialLoginPrompt?` | (Optional) either `'.none'`, `'.consent'`, or `'.select_account'`                                                                                                                                                                                                                |
+| `config`             | `LoginPageConfig?`   | (Optional) to customize the UI page, contains project name, icon and description.                                                                                                                                                                                                |
 
 
 After connect is successful, detailed user information can be retrieved by calling `auth.getUserInfo` . 
@@ -264,10 +270,10 @@ Once `ParticleNetwork` has been initialized and a user has successfully logged i
 
 To request an EIP191 signature from a user's embedded wallet, you can use either the `auth.evm.personalSign` or `auth.evm.personalSignUnique` method. If you need the same message to return a unique signature each time, use the `auth.evm.personalSignUnique` method. Otherwise, the `auth.evm.personalSign` method is generally recommended.
 
-| Field  | Type   | Description                                                                                              |
-|--------|--------|----------------------------------------------------------------------------------------------------------|
-| `message` | `String` | either a hexadecimal string starting with '0x' or a human-readable string is required. |    
-| `chainInfo` | `ChainInfo?`| (Optional) default is current chainInfo, the specific use which chain to sign|   
+| Field       | Type         | Description  |
+| ----------- | ------------ | ---------------------------------------------------------------- |
+| `message`   | `String`     | either a hexadecimal string starting with '0x' or a human-readable string is required. |
+| `chainInfo` | `ChainInfo?` | (Optional) default is current chainInfo, the specific use which chain to sign          |
 
 
 ```swift personalSign/signMessage(Swift)
@@ -277,12 +283,12 @@ let result = try await auth.evm.personalSignUnique("This is the message that is 
 
 ### Signing Typed Data V4 (EIP712)
 
-To request an EIP721 signature from a user's embedded wallet, you can use either the `auth.evm.signTypedData` or `auth.evm.signTypedDataUnique` method. If you need the same message to return a unique signature each time, use the `auth.evm.signTypedDataUnique` method. Otherwise, the `auth.evm.signTypedData` method is generally recommended.
+To request an EIP712 signature from a user's embedded wallet, you can use either the `auth.evm.signTypedData` or `auth.evm.signTypedDataUnique` method. If you need the same message to return a unique signature each time, use the `auth.evm.signTypedDataUnique` method. Otherwise, the `auth.evm.signTypedData` method is generally recommended.
 
-| Field  | Type   | Description                                                                                              |
-|--------|--------|----------------------------------------------------------------------------------------------------------|
-| `message` | `String` | either a hexadecimal string starting with "0x" or a JSON string is required. |    
-| `chainInfo` | `ChainInfo?`| (Optional) default is current chainInfo, the specific use which chain to sign|  
+| Field       | Type         | Description                                                                   |
+| ----------- | ------------ | ----------------------------------------------------------------------------- |
+| `message`   | `String`     | either a hexadecimal string starting with "0x" or a JSON string is required.  |
+| `chainInfo` | `ChainInfo?` | (Optional) default is current chainInfo, the specific use which chain to sign |
 
 ```swift signTypedData (Swift)
 let result = try await auth.evm.signTypedData(message, chainInfo: nil)
@@ -295,10 +301,10 @@ let result = try await auth.evm.signTypedDataUnique(message, chainInfo: nil)
 
 To send a transaction from a user's embedded wallet, you can use `auth.evm.sendTransaction`.
 
-| Field  | Type   | Description                                                                                              |
-|--------|--------|----------------------------------------------------------------------------------------------------------|
-| `transaction` | `String` | a hexadecimal string starting with "0x" is required. |    
-| `chainInfo` | `ChainInfo?`| (Optional) default is current chainInfo, the specific use which chain to sign and send|  
+| Field         | Type         | Description                                                                            |
+| ------------- | ------------ | -------------------------------------------------------------------------------------- |
+| `transaction` | `String`     | a hexadecimal string starting with "0x" is required.                                   |
+| `chainInfo`   | `ChainInfo?` | (Optional) default is current chainInfo, the specific use which chain to sign and send |
 
 ```swift signAndSendTransaction (Swift)
 let result = try await auth.evm.sendTransaction(transaction, chainInfo: nil)
@@ -311,10 +317,10 @@ let result = try await auth.evm.sendTransaction(transaction, chainInfo: nil)
 
 To request a signature from a user's embedded wallet, you can use `auth.solana.signMessage`.
 
-| Field  | Type   | Description                                                                                              |
-|--------|--------|----------------------------------------------------------------------------------------------------------|
-| `message` | `String` | a base58 formatted string is required. |    
-| `chainInfo` | `ChainInfo?`| (Optional) default is current chainInfo, the specific use which chain to sign|   
+| Field       | Type         | Description                                                                   |
+| ----------- | ------------ | ----------------------------------------------------------------------------- |
+| `message`   | `String`     | a base58 formatted string is required.                                        |
+| `chainInfo` | `ChainInfo?` | (Optional) default is current chainInfo, the specific use which chain to sign |
 
 
 ```swift signMessage(Swift)
@@ -328,10 +334,10 @@ let result = try await auth.solana.signMessage(message, chainInfo: nil)
 
 To send a transaction from a user's embedded wallet, you can use `auth.solana.signAndSendTransaction`.
 
-| Field  | Type   | Description                                                                                              |
-|--------|--------|----------------------------------------------------------------------------------------------------------|
-| `transaction` | `String` | a base58 formatted string is required. |    
-| `chainInfo` | `ChainInfo?`| (Optional) default is current chainInfo, the specific use which chain to sign and send|  
+| Field         | Type         | Description                                                                            |
+| ------------- | ------------ | -------------------------------------------------------------------------------------- |
+| `transaction` | `String`     | a base58 formatted string is required.                                                 |
+| `chainInfo`   | `ChainInfo?` | (Optional) default is current chainInfo, the specific use which chain to sign and send |
 
 ```swift signAndSendTransaction (Swift)
 let result = try await auth.solana.signAndSendTransaction(transaction, chainInfo: nil)
@@ -339,10 +345,10 @@ let result = try await auth.solana.signAndSendTransaction(transaction, chainInfo
 
 To sign a transaction from a user's embedded wallet, you can use `auth.solana.signTransaction`.
 
-| Field  | Type   | Description                                                                                              |
-|--------|--------|----------------------------------------------------------------------------------------------------------|
-| `transaction` | `String` | a base58 formatted string is required. |    
-| `chainInfo` | `ChainInfo?`| (Optional) default is current chainInfo, the specific use which chain to sign|
+| Field         | Type         | Description                                                                   |
+| ------------- | ------------ | ----------------------------------------------------------------------------- |
+| `transaction` | `String`     | a base58 formatted string is required.                                        |
+| `chainInfo`   | `ChainInfo?` | (Optional) default is current chainInfo, the specific use which chain to sign |
 
 ```swift signMessage(Swift)
 let result = try await auth.solana.signTransaction(transaction, chainInfo: nil)
@@ -350,10 +356,10 @@ let result = try await auth.solana.signTransaction(transaction, chainInfo: nil)
 
 To sign multi transactions from a user's embedded wallet, you can use `auth.solana.signAllTransactions`.
 
-| Field  | Type   | Description                                                                                              |
-|--------|--------|----------------------------------------------------------------------------------------------------------|
-| `transactions` | `String` | base58 formatted strings are required. |    
-| `chainInfo` | `ChainInfo?`| (Optional) default is current chainInfo, the specific use which chain to sign|
+| Field          | Type         | Description                                                                   |
+| -------------- | ------------ | ----------------------------------------------------------------------------- |
+| `transactions` | `String`     | base58 formatted strings are required.                                        |
+| `chainInfo`    | `ChainInfo?` | (Optional) default is current chainInfo, the specific use which chain to sign |
 
 ```swift signMessage(Swift)
 let result = try await auth.solana.signAllTransactions(transactions, chainInfo: nil)
@@ -411,9 +417,9 @@ let result = try auth.openAccountAndSecurity()
 
 You can forcibly set a specific appearance to be used within the UI using `ParticleNetwork.setAppearance`. By default, it will follow current system setting.
 
-| Field  | Type   | Description                                                                                              |
-|--------|--------|----------------------------------------------------------------------------------------------------------|
-| `appearance` | `UIUserInterfaceStyle` | the specific appearance to be used. This can be either `.unspefified`, `.dark`, `.light`.
+| Field        | Type                   | Description                                                                               |
+| ------------ | ---------------------- | ----------------------------------------------------------------------------------------- |
+| `appearance` | `UIUserInterfaceStyle` | the specific appearance to be used. This can be either `.unspefified`, `.dark`, `.light`. |
 
 ```swift Swift
 // this is the default setting  
@@ -430,9 +436,9 @@ ParticleNetwork.setAppearance(.light)
 
 You can forcibly set a specific language to be used within the UI using `ParticleNetwork.setLanguage`, with retrieval of the current active language facilitated by `ParticleNetwork.getLanguage`. By default, this is set to English.
 
-| Field  | Type   | Description                                                                                              |
-|--------|--------|----------------------------------------------------------------------------------------------------------|
-| `language` | `Language` | the specific language to be used. This can be either `.en`, `.ja`, `.zh_hans`, `.zh_hant`, `.ko`.                                                       |
+| Field      | Type       | Description                                                                                       |
+| ---------- | ---------- | ------------------------------------------------------------------------------------------------- |
+| `language` | `Language` | the specific language to be used. This can be either `.en`, `.ja`, `.zh_hans`, `.zh_hant`, `.ko`. |
 
 ```swift Swift
 ParticleNetwork.setLanguage(Language.en)
@@ -452,9 +458,9 @@ Auth.loadCustomUIJsonString(jsonString)
 ### Set fiatCoin
 You can forcibly set a specific fiatCoin to be used within the UI using `ParticleNetwork.setFiatCoin`, with retrieval of the current active language facilitated by `ParticleNetwork.getFiatCoin`. By default, this is set to USD.
 
-| Field  | Type   | Description                                                                                              |
-|--------|--------|----------------------------------------------------------------------------------------------------------|
-| `fiatCoin` | `FiatCoin` | the specific fiatCoin to be used. This can be either `.usd`, `.cny`, `.jpy`, `.hkd`, `.inr`, `.krw`.   
+| Field      | Type       | Description                                                                                          |
+| ---------- | ---------- | ---------------------------------------------------------------------------------------------------- |
+| `fiatCoin` | `FiatCoin` | the specific fiatCoin to be used. This can be either `.usd`, `.cny`, `.jpy`, `.hkd`, `.inr`, `.krw`. |
 
 ```swift Swift
 ParticleNetwork.setFiatCoin(FiatCoin.usd)

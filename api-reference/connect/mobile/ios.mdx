@@ -256,6 +256,13 @@ With the scheme URL configured, you'll also need to head into `info.plist` and a
   <string>1inch</string>
   <string>awallet</string>
   <string>okex</string>
+
+  <key>NSPhotoLibraryUsageDescription</key>
+  <string>We need access in order to open photos of barcodes</string>
+  <key>NSCameraUsageDescription</key>
+  <string>We use the camera to scan barcodes</string>
+  <key>NSFaceIDUsageDescription</key>
+  <string>We use Face ID for secure access to the app.</string>
 </array>
 ```
 
@@ -268,7 +275,7 @@ If you're planning on using WalletConnect V2 as your primary method of connectio
 ```swift Swift
 ParticleConnect.setWalletConnectV2ProjectId("WalletConnect V2 Project ID")
 
-ParticleConnect.setWalletConnectV2SupportChainInfos([.ethereum, .ethereumSepolia])
+ParticleConnect.setWalletConnectV2SupportChainInfos([.ethereum, .polygon])
 ```
 
 ### Get all Wallet Adapter

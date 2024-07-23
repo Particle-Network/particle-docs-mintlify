@@ -110,16 +110,17 @@ If you're building a Unity game on iOS, you must follow a specific configuration
 3. Open the `Supported URL schemes` section, and within the `Element 0` field, paste in your `projectId` with a prefix of `pn`.  
    For example, if your `projectId` (from the [Particle dashboard](https://dashboard.particle.network)) is something like `63bfa427-cf5f-4742-9ff1-e8f5a1b9828f`, then the scheme URL, in this case, would be `pn63bfa427-cf5f-4742-9ff1-e8f5a1b9828f`.
 
-<Tip>
-<p>Select the specific services you intend to use.</p>
+<Note>
+<p>Remove other services, if needed</p>
 <p></p>
-<p>Within `ParticleNetworkIOSBridge.cs`, you'll find a number of services included in the SDK:</p>
+<p>Within `ParticleNetworkIOSBridge.cs`, you'll have a number of services included in the SDK:</p>
 <p></p>
-<p>- `ParticleNetworkBase` - required, universally.</p>
-<p>- <strong>`ParticleWalletGUI`</strong> - usage of the Particle Wallet UI, contains all services. Requires <a href="https://github.com/SunZhiC/SkeletonView.git">`SkeletonView`</a></p>
-<p>- `ParticleConnect` - if you're using <a href="https://particlenetwork.readme.io/reference/connect-unity">Particle Connect</a> directly.</p>
-<p>- `ParticleAuthCore` - if you're using <a href="https://particlenetwork.readme.io/reference/auth-unity-mobile">Particle Auth Core</a> directly.</p>
-</Tip>
+<p>- `ParticleNetworkBase` - required universally.</p>
+<p>- `ParticleAuthCore` - required for Particle Auth Core.</p>
+<p>- `ParticleConnect`-  required for Particle Connect.</p>
+<p>- `ParticleWalletGUI` - usage of the Particle Wallet UI, contains all services.</p>
+<p>- `ParticleAA` - usage of the Particle AA, contains all services.</p>
+</Note>
 
 You'll also need to configure your Podfile if you haven't already. If you don't have a Podfile, go to the root of your project directory and run `pod init`to generate one.
 
@@ -127,7 +128,7 @@ Open this Podfile, and insert the specific pods (services) you'd like to use wit
 
 Additionally, you'll need to paste in the below code snippet for installation handling:
 
-```groovy Podfile
+```ruby Podfile
 pod 'ParticleWalletGUI'
 // Also include:
 pod 'SkeletonView', :git => 'https://github.com/SunZhiC/SkeletonView.git', :branch => 'main'
@@ -143,6 +144,8 @@ installer.pods_project.targets.each do |target|
   end
  end
 ```
+
+Also you can copy the example [Podfile](https://github.com/Particle-Network/particle-unity/blob/main/ios-build/Podfile) .
 
 With your Podfile set, you'll need to run `pod install` and open your `.xcworkspace` file, as shown below:
 
@@ -219,18 +222,13 @@ To do this, you'll need to call `ParticleWalletGUI.ParticleWalletConnectInitiali
 Additionally, if you're using `ParticleNetwork` and `ParticleConnectInteraction` for Particle Connect or Auth, you can initialize them in the same place and using the same `metadata`.
 
 ```csharp C#
-var metadata = new DAppMetaData("WalletConnect project ID", "Particle Connect",
-            "https://connect.particle.network/icons/512.png",
-            "https://connect.particle.network",
-            "Particle Unity Demo");
+var metadata = new DAppMetaData(TestConfig.walletConnectProjectId, "Particle Connect",
+    "https://connect.particle.network/icons/512.png",
+    "https://connect.particle.network", "Particle Unity Demo");
 
-ParticleWalletGUI.ParticleWalletConnectInitialize(metaData);
-
-// If applicable
-ChainInfo chainInfo = new AvalancheChain(AvalancheChainId.Mainnet);
-
-ParticleNetwork.Init(chainInfo);
-ParticleConnectInteraction.Init(chainInfo, metadata);
+ParticleNetwork.Init(ChainInfo.Ethereum);
+ParticleConnectInteraction.Init(ChainInfo.Ethereum, metadata);
+ParticleWalletGUI.ParticleWalletConnectInitialize(metadata);
 ```
 
 ### Customization
@@ -335,14 +333,17 @@ ParticleWalletGUI.NavigatorTokenTransactionRecords(tokenAddress);
 
 Similar to the token sending page, you can also return an NFT sending page for moving (sending) a specific NFT to a different address. This can be done through `ParticleWalletGUI.NavigatorNFTSend`, taking:
 
-- `contractAddress` (the address of the NFT contract).
-- `tokenId` (the ID of the specific NFT belonging to `contractAddress`), can be left as `null` for Solana.
-- `receiveAddress`, the recipient, blank string by default.
+| Field  | Type   | Description                                                                                              |
+|--------|--------|----------------------------------------------------------------------------------------------------------|
+| `mint` | `string` | (`contractAddress`) of a given NFT. |
+| `tokenId` | `string` |  the token ID of an NFT (within the collection defined by `mint`). This can be left as `null` for Solana.  |
+| `receiveAddress` | `string?` | the recipient address, a blank string by default.|
+| `amount` | `string?` | the volume of NFT (`mint`) to be sent, ERC172 NFT should set 1 |
 
 E.g.:
 
 ```csharp C#
-ParticleWalletGUI.NavigatorNFTSend(contractAddress, tokenId, receiveAddress); 
+ParticleWalletGUI.NavigatorNFTSend(contractAddress, tokenId, null, null); 
 ```
 
 ### Open NFT Details
@@ -359,16 +360,18 @@ Particle Wallet also has a native onramp aggregator, allowing users to bring fia
 
 The specific parameters that can be used within `ParticleWalletGUI.NavigatorBuyCrypto` are listed below:
 
-| Name          | Description                                                              | Type   | Required                                    |
-| :------------ | :----------------------------------------------------------------------- | :----- | :------------------------------------------ |
-| network       | [Solana, Ethereum, Binance Smart Chain, Polygon, Tron, Optimism, etc.]   | string | False _(True if Particle is not connected)_ |
-| fiatCoin      | Fiat currency denomination.                                              | string | False                                       |
-| cryptoCoin    | Cryptocurrency denomination.                                             | string | False                                       |
-| fiatAmt       | The amount of fiat to be automatically filled in as the purchase volume. | number | False                                       |
-| bool          | Lock selection of fiat currency in the buy menu.                         | bool   | False                                       |
-| fixCryptoCoin | Lock selection of cryptocurrency in the buy menu.                        | bool   | False                                       |
-| fixFiatAmt    | Lock selection of fiat amount in the buy menu.                           | bool   | False                                       |
-| walletAddress | The wallet address to receive the cryptocurrency.                        | string | False _(True if Particle is not connected)_ |
+| Field  | Type   | Description                                                                                              |
+|--------|--------|----------------------------------------------------------------------------------------------------------|
+| `WalletAddress` | `string?` | (Optional) the wallet address to receive the cryptocurrency, default is current user address. |
+| `ChainInfo` | `ChainInfo?` | (Optional) the chainInfo, default is current chainInfo.|
+| `CryptoCoin` | `string?` |  (Optional) cryptocurrency denomination. default is current chain native token symbol.  |
+| `FiatCoin` | `String?` | (Optional) fiat currency denomination. defualt is current fiat coin.   |
+| `FiatAmt` | `int?` | (Optional) the amount of fiat to be automatically filled in as the purchase volume.|
+| `FixFiatCoin` | `bool` | (Optional) lock selection of fiat coin in the buy menu, default is false.|
+| `FixCryptoCoin` | `bool` | (Optional) lock selection of fiat amount in the buy menu, default is false. |
+| `Theme` | `Theme?` | (Optional) the buy page theme, `Dark` or `Light`, default is false.|
+| `Language` | `Language?` |  (Optional) the buy page lanuage, default is current language.|
+| `modalStyle`| `iOSModalPresentStyle?` | (Optional) control iOS presentation style, default is `PageSheet`.|
 
 ```csharp C#
 BuyCryptoConfig config = new BuyCryptoConfig(TestAccount.EVM.PublicAddress,
@@ -382,9 +385,13 @@ ParticleWalletGUI.NavigatorBuyCrypto();
 
 Additionally, Particle Wallet has a built-in swap functionality (retrieves multiple quotes from different providers such as 1inch, iZUMi, etc., routing the swap through the best one) for Mainnets (Solana and EVM). Throwing this menu can be done through `ParticleWalletGUI.NavigatorSwap`, which alone will open the default swap menu without values filled in, although you can pass in several optional parameters, including:
 
-- `fromTokenAddress`, the token to swap from.
-- `toTokenAddress`, the token to swap to.
-- `fromTokenAmount`, the amount of `fromTokenAddress` to be automatically reflected within the UI.
+| Field  | Type   | Description                                                                                              |
+|--------|--------|----------------------------------------------------------------------------------------------------------|
+| `fromTokenAddress` | `string` | (Optional) the swap pair from token address |
+| `toTokenAddress` | `string` |  (Optional) the swap pair to token address   |
+| `amount` | `string` |  (Optional) the swap from token amount, should pass the minimal unit string, for example 0.01 ETH, it's decimals is 18, should pass "10000000000000000"  |
+| `modalStyle`| `iOSModalPresentStyle` | (Optional) control iOS presentation style, default is `PageSheet`.|
+
 
 E.g.:
 
@@ -404,43 +411,3 @@ var nativeResultData = await ParticleWalletGUI.Instance.SwitchWallet(walletType,
 ```
 
 ***
-
-## Master reference
-
-For a direct, raw view into every method provided through `ParticleWalletGUI`, below is a table containing every relevant one, alongside specific parameters and a short description. For methods listed that weren't covered in the above examples, live implementation often mimics the common structure covered throughout this document.
-
-| Class             | Methods                          | Parameters (\* indicates optional)                           |
-| ----------------- | -------------------------------- | ------------------------------------------------------------ |
-| ParticleWalletGUI | NavigatorWallet                  | display                                                      |
-| ParticleWalletGUI | NavigatorTokenReceive            | tokenAddress                                                 |
-| ParticleWalletGUI | NavigatorTokenSend               | tokenAddress, toAddress, amount, modalStyle\*                |
-| ParticleWalletGUI | NavigatorTokenTransactionRecords | tokenAddress                                                 |
-| ParticleWalletGUI | NavigatorNFTSend                 | mint, tokenId, receiveAddress\*, amount\*                    |
-| ParticleWalletGUI | NavigatorNFTDetails              | mint, tokenId                                                |
-| ParticleWalletGUI | SetPayDisabled                   | disabled                                                     |
-| ParticleWalletGUI | GetPayDisabled                   |                                                              |
-| ParticleWalletGUI | SetSwapDisabled                  | disabled                                                     |
-| ParticleWalletGUI | GetSwapDisabled                  |                                                              |
-| ParticleWalletGUI | NavigatorBuyCrypto               | config\*, modalSyle\*                                        |
-| ParticleWalletGUI | NavigatorSwap                    | fromTokenAddress\*, toTokenAddress\*, amount\*, modalStyle\* |
-| ParticleWalletGUI | NavigatorLoginList               | supportTypes                                                 |
-| ParticleWalletGUI | LoginListCallBack                | json                                                         |
-| ParticleWalletGUI | SetShowTestNetwork               | show                                                         |
-| ParticleWalletGUI | SetShowManageWallet              | show                                                         |
-| ParticleWalletGUI | SetShowAppearanceSetting         | show                                                         |
-| ParticleWalletGUI | SetShowLanguageSetting           | show                                                         |
-| ParticleWalletGUI | SetShowSmartAccountSetting       | show                                                         |
-| ParticleWalletGUI | SetSupportChain                  | chainInfos                                                   |
-| ParticleWalletGUI | SwitchWallet                     | walletType, publicAddress                                    |
-| ParticleWalletGUI | SwitchWalletCallBack             | json                                                         |
-| ParticleWalletGUI | SetSupportWalletConnect          | enable                                                       |
-| ParticleWalletGUI | SetSupportDappBrowser            | enable                                                       |
-| ParticleWalletGUI | ParticleWalletConnectInitialize  | metaData                                                     |
-| ParticleWalletGUI | SetSupportAddToken               | enable                                                       |
-| ParticleWalletGUI | SetDisplayTokenAddresses         | tokenAddresses                                               |
-| ParticleWalletGUI | SetDisplayNFTContractAddresses   | nftContractAddresses                                         |
-| ParticleWalletGUI | SetPriorityTokenAddresses        | tokenAddresses                                               |
-| ParticleWalletGUI | SetPriorityNFTContractAddresses  | nftContractAddresses                                         |
-| ParticleWalletGUI | LoadCustomUIJsonString           | json                                                         |
-| ParticleWalletGUI | SetCustomLocalizable             | localizables                                                 |
-| ParticleWalletGUI | SetCustomWalletName              | name, icon                                                   |
