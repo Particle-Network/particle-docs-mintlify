@@ -19,9 +19,12 @@ Particle Wallet, on mobile, is a complimentary SDK to Particle Connect, enabling
 
 Before jumping in, several requirements are needed to avoid compatibility issues. Ensure your project meets or exceeds these minimum prerequisites before continuing.
 
-- Targets **API Level 23** (Marshmallow) or higher.
-- Uses **Android 6.0** or higher.
-- Uses **[Jetpack (AndroidX)](https://developer.android.com/jetpack/androidx/migrate?authuser=0)**.
+- minSdkVersion **23** or higher.
+- compileSdkVersion, targetSdkVersion **34** or higher.
+- JavaVersion **17**.
+- [Jetpack (AndroidX)](https://developer.android.com/jetpack/androidx/migrate?authuser=0).
+- Android Gradle Plugin Version : 8.5.1 or higher.
+- Gradle Version : 8.9 or higher.
 
 ### Setting up the Particle dashboard
 
@@ -95,9 +98,9 @@ With the dashboard setup, you'll also need to set up your `build.gradle` file to
 
 - Modules `org.bouncycastle:bcprov-jdk15to18` and `org.bouncycastle:bcprov-jdk15on`.
 - Particle Connect dependencies:
-  - `network.particle:auth-service`.
+  - `network.particle:auth-core`.
   - `network.particle:connect`.
-  - `network.particle:connect-auth-adapter` (or, for Auth Core, `network.particle:connect-auth-core-adapter`).
+  - `network.particle:connect-auth-core-adapter`.
   - Other wallet adapters that you plan on using.
 - Particle Wallet SDK, `network.particle:wallet-service`.
 
@@ -112,17 +115,19 @@ repositories {
 }
 
 dependencies {
-    modules {
+  //required
+   modules {
         module("org.bouncycastle:bcprov-jdk15to18") {
-            replacedBy("org.bouncycastle:bcprov-jdk15on") 
+            replacedBy("org.bouncycastle:bcprov-jdk15on")
+        }
+        module("org.bouncycastle:bcprov-jdk18on") {
+            replacedBy("org.bouncycastle:bcprov-jdk15on")
         }
     }
   
-  	implementation 'network.particle:auth-service:{latest-version}'
     implementation 'network.particle:connect:{latest-version}'
     
-    implementation 'network.particle:connect-auth-adapter:${latest_version}'
-    // implementation 'network.particle:connect-auth-core-adapter:${latest_version}'
+    implementation 'network.particle:connect-auth-core-adapter:${latest_version}'
  		// Other adapters, such as network.particle:connect-phantom-adapter
     
     implementation 'network.particle:api-service:${latest_version}'
@@ -170,12 +175,13 @@ The first of these is the ability to apply initialization configurations (such a
 
 Additionally, if you'd like to use a custom wallet within the Particle Wallet interface (for example, a wallet name, network, etc., specific to your project), then you'll need to use `WalletInfo.createWallet` to create a custom wallet object. This takes the following parameters:
 
-- `address`, the user's public address belonging to the current active session (connected via Particle Connect).
-- `chainName`, the name of the chain to be used within Particle Wallet.
-- `chainId`, the ID of the chain to be used within Particle Wallet.
-- ?
-- `walletName`, the name of your wallet/project to be shown in UI.
-- `adapterName`, the name of the adapter you're using for this wallet (such as `MobileWCWalletName.Particle.name`).
+| Field       | Type   | Description                                                  |
+| :---------- | :----- | :----------------------------------------------------------- |
+| address     | String | the user's public address belonging to the current active session (connected via Particle Connect). |
+| chainName   | String | the name of the chain to be used within Particle Wallet.     |
+| chainId     | Long   | the ID of the chain to be used within Particle Wallet        |
+| walletName  | String | he name of your wallet/project to be shown in UI.            |
+| adapterName | String | the name of the adapter you're using for this wallet (such as `MobileWCWalletName.AuthCore.name`). |
 
 Saving this as an object, you can pass it into `ParticleWallet.setWallet`, changing the active interface/wallet according to the parameters outlined within `WalletInfo.createWallet`. E.g.:
 
@@ -241,7 +247,7 @@ PNRouter.build(RouterPath.TokenSend).navigation()
 ### Open Receive Token
 
 A page displaying both the user's address and an associated QR code can be opened through `PNRouter.build`, using `RouterPath.TokenReceive`. E.g.:
- 
+
 ```kotlin Kotlin
 PNRouter.build(RouterPath.TokenReceive).navigation() 
 ```
