@@ -225,8 +225,6 @@ Finally, you'll need to edit your Podfile to ensure `particle_connect` is correc
 
 ***
 
----
-
 ## Examples of Utilization
 
 ### Initialization
@@ -245,7 +243,7 @@ With `setWalletConnectV2ProjectId` set, you can also call `ParticleWallet.init`,
 
 E.g.:
 
-```dart Dart
+```dart
 ParticleWallet.init(WalletMetaData(
         "Particle Connect",
         "https://connect.particle.network/icons/512.png",
@@ -260,7 +258,7 @@ ParticleWallet.init(WalletMetaData(
 
 To programmatically force the main wallet page open, you can call `ParticleWallet.navigatorWallet`. `navigatorWallet` takes one parameter, a binary selection indicating whether tokens or NFTs are displayed within the main wallet page. `WalletDisplay.token` sets this to tokens, and `WalletDisplay.nft` to NFTs. E.g.:
 
-```dart Dart
+```dart
 ParticleWallet.navigatorWallet();
 ```
 ---
@@ -269,7 +267,7 @@ ParticleWallet.navigatorWallet();
 
 Similarly, to open a page for receiving a token containing both an address and a corresponding QR code, you can call `ParticleWallet.navigatorTokenReceive`. This optionally takes a parameter, `tokenAddress`, representing the specific token you plan to receive, in which the QR code will include its logo at its center. E.g.:
 
-```dart Dart
+```dart
 ParticleWallet.navigatorTokenReceive();
 
 ParticleWallet.navigatorTokenReceive(tokenAddress);
@@ -289,7 +287,7 @@ You can also open a send token (token referring to ERC20/SPL/native) page by cal
 
 E.g.:
 
-```dart Dart
+```dart
 ParticleWallet.navigatorTokenSend();
 
 ParticleWallet.navigatorTokenSend(tokenAddress: tokenAddress, toAddress: toAddress, amount: amount);
@@ -301,7 +299,7 @@ ParticleWallet.navigatorTokenSend(tokenAddress: tokenAddress, toAddress: toAddre
 
 To open the transaction records (history) of a given connected wallet, you can programmatically force this page with `ParticleWallet.navigatorTokenTransactionRecords`, optionally taking one parameter, `tokenAddress`. If filled out, this will filter the transaction records to only display entries involving a specified `tokenAddress`. E.g.:
 
-```dart Dart
+```dart
 ParticleWallet.navigatorTokenTransactionRecords(); 
 
 ParticleWallet.navigatorTokenTransactionRecords(tokenAddress: tokenAddress); 
@@ -322,7 +320,7 @@ Similar to `navigatorTokenSend`, you can call `ParticleWallet.navigatorNFTSend` 
 
 E.g.:
 
-```dart Dart
+```dart
 String mintAddress = "0xD000F000Aa1F8accbd5815056Ea32A54777b2Fc4";
 String tokenId = "1412";
 ParticleWallet.navigatorNFTSend(mintAddress, tokenId, amount: null, receiveAddress: "");
@@ -340,7 +338,7 @@ Particle Wallet also natively supports viewing specific NFTs' traits, descriptio
 | `mint` | `String` | (`contractAddress`) of a given NFT. |
 | `tokenId` | `String` |  The token ID of an NFT (within the collection defined by `mint`). This can be left as `null` for Solana.  |
 
-```dart Dart
+```dart
 String mint = "0xD000F000Aa1F8accbd5815056Ea32A54777b2Fc4";
 String tokenId = "1412";
 ParticleWallet.navigatorNFTDetails(mint, tokenId);
@@ -362,12 +360,13 @@ The specific parameters that can be used within `ParticleWallet.navigatorBuyCryp
 | `fiatAmt` | `int?` | (Optional) the amount of fiat to be automatically filled in as the purchase volume.|
 | `chainInfo` | `ChainInfo?` |(Optional) the chainInfo, default is current chainInfo.|
 | `fixFiatCoin` | `bool` | (Optional) lock selection of fiat coin in the buy menu, default is false.|
-| `fixCryptoCoin` | `bool` | (Optional) lock selection of fiat amount in the buy menu, default is false.|
-| `theme` | `Theme` | (Optional) the buy page theme, `dark` or `light`, default is false.|
+| `fixFiatAmt` | `bool` | (Optional) lock selection of fiat amount in the buy menu, default is false.|
+| `fixCryptoCoin` | `bool` | (Optional) lock selection of crypto coin in the buy menu, default is false. |
+| `theme` | `Theme` | (Optional) the buy page theme, `dark` or `light`, default is curreny appearance.|
 | `language` | `Language?` | (Optional) the buy page lanuage, default is current language.|
 | `modalStyle` | `IOSModalPresentStyle?` | (Optional) control iOS presentation style, default is `pageSheet`.|
 
-```dart Dart
+```dart
 final config = BuyCryptoConfig(walletAddress:"Wallet Address", cryptoCoin:"USDT", fiatCoin:"USD", fiatAmt:1000,  chainInfo: ChainInfo.Ethereum);
 ParticleWallet.navigatorBuyCrypto(config: config);
 ```
@@ -385,7 +384,7 @@ Particle Wallet has a native swap page (retrieves multiple quotes from different
 | `amount` | `String?` |  (Optional) the swap from token amount, should pass the minimal unit string, for example 0.01 ETH, it's decimals is 18, should pass "10000000000000000"  |
 E.g.:
 
-```dart Dart
+```dart
 ParticleWallet.navigatorSwap();
 
 ParticleWallet.navigatorSwap(fromTokenAddress, toTokenAddress, amount);
@@ -397,7 +396,7 @@ ParticleWallet.navigatorSwap(fromTokenAddress, toTokenAddress, amount);
 
 Particle Wallet also includes a **dApp Browser**, enabling users to open different dApps (web apps) and automatically connect with the account loaded into the instance of Particle Wallet. This enables account usage across any web-based dApp. This can be programmatically opened through `ParticleWallet.navigatorDappBrowser`, taking one parameter, `url`, which will dictate the specific site opened. E.g.:
 
-```dart Dart
+```dart
 const url = "https://opensea.io";
 ParticleWallet.navigatorDappBrowser(url: url);
 ```
@@ -410,7 +409,7 @@ To set the specific supported chain(s) available within the chain selection menu
 
 If you add a Testnet to this list and pass it to `setSupportChain`, you'll also need to ensure that `ParticleWallet.setShowTestNetwork` is set to `true` (by passing in `true`). E.g.:
 
-```dart Dart
+```dart
 List<ChainInfo> chainInfos = <ChainInfo>[];
 chainInfos.add(ChainInfo.Ethereum);
 chainInfos.add(ChainInfo.Polygon);
@@ -444,7 +443,7 @@ Additionally, to switch the current wallet type (`walletType`) active within the
 
 E.g.:
 
-```dart Dart
+```dart
 WalletType walletType = WalletType.authCore;
 await ParticleWallet.switchWallet(walletType, publicAddress);
 ```
@@ -481,7 +480,7 @@ Additional interface customizations can be manually set through a variety of met
 
 E.g.:
 
-```dart Dart
+```dart
 ParticleWallet.setShowTestNetwork(true);
 
 ParticleWallet.setShowManageWallet(true);

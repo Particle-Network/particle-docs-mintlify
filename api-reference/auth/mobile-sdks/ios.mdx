@@ -270,7 +270,7 @@ auth.solana.getAddress()
 Once `ParticleNetwork` has been initialized and a user has successfully logged in, signatures can be proposed for confirmation through a popup
 
 ### EVM
-### Signing Messages (EIP191)
+### Sign Message (EIP191)
 
 To request an EIP191 signature from a user's embedded wallet, you can use either the `auth.evm.personalSign` or `auth.evm.personalSignUnique` method. If you need the same message to return a unique signature each time, use the `auth.evm.personalSignUnique` method. Otherwise, the `auth.evm.personalSign` method is generally recommended.
 
@@ -285,7 +285,7 @@ let result = try await auth.evm.personalSign("This is the message that is being 
 let result = try await auth.evm.personalSignUnique("This is the message that is being signed", chainInfo: nil)
 ```
 
-### Signing Typed Data V4 (EIP712)
+### Sign Typed Data V4 (EIP712)
 
 To request an EIP712 signature from a user's embedded wallet, you can use either the `auth.evm.signTypedData` or `auth.evm.signTypedDataUnique` method. If you need the same message to return a unique signature each time, use the `auth.evm.signTypedDataUnique` method. Otherwise, the `auth.evm.signTypedData` method is generally recommended.
 

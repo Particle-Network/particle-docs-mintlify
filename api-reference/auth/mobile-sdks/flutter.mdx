@@ -170,7 +170,7 @@ If you're building an iOS application with Flutter, this also entails a unique a
 
 With these requirements set, you'll need to open an exported iOS project and find `apps/{project name}.xcworkspace`. 
 
-At the root of your Xcode project, create a new file, `ParticleNetwork-Info.plist`. Ensure this is marked under "Target Membership."
+At the root of your Xcode project, create a new file, `ParticleNetwork-Info.plist`. Ensure this is marked under `Target Membership`.
 
 Now, with a fresh `ParticleNetwork-Info.plist` file, go ahead and fill it in with the following:
 
@@ -210,6 +210,14 @@ Finally, you'll need to edit your Podfile to ensure `particle_auth_core` is prop
    pod 'ParticleNetworkBase'
    pod 'ConnectCommon'
   end
+
+  post_install do |installer|
+  installer.pods_project.targets.each do |target|
+    target.build_configurations.each do |config|
+      config.build_settings['BUILD_LIBRARY_FOR_DISTRIBUTION'] = 'YES'
+    end
+  end
+end
 ```
 
 </p>
@@ -265,7 +273,7 @@ await ParticleAuthCore.isConnected();
 
 ### Disconnect
 
-To exit an existing session (logging a user out), you can simply call `ParticleAuthCore.disconnect` .
+To exit an existing session (logging a user out), you can simply call `ParticleAuthCore.disconnect`.
 
 ```dart
 await ParticleAuthCore.disconnect();
@@ -288,9 +296,9 @@ final address = await Evm.getAddress();
 final address = await Solana.getAddress();
 ```
 
-### Sign Message
+### Sign Message (EIP191)
 
-To throw a standard message for signature (meaning a user will be prompted in-UI to sign a given string), on Evm, you can call `Evm.personalSign`,  this method requires a hexadecimal string, on Solana, you can call `Solana.signMessage` you can pass in a UTF-8/readable string.
+To request an EIP191 signature from a user's embedded wallet, you can use either the `Evm.personalSign` or `Evm.personalSignUnique` method. If you need the same message to return a unique signature each time, use the `Evm.personalSignUnique` method. Otherwise, the `Evm.personalSign` method is generally recommended. On Solana, you can call `Solana.signMessage`, you can pass in a UTF-8/readable string.
 
 
 | Field     | Type     | Description                                                                       |
@@ -345,9 +353,9 @@ final signature = await Evm.sendTransaction(transaction);
 final signature = await Solana.signAndSendTransaction(transaction);
 ```
 
-### Sign Typed Data
+### Sign Typed Data V4 (EIP712)
 
-`Evm.signTypedData` is an **EVM-specific** method for signing structured (typed) data.
+To request an EIP712 signature from a user's embedded wallet, you can use either the `Evm.signTypedData` or `Evm.signTypedDataUnique` method. If you need the same message to return a unique signature each time, use the `Evm.signTypedDataUnique` method. Otherwise, the `Evm.signTypedData` method is generally recommended.
 
 | Field     | Type     | Description                   |
 | --------- | -------- | ----------------------------- |
@@ -427,6 +435,39 @@ await ParticleAuthCore.hasMasterPassword();
 await ParticleAuthCore.hasPaymentPassword();
 await ParticleAuthCore.changeMasterPassword();
 ```
+
+### Set Appearance
+
+You can forcibly set a specific appearance to be used within the UI using `ParticleBase.setAppearance`. By default, it will follow current system setting.
+
+| Field        | Type         | Description                                                                          |
+| ------------ | ------------ | ------------------------------------------------------------------------------------ |
+| `appearance` | `Appearance` | The specific appearance to be used. This can be either `.system`, `.dark`, `.light`. |
+
+```dart
+// this is the default setting  
+ParticleBase.setAppearance(Appearance.system);
+// dark  
+ParticleBase.setAppearance(Appearance.dark);
+// light  
+ParticleBase.setAppearance(Appearance.light);
+```
+
+### Set and Get Language
+
+You can forcibly set a specific language to be used within the UI using `ParticleBase.setLanguage`, with retrieval of the current active language facilitated by `ParticleBase.getLanguage`. By default, this is set to English.
+
+| Field      | Type       | Description                                                                                       |
+| ---------- | ---------- | ------------------------------------------------------------------------------------------------- |
+| `language` | `Language` | The specific language to be used. This can be either `.en`, `.ja`, `.zh_hans`, `.zh_hant`, `.ko`. |
+
+```dart
+ParticleBase.setLanguage(Language.en)
+
+ParticleBase.getLanguage()
+```
+
+---
 
 ## `EvmService` utilization examples
 
@@ -523,7 +564,7 @@ final gasFees = await EvmService.suggestedGasFees();
 
 ### Get Tokens and NFTs
 
-`EvmService` also extends to Data API methods such as `getTokensAndNFTs`, which returns a highly detailed JSON list of ERC20 tokens and ERC721 NFTs belonging to a specified address. This is accessible through `EvmService.getTokensAndNFTs`, passing in the public address to retrieve the tokens and NFTs of, also you can retrieve tokens from `getTokens` of NFTs from `getNFTs`
+`EvmService` also extends to Data API methods such as `getTokensAndNFTs`, which returns a highly detailed JSON list of ERC20 tokens and ERC721 NFTs belonging to a specified address. This is accessible through `EvmService.getTokensAndNFTs`, passing in the public address to retrieve the tokens and NFTs of, also you can retrieve tokens from `getTokens` or NFTs from `getNFTs`
 
 | Field  | Type   | Description                                                                                              |
 |--------|--------|----------------------------------------------------------------------------------------------------------|
@@ -667,37 +708,4 @@ Call any basic Solana rpc method through `SolanaService.rpc`
 
 ```dart
 await SolanaService.rpc(method, params);
-```
-
-### Set Appearance
-
-You can forcibly set a specific appearance to be used within the UI using `ParticleBase.setAppearance`. By default, it will follow current system setting.
-
-| Field        | Type         | Description                                                                          |
-| ------------ | ------------ | ------------------------------------------------------------------------------------ |
-| `appearance` | `Appearance` | The specific appearance to be used. This can be either `.system`, `.dark`, `.light`. |
-
-```dart
-// this is the default setting  
-ParticleBase.setAppearance(Appearance.system);
-// dark  
-ParticleBase.setAppearance(Appearance.dark);
-// light  
-ParticleBase.setAppearance(Appearance.light);
-```
-
----
-
-### Set and Get Language
-
-You can forcibly set a specific language to be used within the UI using `ParticleBase.setLanguage`, with retrieval of the current active language facilitated by `ParticleBase.getLanguage`. By default, this is set to English.
-
-| Field      | Type       | Description                                                                                       |
-| ---------- | ---------- | ------------------------------------------------------------------------------------------------- |
-| `language` | `Language` | The specific language to be used. This can be either `.en`, `.ja`, `.zh_hans`, `.zh_hant`, `.ko`. |
-
-```dart
-ParticleBase.setLanguage(Language.en)
-
-ParticleBase.getLanguage()
 ```

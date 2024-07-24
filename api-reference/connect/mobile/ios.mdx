@@ -440,7 +440,7 @@ let signed = try await adapter.signTransaction(publicAddress: address, transacti
 let signeds = try await adapter.signAllTransactions(publicAddress: address, transactions: transactions).value
 ```
 
-### Sign Message
+### Sign Message (EIP191)
 
 To sign a basic UTF-8 message (string), you can use `adapter.signMessage` to prompt the user for a signature, alongside the message in question. `adapter.signMessage` takes the following parameters:
 
@@ -454,7 +454,7 @@ To sign a basic UTF-8 message (string), you can use `adapter.signMessage` to pro
 let signed = try await adapter.signMessage(publicAddress: address, message: message).value
 ```
 
-### Sign Typed Data
+### Sign Typed Data V4 (EIP712)
 
 As an alternative to `signMessage`, for **EVM chains**, you can request that a user signs typed (structured) data rather than purely a raw string. To do this, you can use `adapter.signTypedData` (equivalent to `eth_signTypedData` V4). This takes the following parameters:
 
@@ -485,3 +485,9 @@ public class Coin98WalletConnectAdapter: WalletConnectAdapter {
   }
 }
 ```
+
+---
+
+## Dive Deeper
+
+`ParticleConnect` includes `ParticleAuthCore`. If you log in with a Particle account, you can access additional function such as `getUserInfo`, `openAccountAndSecurity`, `hasMasterPassword` and `hasPaymentPassword` and `changeMasterPassword`, you can reference the docs from [Auth SDK reference](/api-reference/auth/mobile/ios.mdx#get-user-info)

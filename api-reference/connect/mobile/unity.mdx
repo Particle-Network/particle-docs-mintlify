@@ -102,7 +102,7 @@ Once you've ensured that your project meets the above prerequisites, you'll also
 
 With these values retrieved, you can move on to initial configuration and dependency management. This will vary in complexity depending on the platform used. To begin, for both iOS and Android, you'll need to download and install the Particle Unity package; this will include the necessary files for both Particle Connect and Particle Auth. 
 
-Head over to the [`particle-unity` GitHub repository](https://github.com/Particle-Network/particle-unity/releases), and download the latest release (`.unitypackage`), then import this into your project.
+Head over to the [GitHub repository](https://github.com/Particle-Network/particle-unity/releases), and download the latest release (`.unitypackage`), then import this into your project.
 
 #### iOS configuration
 
@@ -409,4 +409,8 @@ await ParticleConnect.Instance.ImportWalletFromMnemonic(this._walletType, mnemon
 await ParticleConnect.Instance.ExportWalletPrivateKey(this._walletType, publicAddress);
 ```
 
-***
+---
+
+## Dive Deeper
+
+`ParticleConnect` includes `ParticleAuthCore`. If you log in with a Particle account, you can access additional function such as `getUserInfo`, `openAccountAndSecurity`, `hasMasterPassword` and `hasPaymentPassword` and `changeMasterPassword`, you can reference the docs from [Auth SDK reference](/api-reference/auth/mobile/unity.mdx#get-user-info)
