@@ -365,15 +365,6 @@
             "api-reference/web3/solana/enhancedgettransactionsbyaddress",
             "api-reference/web3/solana/solanaservice"
           ]
-        },
-        {
-          "group": "IPFS API",
-          "pages": [
-            "api-reference/web3/ipfs/upload",
-            "api-reference/web3/ipfs/uploadjson",
-            "api-reference/web3/ipfs/gateway",
-            "api-reference/web3/ipfs/gatewayimage"
-          ]
         }
       ]
     },
