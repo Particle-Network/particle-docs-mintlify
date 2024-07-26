@@ -145,6 +145,7 @@
         {
           "group": "Wallet-as-a-Service",
           "pages": [
+            "resources/quickstart/waas/components",
             "resources/quickstart/waas/understanding-waas",
             "resources/quickstart/waas/web-quickstart",
             "resources/quickstart/waas/mobile-quickstart"
