@@ -162,6 +162,7 @@
         {
           "group": "Connection Kits",
           "pages": [
+            "resources/quickstart/connection-kits/solana",
             "resources/quickstart/connection-kits/rainbow",
             "resources/quickstart/connection-kits/particle-connect",
             "resources/quickstart/connection-kits/web3modal",
@@ -436,5 +437,12 @@
     "x": "https://twitter.com/ParticleNtwrk",
     "github": "https://github.com/Particle-Network",
     "discord": "https://discord.com/invite/2y44qr6CR2"
+  },
+  "redirects": [
+  {
+    "source": "/docs/what-is-particle-network",
+    "destination": "/landing/what-is-particle-network"
   }
+]
+
 }
