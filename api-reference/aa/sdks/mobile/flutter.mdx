@@ -95,7 +95,7 @@ Sending a transaction (UserOperation) is as simple as calling pre-existing metho
 
 `ParticleConnect.signAndSendTransaction` or `Evm.sendTransaction` in `particle_auth_core` takes the following parameters:
 
-- For Particle Connect, `walletType`, dictating the specific adapter being used/targeted.
+- For Particle Connect, `walletType`, dictates the specific adapter being used/targeted.
 - `account`, the public address of the smart account sending the transaction, which can be retrieved through `EvmService.getSmartAccount`.
 - `transaction`, a stringified standard transaction object.
 - `feeMode`, the mechanism to be used for paying gas fees, can be:
