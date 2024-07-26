@@ -206,7 +206,7 @@ Initialization can be started through the `init` method on `ParticleConnect` (fr
 | env            | Env                            | DEV, STAGING, PRODUCTION,Different levels display different log information |
 | chain          | ChainInfo                      | the primary chain to be used within your application. `ChainInfo` can be set as a `ChainInfo` object imported from `network.particle.chains.ChainInfo.Companion.{chain}`.  such as ChainInfo.Ethereum、ChainInfo.Solana |
 | dAppData       | DAppMetadata                   | metadata outlining the description of your application. This should be set as an instance of `DAppMetadata` (imported from `com.particle.base.model.DAppMetadata`) with the following parameters set:<br /><br />  `walletConnectProjectId`, your WalletConnect project ID retrieved from the [WalletConnect dashboard](https://cloud.walletconnect.com).<br /> `name`, the name of your project. <br />`icon`, a link containing the logo (icon) of your project; this should be 512x512, ideally.<br /> `url`, the URL of your project's website. <br />`description`, a short description to be used in representing your project. |
-| createAdapters | (() -> List<IConnectAdapter>)? | you'll need to define a list (`listOf`) wallets (adapters) that you'd like to be provided as an option within your instance of Particle Connect (these can be imported from `com.wallet.connect.adapter.{Adapter name}`). |
+| createAdapters | (() -> List`<IConnectAdapter>`)? | you'll need to define a list (`listOf`) wallets (adapters) that you'd like to be provided as an option within your instance of Particle Connect (these can be imported from `com.wallet.connect.adapter.{Adapter name}`). |
 |                |                                |                                                              |
 
 ```kotlin Kotlin
@@ -283,10 +283,10 @@ For `EVMConnectAdapter` and `SolanaConnectAdapter`, this will generate a fresh a
 | ----------------- | --------------------------------- | ------------------------------------------------------------ |
 | loginType         | LoginType                         | the social login method preferred. This supports either EMAIL, PHONE, TWITTER, GOOGLE, FACEBOOK, APPLE, DISCORD, GITHUB, TWITCH, MICROSOFT, LINKEDIN, JWT. |
 | account           | String                            | Default is empty, you can use the `account` parameter to pass in an expected email, phone number, or JWT. This is optional for the former two, but required for `.jwt`. The phone number must be in E.164 format. |
-| supportLoginTypes | List<SupportLoginType>            | The default setting includes support for all SupportLoginTypes: EMAIL, PHONE, FACEBOOK, GOOGLE, APPLE, TWITTER, DISCORD, GITHUB, TWITCH, MICROSOFT, and LINKEDIN. You can also provide a specific subset of SupportLoginTypes if needed. |
+| supportLoginTypes | List`<SupportLoginType>`            | The default setting includes support for all SupportLoginTypes: EMAIL, PHONE, FACEBOOK, GOOGLE, APPLE, TWITTER, DISCORD, GITHUB, TWITCH, MICROSOFT, and LINKEDIN. You can also provide a specific subset of SupportLoginTypes if needed. |
 | prompt            | LoginPrompt?                      | the prompt to be displayed following social login, such as a request to set a master password, payment password, etc. This is `null` by default. |
 | loginPageConfig   | LoginPageConfig?                  | If you use a Google to log in, you can control the Google account login prompt with this parameter: None、Consent or SelectAccount. |
-| loginCallback     | AuthCoreServiceCallback<UserInfo> | success : wiil return UserInfo. <br /><br />failure : will return a ErrorInfo |
+| loginCallback     | AuthCoreServiceCallback`<UserInfo>` | success : wiil return UserInfo. <br /><br />failure : will return a ErrorInfo |
 
 ```kotlin Kotlin
 
@@ -297,7 +297,7 @@ data class ConnectConfigJWT(
 data class ConnectConfigEmail(
     @SerializedName("email") val email: String = "",
     @SerializedName("code") val code: String = "",
-    @SerializedName("supportLoginTypes") val supportLoginTypes: List<SupportLoginType> = SupportLoginType.values().toList(),
+    @SerializedName("supportLoginTypes") val supportLoginTypes: List`<SupportLoginType>` = SupportLoginType.values().toList(),
     @SerializedName("prompt") val prompt: LoginPrompt? = null,
     @SerializedName("loginPageConfig") val loginPageConfig: LoginPageConfig? = null,
 ) : ConnectConfig
@@ -305,7 +305,7 @@ data class ConnectConfigEmail(
 data class ConnectConfigPhone(
     @SerializedName("phone") val phone: String = "",
     @SerializedName("code") val code: String = "",
-    @SerializedName("supportLoginTypes") val supportLoginTypes: List<SupportLoginType> = SupportLoginType.values().toList(),
+    @SerializedName("supportLoginTypes") val supportLoginTypes: List`<SupportLoginType>` = SupportLoginType.values().toList(),
     @SerializedName("prompt") val prompt: LoginPrompt? = null,
     @SerializedName("loginPageConfig") val loginPageConfig: LoginPageConfig? = null,
 ) : ConnectConfig
