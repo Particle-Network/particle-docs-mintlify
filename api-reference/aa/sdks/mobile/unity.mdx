@@ -68,7 +68,7 @@ Once the Particle AA SDK has been initialized through `ParticleAAInteraction`, y
 
 E.g.:
 
-```csharp C#
+```csharp
 
 // BICONOMY_V1 || BICONOMY_V2 | SIMPLE | CYBERCONNECT | LIGHT
 ParticleAAInteraction.Init(AAAccountName.BICONOMY_V1);
@@ -83,7 +83,7 @@ ParticleAAInteraction.EnableAAMode();
 
 Upon initiating social login, a smart account will be assigned to your user's EOA (either a SimpleAccount, Biconomy account, or CyberConnect account), although even upon assignment, that smart account still needs to be deployed. This deployment will happen automatically upon the first UserOperation execution, as the deployment operation will be batched in with the first transaction request. Although, if you'd like to see whether an EOA's assigned smart account has been deployed or not, you can call `ParticleAA.Instance.IsDeploy`, as shown below.
 
-```csharp C#
+```csharp
 var evmAddress = ParticleAuthCoreInteraction.EvmGetAddress()
 var result = await ParticleAA.Instance.IsDeploy(eoaAddress);
 ```
@@ -92,7 +92,7 @@ var result = await ParticleAA.Instance.IsDeploy(eoaAddress);
 
 As mentioned prior, upon initialization, you'll need to enable the AA mode. If you're unsure whether this is currently enabled for a specific instance, then you can use `ParticleAAInteraction.IsAAModeEnable`, which will return a Boolean indicating either`true` or `false` otherwise. E.g.:
 
-```csharp C#
+```csharp
 var result = ParticleAAInteraction.IsAAModeEnable();
 ```
 
@@ -105,7 +105,7 @@ As you'll see in a moment, sending a UserOperation requires the retrieval of a `
 
 E.g.:
 
-```csharp C#
+```csharp
 var nativeResultData = await ParticleAA.Instance.RpcGetFeeQuotes(eoaAddress, new List<string> { transaction });
 ```
 
@@ -124,7 +124,7 @@ Sending a transaction or UserOperation within the AA SDK is also quite simple. T
 
 E.g.:
 
-```csharp C#
+```csharp
 // Particle Auth, singular transaction
 var nativeResultData = await ParticleAuthCore.Instance.SendTransaction(transaction, AAFeeMode.Native(JObject.Parse(feeQuotesResult.data)));
 
@@ -140,7 +140,7 @@ var nativeResultData = await ParticleConnect.Instance.BatchSendTransactions(Wall
 
 Check if you can send gasless/native/token.
 
-```csharp C#
+```csharp
 // check if enough native for gas fee
 var feeQuotesResult =
     await ParticleAA.Instance.RpcGetFeeQuotes(eoaAddress, new List<string> { transaction });

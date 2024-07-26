@@ -221,7 +221,7 @@ To do this, you'll need to call `ParticleWalletGUI.ParticleWalletConnectInitiali
 
 Additionally, if you're using `ParticleNetwork` and `ParticleConnectInteraction` for Particle Connect or Auth, you can initialize them in the same place and using the same `metadata`.
 
-```csharp C#
+```csharp
 var metadata = new DAppMetaData(TestConfig.walletConnectProjectId, "Particle Connect",
     "https://connect.particle.network/icons/512.png",
     "https://connect.particle.network", "Particle Unity Demo");
@@ -263,7 +263,7 @@ Now that `ParticleWalletGUI` is initialized and set to go, you can move onto con
 
 E.g.:
 
-```csharp C#
+```csharp
 ParticleWalletGUI.SetSupportChain(new []{chainInfo});
 
 ParticleWalletGUI.EnablePay(false);
@@ -299,7 +299,7 @@ ParticleWalletGUI.SetShowAppearanceSetting(true);
 
 Within `ParticleWalletGUI`, you can also force specific pages of Particle Wallet to open, passing in specific preset configurations. In this case, you can programmatically open the main page of the wallet with `NavigatorWallet` and pass in a binary (`0` or `1`), indicating whether the main page should display ERC20/SPL tokens (`0`), or NFTs (`1`). E.g.:
 
-```csharp C#
+```csharp
 int display = 0;
 ParticleWalletGUI.NavigatorWallet(display);
 ```
@@ -308,7 +308,7 @@ ParticleWalletGUI.NavigatorWallet(display);
 
 Similarly, you can open a standalone page for receiving cryptocurrency. This'll include the user's address alongside a corresponding QR code. To do this, you'll need to call `ParticleWalletGUI.NavigatorTokenReceive`. If you'd like, you can pass in a specific `tokenAddress` to create a token-specific QR code, including its icon/logo at the center. E.g.:
 
-```csharp C#
+```csharp
 ParticleWalletGUI.NavigatorTokenReceive();
 ParticleWalletGUI.NavigatorTokenReceive(tokenAddress);
 ```
@@ -317,7 +317,7 @@ ParticleWalletGUI.NavigatorTokenReceive(tokenAddress);
 
 To open the token sending page (ERC20/SPL/native), you'll can use `ParticleWalletGUI.NavigatorTokenSend`, optionally passing in various parameters such as `tokenAddress`, `toAddress`, and `amount` to predefine values within the interface. E.g.:
 
-```csharp C#
+```csharp
 ParticleWalletGUI.NavigatorTokenSend(tokenAddress, toAddress, amount);
 ```
 
@@ -325,7 +325,7 @@ ParticleWalletGUI.NavigatorTokenSend(tokenAddress, toAddress, amount);
 
 You can also return a page displaying the transaction records of a connected wallet, `ParticleWalletGUI.NavigatorTokenTransactionRecords`, which optionally takes one parameter, `tokenAddress`, for filtering the results only to include transactions that involve a specified ERC20/721 token address. E.g.:
 
-```csharp C#
+```csharp
 ParticleWalletGUI.NavigatorTokenTransactionRecords(tokenAddress);
 ```
 
@@ -342,7 +342,7 @@ Similar to the token sending page, you can also return an NFT sending page for m
 
 E.g.:
 
-```csharp C#
+```csharp
 ParticleWalletGUI.NavigatorNFTSend(contractAddress, tokenId, null, null); 
 ```
 
@@ -350,7 +350,7 @@ ParticleWalletGUI.NavigatorNFTSend(contractAddress, tokenId, null, null);
 
 Particle Wallet also natively supports viewing specific NFTs (traits, description, image, etc.). Forcing this menu programmatically can happen through `ParticleWalletGUI.NavigatorNFTDetails`, passing in the `contractAddress` of the NFT and the specific `tokenId`. For Solana, `tokenId` can be left blank. E.g.:
 
-```csharp C#
+```csharp
 ParticleWalletGUI.NavigatorNFTDetails(contractAddress, tokenId);
 ```
 
@@ -373,7 +373,7 @@ The specific parameters that can be used within `ParticleWalletGUI.NavigatorBuyC
 | `Language` | `Language?` |  (Optional) the buy page lanuage, default is current language.|
 | `modalStyle`| `iOSModalPresentStyle?` | (Optional) control iOS presentation style, default is `PageSheet`.|
 
-```csharp C#
+```csharp
 BuyCryptoConfig config = new BuyCryptoConfig(TestAccount.EVM.PublicAddress,
                              OpenBuyNetwork.BinanceSmartChain, "BNB", "USD", 100);
 ParticleWalletGUI.NavigatorBuyCrypto(config);
@@ -395,7 +395,7 @@ Additionally, Particle Wallet has a built-in swap functionality (retrieves multi
 
 E.g.:
 
-```csharp C#
+```csharp
 ParticleWalletGUI.NavigatorSwap();
 
 ParticleWalletGUI.NavigatorSwap(fromTokenAddress, toTokenAddress, fromTokenAmount);
@@ -405,7 +405,7 @@ ParticleWalletGUI.NavigatorSwap(fromTokenAddress, toTokenAddress, fromTokenAmoun
 
 Finally, before opening the UI, if you'd like to switch the `WalletType` (`walletType` in this case) reflected and used within the wallet itself, you can use `ParticleWalletGUI.Instance.SwitchWallet`, passing in the specific `walletType` (see [Particle Connect iOS](https://particlenetwork.readme.io/reference/ios-swift) for more information) and targeted user address, `publicAddress`. E.g.:
 
-```csharp C#
+```csharp
 var walletType = WalletType.MetaMask;
 var nativeResultData = await ParticleWalletGUI.Instance.SwitchWallet(walletType, publicAddress);
 ```

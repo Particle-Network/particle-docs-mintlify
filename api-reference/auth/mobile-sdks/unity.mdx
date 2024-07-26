@@ -284,7 +284,7 @@ Before you can call core functions within the SDK, you'll need to initialize `Pa
 
 <Tip>The Particle Auth Unity SDK does not require authentication from the [Particle dashboard](https://dashboard.particle.network).</Tip>
 
-```csharp C#
+```csharp
 ParticleNetwork.Init(ChainInfo.Ethereum); 
 ParticleAuthCoreInteraction.Init();
 ```
@@ -313,7 +313,7 @@ This is achieved and configured via `ParticleAuthCore.Instance.Connect`. Once th
 | `socialLoginPrompt`| `SocialLoginPrompt?`| (Optional) either `.none`, `.consent`, or `.select_account`|
 | `loginPageConfig` | `LoginPageConfig?`| (Optional) to customize the UI page, contains project name, icon and description.| 
 
-```csharp C#
+```csharp
 var loginConfig = new LoginPageConfig("Particle Unity Example", "Welcome to login", 
                             "https://connect.particle.network/icons/512.png");
 List<SupportLoginType> allSupportLoginTypes =
@@ -323,55 +323,59 @@ await ParticleAuthCore.Instance.Connect(LoginType.EMAIL, null, SupportAuthType.A
 
 You can also costumize login page for email/phone, send code with method `ParticleAuthCore.Instance.SendPhoneCode` or `ParticleAuthCore.Instance.SendEmailCode`, connect with method `ParticleAuthCore.Instance.ConnectWithCode`
 
-```csharp with phone
+<CodeGroup>
+
+```csharp Email
+await ParticleAuthCore.Instance.SendEmailCode(email);
+await ParticleAuthCore.Instance.ConnectWithCode(null, email, code);
+```
+
+```csharp Phone
 await ParticleAuthCore.Instance.SendPhoneCode(phone);
 await ParticleAuthCore.Instance.ConnectWithCode(phone, null, code);
 ```
 
-```csharp with email
-await ParticleAuthCore.Instance.SendEmailCode(email);
-await ParticleAuthCore.Instance.ConnectWithCode(null, email, code);
-```
+</CodeGroup>
 
 
 ### Disconnect
 
 Once a user has been logged in, you can programmatically initiate logout through `ParticleAuthCore.Instance.Disconnect`.
 
-```csharp C#
+```csharp
 await ParticleAuthCore.Instance.Disconnect();
 ```
 
-### IsConnected
+### Is Connected
 
 Whether or not a user is logged in may need to be retrieved, specifically in cases where a user stays logged in after refreshing an application due to the continuation of a given session. To check the currently active login status, you can call `ParticleAuthCore.Instance.IsConnected`.
 
-```csharp C#
+```csharp
 await ParticleAuthCore.Instance.IsConnected();
 ```
 
-### GetUserInfo
+### Get User Info
 
 After connected, you can call `ParticleAuthCoreInteraction.GetUserInfo` to retrieve the userInfo.
 
-```csharp C#
+```csharp
 var userInfo = ParticleAuthCoreInteraction.GetUserInfo()
 ```
 
-### GetAddress
+### Get Address
 
 To retrieve the address of the currently active account (either EVM or Solana, depending on the previously selected chain), `ParticleAuthCoreInteraction.EvmGetAddress` or `ParticleAuthCoreInteraction.SolanaGetAddress` can be called.
 
-```csharp C#
+```csharp
 var evmAddress = ParticleAuthCoreInteraction.EvmGetAddress()
 var solanaAddress = ParticleAuthCoreInteraction.SolanaGetAddress()
 ```
 
-### SignMessage
+### Sign Message
 
 Simple message signing can be achieved by calling `ParticleAuthCore.Instance.EvmPersonalSign` or `ParticleAuthCore.Instance.SolanaPersonalSign` and passing in a standard string (no need for encoding on this method) with the message you'd like to be prompted for signature.
 
-```csharp C#
+```csharp
 var message = "Hello Particle!";
 
 await ParticleAuthCore.Instance.EvmPersonalSign(message);
@@ -380,20 +384,20 @@ await ParticleAuthCore.Instance.EvmPersonalSignUnique(message);
 await ParticleAuthCore.Instance.SolanaPersonalSign(message);
 ```
 
-### SignTransaction
+### Sign Transaction
 
 Similarly, for signing a transaction, you'll need to call `ParticleAuthCore.Instance.SolanaSignTransaction` and pass in a serialized (string) standard transaction object to be prompted for signature. This is a **Solana-specific** method.
 
-```csharp C#
+```csharp
 var transaction = "your transaction";
 await ParticleAuthCore.Instance.SolanaSignTransaction(transaction);
 ```
 
-### SignAllTransactions
+### Sign All Transactions
 
 `ParticleAuthCore.Instance.SolanaSignAllTransactions` is another **Solana-specific** method that functions adjacent to the former but instead signs multiple (a list of) transactions represented as strings.
 
-```csharp C#
+```csharp
 var transaction1 = "transaction1";
 var transaction2 = "transaction2";
 
@@ -402,11 +406,11 @@ string[] transactions = new[] { transaction1, transaction2 };
 await ParticleAuthCore.Instance.SolanaSignAllTransactions(transactions);
 ```
 
-### SignAndSendTransaction
+### Sign And Send Transaction
 
 `ParticleAuthCore.Instance.EvmSendTransaction` and `ParticleAuthCore.Instance.SolanaSignAndSendTransaction`are the primary methods within the SDK for sending transactions as it immediately sends a given transaction after requesting signature (confirmation). This will also take a serialized (string) representation of a transaction,
 
-```csharp C#
+```csharp
 var transaction = "transaction";
   
 var nativeResultData = await ParticleAuthCore.Instance.EvmSendTransaction(transaction);
@@ -414,55 +418,47 @@ var nativeResultData = await ParticleAuthCore.Instance.EvmSendTransaction(transa
 var nativeResultData = await ParticleAuthCore.Instance.SolanaSendTransaction(transaction);
 ```
 
-### SignTypedData
+### Sign Type Data
 
 `ParticleAuthCore.Instance.EvmSignTypedData` is an **EVM-specific** method for signing structured (typed) data. For more information on `signTypedData`, see the [Web (JavaScript/TypeScript)](/api-reference/auth/desktop-sdks/web) page.
 
-```csharp C#
+```csharp
 string typedData = "your typedata";
   
 await ParticleAuthCore.Instance.EvmSignTypedData(typedData);
 ```
 
-### SetChainInfo
+### Set ChainInfo
 
 If you'd like to set the primary chain after initial configuration, you'll need to use `ParticleNetwork.SetChainInfo`, which simply takes a `chainInfo` object parallel to the type of object passed into the original `ParticleNetwork.Init` call.
 
-```csharp C#
+```csharp
 ParticleNetwork.SetChainInfo(ChainInfo.Ethereum);
 
 // Asynchronous, used for switch from evm to solana, or switch from solana to evm.
 await ParticleAuthCore.Instance.SwitchChain(ChainInfo.Ethereum);
 ```
 
-### HasMasterPassword, HasPaymentPassword, HasSecurityAccount
+### Open Account and Security Page
 
-Now that we've explored some general interaction examples, **security options** are also an important component of utilization, given you'd like either knowledge or control over the level of security a given user has opted in for on their account.
+Following the above, if you'd like to force the opening of account/security settings (in-UI), you can do so with `ParticleAuthCore.Instance.OpenAccountAndSecurity`.
 
-`ParticleAuthCoreInteraction.HasMasterPassword` will return a Boolean based on whether or not a user has set a master password (a non-recoverable password required upon every fresh login).
+```csharp
+await ParticleAuthCore.Instance.OpenAccountAndSecurity();
+```
 
-`ParticleAuthCoreInteraction.HasPaymentPassword` will return a Boolean based on whether or not a user has set a payment password (a pin required upon every transaction).
+### Has Master Password, Payment Password, Security Account
 
-```csharp C#
+Similarly to the `isConnected` function covered prior, there are various scenarios in which knowing whether or not a user has specific security settings enabled may be useful. In the case of the Particle Auth Flutter SDK, this can happen in one of two ways:
+
+With the built-in `ParticleAuthCoreInteraction.HasMasterPassword`, `ParticleAuthCoreInteraction.HasPaymentPassword`, and `ParticleAuthCore.Instance.ChangeMasterPassword` methods.
+
+```csharp
 ParticleAuthCoreInteraction.HasMasterPassword();
 
 ParticleAuthCoreInteraction.HasPaymentPassword();
-```
 
-### ChangeMasterPassword
-
-If you'd like to set or change master password, you can call `ParticleAuthCore.Instance.ChangeMasterPassword` .
-
-```csharp C#
 await ParticleAuthCore.Instance.ChangeMasterPassword();
-```
-
-### OpenAccountAndSecurity
-
-If you'd like to set or change payment password, you can call `ParticleAuthCoreInteraction.OpenAccountAndSecurity` 
-
-```csharp C#
-await ParticleAuthCore.Instance.OpenAccountAndSecurity();
 ```
 
 ***
@@ -484,7 +480,7 @@ In addition to `ParticleAuthCore` for authentication and interaction with Partic
 | `abiJsonString` | `string?` | The method's abi json string|
 | `gasFeeLevel` | `GasFeeLevel` | (Optional) the gas fee level, `High`, `Medium` or `Low`, default is `High`|
 
-```csharp C#
+```csharp
 // abi json string, you can get it from your contract developer.
 // such as
 // [{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"quantity\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"mint\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}]
@@ -505,7 +501,7 @@ var transaction = await EvmService.WriteContract(from, contractAddress, methodNa
 | `abiJsonString` | `string?` | The method's abi json string|
 
 
-```csharp C#
+```csharp
 // abi json string, you can get it from your contract developer.
 // such as
 // [{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"quantity\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"mint\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}]
@@ -529,7 +525,7 @@ var result = (string)JObject.Parse(rpcResult)["result"];
 | `gasFeeLevel` | `GasFeeLevel` | (Optional) the gas fee level, `High`, `Medium` or `Low`, default is `High`. |
 
 
-```csharp C#
+```csharp
 var transaction = await EvmService.CreateTransaction(from, data, value, reciver);
 ```
 
@@ -537,7 +533,7 @@ var transaction = await EvmService.CreateTransaction(from, data, value, reciver)
 
 Given a standard transaction structure (detached set of values, as shown below), gas estimations can be ran to simulate and retrieve the volume of gas to be consumed by a specified transaction (wrapper for `eth_estimateGas`). This is done through `EvmService.EstimateGas`.
 
-```csharp C#
+```csharp
 final result = await EvmService.EstimateGas(from, to, value, data);
 var gasLimit = (string)JObject.Parse(result)["result"];
 ```
@@ -546,7 +542,7 @@ var gasLimit = (string)JObject.Parse(result)["result"];
 
 To retrieve categorized gas price suggestions (3 categories scaling from low to high) based upon current network conditions, you can call `EvmService.SuggestedGasFees`.
 
-```csharp C#
+```csharp
 var gasFeesResult = await EvmService.SuggestedGasFees();
 ```
 
@@ -556,7 +552,7 @@ var gasFeesResult = await EvmService.SuggestedGasFees();
 
 `tokenAddresses` is an optional parameter, for get the specific tokens.
 
-```csharp C#
+```csharp
 await EvmService.GetTokensAndNFTs(publicAddress, tokenAddresses);
 await EvmService.GetTokens(publicAddress, tokenAddresses)
 await EvmService.GetNFTs(publicAddress)
@@ -566,7 +562,7 @@ await EvmService.GetNFTs(publicAddress)
 
 Similar to the former method, `EvmService.GetTransactionsByAddress` enables the retrieval of a detailed JSON response containing a complete list of transactions involving a specified address.
 
-```csharp C#
+```csharp
 await EvmService.GetTransactionsByAddress(publicAddress);
 ```
 
@@ -574,7 +570,7 @@ await EvmService.GetTransactionsByAddress(publicAddress);
 
 To retrieve token price based upon current network conditions, you can call `EvmService.GetPrice`.
 
-```csharp C#
+```csharp
  await EvmService.GetPrice(tokenAddresses, currencies);
 ```
 
@@ -582,7 +578,7 @@ To retrieve token price based upon current network conditions, you can call `Evm
 
 Call any basic EVM rpc method through `EvmService.Rpc`
 
-```csharp C#
+```csharp
 await EvmService.Rpc(method, params);
 ```
 
@@ -594,7 +590,7 @@ In addition to `ParticleAuthCore` for authentication and interaction with Partic
 
 `SolanaService` also extends to Data API methods such as `GetTokensAndNFTs`, which returns a highly detailed JSON list of SPL tokens and NFTs belonging to a specified address. This is accessible through `SolanaService.GetTokensAndNFTs`, passing in the public address to retrieve the tokens and NFTs of.
 
-```csharp C#
+```csharp
 await SolanaService.GetTokensAndNFTs(publicAddress, true);
 ```
 
@@ -604,7 +600,7 @@ await SolanaService.GetTokensAndNFTs(publicAddress, true);
 
 These transactions, once constructed , can be passed for in-UI proposal with `ParticleAuthCore.Instance.SolanaSendTransaction`.
 
-```csharp C#
+```csharp
 string receiver = "";
 long amount = 10000000;
 SerializeSOLTransReq req = new SerializeSOLTransReq(sender, receiver, amount);
@@ -618,7 +614,7 @@ var transaction = (string)resultData["result"]["transaction"]["serialized"];
 
 To retrieve token price based upon current network conditions, you can call `SolanaService.GetPrice`.
 
-```csharp C#
+```csharp
  await SolanaService.GetPrice(tokenAddresses, currencies);
 ```
 
@@ -626,7 +622,7 @@ To retrieve token price based upon current network conditions, you can call `Sol
 
 To retrieve transactions from a address, you can call `SolanaService.getTransactionsByAddress`.
 
-```csharp C#
+```csharp
 await SolanaService.GetTransactionsByAddress(address);
 ```
 
@@ -634,7 +630,7 @@ await SolanaService.GetTransactionsByAddress(address);
 
 To obtain the balance of a specified token at a specified address, you can call `SolanaService.GetTokenByTokenAddresses`
 
-```csharp C#
+```csharp
 await SolanaService.GetTokenByTokenAddresses(address, tokenAddresses);
 ```
 
@@ -642,6 +638,6 @@ await SolanaService.GetTokenByTokenAddresses(address, tokenAddresses);
 
 Call any basic Solana rpc method through `SolanaService.Rpc`
 
-```csharp C#
+```csharp
 await SolanaService.Rpc(method, params);
 ```

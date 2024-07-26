@@ -227,7 +227,7 @@ An example of the above process can be found below.
 | `rpcUrl` | `RpcUrl?` | Customize rpc url   |
 | `env`          | `Env`           | The specific environmennt to be used. This can be either `.DEV`, `.STAGING`, `.PRODUCTION`, this should be set to `.PRODUCTION` when release  |
 
-```csharp C#
+```csharp
 var metadata = new DAppMetaData(TestConfig.walletConnectProjectId,"Particle Connect",
             "https://connect.particle.network/icons/512.png",
             "https://connect.particle.network",
@@ -240,7 +240,7 @@ ParticleConnectInteraction.Init(ChainInfo.Ethereum, metadata);
 Additionally, if you'd like to define multiple chains to be available through WalletConnect, you'll need to create an array of `ChainInfo` objects (`chainInfos` in this example) and use it within `ParticleConnectInteraction.SetWalletConnectV2SupportChainInfos`. E.g.:
 
 
-```csharp C#
+```csharp
 List<ChainInfo> chainInfos = new List<ChainInfo>
                 { ChainInfo.Ethereum, ChainInfo.EthereumSepolia, ChainInfo.EthereumSepolia };
 ParticleConnectInteraction.SetWalletConnectV2SupportChainInfos(chainInfos.ToArray());
@@ -254,7 +254,7 @@ ParticleConnectInteraction.SetWalletConnectV2SupportChainInfos(chainInfos.ToArra
 
 Before a user has connected, if you'd like to set the primary chain after initialization through `.Init`, you can call `ParticleNetwork.SetChainInfo`, passing in a corresponding `chainInfo` object for the chain you'd like to switch to. Alternatively, if you only support evm chains, `ParticleNetwork.SetChainInfo` is enough, you can call it anytime, if you support both evm and solana, `ParticleAuthCore.Instance.SwitchChain` should be called when switch from an evm chain to solana or switch from solana to an evm chain. E.g:
 
-```csharp C#
+```csharp
 ParticleNetwork.SetChainInfo(ChainInfo.Ethereum);
 
 // Alternatively, if you are using WalletType.authCore
@@ -300,7 +300,7 @@ If you're using `AuthCore`, you'll also need to pass in a `ConnectConfig` object
 | `loginPageConfig`   | `LoginPageConfig?`       | (Optional) to customize the UI page, contains project name, icon and description.                                                                                                                                                                                                |
 E.g.:
 
-```csharp C#
+```csharp
 // use particle authentication
 var supportLoginTypes = new List<SupportLoginType> { SupportLoginType.APPLE, SupportLoginType.EMAIL, SupportLoginType.PHONE, SupportLoginType.GOOGLE};
 var loginPageConfig = new LoginPageConfig("Particle Unity Example",
@@ -318,7 +318,7 @@ await ParticleConnect.Instance.Connect(WalletType.MetaMask);
 
 To disconnect an active session, identified by a specific address, you can call `ParticleConnect.Instance.Disconnect`, passing in the specific wallet type (`WalletType` object) and associated address that you'd like to disconnect from your application, as is shown below.
 
-```csharp C#
+```csharp
 await ParticleConnect.Instance.Disconnect(this._walletType, publicAddress);
 ```
 
@@ -328,7 +328,7 @@ await ParticleConnect.Instance.Disconnect(this._walletType, publicAddress);
 
 Another important method is `IsConnected`, returning a Boolean indicating whether or not a user (or, in this case, an address and `WalletType`) are currently connected to your application. This can be called through `ParticleConnectInteraction.IsConnected`. E.g.:
 
-```csharp C#
+```csharp
 ParticleConnectInteraction.IsConnected(this._walletType, publicAddress);
 ```
 
@@ -344,7 +344,7 @@ ParticleConnectInteraction.IsConnected(this._walletType, publicAddress);
 
 E.g.:
 
-```csharp C#
+```csharp
 await ParticleConnect.Instance.SignAndSendTransaction(this._walletType, publicAddress, transaction);
 ```
 
@@ -356,7 +356,7 @@ await ParticleConnect.Instance.SignAndSendTransaction(this._walletType, publicAd
 
 The plural of this method is `ParticleConnect.Instance.SignAllTransactions`, taking a list of transactions to be prompted for signature, rather than just one.
 
-```csharp C#
+```csharp
 await ParticleConnect.Instance.SignTransaction(this._walletType, publicAddress, transaction);
 
 // Alternatively
@@ -369,7 +369,7 @@ await ParticleConnect.Instance.SignAllTransactions(this._walletType, publicAddre
 
 A simple message (UTF-8 string) can be signed on both EVM & Solana through `ParticleConnect.Instance.SignMessage`, passing in the `WalletType`, `address` (`publicAddress` in this example), and the `message` in question. `message` should be a general string to be signed. E.g.:
 
-```csharp C#
+```csharp
 var message = "GM, Particle!";
 await ParticleConnect.Instance.SignMessage(this._walletType, publicAddress, message);
 ```
@@ -385,7 +385,7 @@ As an alternative to `SignMessage`, for **EVM chains**, you can request that a u
 
 E.g.:
 
-```csharp C#
+```csharp
 var txtAsset = Resources.Load<TextAsset>("TypedDataV4");
 string typedData = txtAsset.text;
 
@@ -400,7 +400,7 @@ If you're using the`EvmPrivateKey` or `SolanaPrivateKey` wallet types, you can i
 
 Additionally, you can export one of these wallets with `ParticleConnect.Instance.ExportWalletPrivateKey`, passing in the address (of the `EvmPrivateKey` or `SolanaPrivateKey` imported/generated wallet) that you'd like to export.
 
-```csharp C#
+```csharp
 await ParticleConnect.Instance.ImportWalletFromPrivateKey(this._walletType, privateKey);
   
 await ParticleConnect.Instance.ImportWalletFromMnemonic(this._walletType, mnemonic);
