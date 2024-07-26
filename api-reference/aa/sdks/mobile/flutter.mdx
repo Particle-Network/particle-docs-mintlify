@@ -186,17 +186,4 @@ String tokenPaymasterAddress = result["tokenPaymaster"]["tokenPaymasterAddress"]
 
 ***
 
-## Master reference
-
-For a direct, raw view into every method, below is a table containing every relevant one alongside specific parameters and a short description. For methods listed that weren't covered in the above examples, live implementation often mimics the common structure covered throughout this document.
-
-| Class      | Methods         | Parameters (\* indicates optional) |
-| ---------- | --------------- | ---------------------------------- |
-| ParticleAA | init            | name, version, biconomyApiKeys\*   |
-| ParticleAA | isDeploy        | eoaAddress                         |
-| ParticleAA | isAAModeEnable  |                                    |
-| ParticleAA | enableAAMode    |                                    |
-| ParticleAA | disableAAMode   |                                    |
-| ParticleAA | rpcGetFeeQuotes | eoaAddress, transactions           |
-
 See the [Particle Auth](/api-reference/auth/mobile-sdks/flutter) and [Particle Connect](/api-reference/connect/mobile/flutter) pages for insights into additional compatible methods (such as `signAndSendTransaction`), as shown here.
