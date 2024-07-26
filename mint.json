@@ -235,6 +235,7 @@
           "group": "Server API",
           "pages": [
             "api-reference/auth/server/getuserinfo",
+            "api-reference/auth/server/getuserinfobyidentity",
             "api-reference/auth/server/isprojectuser"
           ]
         },

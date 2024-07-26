@@ -48,6 +48,39 @@
         }
       }
     },
+    "/#getUserInfoByIdentity": {
+      "post": {
+        "summary": "getUserInfoByIdentity",
+        "operationId": "getUserInfoByIdentity",
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ],
+        "requestBody": {
+          "description": "Request parameters for retrieving user information by user identity.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/getUserInfoByIdentityRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response with user information.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/getUserInfoResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/#isProjectUser": {
       "post": {
         "summary": "isProjectUser",
@@ -346,6 +379,44 @@
           },
           "result": {
             "type": "boolean"
+          }
+        }
+      },
+      "getUserInfoByIdentityRequest": {
+        "type": "object",
+        "properties": {
+          "jsonrpc": {
+            "type": "string",
+            "description": "Version of the JSON-RPC protocol, should be 2.0.",
+            "example": "2.0",
+            "default": "2.0"
+          },
+          "id": {
+            "type": "integer",
+            "description": "The request identifier.",
+            "example": 1,
+            "default": 1
+          },
+          "method": {
+            "type": "string",
+            "description": "API method being called, should be getUserInfoByIdentity.",
+            "example": "getUserInfoByIdentity",
+            "default": "getUserInfoByIdentity"
+          },
+          "params": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Parameters for the API method call, including the identity provider and user identifier.",
+            "example": [
+              "jwt",
+              "UID"
+            ],
+            "default": [
+              "jwt",
+              "UID"
+            ]
           }
         }
       }
