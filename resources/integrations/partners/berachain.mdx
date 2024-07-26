@@ -22,7 +22,7 @@ href="https://particle-berachain-demo-docs.replit.app/">
 
 ## Implementing Social Logins through Particle Auth Core
 
-As mentioned, Particle Network recently expanded its Smart Wallet-as-a-Service support to Berachain, which includes both the core social login service (Particle Auth Core) and dedicated ERC-4337 AA infrastructure, such as the [Particle Bundler](/resources/wallet-abstraction/waas/bundler) and [Omnichain Paymaster](/resources/wallet-abstraction/waas/omni-paymaster)). This tutorial will go through the process of building a Smart WaaS-enabled application on Berachain through Particle Auth Core, `@particle-network/auth-core-modal`, and Particle's AA SDK, `@particle-network/aa`. This application will replicate the functionality found within the embedded demo above, highlighting the process of:
+As mentioned, Particle Network recently expanded its Smart Wallet-as-a-Service support to Berachain, which includes both the core social login service (Particle Auth Core) and dedicated ERC-4337 AA infrastructure, such as the [Particle Bundler](/resources/integrations/aa/bundler) and [Omnichain Paymaster](/resources/integrations/aa/paymaster). This tutorial will go through the process of building a Smart WaaS-enabled application on Berachain through Particle Auth Core, `@particle-network/auth-core-modal`, and Particle's AA SDK, `@particle-network/aa`. This application will replicate the functionality found within the embedded demo above, highlighting the process of:
 
 - Initiating a social login (in this example, through Google or X, alongside a general authentication modal).
 - Assigning a SimpleAccount to the resulting EOA (generated via a social login).
@@ -51,7 +51,7 @@ npm install @particle-network/auth-core-modal @particle-network/chains @particle
 
 Once these libraries are installed, you're ready to go through the process of configuration. Particle Auth Core manages configuration through `AuthCoreContextProvider` (imported from `@particle-network/auth-core-modal`), an object used within your `index` file to wrap your primary `App` component (or its equivalent). This contains key values authenticating your instance of Particle Auth and enabling core customization of the social login or embedded wallet modals. 
 
-Before constructing `AuthCoreContextProvider`, you'll need three values to initialize Particle Auth Core. When configuring any SDK from Particle Network, whether it's [Particle Auth Core](/api/auth/desktop-sdks/web), [Particle Connect](/api/connect/desktop/web), or [Particle's AA SDK](/api/aa/sdks/desktop/web), you'll need to retrieve a project ID, client key, and app ID from the [Particle dashboard](https://dashboard.particle.network). These values link your application with your project on the Particle dashboard, therefore authenticating API requests, tracking users, allowing for no-code modal customization, etc.
+Before constructing `AuthCoreContextProvider`, you'll need three values to initialize Particle Auth Core. When configuring any SDK from Particle Network, whether it's [Particle Auth Core](/api-reference/auth/desktop-sdks/web), [Particle Connect](/api-reference/connect/desktop/web), or [Particle's AA SDK](/api-reference/aa/sdks/desktop/web), you'll need to retrieve a project ID, client key, and app ID from the [Particle dashboard](https://dashboard.particle.network). These values link your application with your project on the Particle dashboard, therefore authenticating API requests, tracking users, allowing for no-code modal customization, etc.
 
 With a project and application set up through the [Particle dashboard](https://dashboard.particle.network), you're ready to configure `AuthCoreContextProvider`. This is done through the `options` parameter, which takes the following values (in this example):
 
@@ -352,6 +352,6 @@ export default App;
 
 A structure and flow similar to the above can be applied directly to both existing and new applications. As was showcased, Particle's Smart Wallet-as-a-Service can be implemented in just a few lines of code, only requiring unique handling for the login process and initial configuration.
 
-Take a look at the complete GitHub repository for the demo application partially showcased here. To learn more about Particle Auth Core, head over to [the Particle Auth SDK reference](/api/auth/desktop-sdks/web).
+Take a look at the complete GitHub repository for the demo application partially showcased here. To learn more about Particle Auth Core, head over to [the Particle Auth SDK reference](/api-reference/auth/desktop-sdks/web).
 
 Berachain will undoubtedly spark the creation of a large number of new consumer-facing applications, especially with its unique positioning through Proof-of-Liquidity. Particle Network will continually support Berachain as it expands to Mainnet through its Wallet-as-a-Service and modular account abstraction stack, enabling developers to build unique and accessible on-chain experiences.
