@@ -145,8 +145,8 @@
         {
           "group": "Wallet-as-a-Service",
           "pages": [
-            "resources/quickstart/waas/components",
             "resources/quickstart/waas/understanding-waas",
+            "resources/quickstart/waas/components",
             "resources/quickstart/waas/web-quickstart",
             "resources/quickstart/waas/mobile-quickstart"
           ]
@@ -196,6 +196,13 @@
             "resources/integrations/aa/bundler",
             "resources/integrations/aa/paymaster",
             "resources/integrations/aa/keys"
+          ]
+        },
+        {
+          "group": "Nodes & Data Services",
+          "pages": [
+            "resources/integrations/nodes/nodes",
+            "resources/integrations/nodes/data"
           ]
         },
         {
