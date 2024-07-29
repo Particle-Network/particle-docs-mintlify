@@ -41,9 +41,12 @@
       "url": "https://github.com/Particle-Network"
     }
   ],
+  "primaryTab": {
+    "name": "Introduction"
+  },
   "tabs": [
     {
-      "name": "Resources",
+      "name": "Guides",
       "url": "resources"
     },
     {
