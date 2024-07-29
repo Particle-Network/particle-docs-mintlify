@@ -101,7 +101,6 @@
         {
           "group": "Wallet Abstraction",
           "pages": [
-            "landing/wallet-abstraction/btc-connect",
             {
               "group": "Smart Wallet-as-a-Service",
               "pages": [
@@ -111,7 +110,8 @@
                 "landing/wallet-abstraction/waas/omni-paymaster",
                 "landing/wallet-abstraction/waas/differentiators"
               ]
-            }
+            },
+            "landing/wallet-abstraction/btc-connect"
           ]
         }
       ]
