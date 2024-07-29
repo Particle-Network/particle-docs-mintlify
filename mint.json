@@ -47,11 +47,7 @@
       "url": "resources"
     },
     {
-      "name": "Guides",
-      "url": "guides"
-    },
-    {
-      "name": "SDKs & APIs",
+      "name": "APIs & SDKs",
       "url": "api-reference"
     },
     {
@@ -242,6 +238,26 @@
       "pages": ["api-reference/introduction"]
     },
     {
+      "group": "PARTICLE CONNECT",
+      "pages": [
+        "api-reference/connect/introduction",
+        {
+          "group": "SDKs (Desktop)",
+          "pages": ["api-reference/connect/desktop/web"]
+        },
+        {
+          "group": "SDKs (Mobile)",
+          "pages": [
+            "api-reference/connect/mobile/android",
+            "api-reference/connect/mobile/ios",
+            "api-reference/connect/mobile/unity",
+            "api-reference/connect/mobile/flutter",
+            "api-reference/connect/mobile/react"
+          ]
+        }
+      ]
+    },
+    {
       "group": "PARTICLE AUTH",
       "pages": [
         "api-reference/auth/introduction",
@@ -277,26 +293,6 @@
       ]
     },
     {
-      "group": "PARTICLE CONNECT",
-      "pages": [
-        "api-reference/connect/introduction",
-        {
-          "group": "SDKs (Desktop)",
-          "pages": ["api-reference/connect/desktop/web"]
-        },
-        {
-          "group": "SDKs (Mobile)",
-          "pages": [
-            "api-reference/connect/mobile/android",
-            "api-reference/connect/mobile/ios",
-            "api-reference/connect/mobile/unity",
-            "api-reference/connect/mobile/flutter",
-            "api-reference/connect/mobile/react"
-          ]
-        }
-      ]
-    },
-    {
       "group": "PARTICLE WALLET",
       "pages": [
         "api-reference/wallet/introduction",
@@ -312,23 +308,6 @@
             "api-reference/wallet/mobile/unity",
             "api-reference/wallet/mobile/flutter",
             "api-reference/wallet/mobile/react"
-          ]
-        }
-      ]
-    },
-    {
-      "group": "BTC CONNECT",
-      "pages": [
-        "api-reference/btc/introduction",
-        {
-          "group": "SDKs (Desktop)",
-          "pages": ["api-reference/btc/desktop/web"]
-        },
-        {
-          "group": "BTC Connect RPC",
-          "pages": [
-            "api-reference/btc/rpc/getbtcaccount",
-            "api-reference/btc/rpc/getbtcaccountsbyaddress"
           ]
         }
       ]
@@ -377,6 +356,23 @@
             "api-reference/aa/sdks/mobile/flutter",
             "api-reference/aa/sdks/mobile/unity",
             "api-reference/aa/sdks/mobile/react"
+          ]
+        }
+      ]
+    },
+    {
+      "group": "BTC CONNECT",
+      "pages": [
+        "api-reference/btc/introduction",
+        {
+          "group": "SDKs (Desktop)",
+          "pages": ["api-reference/btc/desktop/web"]
+        },
+        {
+          "group": "BTC Connect RPC",
+          "pages": [
+            "api-reference/btc/rpc/getbtcaccount",
+            "api-reference/btc/rpc/getbtcaccountsbyaddress"
           ]
         }
       ]
