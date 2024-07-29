@@ -90,15 +90,6 @@
       "group": "TECHNOLOGY",
       "pages": [
         {
-          "group": "Modular L1",
-          "pages": [
-            "landing/modular-l1/introduction",
-            "landing/modular-l1/universal-accounts",
-            "landing/modular-l1/universal-liquidity",
-            "landing/modular-l1/universal-gas"
-          ]
-        },
-        {
           "group": "Wallet Abstraction",
           "pages": [
             {
@@ -112,6 +103,15 @@
               ]
             },
             "landing/wallet-abstraction/btc-connect"
+          ]
+        },
+        {
+          "group": "Modular L1",
+          "pages": [
+            "landing/modular-l1/introduction",
+            "landing/modular-l1/universal-accounts",
+            "landing/modular-l1/universal-liquidity",
+            "landing/modular-l1/universal-gas"
           ]
         }
       ]
