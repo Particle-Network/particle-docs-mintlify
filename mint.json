@@ -334,48 +334,6 @@
       ]
     },
     {
-      "group": "WEB3 SERVICES",
-      "pages": [
-        "api-reference/web3/introduction",
-        {
-          "group": "Enhanced RPC (Data API)",
-          "pages": [
-            "api-reference/web3/data/getlatestblock",
-            "api-reference/web3/data/deserializetransaction",
-            "api-reference/web3/data/getcontractabi",
-            "api-reference/web3/data/abi_encodefunctioncall",
-            "api-reference/web3/data/getpendingtransactionsbyaddress",
-            "api-reference/web3/data/gettransactionsbyaddress",
-            "api-reference/web3/data/suggestedgasfees",
-            "api-reference/web3/data/gettokensandnfts",
-            "api-reference/web3/data/gettokens",
-            "api-reference/web3/data/getnfts",
-            "api-reference/web3/data/crosschain_getnfts",
-            "api-reference/web3/data/getprice",
-            "api-reference/web3/data/sdk-ref"
-          ]
-        },
-        {
-          "group": "Enhanced RPC (Swap API)",
-          "pages": [
-            "api-reference/web3/swap/swap-api",
-            "api-reference/web3/swap/checkapprove",
-            "api-reference/web3/swap/getquote",
-            "api-reference/web3/swap/getswap"
-          ]
-        },
-        {
-          "group": "Enhanced RPC (Solana)",
-          "pages": [
-            "api-reference/web3/solana/enhancedgetprice",
-            "api-reference/web3/solana/enhancedgettokensandnfts",
-            "api-reference/web3/solana/enhancedgettransactionsbyaddress",
-            "api-reference/web3/solana/solanaservice"
-          ]
-        }
-      ]
-    },
-    {
       "group": "ACCOUNT ABSTRACTION",
       "pages": [
         "api-reference/aa/introduction",
@@ -419,6 +377,48 @@
             "api-reference/aa/sdks/mobile/flutter",
             "api-reference/aa/sdks/mobile/unity",
             "api-reference/aa/sdks/mobile/react"
+          ]
+        }
+      ]
+    },
+    {
+      "group": "WEB3 SERVICES",
+      "pages": [
+        "api-reference/web3/introduction",
+        {
+          "group": "Enhanced RPC (Data API)",
+          "pages": [
+            "api-reference/web3/data/getlatestblock",
+            "api-reference/web3/data/deserializetransaction",
+            "api-reference/web3/data/getcontractabi",
+            "api-reference/web3/data/abi_encodefunctioncall",
+            "api-reference/web3/data/getpendingtransactionsbyaddress",
+            "api-reference/web3/data/gettransactionsbyaddress",
+            "api-reference/web3/data/suggestedgasfees",
+            "api-reference/web3/data/gettokensandnfts",
+            "api-reference/web3/data/gettokens",
+            "api-reference/web3/data/getnfts",
+            "api-reference/web3/data/crosschain_getnfts",
+            "api-reference/web3/data/getprice",
+            "api-reference/web3/data/sdk-ref"
+          ]
+        },
+        {
+          "group": "Enhanced RPC (Swap API)",
+          "pages": [
+            "api-reference/web3/swap/swap-api",
+            "api-reference/web3/swap/checkapprove",
+            "api-reference/web3/swap/getquote",
+            "api-reference/web3/swap/getswap"
+          ]
+        },
+        {
+          "group": "Enhanced RPC (Solana)",
+          "pages": [
+            "api-reference/web3/solana/enhancedgetprice",
+            "api-reference/web3/solana/enhancedgettokensandnfts",
+            "api-reference/web3/solana/enhancedgettransactionsbyaddress",
+            "api-reference/web3/solana/solanaservice"
           ]
         }
       ]
