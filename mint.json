@@ -17,17 +17,21 @@
   },
   "analytics": {
     "ga4": {
-      "measurementId": "GA4_MEASUREMENT_ID"
+      "measurementId": "G-LJLDQ1H9MM"
     }
   },
   "topbarCtaButton": {
     "name": "Dashboard",
-    "url": "https://dashboard.particle.network/#/login"
+    "url": "https://dashboard.particle.network/"
   },
   "repository": {
-    "url": "https://github.com/TABASCOatw/particle-network-mintlify"
+    "url": "https://github.com/Particle-Network/particle-docs-mintlify"
   },
   "topbarLinks": [
+    {
+      "name": "Demo",
+      "url": "https://demo.particle.network/"
+    },
     {
       "name": "Blog",
       "url": "https://blog.particle.network/"
@@ -37,9 +41,12 @@
       "url": "https://github.com/Particle-Network"
     }
   ],
+  "primaryTab": {
+    "name": "Introduction"
+  },
   "tabs": [
     {
-      "name": "Resources",
+      "name": "Guides",
       "url": "resources"
     },
     {
@@ -66,6 +73,11 @@
       "name": "GitHub",
       "icon": "github",
       "url": "https://github.com/Particle-Network"
+    },
+    {
+      "name": "Demo",
+      "icon": "code",
+      "url": "https://demo.particle.network/"
     }
   ],
   "navigation": [
@@ -81,18 +93,8 @@
       "group": "TECHNOLOGY",
       "pages": [
         {
-          "group": "Modular L1",
-          "pages": [
-            "landing/modular-l1/introduction",
-            "landing/modular-l1/universal-accounts",
-            "landing/modular-l1/universal-liquidity",
-            "landing/modular-l1/universal-gas"
-          ]
-        },
-        {
           "group": "Wallet Abstraction",
           "pages": [
-            "landing/wallet-abstraction/btc-connect",
             {
               "group": "Smart Wallet-as-a-Service",
               "pages": [
@@ -102,17 +104,24 @@
                 "landing/wallet-abstraction/waas/omni-paymaster",
                 "landing/wallet-abstraction/waas/differentiators"
               ]
-            }
+            },
+            "landing/wallet-abstraction/btc-connect"
+          ]
+        },
+        {
+          "group": "Modular L1",
+          "pages": [
+            "landing/modular-l1/introduction",
+            "landing/modular-l1/universal-accounts",
+            "landing/modular-l1/universal-liquidity",
+            "landing/modular-l1/universal-gas"
           ]
         }
       ]
     },
     {
       "group": "MISCELLANEOUS",
-      "pages": [
-        "landing/more/audits",
-        "landing/more/assets"
-      ]
+      "pages": ["landing/more/audits", "landing/more/assets"]
     },
     {
       "group": "TUTORIALS & DEMOS",
@@ -132,10 +141,7 @@
     },
     {
       "group": "GETTING STARTED",
-      "pages": [
-        "resources/overview",
-        "resources/network-coverage"
-      ]
+      "pages": ["resources/overview", "resources/network-coverage"]
     },
     {
       "group": "QUICKSTART: WALLET ABSTRACTION",
@@ -232,8 +238,26 @@
     },
     {
       "group": "APIs & SDKs",
+      "pages": ["api-reference/introduction"]
+    },
+    {
+      "group": "PARTICLE CONNECT",
       "pages": [
-        "api-reference/introduction"
+        "api-reference/connect/introduction",
+        {
+          "group": "SDKs (Desktop)",
+          "pages": ["api-reference/connect/desktop/web"]
+        },
+        {
+          "group": "SDKs (Mobile)",
+          "pages": [
+            "api-reference/connect/mobile/android",
+            "api-reference/connect/mobile/ios",
+            "api-reference/connect/mobile/unity",
+            "api-reference/connect/mobile/flutter",
+            "api-reference/connect/mobile/react"
+          ]
+        }
       ]
     },
     {
@@ -267,31 +291,7 @@
         },
         {
           "group": "SDKs (Multi-platform)",
-          "pages": [
-            "api-reference/auth/multi/unreal"
-          ]
-        }
-      ]
-    },
-    {
-      "group": "PARTICLE CONNECT",
-      "pages": [
-        "api-reference/connect/introduction",
-        {
-          "group": "SDKs (Desktop)",
-          "pages": [
-            "api-reference/connect/desktop/web"
-          ]
-        },
-        {
-          "group": "SDKs (Mobile)",
-          "pages": [
-            "api-reference/connect/mobile/android",
-            "api-reference/connect/mobile/ios",
-            "api-reference/connect/mobile/unity",
-            "api-reference/connect/mobile/flutter",
-            "api-reference/connect/mobile/react"
-          ]
+          "pages": ["api-reference/auth/multi/unreal"]
         }
       ]
     },
@@ -301,9 +301,7 @@
         "api-reference/wallet/introduction",
         {
           "group": "SDKs (Desktop)",
-          "pages": [
-            "api-reference/wallet/desktop/web"
-          ]
+          "pages": ["api-reference/wallet/desktop/web"]
         },
         {
           "group": "SDKs (Mobile)",
@@ -318,14 +316,60 @@
       ]
     },
     {
+      "group": "ACCOUNT ABSTRACTION",
+      "pages": [
+        "api-reference/aa/introduction",
+        {
+          "group": "Account Abstraction RPC",
+          "pages": [
+            "api-reference/aa/rpc/getsmartaccount",
+            "api-reference/aa/rpc/createuserop",
+            "api-reference/aa/rpc/senduserop",
+            "api-reference/aa/rpc/getfeequotes",
+            "api-reference/aa/rpc/validatesession",
+            "api-reference/aa/rpc/createsessions"
+          ]
+        },
+        {
+          "group": "Bundler RPC",
+          "pages": [
+            "api-reference/aa/bundler/getuseroperationreceipt",
+            "api-reference/aa/bundler/getuseroperationbyhash",
+            "api-reference/aa/bundler/senduseroperation",
+            "api-reference/aa/bundler/estimateuseroperationgas",
+            "api-reference/aa/bundler/supportedentrypoints"
+          ]
+        },
+        {
+          "group": "Paymaster RPC",
+          "pages": [
+            "api-reference/aa/paymaster/paymasterbalance",
+            "api-reference/aa/paymaster/sponsoruseroperation"
+          ]
+        },
+        {
+          "group": "SDKs (Desktop)",
+          "pages": ["api-reference/aa/sdks/desktop/web"]
+        },
+        {
+          "group": "SDKs (Mobile)",
+          "pages": [
+            "api-reference/aa/sdks/mobile/android",
+            "api-reference/aa/sdks/mobile/ios",
+            "api-reference/aa/sdks/mobile/flutter",
+            "api-reference/aa/sdks/mobile/unity",
+            "api-reference/aa/sdks/mobile/react"
+          ]
+        }
+      ]
+    },
+    {
       "group": "BTC CONNECT",
       "pages": [
         "api-reference/btc/introduction",
         {
           "group": "SDKs (Desktop)",
-          "pages": [
-            "api-reference/btc/desktop/web"
-          ]
+          "pages": ["api-reference/btc/desktop/web"]
         },
         {
           "group": "BTC Connect RPC",
@@ -379,67 +423,12 @@
       ]
     },
     {
-      "group": "ACCOUNT ABSTRACTION",
-      "pages": [
-        "api-reference/aa/introduction",
-        {
-          "group": "Account Abstraction RPC",
-          "pages": [
-            "api-reference/aa/rpc/getsmartaccount",
-            "api-reference/aa/rpc/createuserop",
-            "api-reference/aa/rpc/senduserop",
-            "api-reference/aa/rpc/getfeequotes",
-            "api-reference/aa/rpc/validatesession",
-            "api-reference/aa/rpc/createsessions"
-          ]
-        },
-        {
-          "group": "Bundler RPC",
-          "pages": [
-            "api-reference/aa/bundler/getuseroperationreceipt",
-            "api-reference/aa/bundler/getuseroperationbyhash",
-            "api-reference/aa/bundler/senduseroperation",
-            "api-reference/aa/bundler/estimateuseroperationgas",
-            "api-reference/aa/bundler/supportedentrypoints"
-          ]
-        },
-        {
-          "group": "Paymaster RPC",
-          "pages": [
-            "api-reference/aa/paymaster/paymasterbalance",
-            "api-reference/aa/paymaster/sponsoruseroperation"
-          ]
-        },
-        {
-          "group": "SDKs (Desktop)",
-          "pages": [
-            "api-reference/aa/sdks/desktop/web"
-          ]
-        },
-        {
-          "group": "SDKs (Mobile)",
-          "pages": [
-            "api-reference/aa/sdks/mobile/android",
-            "api-reference/aa/sdks/mobile/ios",
-            "api-reference/aa/sdks/mobile/flutter",
-            "api-reference/aa/sdks/mobile/unity",
-            "api-reference/aa/sdks/mobile/react"
-          ]
-        }
-      ]
-    },
-    {
       "group": "DEBUGGING",
-      "pages": [
-        "api-reference/debug/sdk",
-        "api-reference/debug/api"
-      ]
+      "pages": ["api-reference/debug/sdk", "api-reference/debug/api"]
     },
     {
       "group": "CHANGELOG",
-      "pages": [
-        "changelog/logs"
-      ]
+      "pages": ["changelog/logs"]
     }
   ],
   "footerSocials": {
@@ -704,6 +693,5 @@
       "source": "/changelog",
       "destination": "/changelog/logs"
     }
-]
-
+  ]
 }
