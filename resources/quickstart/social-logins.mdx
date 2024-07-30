@@ -1,0 +1,65 @@
+---
+title: Integrate social logins  
+mode: "wide"
+description: "Quickstart guide to integrate social logins in a Next.js project."
+---
+
+<Note>Easisy set up social logins in a Next.js based dApp in a few simple steps.</Note>
+
+### Create a new Project in the Particle Dashboard
+
+Log into the Particle Dashboard and [create a new project and application](/api-reference/auth/desktop-sdks/web#configuration).
+
+### Create a new Next.js Project
+
+Create a new Next.js project:
+
+```sh
+npx create-next-app@latest
+```
+
+<Tip>
+<p>Inlcude TypeScript and Tailwind CSS.</p>
+<p>Add the project ID, client key, and app ID from the Dashboard into a `.env` file.</p>
+</Tip>
+
+```env .env
+NEXT_PUBLIC_PROJECT_ID='PROJECT_ID'
+NEXT_PUBLIC_CLIENT_KEY='CLIENT_KEY'
+NEXT_PUBLIC_APP_ID='APP_ID'
+```
+
+### Install Particle Auth
+
+```sh Terminal
+npm install @particle-network/auth-core-modal @particle-network/auth-core @particle-network/chains ethers
+```
+
+### Configure AuthCoreContextProvider in layout.tsx
+
+In `src/app/layout.tsx` wrap `{children}` with `AuthCoreContextProvider`; this component configures Particle Auth
+
+<Note>Base is the default chain in this example. Toggle other supported chains to see how to integrate them in the `AuthCoreContextProvider` component</Note>
+
+import { InteractiveLayout } from '/snippets/InteractiveLayout.mdx';
+
+<InteractiveLayout />
+
+Auth type options:
+
+```ts
+{
+  email: 'email',
+  phone: 'phone',
+  facebook: 'facebook',
+  google: 'google',
+  apple: 'apple',
+  twitter: 'twitter',
+  discord: 'discord',
+  github: 'github',
+  twitch: 'twitch',
+  microsoft: 'microsoft',
+  linkedin: 'linkedin',
+  jwt: 'jwt'
+}
+```

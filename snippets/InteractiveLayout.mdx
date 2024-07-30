@@ -53,7 +53,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 
 // Particle imports
-${importStatements}
+${importStatements} // Chains are imported here
 import { AuthType } from "@particle-network/auth-core";
 import { AuthCoreContextProvider } from "@particle-network/auth-core-modal";
 
@@ -83,7 +83,8 @@ export default function RootLayout({
             wallet: {
               visible: true,
               customStyle: {
-                ${supportChainsArray}
+              // List the chains you want to include
+                ${supportChainsArray} 
               },
             },
           }}
@@ -116,6 +117,7 @@ export default function RootLayout({
 
     return (
       <div>
+      <p>Chain selection</p>
         <div id="toggle-buttons" className="toggles"></div>
         <div id="code-snippets" className="code-snippet"></div>
       </div>

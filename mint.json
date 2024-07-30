@@ -146,6 +146,7 @@
     {
       "group": "QUICKSTART: WALLET ABSTRACTION",
       "pages": [
+        "resources/quickstart/social-logins",
         "resources/quickstart/intro",
         "resources/quickstart/dashboard",
         {
