@@ -1,0 +1,124 @@
+
+export const InteractiveLayout = () => {
+
+const ethereumIcon = "/snippets/logos/eth.png"
+const bnbIcon = '/snippets/logos/bnb.png'
+const polygonIcon = '/snippets/logos/polygon.png'
+const seiIcon = '/snippets/logos/sei.png'
+  
+  
+  if (typeof document === "undefined") {
+    return null;
+  } else {
+    setTimeout(() => {
+      const chains = [
+        { id: 'Ethereum', name: 'Ethereum', icon: ethereumIcon },
+        { id: 'BNBChain', name: 'BNB Chain', icon: bnbIcon },
+        { id: 'Polygon', name: 'Polygon', icon: polygonIcon },
+        { id: 'Sei', name: 'Sei', icon: seiIcon },
+      ];
+
+      let selectedChains = ['Base'];
+
+      const handleToggle = (chainId) => {
+        const index = selectedChains.indexOf(chainId);
+        if (index > -1) {
+          selectedChains = selectedChains.filter((id) => id !== chainId);
+        } else {
+          selectedChains.push(chainId);
+        }
+        renderToggles();
+        renderCodeSnippet();
+      };
+
+      const renderToggles = () => {
+        const toggleContainer = document.getElementById('toggle-buttons');
+        toggleContainer.innerHTML = chains.map(chain => `
+          <button
+            class="toggle-button ${selectedChains.includes(chain.id) ? 'selected' : ''}"
+            onclick="handleToggle('${chain.id}')"
+          >
+            <img src="${chain.icon}" alt="${chain.name}" class="icon"/>
+          </button>
+        `).join('');
+      };
+
+      const renderCodeSnippet = () => {
+        const importStatements = `import { ${selectedChains.join(', ')} } from "@particle-network/chains";`;
+        const supportChainsArray = `supportChains: [${selectedChains.join(', ')}],`;
+
+        const codeSnippet = `
+"use client";
+import { Inter } from "next/font/google";
+import "./globals.css";
+
+// Particle imports
+${importStatements}
+import { AuthType } from "@particle-network/auth-core";
+import { AuthCoreContextProvider } from "@particle-network/auth-core-modal";
+
+const inter = Inter({ subsets: ["latin"] });
+
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  return (
+    <html lang="en">
+      <body className={inter.className}>
+        <AuthCoreContextProvider
+          options={{
+            projectId: process.env.NEXT_PUBLIC_PROJECT_ID!,
+            clientKey: process.env.NEXT_PUBLIC_CLIENT_KEY!,
+            appId: process.env.NEXT_PUBLIC_APP_ID!,
+            authTypes: [
+              AuthType.email,
+              AuthType.google,
+              AuthType.twitter,
+              AuthType.github,
+              AuthType.discord,
+            ],
+            themeType: "dark",
+            wallet: {
+              visible: true,
+              customStyle: {
+                ${supportChainsArray}
+              },
+            },
+          }}
+        >
+          {children}
+        </AuthCoreContextProvider>
+      </body>
+    </html>
+  );
+}
+        `;
+
+        const codeSnippetContainer = document.getElementById('code-snippets');
+        codeSnippetContainer.innerHTML = `<pre>${escapeHtml(codeSnippet)}</pre>`;
+      };
+
+      const escapeHtml = (unsafe) => {
+        return unsafe
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;")
+          .replace(/'/g, "&#039;");
+      };
+
+      window.handleToggle = handleToggle;
+      renderToggles();
+      renderCodeSnippet();
+    }, 1);
+
+    return (
+      <div>
+        <div id="toggle-buttons" className="toggles"></div>
+        <div id="code-snippets" className="code-snippet"></div>
+      </div>
+    );
+  }
+};
