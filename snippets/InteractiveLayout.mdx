@@ -103,6 +103,7 @@ const renderAuthToggles = () => {
             authTypes: [${selectedAuthTypes.map(type => `AuthType.${type}`).join(', ')}],`;
 
         const codeSnippet = `
+// layout.tsx
 "use client";
 import { Inter } from "next/font/google";
 import "./globals.css";
