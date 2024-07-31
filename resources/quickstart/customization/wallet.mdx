@@ -1,5 +1,5 @@
 ---
-title: "Customizing Particle Wallet"
+title: "Customizing Wallet Modal"
 mode: "wide"
 ---
 
@@ -11,7 +11,7 @@ In addition to complete customization of Particle Auth (specifically the authent
 
 Particle Wallet can only currently be customized through strictly set parameters, either within the path of [https://wallet.particle.network](https://wallet.particle.network), or within the configuration of Particle Auth or Particle Auth Core (which would translate to the in-UI modal rather than a redirect such as is the case with https://wallet.particle.network).
 
-Customizing Particle Wallet through configuration within Particle Auth or Particle Auth Core can be done within the initialization of either `ParticleNetwork` for `@particle-network/auth` or `AuthCoreContextProvider` for `@particle-network/auth-core-modal`. Within both of these SDKs, you'll need to head into the `customStyle` object within the `wallet` parameter on `options` for `AuthCoreContextProvider`, or the main configuration object for `ParticleNetwork`.
+Customizing Particle Wallet through configuration within Particle Auth can be done within the initialization of `AuthCoreContextProvider` from `@particle-network/auth-core-modal`. Within this component, you'll need to head into the `customStyle` object within the `wallet` parameter on `options`.
 
 `customStyle` takes the following parameters, all of which impact the appearance of the wallet modal:
 

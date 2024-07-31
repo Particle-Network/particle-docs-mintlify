@@ -76,7 +76,7 @@
     },
     {
       "name": "Demo",
-      "icon": "code",
+      "icon": "window",
       "url": "https://demo.particle.network/"
     }
   ],
@@ -109,7 +109,7 @@
           ]
         },
         {
-          "group": "Modular L1",
+          "group": "Coming Soon: Modular L1",
           "pages": [
             "landing/modular-l1/introduction",
             "landing/modular-l1/universal-accounts",
@@ -146,14 +146,13 @@
     {
       "group": "QUICKSTART: WALLET ABSTRACTION",
       "pages": [
-        "resources/quickstart/social-logins",
         "resources/quickstart/intro",
         "resources/quickstart/dashboard",
         {
           "group": "Wallet-as-a-Service",
           "pages": [
             "resources/quickstart/waas/understanding-waas",
-            "resources/quickstart/waas/components",
+          
             "resources/quickstart/waas/web-quickstart",
             "resources/quickstart/waas/mobile-quickstart"
           ]
@@ -378,48 +377,6 @@
           "pages": [
             "api-reference/btc/rpc/getbtcaccount",
             "api-reference/btc/rpc/getbtcaccountsbyaddress"
-          ]
-        }
-      ]
-    },
-    {
-      "group": "WEB3 SERVICES",
-      "pages": [
-        "api-reference/web3/introduction",
-        {
-          "group": "Enhanced RPC (Data API)",
-          "pages": [
-            "api-reference/web3/data/getlatestblock",
-            "api-reference/web3/data/deserializetransaction",
-            "api-reference/web3/data/getcontractabi",
-            "api-reference/web3/data/abi_encodefunctioncall",
-            "api-reference/web3/data/getpendingtransactionsbyaddress",
-            "api-reference/web3/data/gettransactionsbyaddress",
-            "api-reference/web3/data/suggestedgasfees",
-            "api-reference/web3/data/gettokensandnfts",
-            "api-reference/web3/data/gettokens",
-            "api-reference/web3/data/getnfts",
-            "api-reference/web3/data/crosschain_getnfts",
-            "api-reference/web3/data/getprice",
-            "api-reference/web3/data/sdk-ref"
-          ]
-        },
-        {
-          "group": "Enhanced RPC (Swap API)",
-          "pages": [
-            "api-reference/web3/swap/swap-api",
-            "api-reference/web3/swap/checkapprove",
-            "api-reference/web3/swap/getquote",
-            "api-reference/web3/swap/getswap"
-          ]
-        },
-        {
-          "group": "Enhanced RPC (Solana)",
-          "pages": [
-            "api-reference/web3/solana/enhancedgetprice",
-            "api-reference/web3/solana/enhancedgettokensandnfts",
-            "api-reference/web3/solana/enhancedgettransactionsbyaddress",
-            "api-reference/web3/solana/solanaservice"
           ]
         }
       ]
