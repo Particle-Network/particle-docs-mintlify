@@ -79,7 +79,7 @@
   width: 50px; /* Adjust this value to make the buttons square */
   height: 50px; /* Adjust this value to make the buttons square */
   border: none;
-  background-color: #f0f0f0;
+  background-color: #403c3c;
   cursor: pointer;
   border-radius: 5px;
   display: flex;
@@ -88,7 +88,7 @@
 }
 
 .toggle-button.selected {
-  background-color: #007bff;
+  background-color: #9d32de;
   color: white;
 }
 
@@ -97,12 +97,14 @@
   height: 30px; /* Adjust this value to make the icons fit well within the square */
 }
 
+
+
 .code-snippet {
   margin-top: 20px;
   white-space: pre-wrap;
   overflow-x: auto;
-  background-color: #1e1e1e;
-  color: #d4d4d4;
+  background-color: #0F1117;
+  color: #0F1117;
   padding: 10px;
   border-radius: 5px;
 }
