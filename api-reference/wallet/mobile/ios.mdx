@@ -24,71 +24,15 @@ Configuration and implementation of Particle Wallet within iOS applications is r
 
 ### Configuration
 
-To begin the initialization process, you'll need to head over to the [Particle dashboard](https://dashboard.particle.network) to create a project alongside a corresponding application. These will control specific customizations, statistics, etc. for your particular instance of Particle's Wallet-as-a-Service. After creating an application, you'll need to retrieve three key values to use later: `projectId`, `clientKey`, and `appId`  later.
+To begin the initialization process, you'll need to head over to the [Particle dashboard](https://dashboard.particle.network) to create a project alongside a corresponding application. 
 
-1. Sign up/log in to the [Particle dashboard](https://dashboard.particle.network/).
+These will control specific customizations, statistics, etc. for your particular instance of Particle's Wallet-as-a-Service. After creating an application, you'll need to retrieve three key values to use later: `projectId`, `clientKey`, and `appId`  later.
 
-<div className="flex justify-center">
-<img
-  className="block h-64 dark:hidden"
-  src="/api-reference/auth/desktop-sdks/images/login.png"
-  alt="Particle Network login."
-/>
-<img
-  className="hidden h-64 dark:block"
-  src="/api-reference/auth/desktop-sdks/images/login.png"
-  alt="Particle Network login."
-/>
-</div>
-
-2. Create a new project or enter an existing project.
-
-<div className="flex justify-center">
-<img
-  className="block h-64 dark:hidden"
-  src="/api-reference/auth/desktop-sdks/images/project.png"
-  alt="Particle Network project."
-/>
-<img
-  className="hidden h-64 dark:block"
-  src="/api-reference/auth/desktop-sdks/images/project.png"
-  alt="Particle Network project."
-/>
-</div>
-
-3. Create a new iOS application, or skip this step if you already have one.
-
-<div className="flex justify-center">
-<img
-  className="block h-64 dark:hidden"
-  src="/api-reference/auth/mobile-sdks/images/ios.png"
-  alt="Particle Network project."
-/>
-<img
-  className="hidden h-64 dark:block"
-  src="/api-reference/auth/mobile-sdks/images/ios.png"
-  alt="Particle Network project."
-/>
-</div>
-
-4. Retrieve the project ID (`projectId`), the client key (`clientKey`), and the application ID (`appId`).
-
-<div className="flex justify-center">
-<img
-  className="block h-64 dark:hidden"
-  src="/api-reference/auth/desktop-sdks/images/credentials.png"
-  alt="Particle Network app credentials."
-/>
-<img
-  className="hidden h-64 dark:block"
-  src="/api-reference/auth/desktop-sdks/images/credentials.png"
-  alt="Particle Network app credentials."
-/>
-</div>
+<Note>Follow the quickstart tutorial to set up a project and find the required keys: [Create a new project](/resources/quickstart/waas/mobile-quickstart#configuring-particle-auth).</Note>
 
 ### Installation
 
-Now that you've created a project and an application within the [Particle dashboard](https://dashboard.particle.network), you'll need to go ahead and install the Particle Wallet SDK using CocoaPads (assuming you meet the minimum version requirements).
+Now that you've created a project and an application within the [Particle dashboard](https://dashboard.particle.network), you'll need to go ahead and install the Particle Wallet SDK using CocoaPods (assuming you meet the minimum version requirements).
 
 1. If you don't already have a Podfile, create one from the root of your project directory with:
 
