@@ -15,7 +15,7 @@ All Particle Network Flutter SDKs, including the AA SDK for Flutter, are open-so
 
 ## Getting Started
 
-Before jumping in, you'll need to already have setup either [Particle Auth](/api/auth/mobile-sdks/flutter) or [Particle Connect](/api/connect/mobile/flutter) within your Flutter project (the AA SDK doesn't work on its own, requiring one of the two to function). If you don't have either of these already implemented, read through those pages and follow the outlined steps, then return to continue.
+Before jumping in, you'll need to already have setup either [Particle Auth](/api-reference/auth/mobile-sdks/flutter) or [Particle Connect](/api-reference/connect/mobile/flutter) within your Flutter project (the AA SDK doesn't work on its own, requiring one of the two to function). If you don't have either of these already implemented, read through those pages and follow the outlined steps, then return to continue.
 
 With either of these SDKs set up, you can move on to adding `particle_aa` to your Flutter project through the following command:
 
@@ -50,14 +50,9 @@ The Particle Network AA SDK will fail to function correctly until it has been in
 Once `init` has been called, you can close off initialization by enabling AA mode with `ParticleAA.enableAAMode`.
 
 ```dart Dart
-// Optional, can pass empty collection
-Map<int, String> biconomyApiKeys = {
-  1: "Biconomy Paymaster API key",
-  137: "Biconomy Paymaster API key"
-};
 
 // Support BICONOMY_V1 | BICONOMY_V2 | CYBERCONNECT | SIMPLE | LIGHT
-ParticleAA.init(AccountName.BICONOMY_V2(), biconomyApiKeys);
+ParticleAA.init(AccountName.BICONOMY_V2());
 
 ParticleAA.enableAAMode();
 ```
@@ -70,15 +65,17 @@ ParticleAA.enableAAMode();
 
 Now that you've initialized the AA SDK, you can move onto several methods to utilize it. First, it's important to note that the smart account implementation you chose will be automatically deployed with the first transaction it initiates. The deployment transaction will be bundled (batched) in with the first transaction. 
 
-However, if you'd like to check the deployment status of a given smart account manually, you can first retrieve the host address with `ParticleAuth.getAddress`, then pass that into `ParticleAA.isDeploy`, which returns a Boolean indicating deployment status.
+However, if you'd like to check the deployment status of a given smart account manually, you can first retrieve the host address with `Evm.getAddress`, then pass that into `ParticleAA.isDeploy`, which returns a Boolean indicating deployment status.
 
 E.g.:
 
 ```dart Dart
-final eoaAddress = await ParticleAuth.getAddress();
+final eoaAddress = await Evm.getAddress();
 
 var isDeploy = await ParticleAA.isDeploy(eoaAddress);
 ```
+
+---
 
 ### Disable AA Mode
 
@@ -90,13 +87,15 @@ ParticleAA.disableAAMode();
 var result = await ParticleAA.isAAModeEnable();  
 ```
 
+---
+
 ### Send Transaction
 
-Sending a transaction (UserOperation) is as simple as calling pre-existing methods within `ParicleAuth`, `ParticleConnect`or `Evm in particle_auth_core` and just passing in an additional parameter, `feeMode`. There are two ways to send transactions with the AA SDK: The first is with `signAndSendTransaction` of `sendTransaction` , which will send a singular transaction to the network. Alternatively, you can use `batchSendTransactions` to send batched transactions within a single UserOperation.
+Sending a transaction (UserOperation) is as simple as calling pre-existing methods within `ParticleConnect` or `Evm` in `particle_auth_core` and just passing in an additional parameter, `feeMode`. There are two ways to send transactions with the AA SDK: The first is with `signAndSendTransaction` of `sendTransaction` , which will send a singular transaction to the network. Alternatively, you can use `batchSendTransactions` to send batched transactions within a single UserOperation.
 
-`ParticleAuth/ParticleConnect.signAndSendTransaction` or `Evm.sendTransaction in particle_auth_core` takes the following parameters:
+`ParticleConnect.signAndSendTransaction` or `Evm.sendTransaction` in `particle_auth_core` takes the following parameters:
 
-- For Particle Connect, `walletType`, dictating the specific adapter being used/targeted.
+- For Particle Connect, `walletType`, dictates the specific adapter being used/targeted.
 - `account`, the public address of the smart account sending the transaction, which can be retrieved through `EvmService.getSmartAccount`.
 - `transaction`, a stringified standard transaction object.
 - `feeMode`, the mechanism to be used for paying gas fees, can be:
@@ -108,37 +107,30 @@ Sending a transaction (UserOperation) is as simple as calling pre-existing metho
     - `feeQuote`, to be used when leveraging a Token Paymaster. It can be retrieved through `ParticleAA.rpcGetFeeQuotes(EoaPublicAddress, [transaction])`.
     - `tokenPaymasterAddress`, can be  retrieved through `ParticleAA.rpcGetFeeQuotes(EoaPublicAddress, [transaction])`.
 
-Alternatively, for `ParticleAuth/Connect.batchSendTransactions` or ParticleAuthCore`Evm.batchSendTransactions`, the parameters will be the same, with the exception of `transaction` being an array of transactions.
+Alternatively, for `ParticleConnect.batchSendTransactions` or ParticleAuthCore `Evm.batchSendTransactions`, the parameters will be the same, with the exception of `transaction` being an array of transactions.
 
 ```dart Dart
-await ParticleAuth.signAndSendTransaction(transaction,
-        feeMode: AAFeeMode.gasless(result));
-
-await ParticleConnect.signAndSendTransaction(
-        WalletType.metaMask, EoaPublicAddress, transaction,
-        feeMode: AAFeeMode.gasless(result));
-
+// with particle_auth_core
 await Evm.sendTransaction(transaction,
         feeMode: AAFeeMode.gasless(result));
 
-await ParticleAuth.signAndSendTransaction(transaction,
+await Evm.signAndSendTransaction(transaction,
         feeMode: AAFeeMode.token(feeQuote, tokenPaymasterAddress));
 
-await ParticleConnect.signAndSendTransaction(
-        WalletType.metaMask, EoaPublicAddress, transaction,
-        feeMode: AAFeeMode.token(feeQuote, tokenPaymasterAddress));
-
-await Evm.sendTransaction(transaction,
-        feeMode: AAFeeMode.token(feeQuote, tokenPaymasterAddress));
-
-await ParticleAuth.batchSendTransactions(transactions,
+await Evm.batchSendTransactions(transactions,
         feeMode: AAFeeMode.native(result));
+
+// with particle_connect
+await ParticleConnect.signAndSendTransaction(
+        WalletType.metaMask, EoaPublicAddress, transaction,
+        feeMode: AAFeeMode.gasless(result));
+
+await ParticleConnect.signAndSendTransaction(
+        WalletType.metaMask, EoaPublicAddress, transaction,
+        feeMode: AAFeeMode.token(feeQuote, tokenPaymasterAddress));
 
 await ParticleConnect.batchSendTransactions(
         WalletType.metaMask, EoaPublicAddress, transactions,
-        feeMode: AAFeeMode.native(result));
-
-await Evm.sendTransaction(transaction,
         feeMode: AAFeeMode.native(result));
 ```
 
@@ -186,17 +178,4 @@ String tokenPaymasterAddress = result["tokenPaymaster"]["tokenPaymasterAddress"]
 
 ***
 
-## Master reference
-
-For a direct, raw view into every method, below is a table containing every relevant one alongside specific parameters and a short description. For methods listed that weren't covered in the above examples, live implementation often mimics the common structure covered throughout this document.
-
-| Class      | Methods         | Parameters (\* indicates optional) |
-| ---------- | --------------- | ---------------------------------- |
-| ParticleAA | init            | name, version, biconomyApiKeys\*   |
-| ParticleAA | isDeploy        | eoaAddress                         |
-| ParticleAA | isAAModeEnable  |                                    |
-| ParticleAA | enableAAMode    |                                    |
-| ParticleAA | disableAAMode   |                                    |
-| ParticleAA | rpcGetFeeQuotes | eoaAddress, transactions           |
-
-See the [Particle Auth](/api/auth/mobile-sdks/flutter) and [Particle Connect](/api/connect/mobile/flutter) pages for insights into additional compatible methods (such as `signAndSendTransaction`), as shown here.
+See the [Particle Auth](/api-reference/auth/mobile-sdks/flutter) and [Particle Connect](/api-reference/connect/mobile/flutter) pages for insights into additional compatible methods (such as `signAndSendTransaction`), as shown here.

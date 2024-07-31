@@ -1,0 +1,180 @@
+export const InteractiveLayout = () => {
+  const ethereumIcon = "/snippets/logos/eth.png";
+  const bnbIcon = '/snippets/logos/bnb.png';
+  const polygonIcon = '/snippets/logos/polygon.png';
+  const seiIcon = '/snippets/logos/sei.png';
+
+  const authIcons = {
+    email: '/snippets/logos/email.png',
+    phone: '/snippets/logos/phone.png',
+    facebook: '/snippets/logos/facebook.png',
+    google: '/snippets/logos/google.png',
+    apple: '/snippets/logos/apple.png',
+    twitter: '/snippets/logos/twitter.jpeg',
+    discord: '/snippets/logos/discord.png',
+    github: '/snippets/logos/github.png',
+    twitch: '/snippets/logos/twitch.png',
+    microsoft: '/snippets/logos/microsoft.png',
+    linkedin: '/snippets/logos/linkedin.png',
+  };
+  
+  if (typeof document === "undefined") {
+    return null;
+  } else {
+    setTimeout(() => {
+      const chains = [
+        { id: 'Ethereum', name: 'Ethereum', icon: ethereumIcon },
+        { id: 'BNBChain', name: 'BNB Chain', icon: bnbIcon },
+        { id: 'Polygon', name: 'Polygon', icon: polygonIcon },
+        { id: 'Sei', name: 'Sei', icon: seiIcon },
+      ];
+
+      let selectedChains = ['Base'];
+      let selectedAuthTypes = ['email', 'google', 'twitter', 'github'];
+      let allSocialLoginsSelected = false;
+
+      const authTypes = Object.keys(authIcons);
+
+      const handleToggleChain = (chainId) => {
+        const index = selectedChains.indexOf(chainId);
+        if (index > -1) {
+          selectedChains = selectedChains.filter((id) => id !== chainId);
+        } else {
+          selectedChains.push(chainId);
+        }
+        renderToggles();
+        renderCodeSnippet();
+      };
+
+      const handleToggleAuthType = (authTypeId) => {
+        if (authTypeId === 'allSocialLogins') {
+          allSocialLoginsSelected = !allSocialLoginsSelected;
+          selectedAuthTypes = allSocialLoginsSelected ? [] : selectedAuthTypes;
+        } else {
+          const index = selectedAuthTypes.indexOf(authTypeId);
+          if (index > -1) {
+            selectedAuthTypes = selectedAuthTypes.filter((id) => id !== authTypeId);
+          } else {
+            selectedAuthTypes.push(authTypeId);
+          }
+          allSocialLoginsSelected = false;
+        }
+        renderAuthToggles();
+        renderCodeSnippet();
+      };
+
+      const renderToggles = () => {
+        const toggleContainer = document.getElementById('toggle-buttons');
+        toggleContainer.innerHTML = chains.map(chain => `
+          <button
+            class="toggle-button ${selectedChains.includes(chain.id) ? 'selected' : ''}"
+            onclick="handleToggleChain('${chain.id}')"
+          >
+            <img src="${chain.icon}" alt="${chain.name}" class="icon"/>
+          </button>
+        `).join('');
+      };
+
+const renderAuthToggles = () => {
+  const authToggleContainer = document.getElementById('auth-toggle-buttons');
+  authToggleContainer.innerHTML = `
+    <button
+      class="toggle-button ${allSocialLoginsSelected ? 'selected' : ''}"
+      onclick="handleToggleAuthType('allSocialLogins')"
+    >
+      All
+    </button>
+  ` + authTypes.map(authType => `
+    <button
+      class="toggle-button ${selectedAuthTypes.includes(authType) ? 'selected' : ''}"
+      onclick="handleToggleAuthType('${authType}')"
+    >
+      <img src="${authIcons[authType]}" alt="${authType}" class="icon"/>
+    </button>
+  `).join('');
+};
+
+
+      const renderCodeSnippet = () => {
+        const importStatements = `import { ${selectedChains.join(', ')} } from "@particle-network/chains";`;
+        const supportChainsArray = `supportChains: [${selectedChains.join(', ')}],`;
+        const authTypesArray = allSocialLoginsSelected ? '' : `// This is how you limit the options available.
+            // Remove the authTypes array to display all options available
+            authTypes: [${selectedAuthTypes.map(type => `AuthType.${type}`).join(', ')}],`;
+
+        const codeSnippet = `
+// layout.tsx
+"use client";
+import { Inter } from "next/font/google";
+import "./globals.css";
+
+// Particle imports
+${importStatements} // Chains are imported here
+import { AuthType } from "@particle-network/auth-core";
+import { AuthCoreContextProvider } from "@particle-network/auth-core-modal";
+
+const inter = Inter({ subsets: ["latin"] });
+
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  return (
+    <html lang="en">
+      <body className={inter.className}>
+        <AuthCoreContextProvider
+          options={{
+            projectId: process.env.NEXT_PUBLIC_PROJECT_ID!,
+            clientKey: process.env.NEXT_PUBLIC_CLIENT_KEY!,
+            appId: process.env.NEXT_PUBLIC_APP_ID!,
+            ${authTypesArray}
+            themeType: "dark",
+            wallet: {
+              visible: true,
+              customStyle: {
+              // List the chains you want to include
+                ${supportChainsArray} 
+              },
+            },
+          }}
+        >
+          {children}
+        </AuthCoreContextProvider>
+      </body>
+    </html>
+  );
+}
+        `;
+
+        const codeSnippetContainer = document.getElementById('code-snippets');
+        codeSnippetContainer.innerHTML = `<pre><code>${escapeHtml(codeSnippet)}</code></pre>`;
+      };
+
+      const escapeHtml = (unsafe) => {
+        return unsafe
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;")
+          .replace(/'/g, "&#039;");
+      };
+
+      window.handleToggleChain = handleToggleChain;
+      window.handleToggleAuthType = handleToggleAuthType;
+      renderToggles();
+      renderAuthToggles();
+      renderCodeSnippet();
+    }, 1);
+
+    return (
+      <div>
+        <p>Chain selection</p>
+        <div id="toggle-buttons" className="toggles"></div>
+        <p>AuthType selection</p>
+        <div id="auth-toggle-buttons" className="toggles"></div>
+        <div id="code-snippets" className="code-snippet"></div>
+      </div>
+    );
+  }
+};

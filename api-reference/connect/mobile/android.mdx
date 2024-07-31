@@ -49,22 +49,20 @@ To configure these dependencies, open your `build.gradle` file, and either paste
 ```groovy build.gradle
 dependencies {
   //required
-   modules {
-      module("org.bouncycastle:bcprov-jdk15to18") {
-          replacedBy("org.bouncycastle:bcprov-jdk15on")
-      }
+  modules {
+    module("org.bouncycastle:bcprov-jdk15to18") {
+      replacedBy("org.bouncycastle:bcprov-jdk15on")
+    }
+    module("org.bouncycastle:bcprov-jdk18on") {
+      replacedBy("org.bouncycastle:bcprov-jdk15on")
+    }
   }
-  implementation 'network.particle:auth-service:{latest-version}'
+  implementation 'network.particle:auth-core:{latest-version}'
   implementation 'network.particle:connect:{latest-version}'
-  implementation 'network.particle:connect-auth-adapter:{latest-version}'
-  // implementation 'network.particle:connect-auth-core-adapter:{latest-version}'
-  
+  implementation 'network.particle:connect-auth-core-adapter:{latest-version}'
   implementation 'network.particle:connect-evm-adapter:{latest-version}'
-  
   implementation 'network.particle:connect-solana-adapter:{latest-version}'
-  
   implementation 'network.particle:connect-phantom-adapter:{latest-version}'
-  
   implementation 'network.particle:connect-wallet-connect-adapter:{latest-version}'
 }
 ```
@@ -202,6 +200,15 @@ Initialization can be started through the `init` method on `ParticleConnect` (fr
   - `description`, a short description to be used in representing your project.
 - Additionally, within the body of the`init`, you'll need to define a list (`listOf`) wallets (adapters) that you'd like to be provided as an option within your instance of Particle Connect (these can be imported from `com.wallet.connect.adapter.{Adapter name}`).
 
+| Field          | Type                           | Description                                                  |
+| :------------- | :----------------------------- | :----------------------------------------------------------- |
+| application    | Application                    | Android applicaiton                                          |
+| env            | Env                            | DEV, STAGING, PRODUCTION,Different levels display different log information |
+| chain          | ChainInfo                      | the primary chain to be used within your application. `ChainInfo` can be set as a `ChainInfo` object imported from `network.particle.chains.ChainInfo.Companion.{chain}`.  such as ChainInfo.Ethereum、ChainInfo.Solana |
+| dAppData       | DAppMetadata                   | metadata outlining the description of your application. This should be set as an instance of `DAppMetadata` (imported from `com.particle.base.model.DAppMetadata`) with the following parameters set:<br /><br />  `walletConnectProjectId`, your WalletConnect project ID retrieved from the [WalletConnect dashboard](https://cloud.walletconnect.com).<br /> `name`, the name of your project. <br />`icon`, a link containing the logo (icon) of your project; this should be 512x512, ideally.<br /> `url`, the URL of your project's website. <br />`description`, a short description to be used in representing your project. |
+| createAdapters | (() -> List`<IConnectAdapter>`)? | you'll need to define a list (`listOf`) wallets (adapters) that you'd like to be provided as an option within your instance of Particle Connect (these can be imported from `com.wallet.connect.adapter.{Adapter name}`). |
+|                |                                |                                                              |
+
 ```kotlin Kotlin
 val dAppMetadata = DAppMetadata(
             walletConnectProjectId = "f431aaea6e4dea6a669c0496f9c009c1",
@@ -219,13 +226,13 @@ ParticleConnect.init(
     dAppMetadata 
 ) {
     listOf(
-        ParticleConnectAdapter(),
-        // AuthCoreAdapter(),
+        AuthCoreAdapter(),
         MetaMaskConnectAdapter(),
         RainbowConnectAdapter(),
         TrustConnectAdapter(),
         ImTokenConnectAdapter(),
         BitKeepConnectAdapter(),
+        OKXConnectAdapter(),
         WalletConnectAdapter(),
         PhantomConnectAdapter(),
         EVMConnectAdapter(),
@@ -262,10 +269,74 @@ val accounts = ParticleConnect.getAccounts(chainType)
 
 ### Connect Wallet
 
-Upon creating an instance of a given wallet adapter, you can programmatically initiate a connection by calling the `connect` method on `connectAdapter` (or the name of the variable you've defined). This will throw a connection prompt to the user, the specifics of which will be dependent on the adapter in question. If you're using either `EVMConnectAdapter` or `SolanaConnectAdapter` in this case, these will generate a fresh wallet. E.g.:
+Likely one of the most important methods, specific adapters can initiate connection (through an initialization in a variable such as `adapter`) with the `connect`method. Depending on the specific adapter, this method will throw a modal facilitating connection.
+
+For `EVMConnectAdapter` and `SolanaConnectAdapter`, this will generate a fresh account (public and private key pair). Otherwise, the specific connection flow will be dependent upon the adapter in which `connect` is called. E.g.:
+
+| Field    | Type             | Description                                                  |
+| :------- | :--------------- | :----------------------------------------------------------- |
+| `config` | `ConnectConifg?` | The `ConnectConfig` will only be effective when `adapter.name` is MobileWCWalletName.AuthCore.name`. You can construct a valid object using the subclass `ParticleAuthCoreConfig`. When `adapter.walletType` is other value, you can pass null. |
+
+`ConnectConfig` ` There are 4 already implemented subclasses that can correspond to different connection scenarios
+
+| **Field**         | **Type**                          | **Description**                                              |
+| ----------------- | --------------------------------- | ------------------------------------------------------------ |
+| loginType         | LoginType                         | the social login method preferred. This supports either EMAIL, PHONE, TWITTER, GOOGLE, FACEBOOK, APPLE, DISCORD, GITHUB, TWITCH, MICROSOFT, LINKEDIN, JWT. |
+| account           | String                            | Default is empty, you can use the `account` parameter to pass in an expected email, phone number, or JWT. This is optional for the former two, but required for `.jwt`. The phone number must be in E.164 format. |
+| supportLoginTypes | List`<SupportLoginType>`            | The default setting includes support for all SupportLoginTypes: EMAIL, PHONE, FACEBOOK, GOOGLE, APPLE, TWITTER, DISCORD, GITHUB, TWITCH, MICROSOFT, and LINKEDIN. You can also provide a specific subset of SupportLoginTypes if needed. |
+| prompt            | LoginPrompt?                      | the prompt to be displayed following social login, such as a request to set a master password, payment password, etc. This is `null` by default. |
+| loginPageConfig   | LoginPageConfig?                  | If you use a Google to log in, you can control the Google account login prompt with this parameter: None、Consent or SelectAccount. |
+| loginCallback     | AuthCoreServiceCallback`<UserInfo>` | success : wiil return UserInfo. <br /><br />failure : will return a ErrorInfo |
 
 ```kotlin Kotlin
-connectAdapter.connect(callback)
+
+data class ConnectConfigJWT(
+    val jwt: String,
+) : ConnectConfig
+
+data class ConnectConfigEmail(
+    @SerializedName("email") val email: String = "",
+    @SerializedName("code") val code: String = "",
+    @SerializedName("supportLoginTypes") val supportLoginTypes: List`<SupportLoginType>` = SupportLoginType.values().toList(),
+    @SerializedName("prompt") val prompt: LoginPrompt? = null,
+    @SerializedName("loginPageConfig") val loginPageConfig: LoginPageConfig? = null,
+) : ConnectConfig
+
+data class ConnectConfigPhone(
+    @SerializedName("phone") val phone: String = "",
+    @SerializedName("code") val code: String = "",
+    @SerializedName("supportLoginTypes") val supportLoginTypes: List`<SupportLoginType>` = SupportLoginType.values().toList(),
+    @SerializedName("prompt") val prompt: LoginPrompt? = null,
+    @SerializedName("loginPageConfig") val loginPageConfig: LoginPageConfig? = null,
+) : ConnectConfig
+
+data class ConnectConfigSocialLogin(
+    @SerializedName("loginType") val loginType: SocialLoginType,
+    @SerializedName("prompt") val prompt: LoginPrompt? = null,
+) : ConnectConfig
+
+//jwt connect 
+val adapter = ParticleConnect.getAdapters().first { it is AuthCoreAdapter } 
+val connectConfigJWT = ConnectConfigJWT(jwt = "your jwt")
+adapter.connect(connectConfigJWT, object : ConnectCallback {
+  override fun onConnected(account: Account) {
+      val publicAddress =  account.publicAddress
+  }
+  override fun onError(error: ConnectError) {
+     //handle error
+  }
+})
+//social connect 
+val connectConfigSocialLogin =  ConnectConfigSocialLogin(loginType = SocialLoginType.GOOGLE, prompt = LoginPrompt.SelectAccount)
+adapter.connect(connectConfigSocialLogin,callback)
+
+//email connect
+val connectConfigEmail = ConnectConfigEmail()
+adapter.connect(connectConfigEmail, callback)
+
+//phone connect
+val connectConfigPhone =ConnectConfigPhone()
+adapter.connect(connectConfigPhone, callback)
 ```
 
 ### Disconnect Wallet
@@ -314,19 +385,37 @@ To initiate a transaction for signature and ultimately settlement on-chain, you'
 - `transaction`, a stringified transaction object (containing fields like 'to', 'from', 'value', 'data', etc.).
 - `callback`, return handling.
 
+| Field           | Type                | Description                                                  |
+| :-------------- | :------------------ | :----------------------------------------------------------- |
+| `publicAddress` | `String`            | the connected public address, if `adapter` is `AuthCoreAdapter`, you can pass an empty string, for other walletTypes, you need pass a connected public address. |
+| `transaction`   | `String`            | evm transaction is expressed as a hexadecimal string, solana transaction is expressed as a base58 string. |
+| callback        | TransactionCallback | Callback function, callback different methods according to success or failure |
+
 E.g.:
 
 ```kotlin Kotlin
 connectAdapter.signAndSendTransaction(address, transaction, callback)
+ adapter.signAndSendTransaction(publicAddress = "", transaction = "tx",
+            object : TransactionCallback {
+                override fun onTransaction(transactionId: String?) {
+                  	//success
+                }
+
+                override fun onError(error: ConnectError) {
+                  //handle error
+                }
+            })
 ```
 
 ### Sign Transaction
 
 `connectAdapter.signTransaction` is a **Solana-specific** method for signing a transaction without pushing it to the network. Specifically, this method requires the following parameters:
 
-- `address`, the user address to target for signature initiation.
-- `transaction`, a base58 string representing a transaction object.
-- `callback`, return handling.
+| Field           | Type         | Description                                                  |
+| :-------------- | :----------- | :----------------------------------------------------------- |
+| `publicAddress` | `String`     | the connected public address, if `adapter` is `AuthCoreAdapter`, you can pass an empty string, for other walletTypes, you need pass a connected public address. |
+| `transaction`   | `String`     | evm transaction is expressed as a hexadecimal string, solana transaction is expressed as a base58 string. |
+| callback        | SignCallback | Callback function, callback different methods according to success or failure |
 
 E.g.:
 
@@ -341,9 +430,11 @@ connectAdapter.signAllTransactions(address, transactions, callback)
 
 To sign a basic UTF-8 message (string), you can use `connectAdapter.signMessage` to prompt the user for a signature alongside the message in question. `connectAdapter.signMessage` takes the following parameters:
 
-- `address`, the user address to target for signature initiation.
-- `message`, the message you'd like the user to sign. For EVM, this should be a hex-encoded string (prefixed by '0x'), while for Solana, you can pass in a standard string.
-- `callback`, return handling.
+| Field           | Type         | Description                                                  |
+| :-------------- | :----------- | :----------------------------------------------------------- |
+| `publicAddress` | `String`     | the connected public address, if `adapter` is `AuthCoreAdapter`, you can pass an empty string, for other walletTypes, you need pass a connected public address. |
+| `message`       | `String`     | the message you'd like the user to sign. For EVM, this should be a hex-encoded string (prefixed by '0x'), while for Solana, you can pass in a standard string. |
+| callback        | SignCallback | Callback function, callback different methods according to success or failure |
 
 E.g.:
 
@@ -354,6 +445,12 @@ connectAdapter.signMessage(address, message, callback)
 ### Sign Typed Data
 
 Alternatively, **for EVM chains**, you can request that a user signs typed (structured) data rather than purely a raw string. To do this, you can use `connectAdapter.signTypedData` (equivalent to `eth_signTypedData`). This takes the following parameters:
+
+| Field           | Type         | Description                                                  |
+| :-------------- | :----------- | :----------------------------------------------------------- |
+| `publicAddress` | `String`     | the connected public address, if `adapter` is `AuthCoreAdapter`, you can pass an empty string, for other walletTypes, you need pass a connected public address. |
+| `data`          | `String`     | the typed data to be signed; see the [Web (JavaScript/TypeScript)](/api-reference/auth/desktop-sdks/web) page for additional guidance. |
+| callback        | SignCallback | Callback function, callback different methods according to success or failure |
 
 - `address`, the user address to target for signature initiation.
 - `data`, the typed data to be signed; see the [Web (JavaScript/TypeScript)](/api-reference/auth/desktop-sdks/web) page for additional guidance.

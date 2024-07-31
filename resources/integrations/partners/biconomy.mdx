@@ -3,7 +3,7 @@ title: "Biconomy and Particle Network"
 mode: "wide"
 ---
 
-Biconomy is a long-standing partner of Particle Network within the ERC-4337 account abstraction infrastructure vertical. Particle Network's initial natively-integrated AA stack was driven almost entirely by Biconomy. While today Particle Network has its [Omnichain Paymaster](/resources/wallet-abstraction/waas/omni-paymaster) and [Particle Bundler](/resources/wallet-abstraction/waas/bundler), Biconomy is still directly compatible with Particle Network's tech stack. Furthermore, Biconomy even features a custom SDK, `@biconomy/particle-auth` for leveraging Biconomy with Particle Auth.
+Biconomy is a long-standing partner of Particle Network within the ERC-4337 account abstraction infrastructure vertical. Particle Network's initial natively-integrated AA stack was driven almost entirely by Biconomy. While today Particle Network has its [Omnichain Paymaster](/resources/integrations/aa/paymaster) and [Particle Bundler](/resources/integrations/aa/bundler), Biconomy is still directly compatible with Particle Network's tech stack. Furthermore, Biconomy even features a custom SDK, `@biconomy/particle-auth` for leveraging Biconomy with Particle Auth.
 
 This document will go through the specifics of using Biconomy either natively within Particle Network's AA SDK for gasless (and token-paid) transactions or using Particle Network within the aforementioned SDK to achieve the same goal, just through different means.
 
@@ -20,7 +20,7 @@ href="https://particle-biconomy-demo.replit.app">
 
 ## Part 1: Leveraging Biconomy through `@particle-network/aa`
 
-In an effort to ensure developers have multiple options to choose from when using the Particle Network AA SDK, built-in compatibility with Biconomy's Paymaster has been included within `@particle-network/aa`. Therefore when leveraging Particle's AA SDK for sponsoring transactions, you're given the choice between Particle Network's [Omnichain Paymaster](/resources/wallet-abstraction/waas/omni-paymaster) and [Biconomy's Paymaster](https://docs.biconomy.io/paymaster). If you're leveraging ERC20-paid transactions with `@particle-network/aa`, then [Biconomy's Token Paymaster ](https://docs.biconomy.io/paymaster#token-paymaster) is used by default, as Particle Network does not currently have its own Token Paymaster. Below, we'll run through the basics of leveraging Biconomy's Verifying Paymaster within `SmartAccount` from `@particle-network/aa`.
+In an effort to ensure developers have multiple options to choose from when using the Particle Network AA SDK, built-in compatibility with Biconomy's Paymaster has been included within `@particle-network/aa`. Therefore when leveraging Particle's AA SDK for sponsoring transactions, you're given the choice between Particle Network's [Omnichain Paymaster](/resources/integrations/aa/paymaster) and [Biconomy's Paymaster](https://docs.biconomy.io/paymaster). If you're leveraging ERC20-paid transactions with `@particle-network/aa`, then [Biconomy's Token Paymaster ](https://docs.biconomy.io/paymaster#token-paymaster) is used by default, as Particle Network does not currently have its own Token Paymaster. Below, we'll run through the basics of leveraging Biconomy's Verifying Paymaster within `SmartAccount` from `@particle-network/aa`.
 
 ### Getting Started
 
@@ -98,7 +98,7 @@ The key point of focus here will be with the three objects imported from `@parti
   - `projectId`, `clientKey`, and `appId`. Covered earlier, these connect your project to the [Particle dashboard](https://dashboard.particle.network) (can also be retrieved from the dashboard).
   - `aaOptions`, which contains:
     - `biconomy`, the parameter representing our choice of a Biconomy smart account. This takes an array of objects, each containing `chainId` and `version`.
-    - **`paymasterApiKeys`**, the focal point here. `paymasterApiKeys` allows you to override the default usage of Particle's [Omnichain Paymaster](/resources/wallet-abstraction/waas/omni-paymaster) in place of Biconomy's Paymaster. Within `paymasterApiKeys`, you need to define:
+    - **`paymasterApiKeys`**, the focal point here. `paymasterApiKeys` allows you to override the default usage of Particle's [Omnichain Paymaster](/resources/integrations/aa/paymaster) in place of Biconomy's Paymaster. Within `paymasterApiKeys`, you need to define:
       - `chainId`, ID for the chain in which you've deployed your Paymaster through the [Biconomy dashboard](https://dashboard.biconomy.io).
       - `apiKey`, the API key of a Paymaster deployed through the [Biconomy dashboard](https://dashboard.biconomy.io).
 
@@ -247,6 +247,6 @@ To learn more about the utilization process of `@biconomy/particle-auth` (with a
 
 ## Conclusion
 
-Particle Network aims to provide developers with a modular, open account abstraction stack where any infrastructure provider can be used directly with Particle Auth or Particle Auth Core to facilitate AA-enabled social logins. With Biconomy being one of these core providers, there are various options for using its infrastructure with Particle, specifically when it comes to a native integration (as Biconomy is the only natively supported Paymaster provider outside of Particle’s own [Omnichain Paymaster](/resources/wallet-abstraction/waas/omni-paymaster)).
+Particle Network aims to provide developers with a modular, open account abstraction stack where any infrastructure provider can be used directly with Particle Auth or Particle Auth Core to facilitate AA-enabled social logins. With Biconomy being one of these core providers, there are various options for using its infrastructure with Particle, specifically when it comes to a native integration (as Biconomy is the only natively supported Paymaster provider outside of Particle’s own [Omnichain Paymaster](/resources/integrations/aa/paymaster)).
 
 To dive into the example shown within part 1, see its [`particle-biconomy-example` demo repository](https://github.com/TABASCOatw/particle-biconomy-example). Additionally, the full repository for the `@biconomy/particle-auth` example shown here is also available through [`particle-biconomy-sdk-demo`](https://github.com/TABASCOatw/particle-biconomy-sdk-demo).

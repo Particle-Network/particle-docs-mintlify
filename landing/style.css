@@ -68,3 +68,47 @@
   background: #9b59b6;
   margin: 0 auto 20px auto;
 }
+
+/* components/styles.css */
+.toggles {
+  display: flex;
+  gap: 10px;
+}
+
+.toggle-button {
+  width: 50px; /* Adjust this value to make the buttons square */
+  height: 50px; /* Adjust this value to make the buttons square */
+  border: none;
+  background-color: #f0f0f0;
+  cursor: pointer;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.toggle-button.selected {
+  background-color: #007bff;
+  color: white;
+}
+
+.icon {
+  width: 30px; /* Adjust this value to make the icons fit well within the square */
+  height: 30px; /* Adjust this value to make the icons fit well within the square */
+}
+
+.code-snippet {
+  margin-top: 20px;
+  white-space: pre-wrap;
+  overflow-x: auto;
+  background-color: #1e1e1e;
+  color: #d4d4d4;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.highlight {
+  color: red; /* Change this to your desired highlight color */
+  font-weight: bold;
+}
+

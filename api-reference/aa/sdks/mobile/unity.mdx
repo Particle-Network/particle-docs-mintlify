@@ -34,8 +34,8 @@ To start using the Particle AA SDK for Unity, you'll need to ensure that your pr
 
 With your prerequisites set, you'll need to set up either Particle Auth or Particle Connect for Unity. Particle Auth will offer a direct social login mechanism resulting in a Particle wallet. Otherwise, Particle Connect will allow for a more generalized connection modal aggregating both social logins and external Web3 wallets.
 
-- Particle Auth: [Unity (C#)](/api/auth/mobile-sdks/unity).
-- Particle Connect: [Unity (C#)](/api/connect/mobile/unity).
+- Particle Auth: [Unity (C#)](/api-reference/auth/mobile-sdks/unity).
+- Particle Connect: [Unity (C#)](/api-reference/connect/mobile/unity).
 
 <Note>
 Important details before initialization.
@@ -68,15 +68,10 @@ Once the Particle AA SDK has been initialized through `ParticleAAInteraction`, y
 
 E.g.:
 
-```csharp C#
-var biconomyApiKeys = new Dictionary<int, string>
-{
-    { 1, "your ethereum mainnet key" },
-    { 137, "your polygon mainnet key" },
-}; // Optional
+```csharp
 
 // BICONOMY_V1 || BICONOMY_V2 | SIMPLE | CYBERCONNECT | LIGHT
-ParticleAAInteraction.Init(AAAccountName.BICONOMY_V1, biconomyApiKeys);
+ParticleAAInteraction.Init(AAAccountName.BICONOMY_V1);
 
 ParticleAAInteraction.EnableAAMode();
 // Inversely, ParticleAAInteraction.DisableAAMode();
@@ -88,8 +83,8 @@ ParticleAAInteraction.EnableAAMode();
 
 Upon initiating social login, a smart account will be assigned to your user's EOA (either a SimpleAccount, Biconomy account, or CyberConnect account), although even upon assignment, that smart account still needs to be deployed. This deployment will happen automatically upon the first UserOperation execution, as the deployment operation will be batched in with the first transaction request. Although, if you'd like to see whether an EOA's assigned smart account has been deployed or not, you can call `ParticleAA.Instance.IsDeploy`, as shown below.
 
-```csharp C#
-var eoaAddress = ParticleAuthServiceInteraction.GetAddress();
+```csharp
+var evmAddress = ParticleAuthCoreInteraction.EvmGetAddress()
 var result = await ParticleAA.Instance.IsDeploy(eoaAddress);
 ```
 
@@ -97,7 +92,7 @@ var result = await ParticleAA.Instance.IsDeploy(eoaAddress);
 
 As mentioned prior, upon initialization, you'll need to enable the AA mode. If you're unsure whether this is currently enabled for a specific instance, then you can use `ParticleAAInteraction.IsAAModeEnable`, which will return a Boolean indicating either`true` or `false` otherwise. E.g.:
 
-```csharp C#
+```csharp
 var result = ParticleAAInteraction.IsAAModeEnable();
 ```
 
@@ -105,12 +100,12 @@ var result = ParticleAAInteraction.IsAAModeEnable();
 
 As you'll see in a moment, sending a UserOperation requires the retrieval of a `feeQuote` object, containing constructed UserOperations for three different fee payment mechanisms, either gasless, native paid (native token), or token paid (ERC-20 token Paymaster). Thus, upon sending a transaction, you'll need to pass in a complete response from the `ParticleAA.Instance.RpcGetFeeQuotes` method. Specifically, `ParticleAA.Instance.RpcGetFeeQuotes` takes the following parameters:
 
-- `eoaAddress`, the address of the Signer/owner of the smart account in question (can be retrieved through `ParticleAuthServiceInteraction.GetAddress` for Particle Auth).
+- `eoaAddress`, the address of the Signer/owner of the smart account in question (can be retrieved through `ParticleAuthCoreInteraction.GetEvmAddress` for Particle Auth).
 - `transaction`, an array of multiple or a singular standard transactions to be sent from the smart account. The fee quote response will be based on the parameters defined within the transaction object.
 
 E.g.:
 
-```csharp C#
+```csharp
 var nativeResultData = await ParticleAA.Instance.RpcGetFeeQuotes(eoaAddress, new List<string> { transaction });
 ```
 
@@ -129,12 +124,12 @@ Sending a transaction or UserOperation within the AA SDK is also quite simple. T
 
 E.g.:
 
-```csharp C#
+```csharp
 // Particle Auth, singular transaction
-var nativeResultData = await ParticleAuthService.Instance.SignAndSendTransaction(transaction, AAFeeMode.Native(JObject.Parse(feeQuotesResult.data)));
+var nativeResultData = await ParticleAuthCore.Instance.SendTransaction(transaction, AAFeeMode.Native(JObject.Parse(feeQuotesResult.data)));
 
 // Particle Auth, batched transactions
-var nativeResultData = await ParticleAuthService.Instance.BatchSendTransactions(transactions, AAFeeMode.Gasless(JObject.Parse(feeQuotesResult.data)));
+var nativeResultData = await ParticleAuthCore.Instance.BatchSendTransactions(transactions, AAFeeMode.Gasless(JObject.Parse(feeQuotesResult.data)));
 
 // Particle Connect, singular transaction
 var nativeResultData = await ParticleConnect.Instance.SignAndSendTransaction(WalletType.MetaMask, eoaAddress, transaction, AAFeeMode.Token(feeQuote, tokenPaymasterAddress));
@@ -145,7 +140,7 @@ var nativeResultData = await ParticleConnect.Instance.BatchSendTransactions(Wall
 
 Check if you can send gasless/native/token.
 
-```csharp C#
+```csharp
 // check if enough native for gas fee
 var feeQuotesResult =
     await ParticleAA.Instance.RpcGetFeeQuotes(eoaAddress, new List<string> { transaction });
@@ -197,16 +192,3 @@ var tokenPaymasterAddress =
 ```
 
 ***
-
-## Master reference
-
-For a direct, raw view into every method, below is a table containing every relevant one alongside specific parameters and a short description. For methods listed that weren't covered in the above examples, live implementation often mimics the previously covered common structure throughout the SDK.
-
-| Class                 | Methods         | Parameters (\* indicates optional) |
-| --------------------- | --------------- | ---------------------------------- |
-| ParticleAAInteraction | Init            | accountName, biconomyApiKeys\*     |
-| ParticleAAInteraction | EnableAAMode    |                                    |
-| ParticleAAInteraction | DisableAAMode   |                                    |
-| ParticleAAInteraction | IsAAModeEnable  |                                    |
-| ParticleAAInteraction | IsDeploy        | eoaAddress                         |
-| ParticleAAInteraction | RpcGetFeeQuotes | eoaAddress, transactions           |

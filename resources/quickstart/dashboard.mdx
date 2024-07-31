@@ -156,7 +156,7 @@ For more information on modal customization, head over to [Customizing Particle 
 
 Offering a more granular view of the users represented within the "Activity" tab, the "Users" tab provides a list of every user who has either connected to your application through Particle Connect (or BTC Connect), or logged in through social login.
 
-Each user entry includes their social account (if applicable), their EVM address, and their Solana address (if a user has only ever used an EVM or Solana address within your application, the other will remain blank). Additionally, timestamps for the date in which the user signed up and was last active are also provided. Similar information is found through the `UserInfo` object attached to each user (see [getUserInfo](/api/auth/server/getuserinfo) for more information).
+Each user entry includes their social account (if applicable), their EVM address, and their Solana address (if a user has only ever used an EVM or Solana address within your application, the other will remain blank). Additionally, timestamps for the date in which the user signed up and was last active are also provided. Similar information is found through the `UserInfo` object attached to each user (see [getUserInfo](/api-reference/auth/server/getuserinfo) for more information).
 
 For users who have connected a wallet, only an address and associated timestamps will be available.
 
@@ -199,7 +199,7 @@ The "Custom" page allows you to establish your custom JWT configuration through 
 
 ## Paymaster
 
-The Particle dashboard is also used to fund and monitor Particle's [Omnichain Paymaster](/resources/wallet-abstraction/waas/omni-paymaster), used for sponsoring transactions across 35+ chains. Particle's Omnichain Paymaster takes stablecoin deposits from one chain (such as Ethereum or BNB Chain) and automatically converts it to cover transaction fees on any other chain on which the paymaster is queried ([sponsorUserOperation](/api/aa/paymaster/sponsoruseroperation)).
+The Particle dashboard is also used to fund and monitor Particle's [Omnichain Paymaster](/resources/integrations/aa/paymaster), used for sponsoring transactions across 35+ chains. Particle's Omnichain Paymaster takes stablecoin deposits from one chain (such as Ethereum or BNB Chain) and automatically converts it to cover transaction fees on any other chain on which the paymaster is queried ([sponsorUserOperation](/api-reference/aa/paymaster/sponsoruseroperation)).
 
 Thus, the "Paymaster" page is used to deposit stablecoins, manage sponsorship conditions, and view data such as deposit and consumption records.
 
