@@ -30,70 +30,11 @@ yarn add @particle-network/auth-core-modal
 
 Before interacting with Particle, you'll need to import and configure your master configuration object; this'll be used to not only customize the embedded wallet modal which is optionally shown after logging in, but also will allow you to define required keys and authenticate your project.
 
-Although before we import and configure this object, you'll need to retrieve the aforementioned keys. To do so, take a look at the following process:
+Although before we import and configure this object, you'll need to retrieve the aforementioned keys.
 
-1. Sign up/log in to the [Particle dashboard](https://dashboard.particle.network/).
+Regardless of the Particle Auth SDK you use, you'll have the opportunity to define your `projectId`, `clientKey`, and `appId` to authenticate your instance of Particle Auth. In addition to this, customizations can be applied to the resulting wallet modal.
 
-<div className="flex justify-center">
-<img
-  className="block h-64 dark:hidden"
-  src="/api-reference/auth/desktop-sdks/images/login.png"
-  alt="Particle Network login."
-/>
-<img
-  className="hidden h-64 dark:block"
-  src="/api-reference/auth/desktop-sdks/images/login.png"
-  alt="Particle Network login."
-/>
-</div>
-
-2. Create a new project or enter an existing project.
-
-<div className="flex justify-center">
-<img
-  className="block h-64 dark:hidden"
-  src="/api-reference/auth/desktop-sdks/images/project.png"
-  alt="Particle Network project."
-/>
-<img
-  className="hidden h-64 dark:block"
-  src="/api-reference/auth/desktop-sdks/images/project.png"
-  alt="Particle Network project."
-/>
-</div>
-
-3. Create a new web application, or skip this step if you already have one.
-
-<div className="flex justify-center">
-<img
-  className="block h-64 dark:hidden"
-  src="/api-reference/auth/desktop-sdks/images/app.png"
-  alt="Particle Network app."
-/>
-<img
-  className="hidden h-64 dark:block"
-  src="/api-reference/auth/desktop-sdks/images/app.png"
-  alt="Particle Network app."
-/>
-</div>
-
-4. Retrieve the project ID (`projectId`), the client key (`clientKey`), and the application ID (`appId`).
-
-<div className="flex justify-center">
-<img
-  className="block h-64 dark:hidden"
-  src="/api-reference/auth/desktop-sdks/images/credentials.png"
-  alt="Particle Network app credentials."
-/>
-<img
-  className="hidden h-64 dark:block"
-  src="/api-reference/auth/desktop-sdks/images/credentials.png"
-  alt="Particle Network app credentials."
-/>
-</div>
-
-Now that you’ve retrieved your project ID, client key, and application ID from the [Particle dashboard](https://dashboard.particle.network/), you can move on to initializing and configuring your master configuration object. Regardless of the Particle Auth SDK you use, you'll have the opportunity to define your `projectId`, `clientKey`, and `appId` to authenticate your instance of Particle Auth. In addition to this, customizations can be applied to the resulting wallet modal.
-
+<Note>Follow the quickstart tutorial to set up a project and find the required keys: [Create a new project](/resources/quickstart/waas/web-quickstart#configuring-particle-auth).</Note>
 
 <CodeGroup>
 ```typescript @particle-network/auth-core-modal
