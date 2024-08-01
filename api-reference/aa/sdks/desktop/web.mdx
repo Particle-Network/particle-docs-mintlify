@@ -33,67 +33,9 @@ npm install @particle-network/aa
 
 You'll also need required values from the Particle dashboard: your `projectId`, `clientKey`, and `appId`. Each of these values will be used in the initial configuration/initialization of the SDK and directly link your instance of the SDK with the [Particle dashboard](https://dashboard.particle.network). Retrieving these values can be done by following the process below:
 
-1. Sign up/log in to the [Particle dashboard](https://dashboard.particle.network/).
+<Note>Follow the quickstart tutorial to set up a project and find the required keys: [Create a new project](/resources/quickstart/waas/mobile-quickstart#configuring-particle-auth).</Note>
 
-<div className="flex justify-center">
-<img
-  className="block h-64 dark:hidden"
-  src="/api-reference/auth/desktop-sdks/images/login.png"
-  alt="Particle Network login."
-/>
-<img
-  className="hidden h-64 dark:block"
-  src="/api-reference/auth/desktop-sdks/images/login.png"
-  alt="Particle Network login."
-/>
-</div>
-
-2. Create a new project or enter an existing project.
-
-<div className="flex justify-center">
-<img
-  className="block h-64 dark:hidden"
-  src="/api-reference/auth/desktop-sdks/images/project.png"
-  alt="Particle Network project."
-/>
-<img
-  className="hidden h-64 dark:block"
-  src="/api-reference/auth/desktop-sdks/images/project.png"
-  alt="Particle Network project."
-/>
-</div>
-
-3. Create a new web application, or skip this step if you already have one.
-
-<div className="flex justify-center">
-<img
-  className="block h-64 dark:hidden"
-  src="/api-reference/auth/desktop-sdks/images/app.png"
-  alt="Particle Network app."
-/>
-<img
-  className="hidden h-64 dark:block"
-  src="/api-reference/auth/desktop-sdks/images/app.png"
-  alt="Particle Network app."
-/>
-</div>
-
-4. Retrieve the project ID (`projectId`), the client key (`clientKey`), and the application ID (`appId`).
-
-<div className="flex justify-center">
-<img
-  className="block h-64 dark:hidden"
-  src="/api-reference/auth/desktop-sdks/images/credentials.png"
-  alt="Particle Network app credentials."
-/>
-<img
-  className="hidden h-64 dark:block"
-  src="/api-reference/auth/desktop-sdks/images/credentials.png"
-  alt="Particle Network app credentials."
-/>
-</div>
-
-<Note>
+<Tip>
 Important details before initialization.
 <p></p>
 <p>Before initializing the SDK, there are a few key points to keep in mind, specifically regarding the utilization of Paymasters (to sponsor gas fees, pay for gas in ERC-20 tokens, etc.)</p>
@@ -102,7 +44,7 @@ Important details before initialization.
 <p>- On the occasion that you'd like to use the Particle Network Omnichain Paymaster for Mainnets, you'll need to deposit USDT on either Ethereum or BNB Chain within the <a href="https://dashboard.particle.network">Particle dashboard</a>. This USDT will then automatically be converted as needed into the native token of the network you're requesting (and qualifying for) sponsorship on.</p>
 <p>- Alternatively, if you'd like to instead use Biconomy's Verifying Paymaster, you can head over to the <a href="https://dashboard.biconomy.io">Biconomy dashboard</a>, create a new Paymaster, and fill in `paymasterApiKeys` within `aaOptions` on `SmartAccount`.</p>
 <p>- The Particle Network AA SDK automatically uses Biconomy's Token Paymaster (for paying gas in ERC20 tokens). Transactions that request it will be able to leverage it without additional configuration.</p>
-</Note>
+</Tip>
 
 ## Initialization
 
