@@ -1,10 +1,10 @@
-# Particle Network Minltify
+# Particle Network Mintlify
 
 This repository holds the content for the Particle Network's docs. It handles `mdx` format files for the content and OpenAPI specs for the API reference.
 
 ## Table of contents
 
-- [Particle Network Minltify](#particle-network-minltify)
+- [Particle Network Mintlify](#particle-network-Mintlify)
   - [Local Quickstart](#local-quickstart)
   - [Development](#development)
   - [Project's structure](#projects-structure)
@@ -52,7 +52,7 @@ When working on the repository to update the docs, follow the steps:
 
 ### mint.json
 
-The entry point for the Minltify project is the `mint.json` file. 
+The entry point for the Mintlify project is the `mint.json` file. 
 
 The `mint.json` file is the primary configuration file for the Mintlify project. It contains various settings that control the site's appearance, structure, and behavior. Below are some standard fields you might find in `mint.json`:
 
@@ -69,7 +69,7 @@ The `mint.json` file is the primary configuration file for the Mintlify project.
 - **`repository`**: Link to the project's code repository.
 - **`navigation`**: Links to be included in the top navigation bar.
 
-The top of the file is the general configuration. Here, we can control the project's name, logos, theme, CTA button, links in the header, and so on. 
+The top of the file contains the general configuration. Here, we can control the project's name, logos, theme, CTA button, links in the header, and so on. 
 
 ```json mint.json
   "name": "Particle Network docs",
@@ -199,7 +199,7 @@ This structure ensures that each documentation aspect is organized and easily ac
 
 ### APIs and OpenAPI schemas
 
-Minltify supports OpenAPI for API references. The APIs are organized in the `api` directory, and each section holds its `openapi.json` file. Once the OAS is set, you can reference it in the `.mdx` page like this:
+Mintlify supports OpenAPI for API references. The APIs are organized in the `api` directory, and each section holds its `openapi.json` file. Once the OAS is set, you can reference it in the `.mdx` page like this:
 
 ```md file.mdx
 ---
