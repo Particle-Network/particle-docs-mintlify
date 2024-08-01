@@ -180,7 +180,8 @@
           "group": "Customization",
           "pages": [
             "resources/quickstart/customization/auth",
-            "resources/quickstart/customization/wallet"
+            "resources/quickstart/customization/wallet",
+            "resources/quickstart/customization/jwt"
           ]
         }
       ]
