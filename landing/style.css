@@ -76,15 +76,22 @@
 }
 
 .toggle-button {
-  width: 50px; /* Adjust this value to make the buttons square */
-  height: 50px; /* Adjust this value to make the buttons square */
+  width: 50px; /* Square buttons */
+  height: 50px;
   border: none;
-  background-color: #403c3c;
+  background-color: #5A5A5A; /* Neutral mid-gray background */
+  color: #FFFFFF; /* White text for contrast */
   cursor: pointer;
   border-radius: 5px;
   display: flex;
   align-items: center;
   justify-content: center;
+  font-weight: bold; /* Bold text for emphasis */
+  transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transitions */
+}
+
+.light .toggle-button {
+  color: #9d32de;
 }
 
 .toggle-button.selected {
@@ -97,11 +104,8 @@
   height: 30px; /* Adjust this value to make the icons fit well within the square */
 }
 
-
-
 .code-snippet {
   margin-top: 20px;
-  white-space: pre-wrap;
   overflow-x: auto;
   background-color: #0F1117;
   color: #0F1117;
@@ -109,8 +113,101 @@
   border-radius: 5px;
 }
 
-.highlight {
-  color: red; /* Change this to your desired highlight color */
+.chain-selection {
   font-weight: bold;
+  color: #FFFFFF;
+  font-size: 20px;
+  margin: 10px 0;
+  margin-bottom: 30px;
+  text-align: center;
+  background-color: #0F1117; /* Lighter background color for contrast */
+  padding: 10px; /* Increase padding for better spacing */
+  border-radius: 8px; /* More rounded corners */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #9d32de;
+  gap: 10px; /* Space between text and icon */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Add subtle shadow for depth */
 }
 
+.auth-selection {
+  font-weight: bold;
+  color: #FFFFFF;
+  font-size: 20px;
+  margin: 10px 0;
+  margin-top: 30px;
+  margin-bottom: 30px;
+  text-align: center;
+  background-color: #0F1117; /* Different background color for differentiation */
+  padding: 10px; /* Increase padding for better spacing */
+  border-radius: 8px;
+  border: 1px solid #9d32de;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px; /* Space between text and icon */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Add subtle shadow for depth */
+}
+
+.copy-container {
+  display: flex;
+  justify-content: flex-end;
+  padding: 0; /* Remove all padding */
+  margin-bottom: 4px; /* Optional: Add some space between the button and the code */
+}
+
+.copy-button {
+  display: flex;
+  align-items: center;
+  background-color: transparent;
+  border: none;
+  color: #9d32de; /* Change to your preferred color */
+  font-size: 14px;
+  cursor: pointer;
+  padding: 0; /* Remove button padding */
+  margin: 0; /* Remove button margin */
+}
+
+.copy-icon {
+  width: 16px;
+  height: 16an ide px;
+  margin-right: 5px;
+}
+
+.snippet-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #9d32de; /* Pink color for the language label */
+  padding: 8px 16px;
+  border-bottom: 1px solid #9d32de;
+  border-top-left-radius: 6px;
+  border-top-right-radius: 6px;
+  font-size: 14px;
+  font-weight: bold;
+  position: relative;
+}
+
+.language-label {
+  display: inline-block;
+}
+
+.copy-button {
+  display: flex;
+  align-items: center;
+  background-color: transparent;
+  border: none;
+  color: #ffffff;
+  cursor: pointer;
+  padding: 0;
+  margin: 0;
+  font-size: 16px;
+}
+
+.copied-text {
+  color: #9d32de; /* Green color for success */
+  font-weight: bold;
+  font-size: 14px;
+  transition: color 0.3s ease;
+}

@@ -186,7 +186,7 @@
       ]
     },
     {
-      "group": "INTEGRATING WALLET ABSTRACTION",
+      "group": "UNDERSTANDING WALLET ABSTRACTION",
       "pages": [
         {
           "group": "Wallet-as-a-Service",
@@ -202,13 +202,6 @@
             "resources/integrations/aa/bundler",
             "resources/integrations/aa/paymaster",
             "resources/integrations/aa/keys"
-          ]
-        },
-        {
-          "group": "Nodes & Data Services",
-          "pages": [
-            "resources/integrations/nodes/nodes",
-            "resources/integrations/nodes/data"
           ]
         },
         {
