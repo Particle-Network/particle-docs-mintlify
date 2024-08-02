@@ -3,6 +3,8 @@ export const InteractiveLayout = () => {
   const bnbIcon = '/snippets/logos/bnb.png';
   const polygonIcon = '/snippets/logos/polygon.png';
   const seiIcon = '/snippets/logos/sei.png';
+  const baseIcon = '/snippets/logos/base.png';
+  const BerachainbArtioIcon = '/snippets/logos/bera.png';
 
   const authIcons = {
     email: '/snippets/logos/email.png',
@@ -10,10 +12,9 @@ export const InteractiveLayout = () => {
     facebook: '/snippets/logos/facebook.png',
     google: '/snippets/logos/google.png',
     apple: '/snippets/logos/apple.png',
-    twitter: '/snippets/logos/twitter.jpeg',
+    twitter: '/snippets/logos/twitter.png',
     discord: '/snippets/logos/discord.png',
     github: '/snippets/logos/github.png',
-    twitch: '/snippets/logos/twitch.png',
     microsoft: '/snippets/logos/microsoft.png',
     linkedin: '/snippets/logos/linkedin.png',
   };
@@ -27,6 +28,8 @@ export const InteractiveLayout = () => {
         { id: 'BNBChain', name: 'BNB Chain', icon: bnbIcon },
         { id: 'Polygon', name: 'Polygon', icon: polygonIcon },
         { id: 'Sei', name: 'Sei', icon: seiIcon },
+        { id: 'Base', name: 'Bese', icon: baseIcon },
+        { id: 'BerachainbArtio', name: 'BerachainbArtio', icon: BerachainbArtioIcon },
       ];
 
       let selectedChains = ['Ethereum'];
@@ -72,84 +75,110 @@ export const InteractiveLayout = () => {
           >
             <img src="${chain.icon}" alt="${chain.name}" class="icon"/>
           </button>
+        `).join('') +
+        `<button
+          class="toggle-button"
+          onclick="window.location.href='/resources/network-coverage';"
+          style="opacity: 0.5; color: white; background-color: rgba(255, 255, 255, 0.1);"
+        >
+          +61
+        </button>`;
+      };
+
+      const renderAuthToggles = () => {
+        const authToggleContainer = document.getElementById('auth-toggle-buttons');
+        authToggleContainer.innerHTML = `
+          <button
+            class="toggle-button ${allSocialLoginsSelected ? 'selected' : ''}"
+            onclick="handleToggleAuthType('allSocialLogins')"
+          >
+            All
+          </button>
+        ` + authTypes.map(authType => `
+          <button
+            class="toggle-button ${selectedAuthTypes.includes(authType) ? 'selected' : ''}"
+            onclick="handleToggleAuthType('${authType}')"
+          >
+            <img src="${authIcons[authType]}" alt="${authType}" class="icon"/>
+          </button>
         `).join('');
       };
 
-const renderAuthToggles = () => {
-  const authToggleContainer = document.getElementById('auth-toggle-buttons');
-  authToggleContainer.innerHTML = `
-    <button
-      class="toggle-button ${allSocialLoginsSelected ? 'selected' : ''}"
-      onclick="handleToggleAuthType('allSocialLogins')"
-    >
-      All
+const renderCodeSnippet = () => {
+  const importStatements = `import { ${selectedChains.join(", ")} } from "@particle-network/chains";`;
+  const supportChainsArray = `supportChains: [${selectedChains.join(", ")}],`;
+  const authTypesArray = !allSocialLoginsSelected
+    ? `authTypes: [${selectedAuthTypes.map((type) => `AuthType.${type}`).join(", ")}],`
+    : "// No need for the authTypes array if you want to include all of the available social login options";
+
+  const codeSnippet = `
+    "use client";
+    import { Inter } from "next/font/google";
+    import "./globals.css";
+
+    // Particle imports
+    ${importStatements} // Chains are imported here
+    import { AuthType } from "@particle-network/auth-core";
+    import { AuthCoreContextProvider } from "@particle-network/auth-core-modal";
+
+    const inter = Inter({ subsets: ["latin"] });
+
+    export default function RootLayout({
+      children,
+    }: Readonly<{
+      children: React.ReactNode;
+    }>) {
+      return (
+        <html lang="en">
+          <body className={inter.className}>
+            <AuthCoreContextProvider
+              options={{
+                projectId: process.env.NEXT_PUBLIC_PROJECT_ID!,
+                clientKey: process.env.NEXT_PUBLIC_CLIENT_KEY!,
+                appId: process.env.NEXT_PUBLIC_APP_ID!,
+                ${authTypesArray}
+                themeType: "dark",
+                wallet: {
+                  visible: true,
+                  customStyle: {
+                  // List the chains you want to include
+                    ${supportChainsArray} 
+                  },
+                },
+              }}
+            >
+              {children}
+            </AuthCoreContextProvider>
+          </body>
+        </html>
+      );
+    }
+  `;
+
+  const codeSnippetContainer = document.getElementById('code-snippets');
+codeSnippetContainer.innerHTML = `
+  <div class="snippet-header">
+    <span class="language-label">layout.tsx</span>
+    <button id="copy-button" class="copy-button">
+      <img src="/snippets/logos/copy.png" alt="Copy icon" class="copy-icon"/>
     </button>
-  ` + authTypes.map(authType => `
-    <button
-      class="toggle-button ${selectedAuthTypes.includes(authType) ? 'selected' : ''}"
-      onclick="handleToggleAuthType('${authType}')"
-    >
-      <img src="${authIcons[authType]}" alt="${authType}" class="icon"/>
-    </button>
-  `).join('');
+  </div>
+  <pre><code>${escapeHtml(codeSnippet)}</code></pre>
+`;
+
+
+  const copyButton = document.getElementById('copy-button');
+  copyButton.addEventListener('click', () => {
+    navigator.clipboard.writeText(codeSnippet)
+      .then(() => {
+        copyButton.innerHTML = '<span class="copied-text">Copied!</span>';
+      })
+      .catch(err => {
+        console.error('Failed to copy: ', err);
+      });
+  });
 };
 
-
-      const renderCodeSnippet = () => {
-        const importStatements = `import { ${selectedChains.join(', ')} } from "@particle-network/chains";`;
-        const supportChainsArray = `supportChains: [${selectedChains.join(', ')}],`;
-        const authTypesArray = allSocialLoginsSelected ? '' : `// This is how you limit the options available.
-            // Remove the authTypes array to display all options available
-            authTypes: [${selectedAuthTypes.map(type => `AuthType.${type}`).join(', ')}],`;
-
-        const codeSnippet = `
-// layout.tsx
-"use client";
-import { Inter } from "next/font/google";
-import "./globals.css";
-
-// Particle imports
-${importStatements} // Chains are imported here
-import { AuthType } from "@particle-network/auth-core";
-import { AuthCoreContextProvider } from "@particle-network/auth-core-modal";
-
-const inter = Inter({ subsets: ["latin"] });
-
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
-  return (
-    <html lang="en">
-      <body className={inter.className}>
-        <AuthCoreContextProvider
-          options={{
-            projectId: process.env.NEXT_PUBLIC_PROJECT_ID!,
-            clientKey: process.env.NEXT_PUBLIC_CLIENT_KEY!,
-            appId: process.env.NEXT_PUBLIC_APP_ID!,
-            ${authTypesArray}
-            themeType: "dark",
-            wallet: {
-              visible: true,
-              customStyle: {
-              // List the chains you want to include
-                ${supportChainsArray} 
-              },
-            },
-          }}
-        >
-          {children}
-        </AuthCoreContextProvider>
-      </body>
-    </html>
-  );
-}
-        `;
-
-        const codeSnippetContainer = document.getElementById('code-snippets');
-        codeSnippetContainer.innerHTML = `<pre><code>${escapeHtml(codeSnippet)}</code></pre>`;
-      };
 
       const escapeHtml = (unsafe) => {
         return unsafe
@@ -169,12 +198,14 @@ export default function RootLayout({
 
     return (
       <div>
-        <p>Chain selection</p>
+        <p class="section-header chain-selection">Chain selection</p>
+
         <div id="toggle-buttons" className="toggles"></div>
-        <p>AuthType selection</p>
+        <p class="section-header auth-selection">AuthType selection</p>
         <div id="auth-toggle-buttons" className="toggles"></div>
         <div id="code-snippets" className="code-snippet"></div>
       </div>
     );
   }
 };
+

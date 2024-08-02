@@ -60,16 +60,27 @@ Now that you've installed `@particle-network/btc-connectkit`, you'll need to con
           - Merlin Testnet (`686868`), Merlin Mainnet (`4200`)
           - LumiBit Testnet (`28206`)
           - Polygon Mumbai (`80001`)
+          - Polygon Mainnet (`137`)
+          - BitLayer Testnet (`200810`)
+          - BitLayer Mainnet (`200901`)
           - BEVM Canary Testnet (`1502`), BEVM Canary Mainnet (`1501`), BEVM (not Canary) Testnet (`11503`)
           - MAP Mainnet (`22776`), MAP Testnet (`212`)
           - SatoshiVM Testnet (`3110`)
-        - The following chain IDs are only supported with version `2.0.0`:
+          - Ethereum Mainnet (`1`)
+          - Ethereum Sepolia (`11155111`)
+        - The following chain IDs are supported with version `2.0.0`:
           - BitLayer Testnet (`200810`)
+          - BitLayer Mainnet (`200901`)
+          - BOB Testnet (`111`)
+          - BOB Mainnet (`60808`)
           - Botanix Testnet (`3636`)
           - Polygon zkEVM Cardona Testnet (`2442`)
+          - B² Mainnet (`223`)
           - B² Testnet (`1123`)
           - Mantle Mainnet (`5000`)
+          - Mantle Sepolia (`5003)
           - AINN Layer2 Testnet (`2648`)
+          - Tuna Testnet (`89682`)
 - `walletOptions`, an optional object containing:
   - `visible`, a Boolean determining whether or not the Particle Wallet modal is shown after connection. In this case, the wallet modal can be used to control the smart account, although if you intend to implement equivalent functionality within your application, such as user-defined transactions, you may not need this.
 
@@ -80,6 +91,8 @@ Then, outside of the `options` parameter (which expects the above values), you'l
 - `BitgetConnector`
 - `TokenPocketConnector`
 - `BybitConnector`
+- `WizzConnector`
+- `XverseConnector`
 
 Below is a code snippet showcasing a complete configuration of `ConnectProvider` within a standard `index` file setup, following the structure covered above:
 
@@ -92,7 +105,9 @@ import {
   UnisatConnector,
   BitgetConnector,
   TokenPocketConnector,
-  BybitConnector
+  BybitConnector,
+  WizzConnector,
+  XverseConnector
 } from '@particle-network/btc-connectkit';
 import App from './App';
 
@@ -123,7 +138,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
           visible: true,
         }
       }}
-      connectors={[new UnisatConnector(), new OKXConnector(), new BitgetConnector(), new TokenPocketConnector(), new BybitConnector()]} // Currently, only these five are supported
+      connectors={[new UnisatConnector(), new OKXConnector(), new BitgetConnector(), new TokenPocketConnector(), new BybitConnector(), new WizzConnector(), new XverseConnector()]}
     >
     <App />
     </ConnectProvider>

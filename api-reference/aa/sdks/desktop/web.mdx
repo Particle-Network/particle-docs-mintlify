@@ -61,13 +61,19 @@ Specifically, `SmartAccount` takes the following parameters:
     - `accountContracts`, an object dictating the smart account implementation(s) to be used. It can be:
       - `BICONOMY`, a [Biconomy smart account](https://www.biconomy.io/smart-accounts).
         - `version`, either `1.0.0` or `2.0.0`; both versions of Biconomy's smart account implementation are supported.
-        - `chainIds`, an array of chain IDs in which the smart account is expected to be used.
+        - `chainIds`
       - `CYBERCONNECT`, a [CyberConnect smart account](https://wallet.cyber.co/).
-        - `version`, currently only `1.0.2` is supported for `CYBERCONNECT`.
-        - `chainIds`, an array of chain IDs in which the smart account is expected to be used.
+        - `version`, currently only `1.0.0` is supported for `CYBERCONNECT`.
+        - `chainIds`
       - `SIMPLE`, a [SimpleAccount implementation](https://github.com/eth-infinitism/account-abstraction/blob/develop/contracts/samples/SimpleAccount.sol).
         - `version`, either `1.0.0` or `2.0.0` is supported for `SIMPLE`.
-        - `chainIds`, an array of chain IDs in which the smart account is expected to be used.
+        - `chainIds`
+      - `LIGHT`, a [Light Account implementation by Alchemy](https://github.com/alchemyplatform/light-account).
+        - `version`, currently only `1.0.2` is supported for `LIGHT`.
+        - `chainIds`
+      - `XTERIO`, a [Xterio smart account](https://xter.io/build).
+        - `version`, currently only `1.0.0` is supported for `XTERIO`.
+        - `chainIds`
   - `paymasterApiKeys`, an optional array (of objects) to be used when leveraging Biconomy's Paymaster.
     - `chainId`, the chain ID being used by the Paymaster.
     - `apiKey`, the Biconomy Paymaster API key.
@@ -82,7 +88,7 @@ const smartAccount = new SmartAccount(provider, {
     clientKey: 'Particle Network client key',
     appId: 'Particle Network app ID',
     aaOptions: {
-        accountContracts: {  // 'BICONOMY', 'CYBERCONNECT', 'SIMPLE'
+        accountContracts: {  // 'BICONOMY', 'CYBERCONNECT', 'SIMPLE', 'LIGHT', 'XTERIO'
             BICONOMY: [
                 {
                     version: '1.0.0',  

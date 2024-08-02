@@ -11,21 +11,24 @@ Below is a quick rundown on installing, configuring, and facilitating social log
 
 ***
 
-### Installing Particle Auth
+<Steps>
+
+<Step title="Installing Particle Auth">
 
 Particle Auth is the primary mechanism of implementing Particle Network's Wallet-as-a-Service and associated social authentication flow.
 
-To install Particle Auth within your project, copy one of the two following commands.
+To install Particle Auth within your project, copy and execute the following command.
 
 ```sh Terminal
 npm install @particle-network/auth-core-modal @particle-network/auth-core @particle-network/chains ethers
 ```
+</Step>
 
-***
+<Step title="Configuring Particle Auth">
 
-## Configuring Particle Auth
+Once installed, you're ready to configure the SDK.
 
-To begin configuring the SDK, Particle Auth requires three key values to be initiated: `projectId`, `clientKey`, and `appId`. These values fundamentally link your application with the [Particle dashboard](https://dashboard.particle.network/).
+Particle Auth requires three key values to be initiated: `projectId`, `clientKey`, and `appId`. These values fundamentally link your application with the [Particle dashboard](https://dashboard.particle.network/).
 
 To retrieve these values for configuration within your application, follow these steps:
 
@@ -91,19 +94,25 @@ To retrieve these values for configuration within your application, follow these
 
 For more information on the Particle dashboard, take a look at [this video](https://www.youtube.com/watch?v=d7DYCMNDmjo&ab_channel=ParticleNetwork) or visit the [dashboard quickstart](/resources/quickstart/dashboard).
 
-With your `projectId`, `clientKey`, and `appId` retrieved, you'll need to configure Particle Auth within your application through `AuthCoreContextProvider`, the primary React component responsible for initializing Particle Auth.
+With your `projectId`, `clientKey`, and `appId` retrieved, you'll need to configure Particle Auth within your application through `AuthCoreContextProvider` from `@particle-network/auth-core-modal`, the primary React component responsible for initializing Particle Auth.
 
+</Step>
+<Step title="Configuring `AuthCoreContextProvider`">
 Within your `src/app/layout.tsx` file, or in an equivalent location, wrap `{children}` (your application component) with `AuthCoreContextProvider`.
 
-Below is an example of how `AuthCoreContextProvider` can be configured.
+Below is an interactive example of how `AuthCoreContextProvider` can be configured.
+
+---
 
 import { InteractiveLayout } from '/snippets/InteractiveLayout.mdx';
 
 <InteractiveLayout />
 
-***
+---
 
-## Facilitating logins
+</Step>
+
+<Step title="Facilitating logins">
 
 With the SDK configured, you can move on to initiating social logins within your application. Particle Auth contains [numerous relevant hooks](https://github.com/Particle-Network/particle-auth-ethers-demo/blob/7cf947b6c8a05731f285821b03134a6317e0e53f/particle-next-starter/src/app/page.tsx#L23), although we'll specifically be focusing on `useConnect`, which contains a function, `connect`, that directly facilitates [wallet creation]() through social login.
 
@@ -122,7 +131,8 @@ await connect({
 
 <Tip>The complete Web SDK reference is available at [Web (JavaScript/TypeScript)](/api-reference/auth/desktop-sdks/web). Additionally, a demo repository for Next.js can be found [here](https://github.com/Particle-Network/particle-auth-ethers-demo/tree/main/particle-next-starter), alongside a demo for create-react-app [here](https://github.com/Particle-Network/particle-auth-ethers-demo/tree/main/particle-auth-cra).</Tip>
 
-***
+</Step>
+</Steps>
 
 ### Related Resources
 
