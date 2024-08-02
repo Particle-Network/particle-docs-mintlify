@@ -16,88 +16,91 @@ Particle's Wallet Abstraction solutions support a significant amount of EVM netw
 
 ## Wallet-as-a-Service
 
-| Chains/Products                                                         | Connect Service | Auth Service | Wallet Service | Node Service | ERC-4337 Account Abstraction |
-| ----------------------------------------------------------------------- | --------------- | ------------ | -------------- | ------------ | :--------------------------- |
-| Solana                                                                  | ✅               | ✅            | ✅              | ✅            | ➖        |
-| Ethereum                                                                | ✅               | ✅            | ✅              | ✅            | ✅                            |
-| BSC (BNB Chain)                                                         | ✅               | ✅            | ✅              | ✅            | ✅                            |
-| opBNB                                                                   | ✅               | ✅            | ✅              | ✅            | ✅                            |
-| Polygon (Matic)                                                         | ✅               | ✅            | ✅              | ✅            | ✅                            |
-| [Avalanche (C-Chain)](https://www.youtube.com/watch?v=Ys1Qntk3Lkk&t=1s) | ✅               | ✅            | ✅              | ✅            | ✅                            |
-| [Fantom](https://www.youtube.com/watch?v=S-Dv4leVxTA)                   | ✅               | ✅            | ✅              | ✅            | ✅                            |
-| Arbitrum                                                                | ✅               | ✅            | ✅              | ✅            | ✅                            |
-| Harmony                                                                 | ✅               | ✅            | ✅              | ✅            | ❌                          |
-| Moonbeam/Moonriver                                                      | ✅               | ✅            | ✅              | ✅            | ✅                            |
-| Heco                                                                    | ✅               | ✅            | ✅              | ✅            | ❌                          |
-| Aurora                                                                  | ✅               | ✅            | ✅              | ✅            | ❌                          |
-| Optimism                                                                | ✅               | ✅            | ✅              | ✅            | ✅                            |
-| KCC                                                                     | ✅               | ✅            | ✅              | ✅            | ❌                          |
-| PlatON                                                                  | ✅               | ✅            | ✅              | ✅            | ❌                          |
-| Tron                                                                    | ✅               | ✅            | ✅              | ❌          | ❌                          |
-| OKTC                                                                    | ✅               | ✅            | ✅              | ✅            | ❌                          |
-| X1                                                                      | ✅               | ✅            | ✅              | ✅            | ✅                            |
-| ThunderCore                                                             | ✅               | ✅            | ✅              | ✅            | ❌                          |
-| Cronos                                                                  | ✅               | ✅            | ✅              | ✅            | ❌                          |
-| Oasis Emerald                                                           | ✅               | ✅            | ✅              | ✅            | ❌                          |
-| Gnosis (xDAI)                                                           | ✅               | ✅            | ✅              | ✅            | ✅                            |
-| Celo                                                                    | ✅               | ✅            | ✅              | ✅            | ❌                          |
-| Klaytn                                                                  | ✅               | ✅            | ✅              | ✅            | ❌                          |
-| Scroll                                                                  | ✅               | ✅            | ✅              | ✅            | ✅                            |
-| zkSync Era                                                              | ✅               | ✅            | ✅              | ✅            | ➖       |
-| Metis                                                                   | ✅               | ✅            | ✅              | ✅            | ❌                          |
-| Conflux eSpace                                                          | ✅               | ✅            | ✅              | ✅            | ❌                          |
-| MAP Protocol                                                            | ✅               | ✅            | ✅              | ✅            | ❌                          |
-| Polygon zkEVM                                                           | ✅               | ✅            | ✅              | ✅            | ✅                            |
-| [Base](https://www.youtube.com/watch?v=7tOZrUcbu3c&t=3s)                | ✅               | ✅            | ✅              | ✅            | ✅                            |
-| Linea                                                                   | ✅               | ✅            | ✅              | ✅            | ✅                            |
-| Mantle                                                                  | ✅               | ✅            | ✅              | ✅            | ✅                            |
-| Combo                                                                   | ✅               | ✅            | ✅              | ✅            | ✅                            |
-| Viction (TomoChain)                                                     | ✅               | ✅            | ✅              | ✅            | ✅                            |
-| Taiko                                                                   | ✅               | ✅            | ✅              | ✅            | ✅                            |
-| Zora                                                                    | ✅               | ✅            | ✅              | ✅            | ❌                          |
-| PGN                                                                     | ✅               | ✅            | ✅              | ✅            | ✅                            |
-| Manta                                                                   | ✅               | ✅            | ✅              | ✅            | ✅                            |
-| Kava                                                                    | ✅               | ✅            | ✅              | ✅            | ❌                          |
-| SKALE Nebula                                                            | ✅               | ✅            | ✅              | ✅            | ❌                          |
-| [ZetaChain](https://www.youtube.com/watch?v=DQhr9ltzbZY)                | ✅               | ✅            | ✅              | ✅            | ✅                            |
-| Lumoz zkEVM                                                             | ✅               | ✅            | ✅              | ✅            | ✅                            |
-| EOS EVM                                                                 | ✅               | ✅            | ✅              | ✅            | ❌                          |
-| Astar zkEVM                                                             | ✅               | ✅            | ✅              | ✅            | ✅                            |
-| Ancient8 (Testnet)                                                      | ✅               | ✅            | ✅              | ✅            | ✅                            |
-| ZKFair                                                                  | ✅               | ✅            | ✅              | ✅            | ✅                            |
-| Berachain                                                               | ✅               | ✅            | ✅              | ✅            | ✅                            |
-| Blast                                                                   | ✅               | ✅            | ✅              | ✅            | ✅                            |
-| Core                                                                    | ✅               | ✅            | ✅              | ✅            | ✅                            |
-| Mode Network                                                            | ✅               | ✅            | ✅              | ✅            | ✅                            |
-| Merlin                                                                  | ✅               | ✅            | ✅              | ✅            | ❌                          |
-| LumiBit                                                                 | ✅               | ✅            | ✅              | ✅            | ❌                          |
-| BEVM                                                                    | ✅               | ✅            | ✅              | ✅            | ❌                          |
-| B² Network                                                              | ✅               | ✅            | ✅              | ✅            | ❌                          |
-| SatoshiVM                                                               | ✅               | ✅            | ✅              | ✅            | ❌                          |
-| Botanix                                                                 | ✅               | ✅            | ✅              | ❌          | ❌                          |
-| AINN Layer2                                                             | ✅               | ✅            | ✅              | ❌          | ❌                          |
-| BitLayer                                                                | ✅               | ✅            | ✅              | ❌          | ❌                          |
-| BOB                                                                     | ✅               | ✅            | ✅              | ❌          | ❌                          |
-| zkLink Nova                                                             | ✅               | ✅            | ✅              | ❌          | ❌                          |
-| Xterio                                                                  | ✅               | ✅            | ✅              | ❌          | ✅                            |
-| GMNetwork                                                               | ✅               | ✅            | ✅              | ❌          | ✅                            |
-| Peaq                                                                    | ✅               | ✅            | ✅              | ❌          | ✅                            |
-| Immutable                                                               | ✅               | ✅            | ✅              | ❌          | ✅                            |
+| Chains          | Account Abstraction | Variables (`ChainInfo`)                                                                                         |
+|:----------------|:--------------------|:--------------------------------------------------------------------------------------------------|
+| Ethereum        | ✓                   | `Ethereum`, `EthereumSepolia`, `EthereumHolesky`                                                  |
+| Optimism        | ✓                   | `Optimism`, `OptimismSepolia`                                                                     |
+| ThunderCore     | x                   | `ThunderCore`, `ThunderCoreTestnet`                                                               |
+| Cronos          | x                   | `Cronos`, `CronosTestnet`                                                                         |
+| BNBChain        | ✓                   | `BNBChain`, `BNBChainTestnet`                                                                     |
+| OKTC            | x                   | `OKTC`, `OKTCTestnet`                                                                             |
+| Conflux eSpace  | x                   | `ConfluxeSpace`, `ConfluxeSpaceTestnet`                                                           |
+| Viction         | ✓                   | `Viction`, `VictionTestnet`                                                                       |
+| Solana          | x                   | `Solana`, `SolanaTestnet`, `SolanaDevnet`                                                         |
+| Fuse            | ✓                   | `Fuse`, `FuseTestnet`                                                                             |
+| Heco            | x                   | `Heco`                                                                                            |
+| Polygon         | ✓                   | `Polygon`, `PolygonAmoy`                                                                          |
+| Polygon zkEVM   | ✓                   | `PolygonzkEVM`, `PolygonzkEVMCardona`                                                             |
+| XLayer          | ✓                   | `XLayer`, `XLayerTestnet`                                                                         |
+| opBNB           | ✓                   | `opBNB`, `opBNBTestnet`                                                                           |
+| Fantom          | ✓                   | `Fantom`, `FantomTestnet`                                                                         |
+| zkSync Era      | x                   | `zkSyncEra`, `zkSyncEraSepolia`                                                                    |
+| KCC             | x                   | `KCC`, `KCCTestnet`                                                                               |
+| Gnosis          | ✓                   | `Gnosis`, `GnosisTestnet`                                                                         |
+| BOB             | x                   | `BOB`, `BOBTestnet`                                                                               |
+| Manta           | ✓                   | `Manta`, `MantaSepolia`                                                                           |
+| B² Network       | x                   | `BSquared`, `BSquaredTestnet`                                                                     |
+| Metis           | x                   | `Metis`                                                                                           |
+| Core            | ✓                   | `Core`, `CoreTestnet`                                                                             |
+| Moonbeam        | ✓                   | `Moonbeam`, `MoonbeamTestnet`                                                                     |
+| Moonriver       | ✓                   | `Moonriver`                                                                                       |
+| Sei             | ✓                   | `Sei`, `SeiTestnet`, `SeiDevnet`                                                                  |
+| BEVM            | x                   | `BEVM`, `BEVMTestnet`, `BEVMCanary`, `BEVMCanaryTestnet`                                          |
+| Kava            | x                   | `Kava`, `KavaTestnet`                                                                             |
+| Peaq            | ✓                   | `Peaq`, `PeaqKrest`, `PeaqAgungTestnet`                                                           |
+| AILayer         | x                   | `AILayer`, `AILayerTestnet`                                                                       |
+| GM Network       | ✓                   | `GMNetwork`, `GMNetworkTestnet`                                                                   |
+| ZetaChain       | ✓                   | `ZetaChain`, `ZetaChainTestnet`                                                                   |
+| Cyber           | ✓                   | `Cyber`, `CyberTestnet`                                                                           |
+| Klaytn          | x                   | `Klaytn`, `KlaytnTestnet`                                                                         |
+| Base            | ✓                   | `Base`, `BaseSepolia`                                                                             |
+| Combo           | ✓                   | `Combo`, `ComboTestnet`                                                                           |
+| ZKFair          | ✓                   | `ZKFair`, `ZKFairTestnet`                                                                         |
+| Avalanche       | ✓                   | `Avalanche`, `AvalancheTestnet`                                                                   |
+| Celo            | x                   | `Celo`, `CeloTestnet`                                                                             |
+| MAP Protocol     | x                   | `MAPProtocol`, `MAPProtocolTestnet`                                                               |
+| Zeroone         | x                   | `Zeroone`, `ZerooneTestnet`                                                                       |
+| Mode            | ✓                   | `Mode`, `ModeTestnet`                                                                             |
+| Arbitrum        | ✓                   | `ArbitrumOne`, `ArbitrumNova`, `ArbitrumSepolia`                                                  |
+| Oasis Emerald    | x                   | `OasisEmerald`, `OasisEmeraldTestnet`                                                             |
+| Blast           | ✓                   | `Blast`, `BlastSepolia`                                                                           |
+| Tron            | x                   | `Tron`, `TronShasta`, `TronNile`                                                                  |
+| Ancient8        | ✓                   | `Ancient8`, `Ancient8Testnet`                                                                     |
+| Aurora          | x                   | `Aurora`, `AuroraTestnet`                                                                         |
+| Harmony         | x                   | `Harmony`, `HarmonyTestnet`                                                                       |
+| Taiko           | ✓                   | `Taiko`, `TaikoKatla`, `TaikoHekla`                                                               |
+| Bitlayer        | ✓                   | `Bitlayer`, `BitlayerTestnet`                                                                     |
+| PlatON          | x                   | `PlatON`, `PlatONTestnet`                                                                         |
+| Scroll          | ✓                   | `Scroll`, `ScrollSepolia`                                                                         |
+| Merlin          | x                   | `Merlin`, `MerlinTestnet`                                                                         |
+| Mantle          | ✓                   | `Mantle`, `MantleSepoliaTestnet`                                                                  |
+| Linea           | ✓                   | `Linea`, `LineaSepolia`                                                                           |
+| Xterio          | ✓                   | `XterioBNB`, `XterioETH`, `XterioBNBTestnet`                                                      |
+| Astar zkEVM      | ✓                   | `AstarzkEVMMainet`, `AstarzkEVMTestnet`                                                           |
+| IoTeX           | ✓                   | `IoTeX`, `IoTeXTestnet`                                                                           |
+| Immutable       | ✓                   | `ImmutablezkEVMTestnet`                                                                           |
+| EOSEVM          | x                   | `EOSEVM`, `EOSEVMTestnet`                                                                         |
+| Lorenzo         | x                   | `Lorenzo`, `LorenzoTestnet`                                                                       |
+| SKALE     | x                   | `SKALENebula`                                                                                     |
+| zkLink      | x                   | `zkLinkNova`                                                                                      |
+
+
 
 ## BTC Connect
 
-| Chain                   | BTC Smart Account Version (V1 or V2) |
-| :---------------------- | :----------------------------------- |
-| Merlin                  | 1.0.0                                |
-| LumiBit                 | 1.0.0                                |
-| BEVM                    | 1.0.0                                |
-| B² Network              | 2.0.0                                |
-| SatoshiVM               | 1.0.0                                |
-| Polygon zkEVM (Testnet) | 2.0.0                                |
-| Polygon (Testnet)       | 1.0.0                                |
-| Mantle                  | 2.0.0                                |
-| BitLayer                | 2.0.0                                |
-| MAP Protocol            | 1.0.0                                |
-| Botanix                 | 2.0.0                                |
-| AINN Layer2             | 2.0.0                                |
-| BOB                     | 2.0.0                                |
+| Chain                   | BTC Smart Account Version | Variables                                                                        |
+| :---------------------- | :----------------------------------- | :------------------------------------------------------------------------------- |
+| Merlin                  | 1.0.0                                | `Merlin`, `MerlinTestnet`                                                        |
+| BEVM                    | 1.0.0                                | `BEVM`, `BEVMTestnet`, `BEVMCanary`, `BEVMCanaryTestnet`                          |
+| B² Network              | 2.0.0                                | `BSquared`, `BSquaredTestnet`                                         |
+| SatoshiVM               | 1.0.0                                | `SatoshiVMAlpha`, `SatoshiVMTestnet`                                         |
+| Polygon zkEVM (Testnet) | 2.0.0                                | `PolygonzkEVM`, `PolygonzkEVMCardona`                                            |
+| Polygon (Testnet)       | 1.0.0, 2.0.0                         | `Polygon`, `PolygonAmoy`                                                         |
+| Mantle                  | 2.0.0                                | `Mantle`, `MantleSepoliaTestnet`                                                 |
+| BitLayer                | 1.0.0, 2.0.0                         | `Bitlayer`, `BitlayerTestnet`                                                    |
+| MAP Protocol            | 1.0.0                                | `MAPProtocol`, `MAPProtocolTestnet`                                              |
+| Botanix                 | 2.0.0                                | `BotanixTestnet`                                         |
+| AINN Layer2             | 2.0.0                                | `AILayer`, `AILayerTestnet`                                         |
+| BOB                     | 2.0.0                                | `BOB`, `BOBTestnet`                                                              |
+| Ethereum                | 2.0.0                                | `Ethereum`, `EthereumSepolia`                                |
+| Tuna                | 2.0.0                                | `TUNATestnet`                                |

@@ -5,7 +5,6 @@ export const InteractiveLayout = () => {
   const seiIcon = '/snippets/logos/sei.png';
   const baseIcon = '/snippets/logos/base.png';
   const BerachainbArtioIcon = '/snippets/logos/bera.png';
-  const IoTeXIcon = '/snippets/logos/iotex.png';
 
   const authIcons = {
     email: '/snippets/logos/email.png',
@@ -31,7 +30,6 @@ export const InteractiveLayout = () => {
         { id: 'Sei', name: 'Sei', icon: seiIcon },
         { id: 'Base', name: 'Bese', icon: baseIcon },
         { id: 'BerachainbArtio', name: 'BerachainbArtio', icon: BerachainbArtioIcon },
-        { id: 'IoTeX', name: 'IoTeX', icon: IoTeXIcon },
       ];
 
       let selectedChains = ['Ethereum'];
@@ -77,7 +75,14 @@ export const InteractiveLayout = () => {
           >
             <img src="${chain.icon}" alt="${chain.name}" class="icon"/>
           </button>
-        `).join('');
+        `).join('') +
+        `<button
+          class="toggle-button"
+          onclick="window.location.href='/resources/network-coverage';"
+          style="opacity: 0.5; color: white; background-color: rgba(255, 255, 255, 0.1);"
+        >
+          +61
+        </button>`;
       };
 
       const renderAuthToggles = () => {

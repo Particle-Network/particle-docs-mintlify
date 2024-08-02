@@ -543,7 +543,7 @@
     },
     {
       "source": "/docs/rpc-nodes",
-      "destination": "/resources/integrations/nodes/nodes"
+      "destination": "/resources/integrations/nodes/s"
     },
     {
       "source": "/docs/data-apis",
