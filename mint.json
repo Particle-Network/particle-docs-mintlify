@@ -315,6 +315,20 @@
       "pages": [
         "api-reference/aa/introduction",
         {
+          "group": "SDKs (Desktop)",
+          "pages": ["api-reference/aa/sdks/desktop/web"]
+        },
+        {
+          "group": "SDKs (Mobile)",
+          "pages": [
+            "api-reference/aa/sdks/mobile/android",
+            "api-reference/aa/sdks/mobile/ios",
+            "api-reference/aa/sdks/mobile/flutter",
+            "api-reference/aa/sdks/mobile/unity",
+            "api-reference/aa/sdks/mobile/react"
+          ]
+        },
+        {
           "group": "Account Abstraction RPC",
           "pages": [
             "api-reference/aa/rpc/getsmartaccount",
@@ -340,20 +354,6 @@
           "pages": [
             "api-reference/aa/paymaster/paymasterbalance",
             "api-reference/aa/paymaster/sponsoruseroperation"
-          ]
-        },
-        {
-          "group": "SDKs (Desktop)",
-          "pages": ["api-reference/aa/sdks/desktop/web"]
-        },
-        {
-          "group": "SDKs (Mobile)",
-          "pages": [
-            "api-reference/aa/sdks/mobile/android",
-            "api-reference/aa/sdks/mobile/ios",
-            "api-reference/aa/sdks/mobile/flutter",
-            "api-reference/aa/sdks/mobile/unity",
-            "api-reference/aa/sdks/mobile/react"
           ]
         }
       ]
