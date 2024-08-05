@@ -42,7 +42,7 @@ Every Particle Network SDK requires the retrieval of three key values, your `pro
 
 These are used primarily to authenticate API requests and tie your project to the [Particle dashboard](https://dashboard.particle.network), allowing you to track users, spin up RPC endpoints, fund your Paymaster for gasless transactions, and so on. 
 
-<Note>Follow the quickstart tutorial to set up a project and find the required keys: [Create a new project](/resources/quickstart/waas/web-quickstart#configuring-particle-auth).</Note>
+<Note>Follow the quickstart tutorial to set up a project and find the required keys: [Create a new project](/guides/quickstart/waas/web-quickstart#configuring-particle-auth).</Note>
 
 ## Initialization
 
@@ -58,7 +58,7 @@ Now that you've installed `@particle-network/btc-connectkit`, you'll need to con
       - `version`, which dictates the smart account version you'd like to use. Currently, both `1.0.0` and `2.0.0` are supported, depending on the chain (`chainIds`) you define. `2.0.0` is a newer implementation with better gas optimizations.
 
 
-<Tip>Check the [Network Coverage](/resources/network-coverage#btc-connect) page to see which version of smart accounts is supported by each chain.</Tip>
+<Tip>Check the [Network Coverage](/guides/network-coverage#btc-connect) page to see which version of smart accounts is supported by each chain.</Tip>
 
 - `walletOptions`, an optional object containing:
   - `visible`, a Boolean determining whether or not the Particle Wallet modal is shown after connection. In this case, the wallet modal can be used to control the smart account, although if you intend to implement equivalent functionality within your application, such as user-defined transactions, you may not need this.
@@ -268,7 +268,7 @@ Most importantly, `useETHProvider` acts as the single mechanism for driving inte
 Below is the full list of functions derived from `useETHProvider`:
 
 - `chainId`, the ID for the currently connected chain.
-  - For a complete list of networks supported within BTC Connect, see [Network Coverage](/resources/network-coverage).
+  - For a complete list of networks supported within BTC Connect, see [Network Coverage](/guides/network-coverage).
 - `account`, the smart account address (automatically populated upon login).
 - `getSmartAccountInfo`, get smart account info(version, isDeployed, etc.).
 - `switchChain`, for forcibly changing the EVM chain used through the smart account. This takes a specific `chainId` (should be one of the aforementioned supported chains).

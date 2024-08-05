@@ -47,7 +47,7 @@
   "tabs": [
     {
       "name": "Guides",
-      "url": "resources"
+      "url": "guides"
     },
     {
       "name": "APIs & SDKs",
@@ -141,47 +141,47 @@
     },
     {
       "group": "GETTING STARTED",
-      "pages": ["resources/overview", "resources/network-coverage"]
+      "pages": ["guides/overview", "guides/network-coverage"]
     },
     {
       "group": "QUICKSTART: WALLET ABSTRACTION",
       "pages": [
-        "resources/quickstart/intro",
-        "resources/quickstart/dashboard",
+        "guides/quickstart/intro",
+        "guides/quickstart/dashboard",
         {
           "group": "Wallet-as-a-Service",
           "pages": [
-            "resources/quickstart/waas/understanding-waas",
-          
-            "resources/quickstart/waas/web-quickstart",
-            "resources/quickstart/waas/mobile-quickstart"
+            "guides/quickstart/waas/understanding-waas",
+
+            "guides/quickstart/waas/web-quickstart",
+            "guides/quickstart/waas/mobile-quickstart"
           ]
         },
         {
           "group": "Account Abstraction",
           "pages": [
-            "resources/quickstart/aa/web-aa",
-            "resources/quickstart/aa/mobile-aa",
-            "resources/quickstart/aa/bundler",
-            "resources/quickstart/aa/paymaster"
+            "guides/quickstart/aa/web-aa",
+            "guides/quickstart/aa/mobile-aa",
+            "guides/quickstart/aa/bundler",
+            "guides/quickstart/aa/paymaster"
           ]
         },
         {
           "group": "Connection Kits",
           "pages": [
-            "resources/quickstart/connection-kits/solana",
-            "resources/quickstart/connection-kits/rainbow",
-            "resources/quickstart/connection-kits/particle-connect",
-            "resources/quickstart/connection-kits/web3modal",
-            "resources/quickstart/connection-kits/web3-onboard"
+            "guides/quickstart/connection-kits/solana",
+            "guides/quickstart/connection-kits/rainbow",
+            "guides/quickstart/connection-kits/particle-connect",
+            "guides/quickstart/connection-kits/web3modal",
+            "guides/quickstart/connection-kits/web3-onboard"
           ]
         },
         {
           "group": "Customization",
           "pages": [
-            "resources/quickstart/customization/auth",
-            "resources/quickstart/customization/wallet",
-            "resources/quickstart/customization/jwt"
+            "guides/quickstart/customization/auth",
+            "guides/quickstart/customization/wallet",
+            "guides/quickstart/customization/jwt"
           ]
         }
       ]
@@ -192,40 +192,40 @@
         {
           "group": "Wallet-as-a-Service",
           "pages": [
-            "resources/integrations/waas/auth",
-            "resources/integrations/waas/wallet",
-            "resources/integrations/waas/connect"
+            "guides/integrations/waas/auth",
+            "guides/integrations/waas/wallet",
+            "guides/integrations/waas/connect"
           ]
         },
         {
           "group": "Account Abstraction",
           "pages": [
-            "resources/integrations/aa/bundler",
-            "resources/integrations/aa/paymaster",
-            "resources/integrations/aa/keys"
+            "guides/integrations/aa/bundler",
+            "guides/integrations/aa/paymaster",
+            "guides/integrations/aa/keys"
           ]
         },
         {
           "group": "Platform Coverage",
           "pages": [
-            "resources/integrations/platform/web",
-            "resources/integrations/platform/android",
-            "resources/integrations/platform/ios",
-            "resources/integrations/platform/unity",
-            "resources/integrations/platform/unreal",
-            "resources/integrations/platform/cocos",
-            "resources/integrations/platform/flutter",
-            "resources/integrations/platform/react"
+            "guides/integrations/platform/web",
+            "guides/integrations/platform/android",
+            "guides/integrations/platform/ios",
+            "guides/integrations/platform/unity",
+            "guides/integrations/platform/unreal",
+            "guides/integrations/platform/cocos",
+            "guides/integrations/platform/flutter",
+            "guides/integrations/platform/react"
           ]
         },
         {
           "group": "Building with Particle's Partners",
           "pages": [
-            "resources/integrations/partners/zetachain",
-            "resources/integrations/partners/alchemy",
-            "resources/integrations/partners/openfort",
-            "resources/integrations/partners/biconomy",
-            "resources/integrations/partners/bob"
+            "guides/integrations/partners/zetachain",
+            "guides/integrations/partners/alchemy",
+            "guides/integrations/partners/openfort",
+            "guides/integrations/partners/biconomy",
+            "guides/integrations/partners/bob"
           ]
         }
       ]
@@ -448,107 +448,107 @@
     },
     {
       "source": "/docs/network-coverage",
-      "destination": "/resources/network-coverage"
+      "destination": "/guides/network-coverage"
     },
     {
       "source": "/docs/introduction-to-quickstart-guides",
-      "destination": "/resources/quickstart/intro"
+      "destination": "/guides/quickstart/intro"
     },
     {
       "source": "/docs/dashboard",
-      "destination": "/resources/quickstart/dashboard"
+      "destination": "/guides/quickstart/dashboard"
     },
     {
       "source": "/docs/solana-wallet-adapter",
-      "destination": "/resources/quickstart/connection-kits/solana"
+      "destination": "/guides/quickstart/connection-kits/solana"
     },
     {
       "source": "/docs/rainbowkit",
-      "destination": "/resources/quickstart/connection-kits/rainbow"
+      "destination": "/guides/quickstart/connection-kits/rainbow"
     },
     {
       "source": "/docs/particle-connect",
-      "destination": "/resources/quickstart/connection-kits/particle-connect"
+      "destination": "/guides/quickstart/connection-kits/particle-connect"
     },
     {
       "source": "/docs/web3modal",
-      "destination": "/resources/quickstart/connection-kits/web3modal"
+      "destination": "/guides/quickstart/connection-kits/web3modal"
     },
     {
       "source": "/docs/web3-onboard",
-      "destination": "/resources/quickstart/connection-kits/web3-onboard"
+      "destination": "/guides/quickstart/connection-kits/web3-onboard"
     },
     {
       "source": "/docs/understanding-wallet-as-a-service",
-      "destination": "/resources/quickstart/waas/understanding-waas"
+      "destination": "/guides/quickstart/waas/understanding-waas"
     },
     {
       "source": "/docs/components-of-particle-wallet-as-a-service",
-      "destination": "/resources/quickstart/waas/components"
+      "destination": "/guides/quickstart/waas/components"
     },
     {
       "source": "/docs/web-desktop-quickstart",
-      "destination": "/resources/quickstart/waas/web-quickstart"
+      "destination": "/guides/quickstart/waas/web-quickstart"
     },
     {
       "source": "/docs/mobile-androidios-quickstart",
-      "destination": "/resources/quickstart/waas/mobile-quickstart"
+      "destination": "/guides/quickstart/waas/mobile-quickstart"
     },
     {
       "source": "/docs/particle-auth-customization",
-      "destination": "/resources/quickstart/customization/auth"
+      "destination": "/guides/quickstart/customization/auth"
     },
     {
       "source": "/docs/particle-wallet-customization",
-      "destination": "/resources/quickstart/customization/wallet"
+      "destination": "/guides/quickstart/customization/wallet"
     },
     {
       "source": "/docs/aa-web-quickstart",
-      "destination": "/resources/quickstart/aa/web-aa"
+      "destination": "/guides/quickstart/aa/web-aa"
     },
     {
       "source": "/docs/aa-mobile-quickstart",
-      "destination": "/resources/quickstart/aa/mobile-aa"
+      "destination": "/guides/quickstart/aa/mobile-aa"
     },
     {
       "source": "/docs/bundler",
-      "destination": "/resources/quickstart/aa/bundler"
+      "destination": "/guides/quickstart/aa/bundler"
     },
     {
       "source": "/docs/paymaster",
-      "destination": "/resources/quickstart/aa/paymaster"
+      "destination": "/guides/quickstart/aa/paymaster"
     },
     {
       "source": "/docs/building-with-particle-auth",
-      "destination": "/resources/integrations/waas/auth"
+      "destination": "/guides/integrations/waas/auth"
     },
     {
       "source": "/docs/building-with-particle-wallet",
-      "destination": "/resources/integrations/waas/wallet"
+      "destination": "/guides/integrations/waas/wallet"
     },
     {
       "source": "/docs/building-with-particle-connect",
-      "destination": "/resources/integrations/waas/connect"
+      "destination": "/guides/integrations/waas/connect"
     },
     {
       "source": "/docs/choosing-a-bundler",
-      "destination": "/resources/integrations/aa/bundler"
+      "destination": "/guides/integrations/aa/bundler"
     },
     {
       "source": "/docs/setting-up-particles-paymaster",
-      "destination": "/resources/integrations/aa/paymaster"
+      "destination": "/guides/integrations/aa/paymaster"
     },
     {
       "source": "/docs/session-keys",
-      "destination": "/resources/integrations/aa/keys"
+      "destination": "/guides/integrations/aa/keys"
     },
     {
       "source": "/docs/rpc-nodes",
-      "destination": "/resources/integrations/nodes/s"
+      "destination": "/guides/integrations/nodes/s"
     },
     {
       "source": "/docs/data-apis",
-      "destination": "/resources/integrations/nodes/data"
+      "destination": "/guides/integrations/nodes/data"
     },
     {
       "source": "/reference/introduction-to-api-sdk-reference",

@@ -5,6 +5,7 @@ This repository holds the content for the Particle Network's docs. It handles `m
 ## Table of contents
 
 - [Particle Network Minltify](#particle-network-minltify)
+  - [Table of contents](#table-of-contents)
   - [Local Quickstart](#local-quickstart)
   - [Development](#development)
   - [Project's structure](#projects-structure)
@@ -112,8 +113,8 @@ The `mint.json` file also manages where the pages are displayed and how they are
 ```json mint.json
   "tabs": [
  {
-      "name": "Resources",
-      "url": "resources"
+      "name": "Guides",
+      "url": "guides"
  },
  {
       "name": "APIs & SDKs",
@@ -140,7 +141,7 @@ Here’s a general explanation of how the sections and pages are managed based o
  {
     "group": "GETTING STARTED",
     "pages": [
-      "resources/overview"
+      "guides/overview"
  ]
  },
  {
@@ -149,10 +150,10 @@ Here’s a general explanation of how the sections and pages are managed based o
  {
         "group": "Modular L1",
         "pages": [
-          "resources/modular-l1/introduction",
-          "resources/modular-l1/universal-accounts",
-          "resources/modular-l1/universal-liquidity",
-          "resources/modular-l1/universal-gas"
+          "guides/modular-l1/introduction",
+          "guides/modular-l1/universal-accounts",
+          "guides/modular-l1/universal-liquidity",
+          "guides/modular-l1/universal-gas"
  ]
  }
  ]
@@ -170,13 +171,13 @@ Here’s a general explanation of how the sections and pages are managed based o
 
   - **Example**: 
     - `"pages": ["landing/introduction", "landing/what-is-particle-network", "landing/realized-vision"]` under the "OVERVIEW" group.
-    - `"pages": ["resources/overview"]` under the "GETTING STARTED" group.
+    - `"pages": ["guides/overview"]` under the "GETTING STARTED" group.
 
 - **Sub-Groups**: The pages array can also contain nested group objects, which allow for further subdivision of content within a main section. Each sub-group can have its own group name and page array.
 
   - **Example**: 
     - `"group": "Modular L1"` under the "TECHNOLOGY" group.
-    - This sub-group has its own `pages` array: `"pages": ["resources/modular-l1/introduction", "resources/modular-l1/universal-accounts", "resources/modular-l1/universal-liquidity", "resources/modular-l1/universal-gas"]`.
+    - This sub-group has its own `pages` array: `"pages": ["guides/modular-l1/introduction", "guides/modular-l1/universal-accounts", "guides/modular-l1/universal-liquidity", "guides/modular-l1/universal-gas"]`.
 
 #### How It Works
 

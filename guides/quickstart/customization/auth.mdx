@@ -1,0 +1,68 @@
+---
+title: "Customizing Login Modal"
+mode: "wide"
+---
+
+A central value of Particle Network is **fundamental customization and application-specificity**, especially within Particle Auth, the primary mechanism driving connection (social login) within Particle Network's tech stack. Logos, colors, border weight and sharpness, etc. **can all be deeply customized** either through a no-code interface or programmatically through either Particle Auth or Particle Auth Core, with Auth Core providing more advanced customization options if needed. This page will go through the different methods of customizing Particle Auth.
+
+***
+
+## Programmatic Customization (Particle Auth Core)
+
+The most popular method of customizing the Particle Auth interface is through programmatic style definition. Within Particle Auth Core (`@particle-network/auth-core-modal`), or their [mobile equivalents](/guides/quickstart/waas/mobile-quickstart), programmatic customization is possible during the process of initializing the SDK.
+
+High-level customization can occur with parameters such as light or dark mode by setting `themeType` (within `AuthCoreContextProvider`), setting the language used within the modal through `language`,  the fiat representation in `fiatCoin`, etc.
+
+Deeper customization is possible through the `customStyle` parameter (this is in `options` on `AuthCoreContextProvider`). `customStyle` accepts the following parameters:
+
+```javascript customStyle
+logo?: string;
+projectName?: string;
+subtitle?: string;
+modalWidth?: number;
+modalHeight?: number;
+primaryBtnBorderRadius?: number | string;
+modalBorderRadius?: number | string;
+cardBorderRadius?: number | string;
+fontFamily?: string;
+theme?: {
+	dark?: ThemeStyle;
+	light?: ThemeStyle;
+};
+
+// ThemeStyle
+primaryBtnColor?: string;
+primaryBtnBackgroundColor?: string;
+secondaryBtnColor?: string;
+secondaryBtnBackgroundColor?: string;
+textColor?: string;
+secondaryTextColor?: string;
+themeBackgroundColor?: string;
+iconBorderColor?: string;
+accentColor?: string;
+inputBackgroundColor?: string;
+inputBorderColor?: string;
+inputPlaceholderColor?: string;
+cardBorderColor?: string;
+cardUnclickableBackgroundColor?: string;
+cardUnclickableBorderColor?: string;
+cardDividerColor?: string;
+tagBackgroundColor?: string;
+modalBackgroundColor?: string;
+tipsBackgroundColor?: string;
+```
+
+Each of these options will alter the appearance of the authentication menu and transaction popups. For an example of this customization, see the below graphic:
+
+<div className="flex justify-center">
+<img
+  className="block h-64 dark:hidden"
+  src="/guides/quickstart/customization/images/custom-auth.png"
+  alt="Customize Particle Auth."
+/>
+<img
+  className="hidden h-64 dark:block"
+  src="/guides/quickstart/customization/images/custom-auth.png"
+  alt="Customize Particle Auth."
+/>
+</div>
