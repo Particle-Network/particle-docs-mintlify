@@ -169,11 +169,11 @@
         {
           "group": "Connection Kits",
           "pages": [
-            "guides/quickstart/connection-kits/solana",
-            "guides/quickstart/connection-kits/rainbow",
             "guides/quickstart/connection-kits/particle-connect",
+            "guides/quickstart/connection-kits/rainbow",
             "guides/quickstart/connection-kits/web3modal",
-            "guides/quickstart/connection-kits/web3-onboard"
+            "guides/quickstart/connection-kits/web3-onboard",
+            "guides/quickstart/connection-kits/solana"
           ]
         },
         {
