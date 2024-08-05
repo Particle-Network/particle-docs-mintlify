@@ -233,14 +233,14 @@
         {
           "group": "Appearance",
           "pages": [
-            "guides/quickstart/customization/auth",
-            "guides/quickstart/customization/wallet"
+            "guides/configuration/appearance/auth",
+            "guides/configuration/appearance/wallet"
           ]
         },
         {
           "group": "Authentication",
           "pages": [
-            "guides/quickstart/customization/jwt"
+            "guides/configuration/auth/jwt"
           ]
         }
       ]
