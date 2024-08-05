@@ -677,6 +677,10 @@
     {
       "source": "/changelog",
       "destination": "/changelog/logs"
+    },
+    {
+      "source": "/docs/custom-authentication-jwt",
+      "destination": "/guides/configuration/auth/jwt"
     }
   ]
 }
