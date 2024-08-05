@@ -54,7 +54,7 @@ You can initialize the SDK through `AAService.initialize`, which requires the fo
 
 Once `AAService.initialize` has been called, you'll need to use `ParticleNetwork.setAAService`, passing in an instance of `AAService`. This will tell Particle Auth to use your smart account rather than your EOA. Either before or after doing this, you'll also need to call `aaService.enableAAMode`.
 
-```swift Swift
+```swift
 // the biconomy api keys can be empty collection.
 AAService.initialize(name: .biconomyV1, biconomyApiKeys: [:])
 
@@ -74,7 +74,7 @@ However, if you aren't sure whether AA mode is enabled or not, you can call `aaS
 
 E.g.:
 
-```swift Swift
+```swift
 aaService.disableAAMode() 
 
 let isEnable = aayService.isAAModeEnable()
@@ -90,7 +90,7 @@ You can also retrieve the address of the smart account, among other details, by 
 | `chainInfo`| `ChainInfo?`| (Optional) default is current chainInfo.|
 
 
-```swift Swift
+```swift
 let smartAccount = try await aaService.getSmartAccount(by: eoaAddress, chainInfo: chainInfo).value
 ```
 
@@ -136,7 +136,7 @@ Alternatively, for `aaService.quickSendTransactions`, the parameters will be the
 
 E.g.:
 
-```swift Swift
+```swift
 // Gasless
 let txHash = try await auth.evm.sendTransacton(transaction, feeMode: .gasless, chainInfo: chainInfo)
 
@@ -145,7 +145,7 @@ let txHash =  try await aaService.quickSendTransactions([transaction], feeMode: 
 // Native
 let txHash = try await auth.evm.sendTransacton(transaction, feeMode: .native, chainInfo: chainInfo) 
 
-let txHash = try  await aaService.quickSendTransactions([transaction], feeMode: .native, messageSigner: self, wholeFeeQuote: wholeFeeQuote, chainInfo: chainInfo).value
+let txHash = try await aaService.quickSendTransactions([transaction], feeMode: .native, messageSigner: self, wholeFeeQuote: wholeFeeQuote, chainInfo: chainInfo).value
 
 // ERC-20 Token
 let txHash = try await auth.evm.sendTransacton(transaction, feeMode: .token(feeQuote), chainInfo: chainInfo)
@@ -155,7 +155,7 @@ let txHash = try await aaService.quickSendTransactions([transaction], feeMode: .
 
 Implement MessageSigner protocol
 
-```swift Swift
+```swift
 class YourViewController {
   var publicAddress: String = ""
 }
@@ -207,7 +207,7 @@ extension Single {
 
 Check if you can send gasless/native/token.
 
-```swift Swift
+```swift
 extension YourViewController {
     func sendTransactionInAA() async throws {
         let aa = ParticleNetwork.getAAService()!
@@ -270,7 +270,7 @@ The status of deployment can be retrieved with `smartAccount.isDeploy`, which ta
 
 E.g.:
 
-```swift Swift
+```swift
 let isDeploy = try await aaService.isDeploy(eoaAddress: eoaAddress).value
 
 aaService.deployWalletContract(messageSigner: signer, feeMode: .gasless)
