@@ -380,6 +380,14 @@
       "pages": ["api-reference/debug/sdk", "api-reference/debug/api"]
     },
     {
+      "group": "EHNANCED",
+      "pages": [
+        "api-reference/enhanced/evm",
+        "api-reference/enhanced/solana",
+        "api-reference/enhanced/swap"
+      ]
+    },
+    {
       "group": "CHANGELOG",
       "pages": ["changelog/logs"]
     }
