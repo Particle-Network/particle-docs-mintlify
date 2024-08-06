@@ -240,9 +240,12 @@
           "pages": [
             "guides/configuration/auth/jwt",
             "guides/configuration/auth/social-prompt",
-            "guides/configuration/auth/session-duration"
+            "guides/configuration/auth/session-duration",
+            "guides/configuration/auth/headless",
+            "guides/configuration/auth/password"
           ]
-        }
+        },
+        "guides/configuration/misc"
       ]
     },
     {
