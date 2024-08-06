@@ -10,1180 +10,6 @@
     }
   ],
   "paths": {
-    "/#particle_crosschain_getNFTs": {
-      "post": {
-        "security": [
-          {
-            "basicAuth": []
-          }
-        ],
-        "summary": "crosschainGetNFTs",
-        "operationId": "crosschainGetNFTs",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "allOf": [
-                  {
-                    "type": "object",
-                    "required": [
-                      "jsonrpc",
-                      "id",
-                      "method",
-                      "params",
-                      "chainId"
-                    ],
-                    "properties": {
-                      "jsonrpc": {
-                        "type": "string",
-                        "default": 2,
-                        "description": "Version of the JSON-RPC protocol, should be 2.0.",
-                        "example": "2.0"
-                      },
-                      "id": {
-                        "type": "integer",
-                        "default": 1,
-                        "description": "The request identifier.",
-                        "example": 1
-                      },
-                      "method": {
-                        "type": "string",
-                        "description": "API method being called."
-                      },
-                      "chainId": {
-                        "type": "integer",
-                        "description": "The chain ID.",
-                        "example": 1
-                      },
-                      "params": {
-                        "type": "array",
-                        "description": "Parameters for the API method call."
-                      }
-                    }
-                  },
-                  {
-                    "type": "object",
-                    "properties": {
-                      "method": {
-                        "enum": [
-                          "particle_crosschain_getNFTs"
-                        ]
-                      },
-                      "params": {
-                        "type": "array",
-                        "items": {}
-                      }
-                    }
-                  }
-                ]
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "allOf": [
-                    {
-                      "type": "object",
-                      "properties": {
-                        "jsonrpc": {
-                          "type": "string",
-                          "description": "Version of the JSON-RPC protocol, should be 2.0.",
-                          "example": "2.0"
-                        },
-                        "id": {
-                          "type": "integer",
-                          "description": "The request identifier.",
-                          "example": 1
-                        },
-                        "result": {
-                          "type": "object",
-                          "description": "Result of the API call."
-                        }
-                      }
-                    },
-                    {
-                      "type": "object",
-                      "properties": {
-                        "result": {
-                          "type": "object",
-                          "properties": {
-                            "nfts": {
-                              "type": "array",
-                              "description": "Array of NFTs.",
-                              "items": {
-                                "type": "object",
-                                "properties": {
-                                  "address": {
-                                    "type": "string",
-                                    "description": "NFT contract address."
-                                  },
-                                  "isSemiFungible": {
-                                    "type": "boolean",
-                                    "description": "Indicates if the NFT is semi-fungible."
-                                  },
-                                  "tokenId": {
-                                    "type": "string",
-                                    "description": "Token ID of the NFT."
-                                  },
-                                  "tokenBalance": {
-                                    "type": "string",
-                                    "description": "Token balance of the NFT."
-                                  },
-                                  "tokenURI": {
-                                    "type": "string",
-                                    "description": "Token URI of the NFT."
-                                  },
-                                  "name": {
-                                    "type": "string",
-                                    "description": "Name of the NFT."
-                                  },
-                                  "symbol": {
-                                    "type": "string",
-                                    "description": "Symbol of the NFT."
-                                  },
-                                  "image": {
-                                    "type": "string",
-                                    "description": "Image URL of the NFT."
-                                  },
-                                  "data": {
-                                    "type": "object",
-                                    "description": "Additional data of the NFT."
-                                  }
-                                }
-                              }
-                            }
-                          }
-                        }
-                      }
-                    }
-                  ]
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/#particle_getTokensAndNFTs": {
-      "post": {
-        "security": [
-          {
-            "basicAuth": []
-          }
-        ],
-        "summary": "getTokensAndNFTs",
-        "operationId": "getTokensAndNFTs",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "allOf": [
-                  {
-                    "type": "object",
-                    "required": [
-                      "jsonrpc",
-                      "id",
-                      "method",
-                      "params",
-                      "chainId"
-                    ],
-                    "properties": {
-                      "jsonrpc": {
-                        "type": "string",
-                        "default": 2,
-                        "description": "Version of the JSON-RPC protocol, should be 2.0.",
-                        "example": "2.0"
-                      },
-                      "id": {
-                        "type": "integer",
-                        "default": 1,
-                        "description": "The request identifier.",
-                        "example": 1
-                      },
-                      "method": {
-                        "type": "string",
-                        "description": "API method being called."
-                      },
-                      "chainId": {
-                        "type": "integer",
-                        "description": "The chain ID.",
-                        "example": 1
-                      },
-                      "params": {
-                        "type": "array",
-                        "description": "Parameters for the API method call."
-                      }
-                    }
-                  },
-                  {
-                    "type": "object",
-                    "properties": {
-                      "method": {
-                        "enum": [
-                          "particle_getTokensAndNFTs"
-                        ]
-                      },
-                      "params": {
-                        "type": "array",
-                        "items": {}
-                      }
-                    }
-                  }
-                ]
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "allOf": [
-                    {
-                      "type": "object",
-                      "properties": {
-                        "jsonrpc": {
-                          "type": "string",
-                          "description": "Version of the JSON-RPC protocol, should be 2.0.",
-                          "example": "2.0"
-                        },
-                        "id": {
-                          "type": "integer",
-                          "description": "The request identifier.",
-                          "example": 1
-                        },
-                        "result": {
-                          "type": "object",
-                          "description": "Result of the API call."
-                        }
-                      }
-                    },
-                    {
-                      "type": "object",
-                      "properties": {
-                        "result": {
-                          "type": "object",
-                          "required": [
-                            "native",
-                            "tokens",
-                            "nfts"
-                          ],
-                          "properties": {
-                            "native": {
-                              "type": "string",
-                              "description": "Native token balance."
-                            },
-                            "tokens": {
-                              "type": "array",
-                              "description": "Array of tokens.",
-                              "items": {
-                                "type": "object",
-                                "properties": {
-                                  "decimals": {
-                                    "type": "integer",
-                                    "description": "Number of decimals for the token."
-                                  },
-                                  "amount": {
-                                    "type": "string",
-                                    "description": "Amount of tokens."
-                                  },
-                                  "address": {
-                                    "type": "string",
-                                    "description": "Token contract address."
-                                  },
-                                  "name": {
-                                    "type": "string",
-                                    "description": "Name of the token."
-                                  },
-                                  "symbol": {
-                                    "type": "string",
-                                    "description": "Symbol of the token."
-                                  },
-                                  "image": {
-                                    "type": "string",
-                                    "description": "Image URL of the token."
-                                  }
-                                }
-                              }
-                            },
-                            "nfts": {
-                              "type": "array",
-                              "description": "Array of NFTs.",
-                              "items": {
-                                "type": "object",
-                                "properties": {
-                                  "address": {
-                                    "type": "string",
-                                    "description": "NFT contract address."
-                                  },
-                                  "isSemiFungible": {
-                                    "type": "boolean",
-                                    "description": "Indicates if the NFT is semi-fungible."
-                                  },
-                                  "tokenId": {
-                                    "type": "string",
-                                    "description": "Token ID of the NFT."
-                                  },
-                                  "tokenBalance": {
-                                    "type": "string",
-                                    "description": "Token balance of the NFT."
-                                  },
-                                  "tokenURI": {
-                                    "type": "string",
-                                    "description": "Token URI of the NFT."
-                                  },
-                                  "name": {
-                                    "type": "string",
-                                    "description": "Name of the NFT."
-                                  },
-                                  "symbol": {
-                                    "type": "string",
-                                    "description": "Symbol of the NFT."
-                                  },
-                                  "image": {
-                                    "type": "string",
-                                    "description": "Image URL of the NFT."
-                                  },
-                                  "data": {
-                                    "type": "object",
-                                    "description": "Additional data of the NFT."
-                                  }
-                                }
-                              }
-                            }
-                          }
-                        }
-                      }
-                    }
-                  ]
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/#particle_getTokens": {
-      "post": {
-        "security": [
-          {
-            "basicAuth": []
-          }
-        ],
-        "summary": "getTokens",
-        "operationId": "getTokens",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "allOf": [
-                  {
-                    "type": "object",
-                    "required": [
-                      "jsonrpc",
-                      "id",
-                      "method",
-                      "params",
-                      "chainId"
-                    ],
-                    "properties": {
-                      "jsonrpc": {
-                        "type": "string",
-                        "default": 2,
-                        "description": "Version of the JSON-RPC protocol, should be 2.0.",
-                        "example": "2.0"
-                      },
-                      "id": {
-                        "type": "integer",
-                        "default": 1,
-                        "description": "The request identifier.",
-                        "example": 1
-                      },
-                      "method": {
-                        "type": "string",
-                        "description": "API method being called."
-                      },
-                      "chainId": {
-                        "type": "integer",
-                        "description": "The chain ID.",
-                        "example": 1
-                      },
-                      "params": {
-                        "type": "array",
-                        "description": "Parameters for the API method call."
-                      }
-                    }
-                  },
-                  {
-                    "type": "object",
-                    "properties": {
-                      "method": {
-                        "enum": [
-                          "particle_getTokens"
-                        ]
-                      },
-                      "params": {
-                        "type": "array",
-                        "items": {}
-                      }
-                    }
-                  }
-                ]
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "allOf": [
-                    {
-                      "type": "object",
-                      "properties": {
-                        "jsonrpc": {
-                          "type": "string",
-                          "description": "Version of the JSON-RPC protocol, should be 2.0.",
-                          "example": "2.0"
-                        },
-                        "id": {
-                          "type": "integer",
-                          "description": "The request identifier.",
-                          "example": 1
-                        },
-                        "result": {
-                          "type": "object",
-                          "description": "Result of the API call."
-                        }
-                      }
-                    },
-                    {
-                      "type": "object",
-                      "properties": {
-                        "result": {
-                          "type": "object",
-                          "required": [
-                            "native",
-                            "tokens"
-                          ],
-                          "properties": {
-                            "native": {
-                              "type": "string",
-                              "description": "Native token balance."
-                            },
-                            "tokens": {
-                              "type": "array",
-                              "description": "Array of tokens.",
-                              "items": {
-                                "type": "object",
-                                "properties": {
-                                  "decimals": {
-                                    "type": "integer",
-                                    "description": "Number of decimals for the token."
-                                  },
-                                  "amount": {
-                                    "type": "string",
-                                    "description": "Amount of tokens."
-                                  },
-                                  "address": {
-                                    "type": "string",
-                                    "description": "Token contract address."
-                                  },
-                                  "name": {
-                                    "type": "string",
-                                    "description": "Name of the token."
-                                  },
-                                  "symbol": {
-                                    "type": "string",
-                                    "description": "Symbol of the token."
-                                  },
-                                  "image": {
-                                    "type": "string",
-                                    "description": "Image URL of the token."
-                                  }
-                                }
-                              }
-                            }
-                          }
-                        }
-                      }
-                    }
-                  ]
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/#particle_getPrice": {
-      "post": {
-        "security": [
-          {
-            "basicAuth": []
-          }
-        ],
-        "summary": "getPrice",
-        "operationId": "getPrice",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "allOf": [
-                  {
-                    "type": "object",
-                    "required": [
-                      "jsonrpc",
-                      "id",
-                      "method",
-                      "params",
-                      "chainId"
-                    ],
-                    "properties": {
-                      "jsonrpc": {
-                        "type": "string",
-                        "default": 2,
-                        "description": "Version of the JSON-RPC protocol, should be 2.0.",
-                        "example": "2.0"
-                      },
-                      "id": {
-                        "type": "integer",
-                        "default": 1,
-                        "description": "The request identifier.",
-                        "example": 1
-                      },
-                      "method": {
-                        "type": "string",
-                        "description": "API method being called."
-                      },
-                      "chainId": {
-                        "type": "integer",
-                        "description": "The chain ID.",
-                        "example": 1
-                      },
-                      "params": {
-                        "type": "array",
-                        "description": "Parameters for the API method call."
-                      }
-                    }
-                  },
-                  {
-                    "type": "object",
-                    "properties": {
-                      "method": {
-                        "enum": [
-                          "particle_getPrice"
-                        ]
-                      },
-                      "params": {
-                        "type": "array",
-                        "items": {
-                          "type": "array",
-                          "items": {
-                            "type": "string"
-                          }
-                        }
-                      }
-                    }
-                  }
-                ]
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "allOf": [
-                    {
-                      "type": "object",
-                      "properties": {
-                        "jsonrpc": {
-                          "type": "string",
-                          "description": "Version of the JSON-RPC protocol, should be 2.0.",
-                          "example": "2.0"
-                        },
-                        "id": {
-                          "type": "integer",
-                          "description": "The request identifier.",
-                          "example": 1
-                        },
-                        "result": {
-                          "type": "object",
-                          "description": "Result of the API call."
-                        }
-                      }
-                    },
-                    {
-                      "type": "object",
-                      "properties": {
-                        "result": {
-                          "type": "array",
-                          "description": "Array of token price details.",
-                          "items": {
-                            "type": "object",
-                            "properties": {
-                              "address": {
-                                "type": "string",
-                                "description": "Token contract address."
-                              },
-                              "currencies": {
-                                "type": "array",
-                                "description": "Array of currency details.",
-                                "items": {
-                                  "type": "object",
-                                  "properties": {
-                                    "type": {
-                                      "type": "string",
-                                      "description": "Currency type."
-                                    },
-                                    "price": {
-                                      "type": "number",
-                                      "description": "Price of the token."
-                                    },
-                                    "marketCap": {
-                                      "type": "number",
-                                      "description": "Market capitalization."
-                                    },
-                                    "24hChange": {
-                                      "type": "number",
-                                      "description": "24-hour price change."
-                                    },
-                                    "24hVol": {
-                                      "type": "number",
-                                      "description": "24-hour trading volume."
-                                    },
-                                    "lastUpdatedAt": {
-                                      "type": "integer",
-                                      "description": "Timestamp of the last update."
-                                    }
-                                  }
-                                }
-                              }
-                            }
-                          }
-                        }
-                      }
-                    }
-                  ]
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/#particle_suggestedGasFees": {
-      "post": {
-        "security": [
-          {
-            "basicAuth": []
-          }
-        ],
-        "summary": "suggestedGasFees",
-        "operationId": "suggestedGasFees",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "allOf": [
-                  {
-                    "type": "object",
-                    "required": [
-                      "jsonrpc",
-                      "id",
-                      "method",
-                      "params",
-                      "chainId"
-                    ],
-                    "properties": {
-                      "jsonrpc": {
-                        "type": "string",
-                        "default": 2,
-                        "description": "Version of the JSON-RPC protocol, should be 2.0.",
-                        "example": "2.0"
-                      },
-                      "id": {
-                        "type": "integer",
-                        "default": 1,
-                        "description": "The request identifier.",
-                        "example": 1
-                      },
-                      "method": {
-                        "type": "string",
-                        "description": "API method being called."
-                      },
-                      "chainId": {
-                        "type": "integer",
-                        "description": "The chain ID.",
-                        "example": 1
-                      },
-                      "params": {
-                        "type": "array",
-                        "description": "Parameters for the API method call."
-                      }
-                    }
-                  },
-                  {
-                    "type": "object",
-                    "required": [
-                      "method"
-                    ],
-                    "properties": {
-                      "method": {
-                        "type": "string",
-                        "default": "particle_suggestedGasFees",
-                        "enum": [
-                          "particle_suggestedGasFees"
-                        ]
-                      },
-                      "params": {
-                        "type": "array",
-                        "enum": [
-                          []
-                        ]
-                      }
-                    }
-                  }
-                ]
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "allOf": [
-                    {
-                      "type": "object",
-                      "properties": {
-                        "jsonrpc": {
-                          "type": "string",
-                          "description": "Version of the JSON-RPC protocol, should be 2.0.",
-                          "example": "2.0"
-                        },
-                        "id": {
-                          "type": "integer",
-                          "description": "The request identifier.",
-                          "example": 1
-                        },
-                        "result": {
-                          "type": "object",
-                          "description": "Result of the API call."
-                        }
-                      }
-                    },
-                    {
-                      "type": "object",
-                      "properties": {
-                        "result": {
-                          "type": "object",
-                          "properties": {
-                            "low": {
-                              "type": "object",
-                              "description": "Low gas fee estimate."
-                            },
-                            "medium": {
-                              "type": "object",
-                              "description": "Medium gas fee estimate."
-                            },
-                            "high": {
-                              "type": "object",
-                              "description": "High gas fee estimate."
-                            },
-                            "baseFee": {
-                              "type": "string",
-                              "description": "Base gas fee."
-                            }
-                          }
-                        }
-                      }
-                    }
-                  ]
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/#particle_getTransactionsByAddress": {
-      "post": {
-        "security": [
-          {
-            "basicAuth": []
-          }
-        ],
-        "summary": "getTransactionsByAddress",
-        "operationId": "getTransactionsByAddress",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "allOf": [
-                  {
-                    "type": "object",
-                    "required": [
-                      "jsonrpc",
-                      "id",
-                      "method",
-                      "params",
-                      "chainId"
-                    ],
-                    "properties": {
-                      "jsonrpc": {
-                        "type": "string",
-                        "default": 2,
-                        "description": "Version of the JSON-RPC protocol, should be 2.0.",
-                        "example": "2.0"
-                      },
-                      "id": {
-                        "type": "integer",
-                        "default": 1,
-                        "description": "The request identifier.",
-                        "example": 1
-                      },
-                      "method": {
-                        "type": "string",
-                        "description": "API method being called."
-                      },
-                      "chainId": {
-                        "type": "integer",
-                        "description": "The chain ID.",
-                        "example": 1
-                      },
-                      "params": {
-                        "type": "array",
-                        "description": "Parameters for the API method call."
-                      }
-                    }
-                  },
-                  {
-                    "type": "object",
-                    "properties": {
-                      "method": {
-                        "enum": [
-                          "particle_getTransactionsByAddress"
-                        ]
-                      },
-                      "params": {
-                        "type": "array",
-                        "items": {
-                          "type": "string"
-                        }
-                      }
-                    }
-                  }
-                ]
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "allOf": [
-                    {
-                      "type": "object",
-                      "properties": {
-                        "jsonrpc": {
-                          "type": "string",
-                          "description": "Version of the JSON-RPC protocol, should be 2.0.",
-                          "example": "2.0"
-                        },
-                        "id": {
-                          "type": "integer",
-                          "description": "The request identifier.",
-                          "example": 1
-                        },
-                        "result": {
-                          "type": "object",
-                          "description": "Result of the API call."
-                        }
-                      }
-                    },
-                    {
-                      "type": "object",
-                      "properties": {
-                        "result": {
-                          "type": "array",
-                          "description": "Array of transactions.",
-                          "items": {
-                            "type": "object",
-                            "properties": {
-                              "hash": {
-                                "type": "string",
-                                "description": "Transaction hash."
-                              },
-                              "from": {
-                                "type": "string",
-                                "description": "Sender address."
-                              },
-                              "to": {
-                                "type": "string",
-                                "description": "Receiver address."
-                              },
-                              "value": {
-                                "type": "string",
-                                "description": "Transaction value."
-                              },
-                              "data": {
-                                "type": "string",
-                                "description": "Transaction data."
-                              },
-                              "gasLimit": {
-                                "type": "integer",
-                                "description": "Gas limit for the transaction."
-                              },
-                              "timestamp": {
-                                "type": "integer",
-                                "description": "Timestamp of the transaction."
-                              },
-                              "status": {
-                                "type": "integer",
-                                "description": "Status of the transaction."
-                              },
-                              "type": {
-                                "type": "integer",
-                                "description": "Type of the transaction."
-                              },
-                              "nonce": {
-                                "type": "integer",
-                                "description": "Nonce of the transaction."
-                              },
-                              "accessList": {
-                                "type": "array",
-                                "description": "Access list for the transaction.",
-                                "items": {
-                                  "type": "object"
-                                }
-                              },
-                              "maxPriorityFeePerGas": {
-                                "type": "string",
-                                "description": "Max priority fee per gas."
-                              },
-                              "maxFeePerGas": {
-                                "type": "string",
-                                "description": "Max fee per gas."
-                              },
-                              "gasSpent": {
-                                "type": "string",
-                                "description": "Gas spent for the transaction."
-                              },
-                              "gasPrice": {
-                                "type": "string",
-                                "description": "Gas price for the transaction."
-                              },
-                              "fees": {
-                                "type": "string",
-                                "description": "Transaction fees."
-                              }
-                            }
-                          }
-                        }
-                      }
-                    }
-                  ]
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/#particle_getPendingTransactionsByAddress": {
-      "post": {
-        "security": [
-          {
-            "basicAuth": []
-          }
-        ],
-        "summary": "getPendingTransactionsByAddress",
-        "operationId": "getPendingTransactionsByAddress",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "allOf": [
-                  {
-                    "type": "object",
-                    "required": [
-                      "jsonrpc",
-                      "id",
-                      "method",
-                      "params",
-                      "chainId"
-                    ],
-                    "properties": {
-                      "jsonrpc": {
-                        "type": "string",
-                        "default": 2,
-                        "description": "Version of the JSON-RPC protocol, should be 2.0.",
-                        "example": "2.0"
-                      },
-                      "id": {
-                        "type": "integer",
-                        "default": 1,
-                        "description": "The request identifier.",
-                        "example": 1
-                      },
-                      "method": {
-                        "type": "string",
-                        "description": "API method being called."
-                      },
-                      "chainId": {
-                        "type": "integer",
-                        "description": "The chain ID.",
-                        "example": 1
-                      },
-                      "params": {
-                        "type": "array",
-                        "description": "Parameters for the API method call."
-                      }
-                    }
-                  },
-                  {
-                    "type": "object",
-                    "properties": {
-                      "method": {
-                        "enum": [
-                          "particle_getPendingTransactionsByAddress"
-                        ]
-                      },
-                      "params": {
-                        "type": "array",
-                        "items": {
-                          "type": "string"
-                        }
-                      }
-                    }
-                  }
-                ]
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "allOf": [
-                    {
-                      "type": "object",
-                      "properties": {
-                        "jsonrpc": {
-                          "type": "string",
-                          "description": "Version of the JSON-RPC protocol, should be 2.0.",
-                          "example": "2.0"
-                        },
-                        "id": {
-                          "type": "integer",
-                          "description": "The request identifier.",
-                          "example": 1
-                        },
-                        "result": {
-                          "type": "object",
-                          "description": "Result of the API call."
-                        }
-                      }
-                    },
-                    {
-                      "type": "object",
-                      "properties": {
-                        "result": {
-                          "type": "array",
-                          "description": "Array of pending transactions.",
-                          "items": {
-                            "type": "object",
-                            "properties": {
-                              "hash": {
-                                "type": "string",
-                                "description": "Transaction hash."
-                              },
-                              "from": {
-                                "type": "string",
-                                "description": "Sender address."
-                              },
-                              "to": {
-                                "type": "string",
-                                "description": "Receiver address."
-                              },
-                              "value": {
-                                "type": "string",
-                                "description": "Transaction value."
-                              },
-                              "data": {
-                                "type": "string",
-                                "description": "Transaction data."
-                              },
-                              "gasLimit": {
-                                "type": "integer",
-                                "description": "Gas limit for the transaction."
-                              },
-                              "timestamp": {
-                                "type": "integer",
-                                "description": "Timestamp of the transaction."
-                              },
-                              "status": {
-                                "type": "integer",
-                                "description": "Status of the transaction."
-                              },
-                              "type": {
-                                "type": "integer",
-                                "description": "Type of the transaction."
-                              },
-                              "nonce": {
-                                "type": "integer",
-                                "description": "Nonce of the transaction."
-                              },
-                              "accessList": {
-                                "type": "array",
-                                "description": "Access list for the transaction.",
-                                "items": {
-                                  "type": "object"
-                                }
-                              },
-                              "maxPriorityFeePerGas": {
-                                "type": "string",
-                                "description": "Max priority fee per gas."
-                              },
-                              "maxFeePerGas": {
-                                "type": "string",
-                                "description": "Max fee per gas."
-                              }
-                            }
-                          }
-                        }
-                      }
-                    }
-                  ]
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/#particle_abi_encodeFunctionCall": {
       "post": {
         "security": [
@@ -1197,73 +23,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "allOf": [
-                  {
-                    "type": "object",
-                    "required": [
-                      "jsonrpc",
-                      "id",
-                      "method",
-                      "params",
-                      "chainId"
-                    ],
-                    "properties": {
-                      "jsonrpc": {
-                        "type": "string",
-                        "default": 2,
-                        "description": "Version of the JSON-RPC protocol, should be 2.0.",
-                        "example": "2.0"
-                      },
-                      "id": {
-                        "type": "integer",
-                        "default": 1,
-                        "description": "The request identifier.",
-                        "example": 1
-                      },
-                      "method": {
-                        "type": "string",
-                        "description": "API method being called."
-                      },
-                      "chainId": {
-                        "type": "integer",
-                        "description": "The chain ID.",
-                        "example": 1
-                      },
-                      "params": {
-                        "type": "array",
-                        "description": "Parameters for the API method call."
-                      }
-                    }
-                  },
-                  {
-                    "type": "object",
-                    "required": [
-                      "method"
-                    ],
-                    "properties": {
-                      "method": {
-                        "type": "string",
-                        "default": "particle_abi_encodeFunctionCall",
-                        "enum": [
-                          "particle_abi_encodeFunctionCall"
-                        ]
-                      },
-                      "params": {
-                        "type": "array",
-                        "items": {
-                          "anyOf": [
-                            {
-                              "type": "string"
-                            },
-                            {
-                              "type": "array"
-                            }
-                          ]
-                        }
-                      }
-                    }
-                  }
-                ]
+                "$ref": "#/components/schemas/ABIEncodeFunctionCallRequest"
               }
             }
           }
@@ -1274,36 +34,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "allOf": [
-                    {
-                      "type": "object",
-                      "properties": {
-                        "jsonrpc": {
-                          "type": "string",
-                          "description": "Version of the JSON-RPC protocol, should be 2.0.",
-                          "example": "2.0"
-                        },
-                        "id": {
-                          "type": "integer",
-                          "description": "The request identifier.",
-                          "example": 1
-                        },
-                        "result": {
-                          "type": "object",
-                          "description": "Result of the API call."
-                        }
-                      }
-                    },
-                    {
-                      "type": "object",
-                      "properties": {
-                        "result": {
-                          "type": "string",
-                          "description": "Encoded function call data."
-                        }
-                      }
-                    }
-                  ]
+                  "$ref": "#/components/schemas/ABIEncodeFunctionCallResponse"
                 }
               }
             }
@@ -1324,73 +55,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "allOf": [
-                  {
-                    "type": "object",
-                    "required": [
-                      "jsonrpc",
-                      "id",
-                      "method",
-                      "params",
-                      "chainId"
-                    ],
-                    "properties": {
-                      "jsonrpc": {
-                        "type": "string",
-                        "default": 2,
-                        "description": "Version of the JSON-RPC protocol, should be 2.0.",
-                        "example": "2.0"
-                      },
-                      "id": {
-                        "type": "integer",
-                        "default": 1,
-                        "description": "The request identifier.",
-                        "example": 1
-                      },
-                      "method": {
-                        "type": "string",
-                        "description": "API method being called."
-                      },
-                      "chainId": {
-                        "type": "integer",
-                        "description": "The chain ID.",
-                        "example": 1
-                      },
-                      "params": {
-                        "type": "array",
-                        "description": "Parameters for the API method call."
-                      }
-                    }
-                  },
-                  {
-                    "type": "object",
-                    "required": [
-                      "method"
-                    ],
-                    "properties": {
-                      "method": {
-                        "type": "string",
-                        "default": "particle_abi_getContractAbi",
-                        "enum": [
-                          "particle_abi_getContractAbi"
-                        ]
-                      },
-                      "params": {
-                        "type": "array",
-                        "items": {
-                          "anyOf": [
-                            {
-                              "type": "string"
-                            },
-                            {
-                              "type": "boolean"
-                            }
-                          ]
-                        }
-                      }
-                    }
-                  }
-                ]
+                "$ref": "#/components/schemas/GetContractABIRequest"
               }
             }
           }
@@ -1401,36 +66,39 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "allOf": [
-                    {
-                      "type": "object",
-                      "properties": {
-                        "jsonrpc": {
-                          "type": "string",
-                          "description": "Version of the JSON-RPC protocol, should be 2.0.",
-                          "example": "2.0"
-                        },
-                        "id": {
-                          "type": "integer",
-                          "description": "The request identifier.",
-                          "example": 1
-                        },
-                        "result": {
-                          "type": "object",
-                          "description": "Result of the API call."
-                        }
-                      }
-                    },
-                    {
-                      "type": "object",
-                      "properties": {
-                        "result": {
-                          "type": "string",
-                          "description": "Contract ABI."
-                        }
-                      }
-                    }
-                  ]
+                  "$ref": "#/components/schemas/GetContractABIResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/#particle_crosschain_getNFTs": {
+      "post": {
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ],
+        "summary": "crosschainGetNFTs",
+        "operationId": "crosschainGetNFTs",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CrosschainGetNFTsRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CrosschainGetNFTsResponse"
                 }
               }
             }
@@ -1451,69 +119,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "allOf": [
-                  {
-                    "type": "object",
-                    "required": [
-                      "jsonrpc",
-                      "id",
-                      "method",
-                      "params",
-                      "chainId"
-                    ],
-                    "properties": {
-                      "jsonrpc": {
-                        "type": "string",
-                        "default": 2,
-                        "description": "Version of the JSON-RPC protocol, should be 2.0.",
-                        "example": "2.0"
-                      },
-                      "id": {
-                        "type": "integer",
-                        "default": 1,
-                        "description": "The request identifier.",
-                        "example": 1
-                      },
-                      "method": {
-                        "type": "string",
-                        "description": "API method being called."
-                      },
-                      "chainId": {
-                        "type": "integer",
-                        "description": "The chain ID.",
-                        "example": 1
-                      },
-                      "params": {
-                        "type": "array",
-                        "description": "Parameters for the API method call."
-                      }
-                    }
-                  },
-                  {
-                    "type": "object",
-                    "required": [
-                      "method"
-                    ],
-                    "properties": {
-                      "method": {
-                        "type": "string",
-                        "default": "particle_deserializeTransaction",
-                        "enum": [
-                          "particle_deserializeTransaction"
-                        ]
-                      },
-                      "params": {
-                        "type": "array",
-                        "items": {
-                          "type": "array",
-                          "items": {
-                            "type": "string"
-                          }
-                        }
-                      }
-                    }
-                  }
-                ]
+                "$ref": "#/components/schemas/DeserializeTransactionRequest"
               }
             }
           }
@@ -1524,45 +130,199 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "allOf": [
-                    {
-                      "type": "object",
-                      "properties": {
-                        "jsonrpc": {
-                          "type": "string",
-                          "description": "Version of the JSON-RPC protocol, should be 2.0.",
-                          "example": "2.0"
-                        },
-                        "id": {
-                          "type": "integer",
-                          "description": "The request identifier.",
-                          "example": 1
-                        },
-                        "result": {
-                          "type": "object",
-                          "description": "Result of the API call."
-                        }
-                      }
-                    },
-                    {
-                      "type": "object",
-                      "properties": {
-                        "result": {
-                          "type": "object",
-                          "properties": {
-                            "estimatedChanges": {
-                              "type": "object",
-                              "description": "Estimated changes resulting from the transaction."
-                            },
-                            "data": {
-                              "type": "object",
-                              "description": "Data of the transaction."
-                            }
-                          }
-                        }
-                      }
-                    }
-                  ]
+                  "$ref": "#/components/schemas/DeserializeTransactionResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/#particle_getTokensAndNFTs": {
+      "post": {
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ],
+        "summary": "getTokensAndNFTs",
+        "operationId": "getTokensAndNFTs",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetTokensAndNFTsRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetTokensAndNFTsResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/#particle_getTokens": {
+      "post": {
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ],
+        "summary": "getTokens",
+        "operationId": "getTokens",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetTokensRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetTokensResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/#particle_getNFTs": {
+      "post": {
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ],
+        "summary": "getNFTs",
+        "operationId": "getNFTs",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetNFTsRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetNFTsResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/#particle_getPrice": {
+      "post": {
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ],
+        "summary": "getPrice",
+        "operationId": "getPrice",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetPriceRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetPriceResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/#particle_getTransactionsByAddress": {
+      "post": {
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ],
+        "summary": "getTransactionsByAddress",
+        "operationId": "getTransactionsByAddress",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetTransactionsByAddressRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetTransactionsByAddressResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/#particle_getPendingTransactionsByAddress": {
+      "post": {
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ],
+        "summary": "getPendingTransactionsByAddress",
+        "operationId": "getPendingTransactionsByAddress",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetPendingTransactionsByAddressRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetPendingTransactionsByAddressResponse"
                 }
               }
             }
@@ -1784,72 +544,20 @@
         }
       }
     },
-    "/#particle_getNFTs": {
+    "/#particle_suggestedGasFees": {
       "post": {
         "security": [
           {
             "basicAuth": []
           }
         ],
-        "summary": "getNFTs",
-        "operationId": "getNFTs",
+        "summary": "suggestedGasFees",
+        "operationId": "suggestedGasFees",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "allOf": [
-                  {
-                    "type": "object",
-                    "required": [
-                      "jsonrpc",
-                      "id",
-                      "method",
-                      "params",
-                      "chainId"
-                    ],
-                    "properties": {
-                      "jsonrpc": {
-                        "type": "string",
-                        "default": 2,
-                        "description": "Version of the JSON-RPC protocol, should be 2.0.",
-                        "example": "2.0"
-                      },
-                      "id": {
-                        "type": "integer",
-                        "default": 1,
-                        "description": "The request identifier.",
-                        "example": 1
-                      },
-                      "method": {
-                        "type": "string",
-                        "description": "API method being called."
-                      },
-                      "chainId": {
-                        "type": "integer",
-                        "description": "The chain ID.",
-                        "example": 1
-                      },
-                      "params": {
-                        "type": "array",
-                        "description": "Parameters for the API method call."
-                      }
-                    }
-                  },
-                  {
-                    "type": "object",
-                    "properties": {
-                      "method": {
-                        "enum": [
-                          "particle_getNFTs"
-                        ]
-                      },
-                      "params": {
-                        "type": "array",
-                        "items": {}
-                      }
-                    }
-                  }
-                ]
+                "$ref": "#/components/schemas/SuggestedGasFeesRequest"
               }
             }
           }
@@ -1860,82 +568,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "allOf": [
-                    {
-                      "type": "object",
-                      "properties": {
-                        "jsonrpc": {
-                          "type": "string",
-                          "description": "Version of the JSON-RPC protocol, should be 2.0.",
-                          "example": "2.0"
-                        },
-                        "id": {
-                          "type": "integer",
-                          "description": "The request identifier.",
-                          "example": 1
-                        },
-                        "result": {
-                          "type": "object",
-                          "description": "Result of the API call."
-                        }
-                      }
-                    },
-                    {
-                      "type": "object",
-                      "properties": {
-                        "result": {
-                          "type": "object",
-                          "properties": {
-                            "nfts": {
-                              "type": "array",
-                              "description": "Array of NFTs.",
-                              "items": {
-                                "type": "object",
-                                "properties": {
-                                  "address": {
-                                    "type": "string",
-                                    "description": "NFT contract address."
-                                  },
-                                  "isSemiFungible": {
-                                    "type": "boolean",
-                                    "description": "Indicates if the NFT is semi-fungible."
-                                  },
-                                  "tokenId": {
-                                    "type": "string",
-                                    "description": "Token ID of the NFT."
-                                  },
-                                  "tokenBalance": {
-                                    "type": "string",
-                                    "description": "Token balance of the NFT."
-                                  },
-                                  "tokenURI": {
-                                    "type": "string",
-                                    "description": "Token URI of the NFT."
-                                  },
-                                  "name": {
-                                    "type": "string",
-                                    "description": "Name of the NFT."
-                                  },
-                                  "symbol": {
-                                    "type": "string",
-                                    "description": "Symbol of the NFT."
-                                  },
-                                  "image": {
-                                    "type": "string",
-                                    "description": "Image URL of the NFT."
-                                  },
-                                  "data": {
-                                    "type": "object",
-                                    "description": "Additional data of the NFT."
-                                  }
-                                }
-                              }
-                            }
-                          }
-                        }
-                      }
-                    }
-                  ]
+                  "$ref": "#/components/schemas/SuggestedGasFeesResponse"
                 }
               }
             }
@@ -2712,7 +1345,7 @@
         ]
       },
       "ABIEncodeFunctionCallResponse": {
-        "anyOf": [
+        "allOf": [
           {
             "$ref": "#/components/schemas/RPCResponse"
           },
@@ -3008,7 +1641,6 @@
                     "type": "array",
                     "description": "Array of NFTs.",
                     "items": {
-
                       "type": "object",
                       "properties": {
                         "address": {
@@ -3059,4 +1691,3 @@
     }
   }
 }
-
