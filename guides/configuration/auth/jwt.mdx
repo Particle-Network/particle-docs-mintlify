@@ -1,6 +1,5 @@
 ---
 title: "Custom Authentication (JWT)"
-mode: "wide"
 ---
 
 ### Introduction
@@ -293,7 +292,18 @@ The first step is to configure JWT custom authentication in the [Particle Dashbo
 
 Click on the **JSON Web Token** button and add the necessary configuration.
 
-![JWT configuration page](/guides/quickstart/customization/images/jwt-config.png)
+<div className="flex justify-center">
+<img
+  className="block h-64 dark:hidden"
+  src="/guides/configuration/images/jwt-config.png"
+  alt="Wallet custom style"
+/>
+<img
+  className="hidden h-64 dark:block"
+  src="/guides/configuration/images/jwt-config.png"
+  alt="Wallet custom style"
+/>
+</div>
 
 
 - **JWKS URI**: This is the endpoint in your server serving the public keys, in this case, `/.well-known/jwks.json`. Ensure your server is exposed to the Internet.
