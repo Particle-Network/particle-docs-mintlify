@@ -49,7 +49,7 @@ The Particle Network AA SDK will fail to function correctly until it has been in
 
 Once `init` has been called, you can close off initialization by enabling AA mode with `ParticleAA.enableAAMode`.
 
-```dart Dart
+```dart
 
 // Support BICONOMY_V1 | BICONOMY_V2 | CYBERCONNECT | SIMPLE | LIGHT
 ParticleAA.init(AccountName.BICONOMY_V2());
@@ -69,7 +69,7 @@ However, if you'd like to check the deployment status of a given smart account m
 
 E.g.:
 
-```dart Dart
+```dart
 final eoaAddress = await Evm.getAddress();
 
 var isDeploy = await ParticleAA.isDeploy(eoaAddress);
@@ -81,7 +81,7 @@ var isDeploy = await ParticleAA.isDeploy(eoaAddress);
 
 If you'd like to exit AA mode and thus disable account abstraction functionality within your application, you'll need to call `ParticleAA.disableAAMode`. This will immediately render the usage of AA incompatible. Additionally, if you're unsure whether or not AA mode is enabled, you can call `ParticleAA.isAAModeEnable`, which will return a Boolean representing this status. E.g.:
 
-```dart Dart
+```dart
 ParticleAA.disableAAMode();
 
 var result = await ParticleAA.isAAModeEnable();  
@@ -109,12 +109,15 @@ Sending a transaction (UserOperation) is as simple as calling pre-existing metho
 
 Alternatively, for `ParticleConnect.batchSendTransactions` or ParticleAuthCore `Evm.batchSendTransactions`, the parameters will be the same, with the exception of `transaction` being an array of transactions.
 
-```dart Dart
+```dart
 // with particle_auth_core
 await Evm.sendTransaction(transaction,
         feeMode: AAFeeMode.gasless(result));
 
-await Evm.signAndSendTransaction(transaction,
+await Evm.sendTransaction(transaction,
+        feeMode: AAFeeMode.native(result));
+
+await Evm.sendTransaction(transaction,
         feeMode: AAFeeMode.token(feeQuote, tokenPaymasterAddress));
 
 await Evm.batchSendTransactions(transactions,
@@ -122,28 +125,32 @@ await Evm.batchSendTransactions(transactions,
 
 // with particle_connect
 await ParticleConnect.signAndSendTransaction(
-        WalletType.metaMask, EoaPublicAddress, transaction,
+        WalletType.authCore, eoaPublicAddress, transaction,
         feeMode: AAFeeMode.gasless(result));
 
 await ParticleConnect.signAndSendTransaction(
-        WalletType.metaMask, EoaPublicAddress, transaction,
+        WalletType.authCore, eoaPublicAddress, transaction,
+        feeMode: AAFeeMode.native(result));
+
+await ParticleConnect.signAndSendTransaction(
+        WalletType.authCore, eoaPublicAddress, transaction,
         feeMode: AAFeeMode.token(feeQuote, tokenPaymasterAddress));
 
 await ParticleConnect.batchSendTransactions(
-        WalletType.metaMask, EoaPublicAddress, transactions,
+        WalletType.authCore, eoaPublicAddress, transactions,
         feeMode: AAFeeMode.native(result));
 ```
 
 Check if you can send with AAFeeMode.gasless/native/token.
 
-```dart Dart
-// check if enough native for gas fee
+```dart
 var result = await ParticleAA.rpcGetFeeQuotes(EoaPublicAddress, [transaction]);
 var verifyingPaymasterNative = result["verifyingPaymasterNative"];
 var feeQuote = verifyingPaymasterNative["feeQuote"];
 var fee = BigInt.parse(feeQuote["fee"], radix: 10);
 var balance = BigInt.parse(feeQuote["balance"], radix: 10);
 
+// check if enough native for gas fee
 if (balance < fee) {
   print("can't natively paid, native balance if not enough for gas fee");
   return;

@@ -111,7 +111,7 @@ ParticleBase.init(ChainInfo.Ethereum, Env.dev);
 ParticleNetwork.Init(ChainInfo.Ethereum, Env.DEV); 
 
 // React Native & Cocos
-particleAuth.init(Ethereum, Env.Dev);
+particleBase.init(Ethereum, Env.Dev);
 ```
 
 ***
@@ -148,7 +148,7 @@ final userInfo = await ParticleAuthCore.connect(loginType, account: account, sup
 await ParticleAuthCore.Instance.Connect(LoginType.EMAIL, null, allSupportLoginTypes, SocialLoginPrompt.SelectAccount, loginPageConfig);
 
 // React Native & Cocos
-await particleAuthCore.connect(type, '', supportAuthType);
+await particleAuthCore.connect(type, null, supportAuthType);
 ```
 
 <Tip>The complete mobile SDK reference is available at [SDKs (Mobile)](/api-reference/auth/mobile-sdks/android).</Tip>

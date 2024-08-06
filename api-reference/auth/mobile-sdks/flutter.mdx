@@ -135,6 +135,12 @@ Now, with a fresh `ParticleNetwork-Info.plist` file, go ahead and fill it in wit
 
 Similar to the Android configuration, you'll need to fill in `PROJECT_UUID` (`projectId`), `PROJECT_CLIENT_KEY`, and `PROJECT_APP_UUID` (`appId`) with the corresponding values retrieved from the [Particle dashboard](https://dashboard.particle.network).
 
+Add Privacy - Face ID Usage Description to your info.plist file, head over to your `Info.plist` file and include the following snippet:
+
+```xml Info.plist
+<key>NSFaceIDUsageDescription</key>
+  <string>We use Face ID for secure access to the app.</string>
+```
 
 Finally, you'll need to edit your Podfile to ensure `particle_auth_core` is properly imported. Head over to the [linked guide](https://pub.dev/packages/particle_auth_core/install) to complete this, if you haven't already.
 
@@ -167,7 +173,7 @@ end
 </p>
 </Note>
 
-<Tip> Add Privacy - Face ID Usage Description to your info.plist file </Tip>
+
 
 ***
 
@@ -471,13 +477,13 @@ final result = await EvmService.readContract(publicAddress, contractAddress, met
 
 `EvmService.createTransaction` facilitates the construction of a transaction object derived from the standard `from`, `to` (`receiver` in this example), `amount` (`value`), and `data` fields. This transaction, once constructed with `EvmService.createTransaction`, can be passed for in-UI proposal with `ParticleAuthCore.sendTransaction`.
 
-| Field         | Type          | Description                                                                 |
-| ------------- | ------------- | --------------------------------------------------------------------------- |
-| `from`        | `String`      | The user's public address.                                                  |
-| `data`        | `String`      | The transaction's data.                                                     |
-| `value`       | `BigInt`      | The native amount.                                                          |
-| `to`          | `String`      | If you send a erc20, erc721, erc1155 or interact with a contract, this is the contract address, if you send native, this is receiver address.                                              |
-| `gasFeeLevel` | `GasFeeLevel` | (Optional) the gas fee level, `high`, `medium` or `low`, default is `high`. |
+| Field         | Type          | Description                                                                                                                                   |
+| ------------- | ------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
+| `from`        | `String`      | The user's public address.                                                                                                                    |
+| `data`        | `String`      | The transaction's data.                                                                                                                       |
+| `value`       | `BigInt`      | The native amount.                                                                                                                            |
+| `to`          | `String`      | If you send a erc20, erc721, erc1155 or interact with a contract, this is the contract address, if you send native, this is receiver address. |
+| `gasFeeLevel` | `GasFeeLevel` | (Optional) the gas fee level, `high`, `medium` or `low`, default is `high`.                                                                   |
 
 ```dart
 String from = "your public address";
@@ -510,9 +516,9 @@ final gasFees = await EvmService.suggestedGasFees();
 
 `EvmService` also extends to Data API methods such as `getTokensAndNFTs`, which returns a highly detailed JSON list of ERC20 tokens and ERC721 NFTs belonging to a specified address. This is accessible through `EvmService.getTokensAndNFTs`, passing in the public address to retrieve the tokens and NFTs of, also you can retrieve tokens from `getTokens` or NFTs from `getNFTs`
 
-| Field  | Type   | Description                                                                                              |
-|--------|--------|----------------------------------------------------------------------------------------------------------|
-| `address` | `String` | The user's public address.|
+| Field            | Type           | Description                    |
+| ---------------- | -------------- | ------------------------------ |
+| `address`        | `String`       | The user's public address.     |
 | `tokenAddresses` | `List<String>` | The specific tokens' addresses |
 
 ```dart
@@ -533,10 +539,10 @@ final result = await EvmService.getTransactionsByAddress(publicAddress);
 
 To retrieve token price based upon current network conditions, you can call `EvmService.getPrice`.
 
-| Field  | Type   | Description                                                                                              |
-|--------|--------|----------------------------------------------------------------------------------------------------------|
+| Field            | Type           | Description                                                       |
+| ---------------- | -------------- | ----------------------------------------------------------------- |
 | `tokenAddresses` | `List<String>` | The tokens's addresses, for native token, you can pass `"native"` |
-| `currencies` | `List<String>` | The price unity, such as `"usd"` |
+| `currencies`     | `List<String>` | The price unity, such as `"usd"`                                  |
 
 ```dart
 final result = await EvmService.getPrice(tokenAddresses, currencies);
@@ -559,10 +565,10 @@ In addition to `ParticleAuth` for authentication and interaction with Particle's
 `SolanaService` also extends to Data API methods such as `getTokensAndNFTs`, which returns a highly detailed JSON list of SPL tokens and NFTs belonging to a specified address. This is accessible through `SolanaService.getTokensAndNFTs`, passing in the public address to retrieve the tokens and NFTs of.
 
 
-| Field  | Type   | Description                                                                                              |
-|--------|--------|----------------------------------------------------------------------------------------------------------|
-| `address` | `String` | The user's public address.|
-| `parseMetadataUri` | `bool` | if parse the nft meta data. |
+| Field              | Type     | Description                 |
+| ------------------ | -------- | --------------------------- |
+| `address`          | `String` | The user's public address.  |
+| `parseMetadataUri` | `bool`   | if parse the nft meta data. |
 
 ```dart
 final result = await SolanaService.getTokensAndNFTs(publicAddress, true);
@@ -615,10 +621,10 @@ final serializedTransaction = result["transaction"]["serialized"];
 
 To retrieve token price based upon current network conditions, you can call `SolanaService.getPrice`.
 
-| Field  | Type   | Description                                                                                              |
-|--------|--------|----------------------------------------------------------------------------------------------------------|
+| Field            | Type           | Description                                                       |
+| ---------------- | -------------- | ----------------------------------------------------------------- |
 | `tokenAddresses` | `List<String>` | The tokens's addresses, for native token, you can pass `"native"` |
-| `currencies` | `List<String>` | The price unity, such as `"usd"` |
+| `currencies`     | `List<String>` | The price unity, such as `"usd"`                                  |
 
 
 ```dart
@@ -637,10 +643,10 @@ final result = await SolanaService.getTransactionsByAddress(address);
 
 To obtain the balance of a specified token at a specified address, you can call `SolanaService.getTokenByTokenAddresses`
 
-| Field  | Type   | Description                                                                                              |
-|--------|--------|----------------------------------------------------------------------------------------------------------|
-| `address` | `String` | The user's public address.|
-| `tokenAddresses` | `List<String>` | The tokens' addresses |
+| Field            | Type           | Description                |
+| ---------------- | -------------- | -------------------------- |
+| `address`        | `String`       | The user's public address. |
+| `tokenAddresses` | `List<String>` | The tokens' addresses      |
 
 ```dart
 await SolanaService.getTokenByTokenAddresses(address, tokenAddresses);
