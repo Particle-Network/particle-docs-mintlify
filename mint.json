@@ -56,6 +56,10 @@
     {
       "name": "Changelog",
       "url": "changelog"
+    },
+    {
+      "name": "Schedule a Demo",
+      "url": "https://calendly.com/particle-network/30min"
     }
   ],
   "anchors": [
@@ -121,10 +125,7 @@
     },
     {
       "group": "MISCELLANEOUS",
-      "pages": [
-        "landing/more/audits",
-        "landing/more/assets"
-      ]
+      "pages": ["landing/more/audits", "landing/more/assets"]
     },
     {
       "group": "TUTORIALS & DEMOS",
@@ -144,10 +145,7 @@
     },
     {
       "group": "GETTING STARTED",
-      "pages": [
-        "guides/overview",
-        "guides/network-coverage"
-      ]
+      "pages": ["guides/overview", "guides/network-coverage"]
     },
     {
       "group": "QUICKSTART: WALLET ABSTRACTION",
@@ -239,17 +237,13 @@
         },
         {
           "group": "Authentication",
-          "pages": [
-            "guides/configuration/auth/jwt"
-          ]
+          "pages": ["guides/configuration/auth/jwt"]
         }
       ]
     },
     {
       "group": "APIs & SDKs",
-      "pages": [
-        "api-reference/introduction"
-      ]
+      "pages": ["api-reference/introduction"]
     },
     {
       "group": "PARTICLE CONNECT",
@@ -257,9 +251,7 @@
         "api-reference/connect/introduction",
         {
           "group": "SDKs (Desktop)",
-          "pages": [
-            "api-reference/connect/desktop/web"
-          ]
+          "pages": ["api-reference/connect/desktop/web"]
         },
         {
           "group": "SDKs (Mobile)",
@@ -305,9 +297,7 @@
         },
         {
           "group": "SDKs (Multi-platform)",
-          "pages": [
-            "api-reference/auth/multi/unreal"
-          ]
+          "pages": ["api-reference/auth/multi/unreal"]
         }
       ]
     },
@@ -317,9 +307,7 @@
         "api-reference/wallet/introduction",
         {
           "group": "SDKs (Desktop)",
-          "pages": [
-            "api-reference/wallet/desktop/web"
-          ]
+          "pages": ["api-reference/wallet/desktop/web"]
         },
         {
           "group": "SDKs (Mobile)",
@@ -339,9 +327,7 @@
         "api-reference/aa/introduction",
         {
           "group": "SDKs (Desktop)",
-          "pages": [
-            "api-reference/aa/sdks/desktop/web"
-          ]
+          "pages": ["api-reference/aa/sdks/desktop/web"]
         },
         {
           "group": "SDKs (Mobile)",
@@ -389,9 +375,7 @@
         "api-reference/btc/introduction",
         {
           "group": "SDKs (Desktop)",
-          "pages": [
-            "api-reference/btc/desktop/web"
-          ]
+          "pages": ["api-reference/btc/desktop/web"]
         },
         {
           "group": "BTC Connect RPC",
@@ -404,16 +388,11 @@
     },
     {
       "group": "DEBUGGING",
-      "pages": [
-        "api-reference/debug/sdk",
-        "api-reference/debug/api"
-      ]
+      "pages": ["api-reference/debug/sdk", "api-reference/debug/api"]
     },
     {
       "group": "CHANGELOG",
-      "pages": [
-        "changelog/logs"
-      ]
+      "pages": ["changelog/logs"]
     }
   ],
   "footerSocials": {

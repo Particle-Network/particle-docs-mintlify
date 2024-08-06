@@ -4,102 +4,649 @@ title: "Network Coverage"
 
 # Mapping network coverage
 
-Particle's Wallet Abstraction solutions support a significant amount of EVM networks (roughly 49) alongside Solana, although to varying degrees. The full list with details on chain-specific support across the Particle Network tech stack can be found below.
+Particle's Wallet Abstraction solutions support a significant amount of EVM networks (roughly 80) alongside Solana and Tron, although to varying degrees. The full list with details on chain-specific support across the Particle Network tech stack can be found below.
 
 <Warning>
-  <p><strong>Not all of the below are supported by Particle's Smart Wallet-as-a-Service.</strong></p>
-  <p>Many of these chains only have EOA support, which means that account abstraction through Particle's Smart Wallet-as-a-Service isn't possible, and thus are exclusively available within the traditional EOA-based Wallet-as-a-Service.</p>
+  <p>
+    <strong>
+      Not all of the below are supported by Particle's Smart
+      Wallet-as-a-Service.
+    </strong>
+  </p>
+  <p>
+    Many of these chains only have EOA support, which means that account
+    abstraction through Particle's Smart Wallet-as-a-Service isn't possible, and
+    thus are exclusively available within the traditional EOA-based
+    Wallet-as-a-Service.
+  </p>
 </Warning>
 
-***
+---
 
 ## Wallet-as-a-Service
 
-| Chains          | Account Abstraction | Variables (`ChainInfo`)                                                                                         |
-|:----------------|:--------------------|:--------------------------------------------------------------------------------------------------|
-| Ethereum        | ✓                   | `Ethereum`, `EthereumSepolia`, `EthereumHolesky`                                                  |
-| Optimism        | ✓                   | `Optimism`, `OptimismSepolia`                                                                     |
-| ThunderCore     | x                   | `ThunderCore`, `ThunderCoreTestnet`                                                               |
-| Cronos          | x                   | `Cronos`, `CronosTestnet`                                                                         |
-| BNBChain        | ✓                   | `BNBChain`, `BNBChainTestnet`                                                                     |
-| OKTC            | x                   | `OKTC`, `OKTCTestnet`                                                                             |
-| Conflux eSpace  | x                   | `ConfluxeSpace`, `ConfluxeSpaceTestnet`                                                           |
-| Viction         | ✓                   | `Viction`, `VictionTestnet`                                                                       |
-| Solana          | x                   | `Solana`, `SolanaTestnet`, `SolanaDevnet`                                                         |
-| Fuse            | ✓                   | `Fuse`, `FuseTestnet`                                                                             |
-| Heco            | x                   | `Heco`                                                                                            |
-| Polygon         | ✓                   | `Polygon`, `PolygonAmoy`                                                                          |
-| Polygon zkEVM   | ✓                   | `PolygonzkEVM`, `PolygonzkEVMCardona`                                                             |
-| XLayer          | ✓                   | `XLayer`, `XLayerTestnet`                                                                         |
-| opBNB           | ✓                   | `opBNB`, `opBNBTestnet`                                                                           |
-| Fantom          | ✓                   | `Fantom`, `FantomTestnet`                                                                         |
-| zkSync Era      | x                   | `zkSyncEra`, `zkSyncEraSepolia`                                                                    |
-| KCC             | x                   | `KCC`, `KCCTestnet`                                                                               |
-| Gnosis          | ✓                   | `Gnosis`, `GnosisTestnet`                                                                         |
-| BOB             | x                   | `BOB`, `BOBTestnet`                                                                               |
-| Manta           | ✓                   | `Manta`, `MantaSepolia`                                                                           |
-| B² Network       | x                   | `BSquared`, `BSquaredTestnet`                                                                     |
-| Metis           | x                   | `Metis`                                                                                           |
-| Core            | ✓                   | `Core`, `CoreTestnet`                                                                             |
-| Moonbeam        | ✓                   | `Moonbeam`, `MoonbeamTestnet`                                                                     |
-| Moonriver       | ✓                   | `Moonriver`                                                                                       |
-| Sei             | ✓                   | `Sei`, `SeiTestnet`, `SeiDevnet`                                                                  |
-| BEVM            | x                   | `BEVM`, `BEVMTestnet`, `BEVMCanary`, `BEVMCanaryTestnet`                                          |
-| Kava            | x                   | `Kava`, `KavaTestnet`                                                                             |
-| Peaq            | ✓                   | `Peaq`, `PeaqKrest`, `PeaqAgungTestnet`                                                           |
-| AILayer         | x                   | `AILayer`, `AILayerTestnet`                                                                       |
-| GM Network       | ✓                   | `GMNetwork`, `GMNetworkTestnet`                                                                   |
-| ZetaChain       | ✓                   | `ZetaChain`, `ZetaChainTestnet`                                                                   |
-| Cyber           | ✓                   | `Cyber`, `CyberTestnet`                                                                           |
-| Klaytn          | x                   | `Klaytn`, `KlaytnTestnet`                                                                         |
-| Base            | ✓                   | `Base`, `BaseSepolia`                                                                             |
-| Combo           | ✓                   | `Combo`, `ComboTestnet`                                                                           |
-| ZKFair          | ✓                   | `ZKFair`, `ZKFairTestnet`                                                                         |
-| Avalanche       | ✓                   | `Avalanche`, `AvalancheTestnet`                                                                   |
-| Celo            | x                   | `Celo`, `CeloTestnet`                                                                             |
-| MAP Protocol     | x                   | `MAPProtocol`, `MAPProtocolTestnet`                                                               |
-| Zeroone         | x                   | `Zeroone`, `ZerooneTestnet`                                                                       |
-| Mode            | ✓                   | `Mode`, `ModeTestnet`                                                                             |
-| Arbitrum        | ✓                   | `ArbitrumOne`, `ArbitrumNova`, `ArbitrumSepolia`                                                  |
-| Oasis Emerald    | x                   | `OasisEmerald`, `OasisEmeraldTestnet`                                                             |
-| Blast           | ✓                   | `Blast`, `BlastSepolia`                                                                           |
-| Tron            | x                   | `Tron`, `TronShasta`, `TronNile`                                                                  |
-| Ancient8        | ✓                   | `Ancient8`, `Ancient8Testnet`                                                                     |
-| Aurora          | x                   | `Aurora`, `AuroraTestnet`                                                                         |
-| Harmony         | x                   | `Harmony`, `HarmonyTestnet`                                                                       |
-| Taiko           | ✓                   | `Taiko`, `TaikoKatla`, `TaikoHekla`                                                               |
-| Bitlayer        | ✓                   | `Bitlayer`, `BitlayerTestnet`                                                                     |
-| PlatON          | x                   | `PlatON`, `PlatONTestnet`                                                                         |
-| Scroll          | ✓                   | `Scroll`, `ScrollSepolia`                                                                         |
-| Merlin          | x                   | `Merlin`, `MerlinTestnet`                                                                         |
-| Mantle          | ✓                   | `Mantle`, `MantleSepoliaTestnet`                                                                  |
-| Linea           | ✓                   | `Linea`, `LineaSepolia`                                                                           |
-| Xterio          | ✓                   | `XterioBNB`, `XterioETH`, `XterioBNBTestnet`                                                      |
-| Astar zkEVM      | ✓                   | `AstarzkEVMMainet`, `AstarzkEVMTestnet`                                                           |
-| IoTeX           | ✓                   | `IoTeX`, `IoTeXTestnet`                                                                           |
-| Immutable       | ✓                   | `ImmutablezkEVMTestnet`                                                                           |
-| EOSEVM          | x                   | `EOSEVM`, `EOSEVMTestnet`                                                                         |
-| Lorenzo         | x                   | `Lorenzo`, `LorenzoTestnet`                                                                       |
-| SKALE     | x                   | `SKALENebula`                                                                                     |
-| zkLink      | x                   | `zkLinkNova`                                                                                      |
+| Chains         | Account Abstraction | Variables (`ChainInfo`)                                  |
+| :------------- | :------------------ | :------------------------------------------------------- |
+| Solana         | x                   | `Solana`, `SolanaTestnet`, `SolanaDevnet`                |
+| Tron           | x                   | `Tron`, `TronTestnet`, `TronDevnet`                      |
+| Ethereum       | ✓                   | `Ethereum`, `EthereumSepolia`, `EthereumHolesky`         |
+| Optimism       | ✓                   | `Optimism`, `OptimismSepolia`                            |
+| Base           | ✓                   | `Base`, `BaseSepolia`                                    |
+| Arbitrum       | ✓                   | `ArbitrumOne`, `ArbitrumNova`, `ArbitrumSepolia`         |
+| Linea          | ✓                   | `Linea`, `LineaSepolia`                                  |
+| BNB Chain      | ✓                   | `BNBChain`, `BNBChainTestnet`                            |
+| opBNB          | ✓                   | `opBNB`, `opBNBTestnet`                                  |
+| Polygon        | ✓                   | `Polygon`, `PolygonAmoy`                                 |
+| Polygon zkEVM  | ✓                   | `PolygonzkEVM`, `PolygonzkEVMCardona`                    |
+| Mantle         | ✓                   | `Mantle`, `MantleSepoliaTestnet`                         |
+| zkSync Era     | x                   | `zkSyncEra`, `zkSyncEraSepolia`                          |
+| Gnosis         | ✓                   | `Gnosis`, `GnosisTestnet`                                |
+| BOB            | ✓                   | `BOB`, `BOBTestnet`                                      |
+| Manta          | ✓                   | `Manta`, `MantaSepolia`                                  |
+| Metis          | x                   | `Metis`                                                  |
+| Core           | ✓                   | `Core`, `CoreTestnet`                                    |
+| Moonbeam       | ✓                   | `Moonbeam`, `MoonbeamTestnet`                            |
+| Moonriver      | ✓                   | `Moonriver`                                              |
+| Sei            | ✓                   | `Sei`, `SeiTestnet`, `SeiDevnet`                         |
+| BEVM           | ✓                   | `BEVM`, `BEVMTestnet`, `BEVMCanary`, `BEVMCanaryTestnet` |
+| Kava           | x                   | `Kava`, `KavaTestnet`                                    |
+| Peaq           | ✓                   | `Peaq`, `PeaqKrest`, `PeaqAgungTestnet`                  |
+| AILayer        | ✓                   | `AILayer`, `AILayerTestnet`                              |
+| GM Network     | ✓                   | `GMNetwork`, `GMNetworkTestnet`                          |
+| ZetaChain      | ✓                   | `ZetaChain`, `ZetaChainTestnet`                          |
+| Cyber          | ✓                   | `Cyber`, `CyberTestnet`                                  |
+| Klaytn         | x                   | `Klaytn`, `KlaytnTestnet`                                |
+| Combo          | ✓                   | `Combo`, `ComboTestnet`                                  |
+| ZKFair         | ✓                   | `ZKFair`, `ZKFairTestnet`                                |
+| Avalanche      | ✓                   | `Avalanche`, `AvalancheTestnet`                          |
+| Celo           | x                   | `Celo`, `CeloTestnet`                                    |
+| MAP Protocol   | x                   | `MAPProtocol`, `MAPProtocolTestnet`                      |
+| Zeroone        | ✓                   | `Zeroone`, `ZerooneTestnet`                              |
+| Mode           | ✓                   | `Mode`, `ModeTestnet`                                    |
+| Oasis Emerald  | x                   | `OasisEmerald`, `OasisEmeraldTestnet`                    |
+| Blast          | ✓                   | `Blast`, `BlastSepolia`                                  |
+| Ancient8       | ✓                   | `Ancient8`, `Ancient8Testnet`                            |
+| Aurora         | x                   | `Aurora`, `AuroraTestnet`                                |
+| Harmony        | x                   | `Harmony`, `HarmonyTestnet`                              |
+| Taiko          | ✓                   | `Taiko`, `TaikoKatla`, `TaikoHekla`                      |
+| PlatON         | x                   | `PlatON`, `PlatONTestnet`                                |
+| Scroll         | ✓                   | `Scroll`, `ScrollSepolia`                                |
+| Merlin         | ✓                   | `Merlin`, `MerlinTestnet`                                |
+| B² Network     | ✓                   | `BSquared`, `BSquaredTestnet`                            |
+| Bitlayer       | ✓                   | `Bitlayer`, `BitlayerTestnet`                            |
+| Xterio         | ✓                   | `XterioBNB`, `XterioETH`, `XterioBNBTestnet`             |
+| Astar zkEVM    | ✓                   | `AstarzkEVMMainet`, `AstarzkEVMTestnet`                  |
+| IoTeX          | ✓                   | `IoTeX`, `IoTeXTestnet`                                  |
+| Immutable      | ✓                   | `ImmutablezkEVMTestnet`                                  |
+| EOSEVM         | x                   | `EOSEVM`, `EOSEVMTestnet`                                |
+| Lorenzo        | ✓                   | `Lorenzo`, `LorenzoTestnet`                              |
+| SKALE          | x                   | `SKALENebula`                                            |
+| zkLink         | x                   | `zkLinkNova`                                             |
+| ThunderCore    | x                   | `ThunderCore`, `ThunderCoreTestnet`                      |
+| Cronos         | x                   | `Cronos`, `CronosTestnet`                                |
+| OKTC           | x                   | `OKTC`, `OKTCTestnet`                                    |
+| Conflux eSpace | x                   | `ConfluxeSpace`, `ConfluxeSpaceTestnet`                  |
+| Viction        | ✓                   | `Viction`, `VictionTestnet`                              |
+| Fuse           | ✓                   | `Fuse`, `FuseTestnet`                                    |
+| Heco           | x                   | `Heco`                                                   |
+| XLayer         | ✓                   | `XLayer`, `XLayerTestnet`                                |
+| Fantom         | ✓                   | `Fantom`, `FantomTestnet`                                |
+| KCC            | x                   | `KCC`, `KCCTestnet`                                      |
+| AINN           | x                   | `AINN`, `AINNTestnet`                                    |
+| TUNA           | x                   | `TUNA`, `TUNATestnet`                                    |
+| ElastOS        | ✓                   | `Elastos`, `ElastosTestnet`                              |
+| 5ire           | ✓                   | `Fiveire`, `FiveireTestnet`                              |
+| Kakarot        | ✓                   | `KakarotTestnet`                                         |
+| Zircuit        | ✓                   | `ZircuitTestnet`                                         |
 
+## All Chain IDs
 
+```typescript
+export enum EVM_CHAIN_ID {
+  ETHEREUM_MAINNET = 1,
+  ETHEREUM_SEPOLIA = 11155111,
+  ETHEREUM_HOLESKY = 17000,
+  // TODO @deprecated
+  ETHEREUM_GOERLI = 5,
+
+  BSC_MAINNET = 56,
+  BSC_TESTNET = 97,
+
+  POLYGON_MAINNET = 137,
+  POLYGON_TESTNET_AMOY = 80002,
+  // @deprecated
+  POLYGON_TESTNET = 80001,
+
+  AVALANCHE_MAINNET = 43114,
+  AVALANCHE_TESTNET = 43113,
+
+  FANTOM_MAINNET = 250,
+  FANTOM_TESTNET = 4002,
+
+  ARBITRUM_MAINNET_ONE = 42161,
+  ARBITRUM_MAINNET_NOVA = 42170,
+  ARBITRUM_TESTNET_SEPOLIA = 421614,
+  // TODO @deprecated
+  ARBITRUM_TESTNET_GOERLI = 421613,
+
+  MOONBEAM_MAINNET = 1284,
+  MOONRIVER_MAINNET = 1285,
+  MOONBASE_ALPHA_TESTNET = 1287,
+
+  HARMONY_MAINNET = 1666600000,
+  HARMONY_TESTNET = 1666700000,
+
+  OPTIMISM_MAINNET = 10,
+  OPTIMISM_TESTNET_SEPOLIA = 11155420,
+  // TODO @deprecated
+  OPTIMISM_TESTNET_GOERLI = 420,
+
+  HECO_MAINNET = 128,
+
+  AURORA_MAINNET = 1313161554,
+  AURORA_TESTNET = 1313161555,
+
+  KCC_MAINNET = 321,
+  KCC_TESTNET = 322,
+
+  PLATON_MAINNET = 210425,
+  PLATON_TESTNET = 2206132,
+
+  TRON_MAINNET = 728126428,
+  TRON_TESTNET_SHASTA = 2494104990,
+  TRON_TESTNET_NILE = 3448148188,
+
+  OKC_MAINNET = 66,
+  OKC_TESTNET = 65,
+
+  THUNDERCORE_MAINNET = 108,
+  THUNDERCORE_TESTNET = 18,
+
+  CRONOS_MAINNET = 25,
+  CRONOS_TESTNET = 338,
+
+  OASIS_EMERALD_MAINNET = 42262,
+  OASIS_EMERALD_TESTNET = 42261,
+
+  GNOSIS_MAINNET = 100,
+  GNOSIS_TESTNET = 10200,
+
+  CELO_MAINNET = 42220,
+  CELO_TESTNET = 44787,
+
+  KLAYTN_MAINNET = 8217,
+  KLAYTN_TESTNET = 1001,
+
+  SCROLL_MAINNET = 534352,
+  SCROLL_SEPOLIA_TESTNET = 534351,
+
+  ZKSYNC_MAINNET = 324,
+  ZKSYNC_TESTNET_SEPOLIA = 300,
+  // TODO @deprecated
+  ZKSYNC_TESTNET = 280,
+
+  METIS_MAINNET = 1088,
+  METIS_TESTNET = 599,
+
+  CONFLUX_ESPACE_MAINNET = 1030,
+  CONFLUX_ESPACE_TESTNET = 71,
+
+  MAP_PROTOCOL_MAINNET = 22776,
+  MAP_PROTOCOL_TESTNET = 212,
+
+  POLYGON_ZKEVM_MAINNET = 1101,
+  POLYGON_ZKEVM_CARDONA_TESTNET = 2442,
+  // TODO @deprecated
+  POLYGON_ZKEVM_TESTNET = 1442,
+
+  BASE_MAINNET = 8453,
+  BASE_TESTNET_SEPOLIA = 84532,
+  // TODO @deprecated
+  BASE_TESTNET = 84531,
+
+  LINEA_MAINNET = 59144,
+  LINEA_TESTNET_SEPOLIA = 59141,
+  // TODO @deprecated
+  LINEA_TESTNET_GOERLI = 59140,
+
+  COMBO_MAINNET = 9980,
+  COMBO_TESTNET = 91715,
+  COMBO_TESTNET_V2 = 1715,
+
+  MANTLE_MAINNET = 5000,
+  MANTLE_TESTNET_SEPOLIA = 5003,
+  // TODO @deprecated
+  MANTLE_TESTNET = 5001,
+
+  OPBNB_MAINNET = 204,
+  OPBNB_TESTNET = 5611,
+
+  OKBC_MAINNET = 196,
+  OKBC_TESTNET = 195,
+
+  TAIKO_MAINNET = 167000,
+  TAIKO_TESTNET_HEKLA = 167009,
+  // TODO @deprecated
+  TAIKO_TESTNET_JOLNIR = 167007,
+  // TODO @deprecated
+  TAIKO_TESTNET_KATLA = 167008,
+
+  READON_TESTNET = 12015,
+
+  ZORA_MAINNET = 7777777,
+  // TODO @deprecated
+  ZORA_TESTNET = 999,
+
+  // TODO @deprecated
+  PGN_MAINNET = 424,
+  // TODO @deprecated
+  PGN_TESTNET = 58008,
+
+  NEBULA_MAINNET = 1482601649,
+
+  MANTA_MAINNET = 169,
+  MANTA_SEPOLIA_TESTNET = 3441006,
+  // @deprecated
+  MANTA_TESTNET = 3441005,
+
+  ZETA_MAINNET = 7000,
+  ZETA_TESTNET = 7001,
+
+  EOSEVM_MAINNET = 17777,
+  EOSEVM_TESTNET = 15557,
+
+  KAVA_MAINNET = 2222,
+  KAVA_TESTNET = 2221,
+
+  ASTAR_ZKEVM_MAINNET = 3776,
+  ASTAR_ZKEVM_TESTNET_ZKYOTO = 6038361,
+  // @deprecated
+  ASTAR_ZKEVM_TESTNET = 1261120,
+
+  VICTION_MAINNET = 88,
+  VICTION_TESTNET = 89,
+
+  // @deprecated
+  LUMOZ_ZKEVM_TESTNET = 12008,
+
+  ANCIENT8_MAINNET = 888888888,
+  ANCIENT8_TESTNET = 28122024,
+
+  BLAST_MAINNET = 81457,
+  BLAST_TESTNET_SEPOLIA = 168587773,
+
+  BERACHAIN_TESTNET_BARTIO = 80084,
+  // @deprecated
+  BERACHAIN_TESTNET_ARTIO = 80085,
+
+  ZKFAIR_MAINNET = 42766,
+  ZKFAIR_TESTNET = 43851,
+
+  CORE_MAINNET = 1116,
+  CORE_TESTNET = 1115,
+
+  // @deprecated
+  METER_MAINNET = 82,
+  // @deprecated
+  METER_TESTNET = 83,
+
+  MODE_MAINNET = 34443,
+  MODE_TESTNET = 919,
+
+  XTERIO_MAINNET = 112358,
+  XTERIO_TESTNET = 1637450,
+
+  XTERIO_ETH_MAINNET = 2702128,
+  // TODO @deprecated
+  XTERIO_ETH_TESTNET = 1637451,
+
+  GMNETWORK_MAINNET = 2777,
+  GMNETWORK_TESTNET = 202402181627,
+
+  ZKLINK_NOVA_MAINNET = 810180,
+  // @deprecated
+  ZKLINK_NOVA_TESTNET = 810182,
+
+  IMMUTABLE_ZKEVM_TESTNET = 13473,
+
+  PEAQ_MAINNET_KREST = 2241,
+  PEAQ_TESTNET_AGUNG = 9990,
+
+  CYBER_MAINNET = 7560,
+  CYBER_TESTNET = 111557560,
+
+  HYBRID_TESTNET = 1225,
+
+  ZEROONE_MAINNET = 27827,
+  ZEROONE_TESTNET = 56400,
+
+  FUSE_MAINNET = 122,
+  FUSE_TESTNET = 123,
+
+  IOTEX_MAINNET = 4689,
+  IOTEX_TESTNET = 4690,
+
+  SEI_MAINNET = 1329,
+  SEI_TESTNET = 1328,
+  SEI_DEVNET = 713715,
+
+  KAKAROT_TESTNET = 1802203764,
+
+  ZIRCUIT_TESTNET = 48899,
+
+  ELASTOS_MAINNET = 20,
+  ELASTOS_TESTNET = 21,
+
+  FIVEIRE_MAINNET = 995,
+  FIVEIRE_TESTNET = 997,
+
+  AURA_MAINNET = 6322,
+  AURA_EUPHORIA_TESTNET = 6321,
+
+  // BTC L2s
+  MERLIN_MAINNET = 4200,
+  MERLIN_TESTNET = 686868,
+
+  // @deprecated
+  LUMIBIT_TESTNET = 28206,
+
+  BEVM_MAINNET = 11501,
+  BEVM_TESTNET = 11503,
+  BEVM_CANARY_MAINNET = 1501,
+  BEVM_CANARY_TESTNET = 1502,
+
+  BSQUARED_MAINNET = 223,
+  BSQUARED_TESTNET = 1123,
+
+  SATOSHIVM_ALPHA_MAINNET = 3109,
+  SATOSHIVM_TESTNET = 3110,
+
+  BITLAYER_MAINNET = 200901,
+  BITLAYER_TESTNET = 200810,
+
+  BOTANIX_TESTNET = 3636,
+
+  ROOTSTOCK_MAINNET = 30,
+
+  AINN_MAINNET = 2649,
+  AINN_TESTNET = 2648,
+
+  BOB_MAINNET = 60808,
+  BOB_TESTNET = 111,
+
+  LORENZO_MAINNET = 8329,
+  LORENZO_TESTNET = 83291,
+
+  TUNA_TESTNET = 89682,
+}
+```
 
 ## BTC Connect
 
-| Chain                   | BTC Smart Account Version | Variables                                                                        |
-| :---------------------- | :----------------------------------- | :------------------------------------------------------------------------------- |
-| Merlin                  | 1.0.0                                | `Merlin`, `MerlinTestnet`                                                        |
-| BEVM                    | 1.0.0                                | `BEVM`, `BEVMTestnet`, `BEVMCanary`, `BEVMCanaryTestnet`                          |
-| B² Network              | 2.0.0                                | `BSquared`, `BSquaredTestnet`                                         |
-| SatoshiVM               | 1.0.0                                | `SatoshiVMAlpha`, `SatoshiVMTestnet`                                         |
-| Polygon zkEVM (Testnet) | 2.0.0                                | `PolygonzkEVM`, `PolygonzkEVMCardona`                                            |
-| Polygon (Testnet)       | 1.0.0, 2.0.0                         | `Polygon`, `PolygonAmoy`                                                         |
-| Mantle                  | 2.0.0                                | `Mantle`, `MantleSepoliaTestnet`                                                 |
-| BitLayer                | 1.0.0, 2.0.0                         | `Bitlayer`, `BitlayerTestnet`                                                    |
-| MAP Protocol            | 1.0.0                                | `MAPProtocol`, `MAPProtocolTestnet`                                              |
-| Botanix                 | 2.0.0                                | `BotanixTestnet`                                         |
-| AINN Layer2             | 2.0.0                                | `AILayer`, `AILayerTestnet`                                         |
-| BOB                     | 2.0.0                                | `BOB`, `BOBTestnet`                                                              |
-| Ethereum                | 2.0.0                                | `Ethereum`, `EthereumSepolia`                                |
-| Tuna                | 2.0.0                                | `TUNATestnet`                                |
+Versions 1.0.0 and 2.0.0 are available on all supported chains.
+
+| Chain                   | BTC Smart Account Version | Variables                                                |
+| :---------------------- | :------------------------ | :------------------------------------------------------- |
+| Merlin                  | 1.0.0, 2.0.0              | `Merlin`, `MerlinTestnet`                                |
+| BEVM                    | 1.0.0, 2.0.0              | `BEVM`, `BEVMTestnet`, `BEVMCanary`, `BEVMCanaryTestnet` |
+| B² Network              | 1.0.0, 2.0.0              | `BSquared`, `BSquaredTestnet`                            |
+| SatoshiVM               | 1.0.0, 2.0.0              | `SatoshiVMAlpha`, `SatoshiVMTestnet`                     |
+| BitLayer                | 1.0.0, 2.0.0              | `Bitlayer`, `BitlayerTestnet`                            |
+| MAP Protocol            | 1.0.0, 2.0.0              | `MAPProtocol`, `MAPProtocolTestnet`                      |
+| Botanix                 | 1.0.0, 2.0.0              | `BotanixTestnet`                                         |
+| AINN Layer2             | 1.0.0, 2.0.0              | `AILayer`, `AILayerTestnet`                              |
+| BOB                     | 1.0.0, 2.0.0              | `BOB`, `BOBTestnet`                                      |
+| Tuna                    | 1.0.0, 2.0.0              | `TUNATestnet`                                            |
+| Ethereum                | 1.0.0, 2.0.0              | `Ethereum`, `EthereumSepolia`                            |
+| Mantle                  | 1.0.0, 2.0.0              | `Mantle`, `MantleSepoliaTestnet`                         |
+| Polygon zkEVM (Testnet) | 2.0.0, 2.0.0              | `PolygonzkEVM`, `PolygonzkEVMCardona`                    |
+| Polygon (Testnet)       | 1.0.0, 2.0.0              | `Polygon`, `PolygonAmoy`                                 |
+
+```typescript
+ BTC: [
+        // BTC L2s
+        EVM_CHAIN_ID.MERLIN_MAINNET,
+        EVM_CHAIN_ID.MERLIN_TESTNET,
+        EVM_CHAIN_ID.BSQUARED_MAINNET,
+        EVM_CHAIN_ID.BSQUARED_TESTNET,
+        EVM_CHAIN_ID.BITLAYER_MAINNET,
+        EVM_CHAIN_ID.BITLAYER_TESTNET,
+        EVM_CHAIN_ID.BOB_MAINNET,
+        EVM_CHAIN_ID.BOB_TESTNET,
+        EVM_CHAIN_ID.BEVM_MAINNET,
+        EVM_CHAIN_ID.BEVM_TESTNET,
+        EVM_CHAIN_ID.BEVM_CANARY_MAINNET,
+        EVM_CHAIN_ID.BEVM_CANARY_TESTNET,
+        EVM_CHAIN_ID.MAP_PROTOCOL_MAINNET,
+        EVM_CHAIN_ID.MAP_PROTOCOL_TESTNET,
+        EVM_CHAIN_ID.AINN_MAINNET,
+        EVM_CHAIN_ID.AINN_TESTNET,
+        EVM_CHAIN_ID.SATOSHIVM_ALPHA_MAINNET,
+        EVM_CHAIN_ID.SATOSHIVM_TESTNET,
+        EVM_CHAIN_ID.LORENZO_MAINNET,
+        EVM_CHAIN_ID.LORENZO_TESTNET,
+        // Only testnets
+        EVM_CHAIN_ID.BOTANIX_TESTNET,
+        EVM_CHAIN_ID.TUNA_TESTNET,
+        // EVM Chains
+        EVM_CHAIN_ID.ETHEREUM_MAINNET,
+        EVM_CHAIN_ID.ETHEREUM_SEPOLIA,
+        EVM_CHAIN_ID.POLYGON_MAINNET,
+        EVM_CHAIN_ID.POLYGON_TESTNET_AMOY,
+        EVM_CHAIN_ID.POLYGON_ZKEVM_CARDONA_TESTNET,
+        EVM_CHAIN_ID.BSC_MAINNET,
+        EVM_CHAIN_ID.BSC_TESTNET,
+        EVM_CHAIN_ID.ARBITRUM_MAINNET_ONE,
+        EVM_CHAIN_ID.ARBITRUM_TESTNET_SEPOLIA,
+        EVM_CHAIN_ID.MANTLE_MAINNET,
+        EVM_CHAIN_ID.MANTLE_TESTNET_SEPOLIA,
+        EVM_CHAIN_ID.CORE_MAINNET,
+        EVM_CHAIN_ID.CORE_TESTNET,
+        EVM_CHAIN_ID.ELASTOS_MAINNET,
+        EVM_CHAIN_ID.ELASTOS_TESTNET,
+        EVM_CHAIN_ID.MODE_MAINNET,
+        EVM_CHAIN_ID.MODE_TESTNET,
+        // TODO Not active; may remove
+        EVM_CHAIN_ID.ROOTSTOCK_MAINNET,
+    ],
+```
+
+## Smart Accounts
+
+### BICONOMY smart account
+
+```typescript
+export const BICONOMY_SUPPORT_CHAINS = [
+  EVM_CHAIN_ID.ETHEREUM_MAINNET,
+  EVM_CHAIN_ID.ETHEREUM_SEPOLIA,
+  EVM_CHAIN_ID.POLYGON_MAINNET,
+  EVM_CHAIN_ID.BSC_MAINNET,
+  EVM_CHAIN_ID.BSC_TESTNET,
+  EVM_CHAIN_ID.ARBITRUM_MAINNET_ONE,
+  EVM_CHAIN_ID.ARBITRUM_MAINNET_NOVA,
+  EVM_CHAIN_ID.ARBITRUM_TESTNET_SEPOLIA,
+  EVM_CHAIN_ID.OPTIMISM_MAINNET,
+  EVM_CHAIN_ID.AVALANCHE_MAINNET,
+  EVM_CHAIN_ID.AVALANCHE_TESTNET,
+  EVM_CHAIN_ID.BASE_MAINNET,
+  EVM_CHAIN_ID.BASE_TESTNET,
+  EVM_CHAIN_ID.POLYGON_ZKEVM_MAINNET,
+  // Only V2
+  EVM_CHAIN_ID.LINEA_MAINNET,
+  EVM_CHAIN_ID.OPBNB_MAINNET,
+  EVM_CHAIN_ID.OPBNB_TESTNET,
+  EVM_CHAIN_ID.MANTLE_MAINNET,
+  EVM_CHAIN_ID.MANTLE_TESTNET_SEPOLIA,
+  EVM_CHAIN_ID.MANTA_MAINNET,
+  EVM_CHAIN_ID.COMBO_MAINNET,
+  EVM_CHAIN_ID.COMBO_TESTNET_V2,
+  EVM_CHAIN_ID.MOONBEAM_MAINNET,
+  EVM_CHAIN_ID.OKBC_MAINNET,
+  EVM_CHAIN_ID.OKBC_TESTNET,
+  EVM_CHAIN_ID.GNOSIS_MAINNET,
+  EVM_CHAIN_ID.GNOSIS_TESTNET,
+  EVM_CHAIN_ID.ZETA_MAINNET,
+  EVM_CHAIN_ID.ZETA_TESTNET,
+  EVM_CHAIN_ID.SCROLL_MAINNET,
+  EVM_CHAIN_ID.SCROLL_SEPOLIA_TESTNET,
+  EVM_CHAIN_ID.BLAST_MAINNET,
+  EVM_CHAIN_ID.BLAST_TESTNET_SEPOLIA,
+  EVM_CHAIN_ID.OPTIMISM_TESTNET_SEPOLIA,
+  EVM_CHAIN_ID.POLYGON_TESTNET_AMOY,
+  EVM_CHAIN_ID.POLYGON_ZKEVM_CARDONA_TESTNET,
+  EVM_CHAIN_ID.BASE_TESTNET_SEPOLIA,
+  EVM_CHAIN_ID.BERACHAIN_TESTNET_BARTIO,
+  EVM_CHAIN_ID.ARBITRUM_TESTNET_SEPOLIA,
+];
+```
+
+### SIMPLE smart account
+
+```typescript
+SIMPLE: [
+        EVM_CHAIN_ID.POLYGON_MAINNET,
+        EVM_CHAIN_ID.POLYGON_TESTNET_AMOY,
+        EVM_CHAIN_ID.ETHEREUM_MAINNET,
+        EVM_CHAIN_ID.ETHEREUM_SEPOLIA,
+        EVM_CHAIN_ID.ETHEREUM_HOLESKY,
+        EVM_CHAIN_ID.BSC_MAINNET,
+        EVM_CHAIN_ID.BSC_TESTNET,
+        EVM_CHAIN_ID.OPBNB_MAINNET,
+        EVM_CHAIN_ID.OPBNB_TESTNET,
+        EVM_CHAIN_ID.LINEA_MAINNET,
+        EVM_CHAIN_ID.LINEA_TESTNET_SEPOLIA,
+        EVM_CHAIN_ID.OPTIMISM_MAINNET,
+        EVM_CHAIN_ID.OPTIMISM_TESTNET_SEPOLIA,
+        EVM_CHAIN_ID.MANTA_MAINNET,
+        EVM_CHAIN_ID.MANTA_SEPOLIA_TESTNET,
+        EVM_CHAIN_ID.MANTLE_MAINNET,
+        EVM_CHAIN_ID.MANTLE_TESTNET_SEPOLIA,
+        EVM_CHAIN_ID.ARBITRUM_MAINNET_ONE,
+        EVM_CHAIN_ID.ARBITRUM_MAINNET_NOVA,
+        EVM_CHAIN_ID.ARBITRUM_TESTNET_SEPOLIA,
+        EVM_CHAIN_ID.AVALANCHE_MAINNET,
+        EVM_CHAIN_ID.AVALANCHE_TESTNET,
+        EVM_CHAIN_ID.BASE_MAINNET,
+        EVM_CHAIN_ID.BASE_TESTNET_SEPOLIA,
+        EVM_CHAIN_ID.SCROLL_MAINNET,
+        EVM_CHAIN_ID.SCROLL_SEPOLIA_TESTNET,
+        EVM_CHAIN_ID.GNOSIS_MAINNET,
+        EVM_CHAIN_ID.GNOSIS_TESTNET,
+        EVM_CHAIN_ID.VICTION_MAINNET,
+        EVM_CHAIN_ID.VICTION_TESTNET,
+        EVM_CHAIN_ID.MOONBEAM_MAINNET,
+        EVM_CHAIN_ID.MOONRIVER_MAINNET,
+        EVM_CHAIN_ID.MOONBASE_ALPHA_TESTNET,
+        EVM_CHAIN_ID.POLYGON_ZKEVM_MAINNET,
+        EVM_CHAIN_ID.POLYGON_ZKEVM_CARDONA_TESTNET,
+        EVM_CHAIN_ID.FANTOM_MAINNET,
+        EVM_CHAIN_ID.FANTOM_TESTNET,
+        EVM_CHAIN_ID.COMBO_MAINNET,
+        EVM_CHAIN_ID.COMBO_TESTNET_V2,
+        EVM_CHAIN_ID.ZKFAIR_MAINNET,
+        EVM_CHAIN_ID.ZKFAIR_TESTNET,
+        EVM_CHAIN_ID.MAP_PROTOCOL_MAINNET,
+        EVM_CHAIN_ID.MAP_PROTOCOL_TESTNET,
+        EVM_CHAIN_ID.BEVM_MAINNET,
+        EVM_CHAIN_ID.BEVM_TESTNET,
+        EVM_CHAIN_ID.BEVM_CANARY_MAINNET,
+        EVM_CHAIN_ID.BEVM_CANARY_TESTNET,
+        EVM_CHAIN_ID.ZETA_MAINNET,
+        EVM_CHAIN_ID.ZETA_TESTNET,
+        EVM_CHAIN_ID.MERLIN_MAINNET,
+        EVM_CHAIN_ID.MERLIN_TESTNET,
+        EVM_CHAIN_ID.CORE_MAINNET,
+        EVM_CHAIN_ID.CORE_TESTNET,
+        EVM_CHAIN_ID.MODE_MAINNET,
+        EVM_CHAIN_ID.MODE_TESTNET,
+        EVM_CHAIN_ID.BLAST_MAINNET,
+        EVM_CHAIN_ID.BLAST_TESTNET_SEPOLIA,
+        EVM_CHAIN_ID.ANCIENT8_MAINNET,
+        EVM_CHAIN_ID.ANCIENT8_TESTNET,
+        EVM_CHAIN_ID.XTERIO_MAINNET,
+        EVM_CHAIN_ID.XTERIO_TESTNET,
+        EVM_CHAIN_ID.XTERIO_ETH_MAINNET,
+        EVM_CHAIN_ID.ASTAR_ZKEVM_MAINNET,
+        EVM_CHAIN_ID.ASTAR_ZKEVM_TESTNET_ZKYOTO,
+        EVM_CHAIN_ID.ASTAR_ZKEVM_TESTNET,
+        EVM_CHAIN_ID.PEAQ_MAINNET_KREST,
+        EVM_CHAIN_ID.PEAQ_TESTNET_AGUNG,
+        EVM_CHAIN_ID.BSQUARED_MAINNET,
+        EVM_CHAIN_ID.BSQUARED_TESTNET,
+        EVM_CHAIN_ID.OKBC_MAINNET,
+        EVM_CHAIN_ID.OKBC_TESTNET,
+        EVM_CHAIN_ID.CYBER_MAINNET,
+        EVM_CHAIN_ID.CYBER_TESTNET,
+        EVM_CHAIN_ID.TAIKO_MAINNET,
+        EVM_CHAIN_ID.TAIKO_TESTNET_HEKLA,
+        EVM_CHAIN_ID.BITLAYER_MAINNET,
+        EVM_CHAIN_ID.BITLAYER_TESTNET,
+        EVM_CHAIN_ID.GMNETWORK_MAINNET,
+        EVM_CHAIN_ID.GMNETWORK_TESTNET,
+        EVM_CHAIN_ID.FUSE_MAINNET,
+        EVM_CHAIN_ID.FUSE_TESTNET,
+        EVM_CHAIN_ID.IOTEX_MAINNET,
+        EVM_CHAIN_ID.IOTEX_TESTNET,
+        EVM_CHAIN_ID.SEI_MAINNET,
+        EVM_CHAIN_ID.SEI_TESTNET,
+        EVM_CHAIN_ID.SEI_DEVNET,
+        EVM_CHAIN_ID.LORENZO_MAINNET,
+        EVM_CHAIN_ID.LORENZO_TESTNET,
+        EVM_CHAIN_ID.KAKAROT_TESTNET,
+        EVM_CHAIN_ID.ZIRCUIT_TESTNET,
+        EVM_CHAIN_ID.ELASTOS_MAINNET,
+        EVM_CHAIN_ID.ELASTOS_TESTNET,
+        EVM_CHAIN_ID.FIVEIRE_MAINNET,
+        EVM_CHAIN_ID.FIVEIRE_TESTNET,
+        EVM_CHAIN_ID.AURA_MAINNET,
+        EVM_CHAIN_ID.AURA_EUPHORIA_TESTNET,
+        // Only testnets
+        EVM_CHAIN_ID.LUMOZ_ZKEVM_TESTNET,
+        EVM_CHAIN_ID.READON_TESTNET,
+        EVM_CHAIN_ID.BERACHAIN_TESTNET_BARTIO,
+        EVM_CHAIN_ID.SATOSHIVM_TESTNET,
+        EVM_CHAIN_ID.IMMUTABLE_ZKEVM_TESTNET,
+        EVM_CHAIN_ID.HYBRID_TESTNET,
+    ],
+```
+
+### CYBERCONNECT
+
+```typescript
+    CYBERCONNECT: [
+        EVM_CHAIN_ID.CYBER_MAINNET,
+        EVM_CHAIN_ID.CYBER_TESTNET,
+        EVM_CHAIN_ID.ETHEREUM_MAINNET,
+        EVM_CHAIN_ID.ETHEREUM_SEPOLIA,
+        EVM_CHAIN_ID.POLYGON_MAINNET,
+        EVM_CHAIN_ID.POLYGON_TESTNET_AMOY,
+        EVM_CHAIN_ID.OPTIMISM_MAINNET,
+        EVM_CHAIN_ID.OPTIMISM_TESTNET_SEPOLIA,
+        EVM_CHAIN_ID.BASE_MAINNET,
+        EVM_CHAIN_ID.BASE_TESTNET_SEPOLIA,
+        EVM_CHAIN_ID.LINEA_MAINNET,
+        EVM_CHAIN_ID.ARBITRUM_MAINNET_ONE,
+        EVM_CHAIN_ID.BSC_MAINNET,
+        EVM_CHAIN_ID.BSC_TESTNET,
+        EVM_CHAIN_ID.OPBNB_MAINNET,
+        EVM_CHAIN_ID.OPBNB_TESTNET,
+        EVM_CHAIN_ID.SCROLL_MAINNET,
+        EVM_CHAIN_ID.SCROLL_SEPOLIA_TESTNET,
+        EVM_CHAIN_ID.BLAST_MAINNET,
+        EVM_CHAIN_ID.BLAST_TESTNET_SEPOLIA,
+        EVM_CHAIN_ID.MANTLE_MAINNET,
+    ],
+```
+
+### LIGHT alchemy
+
+```typescript
+    LIGHT: [
+        EVM_CHAIN_ID.ETHEREUM_MAINNET,
+        EVM_CHAIN_ID.ETHEREUM_SEPOLIA,
+        EVM_CHAIN_ID.POLYGON_MAINNET,
+        EVM_CHAIN_ID.ARBITRUM_MAINNET_ONE,
+        EVM_CHAIN_ID.OPTIMISM_MAINNET,
+        EVM_CHAIN_ID.BASE_MAINNET,
+    ],
+```
