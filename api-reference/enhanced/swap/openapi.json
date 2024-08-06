@@ -123,6 +123,29 @@
       }
     },
     "schemas": {
+      "AnyValue": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "number"
+          },
+          {
+            "type": "integer"
+          },
+          {
+            "type": "boolean"
+          },
+          {
+            "type": "object"
+          },
+          {
+            "type": "array",
+            "items": {}
+          }
+        ]
+      },
       "RPCRequest": {
         "type": "object",
         "required": [
@@ -180,8 +203,11 @@
             "example": 1
           },
           "result": {
-            "type": "object",
-            "description": "Result of the API call."
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/AnyValue"
+              }
+            ]
           },
           "chainId": {
             "type": "integer",

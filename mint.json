@@ -387,6 +387,47 @@
       ]
     },
     {
+      "group": "EHNANCED",
+      "pages": [
+        "api-reference/enhanced/introduction",
+        {
+          "group": "EVM Enhanced RPC",
+          "pages": [
+            "api-reference/enhanced/evm/abi_encodefunctioncall",
+            "api-reference/enhanced/evm/crosschain_getnfts",
+            "api-reference/enhanced/evm/deserializetransaction",
+            "api-reference/enhanced/evm/getcontractabi",
+            "api-reference/enhanced/evm/getlatestblock",
+            "api-reference/enhanced/evm/getnfts",
+            "api-reference/enhanced/evm/getpendingtransactionsbyaddress",
+            "api-reference/enhanced/evm/getprice",
+            "api-reference/enhanced/evm/gettokens",
+            "api-reference/enhanced/evm/gettokensandnfts",
+            "api-reference/enhanced/evm/gettransactionsbyaddress",
+            "api-reference/enhanced/evm/suggestedgasfees"
+          ]
+        },
+        {
+          "group": "Solana Enhanced RPC",
+          "pages": [
+            "api-reference/enhanced/solana/enhancedgetprice",
+            "api-reference/enhanced/solana/enhancedgettokensandnfts",
+            "api-reference/enhanced/solana/enhancedgettransactionsbyaddress",
+            "api-reference/enhanced/solana/solanaservice"
+          ]
+        },
+        {
+          "group": "Swap RPC",
+          "pages": [
+            "api-reference/enhanced/swap/introduction",
+            "api-reference/enhanced/swap/checkapprove",
+            "api-reference/enhanced/swap/getquote",
+            "api-reference/enhanced/swap/getswap"
+          ]
+        }
+      ]
+    },
+    {
       "group": "DEBUGGING",
       "pages": ["api-reference/debug/sdk", "api-reference/debug/api"]
     },
