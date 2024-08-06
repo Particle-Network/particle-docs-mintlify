@@ -121,7 +121,10 @@
     },
     {
       "group": "MISCELLANEOUS",
-      "pages": ["landing/more/audits", "landing/more/assets"]
+      "pages": [
+        "landing/more/audits",
+        "landing/more/assets"
+      ]
     },
     {
       "group": "TUTORIALS & DEMOS",
@@ -141,7 +144,10 @@
     },
     {
       "group": "GETTING STARTED",
-      "pages": ["guides/overview", "guides/network-coverage"]
+      "pages": [
+        "guides/overview",
+        "guides/network-coverage"
+      ]
     },
     {
       "group": "QUICKSTART: WALLET ABSTRACTION",
@@ -152,7 +158,6 @@
           "group": "Wallet-as-a-Service",
           "pages": [
             "guides/quickstart/waas/understanding-waas",
-
             "guides/quickstart/waas/web-quickstart",
             "guides/quickstart/waas/mobile-quickstart"
           ]
@@ -174,14 +179,6 @@
             "guides/quickstart/connection-kits/web3modal",
             "guides/quickstart/connection-kits/web3-onboard",
             "guides/quickstart/connection-kits/solana"
-          ]
-        },
-        {
-          "group": "Customization",
-          "pages": [
-            "guides/quickstart/customization/auth",
-            "guides/quickstart/customization/wallet",
-            "guides/quickstart/customization/jwt"
           ]
         }
       ]
@@ -231,8 +228,28 @@
       ]
     },
     {
+      "group": "CONFIGURATION",
+      "pages": [
+        {
+          "group": "Appearance",
+          "pages": [
+            "guides/configuration/appearance/auth",
+            "guides/configuration/appearance/wallet"
+          ]
+        },
+        {
+          "group": "Authentication",
+          "pages": [
+            "guides/configuration/auth/jwt"
+          ]
+        }
+      ]
+    },
+    {
       "group": "APIs & SDKs",
-      "pages": ["api-reference/introduction"]
+      "pages": [
+        "api-reference/introduction"
+      ]
     },
     {
       "group": "PARTICLE CONNECT",
@@ -240,7 +257,9 @@
         "api-reference/connect/introduction",
         {
           "group": "SDKs (Desktop)",
-          "pages": ["api-reference/connect/desktop/web"]
+          "pages": [
+            "api-reference/connect/desktop/web"
+          ]
         },
         {
           "group": "SDKs (Mobile)",
@@ -286,7 +305,9 @@
         },
         {
           "group": "SDKs (Multi-platform)",
-          "pages": ["api-reference/auth/multi/unreal"]
+          "pages": [
+            "api-reference/auth/multi/unreal"
+          ]
         }
       ]
     },
@@ -296,7 +317,9 @@
         "api-reference/wallet/introduction",
         {
           "group": "SDKs (Desktop)",
-          "pages": ["api-reference/wallet/desktop/web"]
+          "pages": [
+            "api-reference/wallet/desktop/web"
+          ]
         },
         {
           "group": "SDKs (Mobile)",
@@ -316,7 +339,9 @@
         "api-reference/aa/introduction",
         {
           "group": "SDKs (Desktop)",
-          "pages": ["api-reference/aa/sdks/desktop/web"]
+          "pages": [
+            "api-reference/aa/sdks/desktop/web"
+          ]
         },
         {
           "group": "SDKs (Mobile)",
@@ -364,7 +389,9 @@
         "api-reference/btc/introduction",
         {
           "group": "SDKs (Desktop)",
-          "pages": ["api-reference/btc/desktop/web"]
+          "pages": [
+            "api-reference/btc/desktop/web"
+          ]
         },
         {
           "group": "BTC Connect RPC",
@@ -377,7 +404,10 @@
     },
     {
       "group": "DEBUGGING",
-      "pages": ["api-reference/debug/sdk", "api-reference/debug/api"]
+      "pages": [
+        "api-reference/debug/sdk",
+        "api-reference/debug/api"
+      ]
     },
     {
       "group": "EHNANCED",
@@ -422,7 +452,9 @@
     },
     {
       "group": "CHANGELOG",
-      "pages": ["changelog/logs"]
+      "pages": [
+        "changelog/logs"
+      ]
     }
   ],
   "footerSocials": {
@@ -686,6 +718,10 @@
     {
       "source": "/changelog",
       "destination": "/changelog/logs"
+    },
+    {
+      "source": "/docs/custom-authentication-jwt",
+      "destination": "/guides/configuration/auth/jwt"
     }
   ]
 }
