@@ -1,0 +1,30 @@
+---
+title: 'SDK Reference (EvmService)'
+description: "Reference for the common EvmService SDK extension."
+---
+
+Throughout many of Particle Network's SDKs, a common **`EvmService`** module is included. It enables direct programmatic utilization of Particle's suite of **enhanced RPC endpoints**, and more (such as transaction construction, contract interaction, etc.). These methods provide simple ways of retrieving **rich on-chain data** with minimal added complexity.
+
+A full reference of common methods alongside their parameters **can be found below**.
+
+| Class      | Methods                  | Parameters (\* indicates optional)                                      |
+| ---------- | ------------------------ | ----------------------------------------------------------------------- |
+| EvmService | rpc                      | method, params                                                          |
+| EvmService | getPrice                 | addresses, currencies                                                   |
+| EvmService | getTokensAndNFTs         | address                                                                 |
+| EvmService | getTokens                | address                                                                 |
+| EvmService | getNFTs                  | address                                                                 |
+| EvmService | getTransactionsByAddress | address                                                                 |
+| EvmService | suggeseGasFee            |                                                                         |
+| EvmService | estimateGas              | from, to, value, data                                                   |
+| EvmService | erc20Transfer            | contractAddress, to, amount                                             |
+| EvmService | erc20Approve             | contractAddress, spender, amount                                        |
+| EvmService | erc20TransferFrom        | contractAddress, from, to, amount                                       |
+| EvmService | erc721SafeTransferFrom   | contractAddress, from, to, tokenId                                      |
+| EvmService | erc1155SafeTransferFrom  | contractAddress, from, to, id, amount, data\*                           |
+| EvmService | abiEncodeFunctionCall    | contractAddress, methodName, params, abiJsonString                      |
+| EvmService | getTokenByTokenAddress   | address, tokenAddresses                                                 |
+| EvmService | readContract             | contractAddress, methodName, params, abiJsonString                      |
+| EvmService | writeContract            | from, contractAddress, methodName, params, abiJsonString, gasFeeLevel\* |
+| EvmService | createTransaction        | from, data, value, to, gasFeeLevel\*                                    |
+| EvmService | getSmartAccount          | eoaAddresses, version                                                   |

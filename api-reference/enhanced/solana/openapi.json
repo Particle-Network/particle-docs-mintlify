@@ -1,0 +1,695 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Particle Network Enhanced RPC Solana",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://rpc.particle.network/solana"
+    }
+  ],
+  "security": [
+    {
+      "basicAuth": []
+    }
+  ],
+  "paths": {
+    "/#enhancedGetPrice": {
+      "post": {
+        "summary": "enhancedGetPrice",
+        "operationId": "enhancedGetPrice",
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ],
+        "requestBody": {
+          "description": "Request to get the price of a token.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EnhancedGetPriceRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response with token price information.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EnhancedGetPriceResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/#enhancedGetTokensAndNFTs": {
+      "post": {
+        "summary": "enhancedGetTokensAndNFTs",
+        "operationId": "enhancedGetTokensAndNFTs",
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ],
+        "requestBody": {
+          "description": "Request to get tokens and NFTs for an account.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EnhancedGetTokensAndNFTsRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response with tokens and NFTs information.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EnhancedGetTokensAndNFTsResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/#enhancedGetTransactionsByAddress": {
+      "post": {
+        "summary": "enhancedGetTransactionsByAddress",
+        "operationId": "enhancedGetTransactionsByAddress",
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ],
+        "requestBody": {
+          "description": "Request to get transactions for an account address.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EnhancedGetTransactionsByAddressRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response with transactions information.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EnhancedGetTransactionsByAddressResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "basicAuth": {
+        "type": "http",
+        "scheme": "basic"
+      }
+    },
+    "schemas": {
+      "AnyValue": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "number"
+          },
+          {
+            "type": "integer"
+          },
+          {
+            "type": "boolean"
+          },
+          {
+            "type": "object"
+          },
+          {
+            "type": "array",
+            "items": {}
+          }
+        ]
+      },
+      "RPCRequest": {
+        "type": "object",
+        "required": [
+          "jsonrpc",
+          "id",
+          "method",
+          "params",
+          "chainId"
+        ],
+        "properties": {
+          "jsonrpc": {
+            "type": "string",
+            "default": "2.0",
+            "description": "Version of the JSON-RPC protocol, should be 2.0.",
+            "example": "2.0"
+          },
+          "id": {
+            "type": "integer",
+            "default": 1,
+            "description": "The request identifier.",
+            "example": 1
+          },
+          "chainId": {
+            "type": "integer",
+            "description": "The blockchain chain ID.",
+            "example": 101
+          },
+          "method": {
+            "type": "string",
+            "description": "API method being called."
+          },
+          "params": {
+            "type": "array",
+            "description": "Parameters for the API method call."
+          }
+        }
+      },
+      "RPCResponse": {
+        "type": "object",
+        "required": [
+          "jsonrpc",
+          "id",
+          "result",
+          "chainId"
+        ],
+        "properties": {
+          "jsonrpc": {
+            "type": "string",
+            "default": "2.0",
+            "description": "Version of the JSON-RPC protocol, should be 2.0.",
+            "example": "2.0"
+          },
+          "id": {
+            "type": "integer",
+            "default": 1,
+            "description": "The request identifier.",
+            "example": 1
+          },
+          "chainId": {
+            "type": "integer",
+            "description": "The blockchain chain ID.",
+            "example": 101
+          },
+          "result": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/AnyValue"
+              }
+            ]
+          }
+        }
+      },
+      "EnhancedGetPriceRequest": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/RPCRequest"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "method": {
+                "enum": [
+                  "enhancedGetPrice"
+                ]
+              },
+              "params": {
+                "type": "array",
+                "description": "Parameters for getting token price.",
+                "items": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "description": "Token address."
+                  }
+                }
+              }
+            }
+          }
+        ]
+      },
+      "EnhancedGetPriceResponse": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/RPCResponse"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "result": {
+                "type": "array",
+                "description": "Array of price details for tokens.",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "address": {
+                      "type": "string",
+                      "description": "Token address."
+                    },
+                    "currencies": {
+                      "type": "array",
+                      "description": "Array of currency details.",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "type": {
+                            "type": "string",
+                            "description": "Currency type."
+                          },
+                          "price": {
+                            "type": "number",
+                            "description": "Token price."
+                          },
+                          "marketCap": {
+                            "type": "number",
+                            "description": "Market capitalization."
+                          },
+                          "24hChange": {
+                            "type": "number",
+                            "description": "24-hour price change percentage."
+                          },
+                          "24hVol": {
+                            "type": "number",
+                            "description": "24-hour trading volume."
+                          },
+                          "lastUpdatedAt": {
+                            "type": "integer",
+                            "description": "Last updated timestamp."
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ]
+      },
+      "EnhancedGetTokensAndNFTsRequest": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/RPCRequest"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "method": {
+                "enum": [
+                  "enhancedGetTokensAndNFTs"
+                ]
+              },
+              "params": {
+                "type": "array",
+                "description": "Parameters for getting tokens and NFTs.",
+                "items": {
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "description": "Account address details.",
+                      "properties": {
+                        "accountAddress": {
+                          "type": "string",
+                          "description": "Solana account address.",
+                          "example": "6XU36wCxWobLx5Rtsb58kmgAJKVYmMVqy4SHXxENAyAe"
+                        }
+                      }
+                    },
+                    {
+                      "type": "object",
+                      "description": "Additional options.",
+                      "properties": {
+                        "options": {
+                          "type": "object",
+                          "properties": {
+                            "parseMetadataUri": {
+                              "type": "boolean",
+                              "description": "Flag to parse metadata URI.",
+                              "default": false
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        ]
+      },
+      "EnhancedGetTokensAndNFTsResponse": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/RPCResponse"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "result": {
+                "type": "object",
+                "description": "Tokens and NFTs details.",
+                "properties": {
+                  "lamports": {
+                    "type": "integer",
+                    "description": "Amount of lamports in the account."
+                  },
+                  "nfts": {
+                    "type": "array",
+                    "description": "Array of NFT details.",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "mint": {
+                          "type": "string",
+                          "description": "Mint address of the NFT."
+                        },
+                        "address": {
+                          "type": "string",
+                          "description": "Account address of the NFT."
+                        },
+                        "isSemiFungible": {
+                          "type": "boolean",
+                          "description": "Indicates if the NFT is semi-fungible."
+                        },
+                        "name": {
+                          "type": "string",
+                          "description": "Name of the NFT."
+                        },
+                        "symbol": {
+                          "type": "string",
+                          "description": "Symbol of the NFT."
+                        },
+                        "image": {
+                          "type": "string",
+                          "description": "Image URL of the NFT."
+                        },
+                        "sellerFeeBasisPoints": {
+                          "type": "integer",
+                          "description": "Seller fee basis points."
+                        },
+                        "metadata": {
+                          "type": "object",
+                          "properties": {
+                            "key": {
+                              "type": "integer",
+                              "description": "Metadata key."
+                            },
+                            "updateAuthority": {
+                              "type": "string",
+                              "description": "Update authority address."
+                            },
+                            "mint": {
+                              "type": "string",
+                              "description": "Mint address."
+                            },
+                            "data": {
+                              "type": "object",
+                              "properties": {
+                                "name": {
+                                  "type": "string",
+                                  "description": "Name of the NFT."
+                                },
+                                "symbol": {
+                                  "type": "string",
+                                  "description": "Symbol of the NFT."
+                                },
+                                "uri": {
+                                  "type": "string",
+                                  "description": "URI of the NFT metadata."
+                                },
+                                "sellerFeeBasisPoints": {
+                                  "type": "integer",
+                                  "description": "Seller fee basis points."
+                                },
+                                "creators": {
+                                  "type": "array",
+                                  "description": "Array of creator details.",
+                                  "items": {
+                                    "type": "object",
+                                    "properties": {
+                                      "address": {
+                                        "type": "string",
+                                        "description": "Creator address."
+                                      },
+                                      "verified": {
+                                        "type": "boolean",
+                                        "description": "Indicates if the creator is verified."
+                                      },
+                                      "share": {
+                                        "type": "integer",
+                                        "description": "Share percentage."
+                                      }
+                                    }
+                                  }
+                                },
+                                "uriData": {
+                                  "type": "object",
+                                  "description": "Parsed URI data."
+                                }
+                              }
+                            },
+                            "primarySaleHappened": {
+                              "type": "boolean",
+                              "description": "Indicates if the primary sale happened."
+                            },
+                            "isMutable": {
+                              "type": "boolean",
+                              "description": "Indicates if the NFT is mutable."
+                            },
+                            "editionNonce": {
+                              "type": "integer",
+                              "description": "Edition nonce."
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "tokens": {
+                    "type": "array",
+                    "description": "Array of token details.",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "decimals": {
+                          "type": "integer",
+                          "description": "Number of decimals for the token."
+                        },
+                        "amount": {
+                          "type": "integer",
+                          "description": "Amount of tokens."
+                        },
+                        "address": {
+                          "type": "string",
+                          "description": "Token account address."
+                        },
+                        "mint": {
+                          "type": "string",
+                          "description": "Token mint address."
+                        },
+                        "name": {
+                          "type": "string",
+                          "description": "Name of the token."
+                        },
+                        "symbol": {
+                          "type": "string",
+                          "description": "Symbol of the token."
+                        },
+                        "image": {
+                          "type": "string",
+                          "description": "Image URL of the token."
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ]
+      },
+      "EnhancedGetTransactionsByAddressRequest": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/RPCRequest"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "method": {
+                "enum": [
+                  "enhancedGetTransactionsByAddress"
+                ]
+              },
+              "params": {
+                "type": "array",
+                "description": "Parameters for getting transactions by address.",
+                "items": {
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "description": "Account address details.",
+                      "properties": {
+                        "accountAddress": {
+                          "type": "string",
+                          "description": "Solana account address.",
+                          "example": "6XU36wCxWobLx5Rtsb58kmgAJKVYmMVqy4SHXxENAyAe"
+                        }
+                      }
+                    },
+                    {
+                      "type": "object",
+                      "description": "Additional options.",
+                      "properties": {
+                        "options": {
+                          "type": "object",
+                          "properties": {
+                            "limit": {
+                              "type": "integer",
+                              "description": "Limit on the number of transactions returned.",
+                              "example": 10
+                            },
+                            "before": {
+                              "type": "string",
+                              "description": "Fetch transactions before this signature."
+                            },
+                            "until": {
+                              "type": "string",
+                              "description": "Fetch transactions until this signature."
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        ]
+      },
+      "EnhancedGetTransactionsByAddressResponse": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/RPCResponse"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "result": {
+                "type": "array",
+                "description": "Array of transactions.",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "type": {
+                      "type": "string",
+                      "description": "Type of transaction.",
+                      "enum": [
+                        "unknown",
+                        "transfer-token"
+                      ]
+                    },
+                    "lamportsChange": {
+                      "type": "integer",
+                      "description": "Change in lamports."
+                    },
+                    "lamportsFee": {
+                      "type": "integer",
+                      "description": "Fee in lamports."
+                    },
+                    "signature": {
+                      "type": "string",
+                      "description": "Transaction signature."
+                    },
+                    "blockTime": {
+                      "type": "integer",
+                      "description": "Block time of the transaction."
+                    },
+                    "status": {
+                      "type": "string",
+                      "description": "Transaction status.",
+                      "enum": [
+                        "success",
+                        "failed"
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "description": "Additional transaction data.",
+                      "properties": {
+                        "name": {
+                          "type": "string",
+                          "description": "Name of the token."
+                        },
+                        "symbol": {
+                          "type": "string",
+                          "description": "Symbol of the token."
+                        },
+                        "image": {
+                          "type": "string",
+                          "description": "Image URL of the token."
+                        },
+                        "mint": {
+                          "type": "string",
+                          "description": "Mint address of the token."
+                        },
+                        "decimals": {
+                          "type": "integer",
+                          "description": "Number of decimals for the token."
+                        },
+                        "amountTransfered": {
+                          "type": "integer",
+                          "description": "Amount transferred."
+                        },
+                        "sender": {
+                          "type": "string",
+                          "description": "Sender address."
+                        },
+                        "receiver": {
+                          "type": "string",
+                          "description": "Receiver address."
+                        },
+                        "senderAssociatedTokenAddress": {
+                          "type": "string",
+                          "description": "Sender associated token address."
+                        },
+                        "receiverAssociatedTokenAddress": {
+                          "type": "string",
+                          "description": "Receiver associated token address."
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ]
+      }
+    }
+  },
+  "x-readme": {
+    "explorer-enabled": true,
+    "proxy-enabled": true
+  }
+}

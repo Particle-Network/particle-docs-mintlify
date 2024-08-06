@@ -42,7 +42,7 @@ Every Particle Network SDK requires the retrieval of three key values, your `pro
 
 These are used primarily to authenticate API requests and tie your project to the [Particle dashboard](https://dashboard.particle.network), allowing you to track users, spin up RPC endpoints, fund your Paymaster for gasless transactions, and so on. 
 
-<Note>Follow the quickstart tutorial to set up a project and find the required keys: [Create a new project](/resources/quickstart/waas/web-quickstart#configuring-particle-auth).</Note>
+<Note>Follow the quickstart tutorial to set up a project and find the required keys: [Create a new project](/guides/quickstart/waas/web-quickstart#configuring-particle-auth).</Note>
 
 ## Initialization
 
@@ -56,20 +56,10 @@ Now that you've installed `@particle-network/btc-connectkit`, you'll need to con
     - `BTC`, an array of objects that take:
       - `chainIds`, an array of chain IDs representing the blockchains you intend to use within your application (these chains are also supported within `@particle-network/chains`, in which you can export dedicated objects containing the chain ID, such as `PolygonMumbai.id`).
       - `version`, which dictates the smart account version you'd like to use. Currently, both `1.0.0` and `2.0.0` are supported, depending on the chain (`chainIds`) you define. `2.0.0` is a newer implementation with better gas optimizations.
-        - The following chain IDs are only supported with version `1.0.0`:
-          - Merlin Testnet (`686868`), Merlin Mainnet (`4200`)
-          - LumiBit Testnet (`28206`)
-          - Polygon Mumbai (`80001`)
-          - BEVM Canary Testnet (`1502`), BEVM Canary Mainnet (`1501`), BEVM (not Canary) Testnet (`11503`)
-          - MAP Mainnet (`22776`), MAP Testnet (`212`)
-          - SatoshiVM Testnet (`3110`)
-        - The following chain IDs are only supported with version `2.0.0`:
-          - BitLayer Testnet (`200810`)
-          - Botanix Testnet (`3636`)
-          - Polygon zkEVM Cardona Testnet (`2442`)
-          - B² Testnet (`1123`)
-          - Mantle Mainnet (`5000`)
-          - AINN Layer2 Testnet (`2648`)
+
+
+<Tip>Check the [Network Coverage](/guides/network-coverage#btc-connect) page to see which version of smart accounts is supported by each chain.</Tip>
+
 - `walletOptions`, an optional object containing:
   - `visible`, a Boolean determining whether or not the Particle Wallet modal is shown after connection. In this case, the wallet modal can be used to control the smart account, although if you intend to implement equivalent functionality within your application, such as user-defined transactions, you may not need this.
 
@@ -80,6 +70,8 @@ Then, outside of the `options` parameter (which expects the above values), you'l
 - `BitgetConnector`
 - `TokenPocketConnector`
 - `BybitConnector`
+- `WizzConnector`
+- `XverseConnector`
 
 Below is a code snippet showcasing a complete configuration of `ConnectProvider` within a standard `index` file setup, following the structure covered above:
 
@@ -92,7 +84,9 @@ import {
   UnisatConnector,
   BitgetConnector,
   TokenPocketConnector,
-  BybitConnector
+  BybitConnector,
+  WizzConnector,
+  XverseConnector
 } from '@particle-network/btc-connectkit';
 import App from './App';
 
@@ -123,7 +117,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
           visible: true,
         }
       }}
-      connectors={[new UnisatConnector(), new OKXConnector(), new BitgetConnector(), new TokenPocketConnector(), new BybitConnector()]} // Currently, only these five are supported
+      connectors={[new UnisatConnector(), new OKXConnector(), new BitgetConnector(), new TokenPocketConnector(), new BybitConnector(), new WizzConnector(), new XverseConnector()]}
     >
     <App />
     </ConnectProvider>
@@ -274,7 +268,7 @@ Most importantly, `useETHProvider` acts as the single mechanism for driving inte
 Below is the full list of functions derived from `useETHProvider`:
 
 - `chainId`, the ID for the currently connected chain.
-  - For a complete list of networks supported within BTC Connect, see [Network Coverage](/resources/network-coverage).
+  - For a complete list of networks supported within BTC Connect, see [Network Coverage](/guides/network-coverage).
 - `account`, the smart account address (automatically populated upon login).
 - `getSmartAccountInfo`, get smart account info(version, isDeployed, etc.).
 - `switchChain`, for forcibly changing the EVM chain used through the smart account. This takes a specific `chainId` (should be one of the aforementioned supported chains).

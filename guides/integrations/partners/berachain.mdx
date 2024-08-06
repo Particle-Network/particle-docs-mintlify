@@ -1,0 +1,356 @@
+---
+title: "Building on Berachain with Particle Network"
+---
+
+The launch of Berachain's Artio Testnet made waves within the community. Artio is built on the "[Polaris](https://github.com/berachain/polaris)" framework (which is used for leveraging CometBFT), implementing a Proof-of-Liquidity consensus mechanism. Proof-of-Liquidity aligns Berachain’s incentives through the continual flow of liquidity to protocols, further decentralizing it  and reducing stake centralization.
+
+Berachain’s innovation in blockchain design quickly captured the attention of developers, as its novel consensus mechanism for value accrual is optimal for growing diverse on-chain applications. The growing developer attention on Berachain calls for infrastructure that onboards users with ease and allows for high retention –which is where Particle's Modular Smart Wallet-as-a-Service comes in.
+
+Shortly after the launch of Berachain's Artio Testnet, Particle Network launched Smart Wallet-as-a-Service support for it. This allows developers building on Berachain to immediately begin prototyping applications that natively leverage social logins for the creation and management of accounts both EOAs and associated smart accounts (currently SimpleAccount implementations) on Berachain.
+
+***
+
+<iframe 
+width="100%"
+height="800" 
+src="https://particle-berachain-demo-docs.replit.app/"
+href="https://particle-berachain-demo-docs.replit.app/">
+</iframe>
+
+***
+
+## Implementing Social Logins through Particle Auth Core
+
+As mentioned, Particle Network recently expanded its Smart Wallet-as-a-Service support to Berachain, which includes both the core social login service (Particle Auth Core) and dedicated ERC-4337 AA infrastructure, such as the [Particle Bundler](/guides/integrations/aa/bundler) and [Omnichain Paymaster](/guides/integrations/aa/paymaster). This tutorial will go through the process of building a Smart WaaS-enabled application on Berachain through Particle Auth Core, `@particle-network/auth-core-modal`, and Particle's AA SDK, `@particle-network/aa`. This application will replicate the functionality found within the embedded demo above, highlighting the process of:
+
+- Initiating a social login (in this example, through Google or X, alongside a general authentication modal).
+- Assigning a SimpleAccount to the resulting EOA (generated via a social login).
+- Executing a gasless burn transaction (of 0.001 BERA).
+- Executing a burn of 1 HONEY, Berachain's native stablecoin.
+
+By the end of this, you'll ideally have a good idea of how to implement Particle Auth Core within your project on Berachain, leveraging the structure and utilization flow showcased here.
+
+### Getting Started
+
+To begin building this demo and explore the process of implementing Particle Auth Core, you'll need to install a few key libraries that we'll be using for configuration. Specifically, you'll need to install:
+
+- `@particle-network/auth-core-modal`, the central SDK for implementing Particle Auth Core.
+- `@particle-network/aa`, to assign a SimpleAccount and generate a custom AA-enabled EIP-1193 provider object to control the smart account with Ethers.
+- `@particle-network/chains`, for configuring Particle Auth Core with an object containing Berachain-specific information, (`BerachainArtio`).
+
+Then, copy one of the two following commands and execute it at the root of your project to install both SDKs through either Yarn or npm (alternative package managers such as pnpm will follow a similar syntax):
+
+```shell Terminal
+yarn add @particle-network/auth-core-modal @particle-network/chains @particle-network/aa
+
+# OR
+
+npm install @particle-network/auth-core-modal @particle-network/chains @particle-network/aa
+```
+
+Once these libraries are installed, you're ready to go through the process of configuration. Particle Auth Core manages configuration through `AuthCoreContextProvider` (imported from `@particle-network/auth-core-modal`), an object used within your `index` file to wrap your primary `App` component (or its equivalent). This contains key values authenticating your instance of Particle Auth and enabling core customization of the social login or embedded wallet modals. 
+
+Before constructing `AuthCoreContextProvider`, you'll need three values to initialize Particle Auth Core. When configuring any SDK from Particle Network, whether it's [Particle Auth Core](/api-reference/auth/desktop-sdks/web), [Particle Connect](/api-reference/connect/desktop/web), or [Particle's AA SDK](/api-reference/aa/sdks/desktop/web), you'll need to retrieve a project ID, client key, and app ID from the [Particle dashboard](https://dashboard.particle.network). These values link your application with your project on the Particle dashboard, therefore authenticating API requests, tracking users, allowing for no-code modal customization, etc.
+
+With a project and application set up through the [Particle dashboard](https://dashboard.particle.network), you're ready to configure `AuthCoreContextProvider`. This is done through the `options` parameter, which takes the following values (in this example):
+
+- **`projectId`, `clientKey`, **and** `appId`**. The aforementioned required values, found on the [Particle dashboard](https://dashboard.particle.network).
+- `wallet`, an object for customizing the wallet modal containing:
+  - `visible`, a Boolean dictating whether or not the Particle Wallet modal is shown after login. Particle Wallet is an embedded interface used for controlling an account generated through social login.
+  - `customStyle`, an object containing:
+    - `supportChains`, an array of chains for the Particle Wallet modal (if `visible` is `true`) will be locked to. In this case, we're passing in `BerachainArtio`, imported from `@particle-network/chains`.
+- `erc4337`, to ensure that the modal formerly configured within `wallet` shows the smart account you intend to be using, not the EOA. `erc4337` contains:
+  - `name`, the name of the smart account you'd like to be displayed on the modal. In this example, and because it's the only supported by Particle on Berachain, you can set this to `'SIMPLE'`.
+  - `version`, the version of the smart account you intend on using. For SimpleAccount, this will be `'1.0.0'`.
+
+Additionally, `AuthCoreContextProvider` takes various other optional parameters that can be used for further fine-tuning of the authentication or embedded wallet modal, such as `themeType`, `fiatCoin`, `language`, `promptSettingConfig`, `authTypes`, etc.
+
+At this point, your `index` file should look similar to the example below:
+
+```typescript TypeScript
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+
+import { BerachainArtio } from '@particle-network/chains';
+import { AuthCoreContextProvider } from '@particle-network/auth-core-modal';
+
+import App from './App'; // Or the equivalent within your application
+
+ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
+  <React.StrictMode>
+    <AuthCoreContextProvider
+      options={{
+        projectId: process.env.REACT_APP_PROJECT_ID,
+        clientKey: process.env.REACT_APP_CLIENT_KEY,
+        appId: process.env.REACT_APP_APP_ID,
+        themeType: 'dark',
+        fiatCoin: 'USD',
+        language: 'en',
+        wallet: {
+          visible: true,
+          customStyle: {
+            supportChains: [BerachainArtio]
+          }
+        },
+        erc4337: {
+          name: 'SIMPLE',
+          version: '1.0.0'
+        }
+      }}
+    >
+      <App />
+    </AuthCoreContextProvider>
+  </React.StrictMode>
+)
+```
+
+### Initiating Social Login and Executing Transactions
+
+Now that `AuthCoreContextProvider` has been configured and Particle Auth Core is initialized, you're ready to move onto the implementation of your primary application component (in the example above, this was `App`). Before you can begin executing transactions, you'll need to first configure your smart account. In this setup, Particle Auth Core is used to initiate a social login and generate an EOA. Past that point, Particle's AA SDK (`@particle-network/aa`) is responsible for assigning and facilitating interaction with a smart account.
+
+To do this, you'll need to import a few objects from `@particle-network/aa`, including:
+
+- `SmartAccount`, the core object controlling the underlying smart account (this can be used either directly to construct and execute UserOperations, or within a custom Ethers object, as we'll be doing here).
+- `AAWrapProvider`, for constructing the aforementioned custom Ethers object (which we'll be using to execute transactions).
+- `SendTransactionMode`, used within `AAWrapProvider` to determine the method in which fees will be paid. In this case, we'll be using `SendTransactionMode` to ensure transactions are gasless (sponsored).
+
+We'll be driving interaction with the smart account through an AA-enabled Ethers object, leveraging the EIP-1193 provider returned from `AAWrapProvider`. To set this up, we'll first need to create an instance of `SmartAccount` for configuring the smart account, passing in the following parameters:
+
+- `provider`, the provider object provided by Particle Auth Core. This can be retrieved from the `useEthereum` hook (imported from `@particle-network/auth-core-modal`).
+- An object containing:
+  - `projectId`, `clientKey`, and `appId`. The values you previously retrieved from the [Particle dashboard](https://dashboard.particle.network) for the authentication of `AuthCoreContextProvider`.
+  - `aaOptions`, which contains:
+    - `accountContracts`, which will be used for the initialization of various smart account implementations. In this case, only SimpleAccount is supported, so you'll need to include:
+      - `SIMPLE`, an array of objects, with each taking:
+        - `chainIds`, `BerachainArtio.id` in this case.
+        - `version`, the version of the smart account you intend to use. Only `'1.0.0'` is supported on SimpleAccount.
+
+An example of the process covered above can be found below.
+
+```typescript TypeScript
+import { useEthereum } from '@particle-network/auth-core-modal';
+import { BerachainArtio } from '@particle-network/chains';
+import { AAWrapProvider, SmartAccount, SendTransactionMode } from '@particle-network/aa';
+
+const { provider } = useEthereum();
+
+const smartAccount = new SmartAccount(provider, {
+	projectId: process.env.REACT_APP_PROJECT_ID,
+  clientKey: process.env.REACT_APP_CLIENT_KEY,
+  appId: process.env.REACT_APP_APP_ID,
+  aaOptions: {
+      accountContracts: {
+        SIMPLE: [{ chainIds: [BerachainArtio.id], version: '1.0.0' }],
+      }
+	}
+});
+```
+
+This instance of `SmartAccount` (`smartAccount` in the example above) can then be used directly within `AAWrapProvider` to construct an AA-enabled provider object to use within a new instance of `ethers.providers.Web3Provider` (or if you're using v6, `ethers.BrowserProvider`).T his same structure can be applied to Web3.js or viem. 
+
+Alongside `smartAccount`, we'll also use `SendTransactionMode.Gasless` within `AAWrapProvider`, ensuring that transactions sent through this provider object will be subject to sponsorship if they pass the conditions we set within the Paymaster (although in this example there are none, so transactions will be sponsored indiscriminately).
+
+Your custom Ethers provider should look like the following:
+
+```typescript TypeScript
+const customProvider = new ethers.providers.Web3Provider(new AAWrapProvider(smartAccount, SendTransactionMode.Gasless), "any");
+```
+
+With this object initialized (`customProvider` in this case), you'll be able to facilitate transactions, retrieve balances, message signatures, etc. through Particle. However, before being able to facilitate any of these, you’ll first need to facilitate social login.
+
+Social login with Particle Auth Core is simple, directed by two functions derived from the `useConnect` hook, `connect` and `disconnect`. Upon calling `connect`, social login will immediately be initiated and the user will undergo the login process for the specified social login mechanism. Similarly for `disconnect`, a user will be removed from their account upon calling.
+
+For this example, we'll wrap `connect` within a function called `handleLogin`, which will allow us to conditionally execute `connect`, blocking any calls to `handleLogin` if the user has already logged in. This condition can be set up by checking the truthy or falsy value of `userInfo`, which can be defined through the `useAuthCore` hook. Upon logging in, `userInfo` will be populated, although beforehand it'll remain undefined, allowing `connect` to be called.
+
+We'll use the following parameters within `connect`:
+
+- `socialType`, a string dictating the specific authentication type to be used (such as 'google', 'twitter', etc.) (optional).
+- `chain`,  the specific chain you'd like to connect to. This should be `BerachainArtio`, an object imported from `@particle-network/chains`.
+
+ `handleLogin` can be mapped to "Sign in with Google," "Sign in with X," and a miscellaneous button on the frontend by purely changing the string passed into `socialType` on `connect`. An example of this function has been included below:
+
+```typescript TypeScript
+const handleLogin = async (authType) => {
+	if (!userInfo) {
+		await connect({
+      socialType: authType,
+			chain: BerachainArtio,
+		});
+	}
+};
+```
+
+With a custom Ethers object constructed and the user logged in (through `connect`), transaction requests can be made directly to Particle through its embedded wallet. As mentioned, this will be done directly through methods on the aforementioned Ethers object (`customProvider` here), which need no special configuration to work with Particle.
+
+For the first transaction, we'll be executing a gasless burn of 0.001 BERA, which essentially involves sending BERA to a dead address, often `0x000000000000000000000000000000000000dEaD`. We'll be doing this through the `signer` object retrieved from `{your ethers object}.getSigner`, which has a `sendTransaction` method. `sendTransaction` takes a standard transaction object containing values such as:
+
+- `to`, which in this case is `0x000000000000000000000000000000000000dEaD`.
+- `value`, 0.001 BERA, which needs to be converted to wei through `ethers.utils.parseEther("0.001")`.
+- And optionally, `data`.
+
+This transaction will be quite programmatically simple, following a structure similar to the following:
+
+```typescript TypeScript
+const executeTx = async () => {
+  const signer = customProvider.getSigner();
+
+  const tx = {
+    to: "0x000000000000000000000000000000000000dEaD",
+    value: ethers.utils.parseEther("0.001") // BERA
+  };
+
+  const txResponse = await signer.sendTransaction(tx);
+  const txReceipt = await txResponse.wait();
+
+  notification.success({
+    message: `Transaction Successful`,
+    description: (
+      <div>
+        Transaction Hash: <a href={`https://artio.beratrail.io/tx/${txReceipt.transactionHash}`} target="_blank" rel="noopener noreferrer">{txReceipt.transactionHash}</a>
+      </div>
+    )
+  });
+};
+```
+
+As for the second transaction, the burn of 1 HONEY, Berachain's native stablecoin, we can take a similar approach, although instead of calling a method on `signer` directly, we'll have to create a contract object for HONEY, on which we can call the transfer method. This can be done by simply initiating `ethers.Contract`, passing in `0x7EeCA4205fF31f947EdBd49195a7A88E6A91161B` (the HONEY contract address on Berachain Artio), alongside the ABI. In this case, we'll simply pass the method signature, `function transfer(address to, uint256 amount)`. Finally, you can throw in the same `signer` object used within the former transaction (retrieved through `{your ethers object}.getSigner`).
+
+> 🍯 If you don't have HONEY, but would like some to test this function, Berachain has a [native DEX](https://artio.bex.berachain.com/) that supports swapping BERA for HONEY.
+
+With this contract object constructed, you can call the `transfer` method, passing in (as the method signature suggests), the `to` address (`0x000000000000000000000000000000000000dEaD` for this example) and `value`, which will be `ethers.utils.parseEther('1')` here.
+
+A transaction of this nature may look as follows:
+
+```typescript TypeScript
+const executeTxHONEY = async () => {
+  const signer = customProvider.getSigner();
+  
+  const tokenContract = new ethers.Contract('0x7EeCA4205fF31f947EdBd49195a7A88E6A91161B', ["function transfer(address to, uint256 amount)"], signer); // HONEY
+  
+  const txResponse = await tokenContract.transfer('0x000000000000000000000000000000000000dEaD', ethers.utils.parseEther('1'));
+  const txReceipt = await txResponse.wait();
+  
+  notification.success({
+    message: `Transaction Successful`,
+    description: (
+      <div>
+        Transaction Hash: <a href={`https://artio.beratrail.io/tx/${txReceipt.transactionHash}`} target="_blank" rel="noopener noreferrer">{txReceipt.transactionHash}</a>
+      </div>
+    )
+  });
+};
+```
+
+Any other type of contract interaction can be facilitated directly through Particle, either following the structure above or leveraging an alternative mechanism (within Ethers, Web3.js, viem) to construct and initiate the transaction. Regardless of the method you choose, the transaction will be pushed for signature natively in-app. Upon confirmation, the transaction will be executed.
+
+If you’re leveraging the built-in Particle Wallet interface (shown by setting `visible` to `true` within `AuthCoreContextProvider`), many ERC-20 and ERC-721 tokens won’t be automatically picked up (including HONEY). If these aren’t automatically reflected within the modal, you’ll need to manually add the token through the plus icon near the list of balances. 
+
+So far, you've **installed and configured Particle Auth Core** (`@particle-network/auth-core-modal`), **constructed a custom Ethers provider object**, **initiated social login**, and **sent two burn transactions**, one for 0.001 BERA, and another for 1 HONEY. Therefore, the example application built should look something like the following:
+
+```typescript TypeScript
+import React, { useState, useEffect } from 'react';
+
+import { useEthereum, useConnect, useAuthCore } from '@particle-network/auth-core-modal';
+import { BerachainArtio } from '@particle-network/chains';
+
+import { AAWrapProvider, SmartAccount, SendTransactionMode } from '@particle-network/aa';
+
+import { ethers } from 'ethers';
+import { notification } from 'antd';
+
+import './App.css';
+
+const App = () => {
+  const { provider } = useEthereum();
+  const { connect, disconnect } = useConnect();
+  const { userInfo } = useAuthCore();
+
+  const [balance, setBalance] = useState(null);
+
+  const smartAccount = new SmartAccount(provider, {
+    projectId: process.env.REACT_APP_PROJECT_ID,
+    clientKey: process.env.REACT_APP_CLIENT_KEY,
+    appId: process.env.REACT_APP_APP_ID,
+    aaOptions: {
+      accountContracts: {
+        SIMPLE: [{ chainIds: [BerachainArtio.id], version: '1.0.0' }],
+    }
+  }});
+
+  const customProvider = new ethers.providers.Web3Provider(new AAWrapProvider(smartAccount, SendTransactionMode.Gasless), "any");
+
+  useEffect(() => {
+    if (userInfo) {
+      fetchBalance();
+    }
+  }, [userInfo]);
+
+  const fetchBalance = async () => {
+    const address = await smartAccount.getAddress();
+    const balanceResponse = await customProvider.getBalance(address);
+    setBalance(ethers.utils.formatEther(balanceResponse));
+  };
+
+  const handleLogin = async (authType) => {
+    if (!userInfo) {
+      await connect({
+        socialType: authType,
+        chain: BerachainArtio,
+      });
+    }
+  };
+
+  const executeUserOp = async () => {
+    const signer = customProvider.getSigner();
+
+    const tx = {
+      to: "0x000000000000000000000000000000000000dEaD",
+      value: ethers.utils.parseEther("0.001")
+    };
+
+    const txResponse = await signer.sendTransaction(tx);
+    const txReceipt = await txResponse.wait();
+
+    notification.success({
+      message: `Transaction Successful`,
+      description: (
+          <div>
+            Transaction Hash: <a href={`https://artio.beratrail.io/tx/${txReceipt.transactionHash}`} target="_blank" rel="noopener noreferrer">{txReceipt.transactionHash}</a>
+          </div>
+        )
+    });
+  };
+
+  const executeUserOpHONEY = async () => {
+    const signer = customProvider.getSigner();
+    
+    const tokenContract = new ethers.Contract('0x7EeCA4205fF31f947EdBd49195a7A88E6A91161B', ["function transfer(address to, uint256 amount)"], signer);
+    
+    const txResponse = await tokenContract.transfer('0x000000000000000000000000000000000000dEaD', ethers.utils.parseEther('1'));
+    const txReceipt = await txResponse.wait();
+    
+    notification.success({
+      message: `Transaction Successful`,
+      description: (
+          <div>
+            Transaction Hash: <a href={`https://artio.beratrail.io/tx/${txReceipt.transactionHash}`} target="_blank" rel="noopener noreferrer">{txReceipt.transactionHash}</a>
+          </div>
+        )
+    });
+  };
+
+  return (
+    // Your JSX
+  );
+};
+
+export default App;
+```
+
+### Conclusion
+
+A structure and flow similar to the above can be applied directly to both existing and new applications. As was showcased, Particle's Smart Wallet-as-a-Service can be implemented in just a few lines of code, only requiring unique handling for the login process and initial configuration.
+
+Take a look at the complete GitHub repository for the demo application partially showcased here. To learn more about Particle Auth Core, head over to [the Particle Auth SDK reference](/api-reference/auth/desktop-sdks/web).
+
+Berachain will undoubtedly spark the creation of a large number of new consumer-facing applications, especially with its unique positioning through Proof-of-Liquidity. Particle Network will continually support Berachain as it expands to Mainnet through its Wallet-as-a-Service and modular account abstraction stack, enabling developers to build unique and accessible on-chain experiences.

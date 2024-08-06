@@ -1,0 +1,236 @@
+---
+title: "Using Covalent's GoldRush Kit with Particle Connect"
+---
+
+While Particle Network has a flagship [embedded wallet](/guides/integrations/waas/wallet) which provides information about the tokens and NFTs owned by a given user, it's also frequently encouraged that developers build frontend components to cultivate a seamless integration with Particle Auth or Particle Connect. The Particle Wallet is a simple way of providing users with information about their assets, although depending on your application, it may be suitable to instead create a custom, in-app interface for aggregating wallet information. While Particle doesn't provide frontend components of this nature directly, Covalent does.
+
+Covalent is a popular data API provider which allows developers to fetch complex on-chain data typically inaccessible through standard RPC endpoints, although beyond these endpoints is Covalent's GoldRush Kit. The GoldRush Kit is a collection of wallet and asset-related React components, allowing the creation of customizable, data-rich frontend components in a few lines of code.
+
+As mentioned in the opening paragraph, developers using services such as Particle Connect, commonly face a scenario in which they'd like to implement a customized interface presenting rich wallet information (for both EOAs and smart accounts). Thus, this document will go through the high-level process of building a basic wallet portfolio interface, using GoldRush for the base component and [Particle Connect](/guides/integrations/waas/connect) to facilitate wallet connection.
+
+***
+
+<iframe 
+width="100%"
+height="800" 
+src="https://particle-goldrush-demo.replit.app"
+href="https://particle-goldrush-demo.replit.app">
+</iframe>
+
+***
+
+## Understanding GoldRush
+
+Covalent's GoldRush Kit consists of several React components covering common frontend use cases including:
+
+1. `TokenBalancesListView`, this is what we'll be using within this example. `TokenBalancesListView` retrieves and displays the tokens (both native and ERC20) that an address owns across a given list of networks.
+2. `NFTWalletTokensListView`, similar to the previous component, `NFTWalletTokensListView` displays a list of NFTs owned by an address (including information such as the estimated value of each NFT, the images, collection names, etc.)
+3. `NFTCollectionTokenListView`, for displaying high-level information about all NFTs present within a specified collection.
+4. `NFTDetailView`, to show rich information about a single NFT, including its attributes, sale and floor price history, etc.
+5. `TokenTransfersListView`, for viewing an explorer-like list of token transfers (one token at a time) executed by a users wallet address.
+6. And more, see the [GoldRush GitHub repository](https://github.com/covalenthq/goldrush-kit), or the [Covalent GoldRush documentation](https://www.covalenthq.com/docs/unified-api/goldrush/kit/gold-rush-provider) to dive in further.
+
+Implementing these components is quite straightforward, as they operate off of static configurations, such as the address to be show balances on (or the contract address and token ID for NFTs). Because of this ease-of-use, we can build a simple application which onboards a user through either standard wallet connection or social login through Particle Connect, then use the address returned from that process within `TokenBalancesListView` to provide insights into the users token balances on a few different networks.
+
+An example of this configuration with a few placeholders alongside the interface it'll directly produce has been included below.
+
+```typescript TypeScript
+<TokenBalancesListView
+  chain_names={[
+    "eth-sepolia",
+    "matic-mainnet",
+    "linea-mainnet",
+    "avalanche-mainnet",
+  ]}
+  address={account}
+/>
+```
+
+<img
+  className="block dark:hidden"
+  src="/guides/integrations/partners/images/covalent.png"
+  alt="Particle Network and Covalent."
+/>
+<img
+  className="hidden dark:block"
+  src="/guides/integrations/partners/images/covalent.png"
+  alt="Particle Network and Covalent."
+/>
+
+
+Although the data shown within the interface above is being pulled through Covalent's data API, and thus needs to be authenticated. Because of this, the component previously shown `TokenBalancesListView` will need to be wrapped by an additional component to pass in the API key and optional high-level customizations (similar to `AuthCoreContextProvider` or `ModalProvider` within Particle's various SDKs), such as is shown here:
+
+```typescript TypeScript
+<GoldRushProvider 
+    apikey={YOUR_API_KEY} // Retrieved from https://www.covalenthq.com/platform
+    mode="light"
+    color="emerald"
+> 
+
+// TokenBalancesListView, etc.
+
+</GoldRushProvider>
+```
+
+## Getting Started
+
+With this context established, we're ready to build the example application. To preface, this will include the following flow:
+
+1. A user is presented with a "Connect Wallet" button, driving either connection through social login or standard wallets, such as MetaMask, WalletConnect, etc.
+2. The address resulting from step 1 will then be used within `TokenBalancesListView`.
+3. The user will be presented with a detailed overview of their token balances across 10 different chains that we'll define.
+
+Thus, we'll be using two primary SDKs: Particle Connect (`@particle-network/connectkit`) and GoldRush (`@covalenthq/goldrush-kit`). To install these SDKs (alongside two additional libraries for configuring Particle Connect), run one of the two following commands at the root of your project (ideally, this should either be using Next.js or a standard create-react-app structure; we'll be using the latter).
+
+```shell
+yarn add @particle-network/connectkit @covalenthq/goldrush-kit @particle-network/connectors @particle-network/chains
+
+# OR
+
+npm install @particle-network/connectkit @covalenthq/goldrush-kit @particle-network/connectors @particle-network/chains
+```
+
+Both of these libraries will need to be configured and initialized before the application will function. For Particle Connect, this will be done through `ModalProvider` within the `index` file (or the equivalent within your application), and as mentioned for GoldRush, this will be done through `GoldRushProvider`, both following a similar configuration structure. To start, you'll need to retrieve four API keys; three from the [Particle dashboard](https://dashboard.particle.network) and one from the [Covalent dashboard](https://www.covalenthq.com/platform). Specifically, you'll need:
+
+- `projectId`, `clientKey`, and `appId` from the [Particle dashboard](https://dashboard.particle.network). These will be used to configure `ModalProvider` from `@particle-network/connectkit`; the collection of these values simultaneously authenticate API requests and allow you to track connected wallets, customize the Particle Auth modal, etc.
+- `apikey` from the [Covalent dashboard](https://www.covalenthq.com/platform). `apikey` will be used to authenticate API requests made within the `TokenBalancesListView` React component to retrieve token balances.
+
+`ModalProvider` will be configured through wrapping the primary application component in which you intend to use Particle Connect (in this example, it's `App`, although alternatively, `ModalProvider` can be used directly within the component rather than within `index`). `ModalProvider` takes various parameters, including:
+
+- `projectId`, `clientKey`, and `appId`. As covered, these will be used to authenticate and connect your project to the [Particle dashboard](https://dashboard.particle.network).
+- `chains`, the chains you intend to support within Particle Connect. This parameter isn't relevant for this example given the read-only nature of the interface we're setting up, thus this can simply be set to `Ethereum` from `@particle-network/chains`.
+- `connectors`, an array of wallet connectors representing the specific wallets you'd like to be supported by the connection modal. `@particle-network/connectors` has an export, `evmWallets`, which contains a variety of supported EVM wallets (such as MetaMask, WalletConnect, Trust, etc.); we'll be using this within connectors. `evmWallets` takes the following parameters:
+  - `projectId`, your WalletConnect project ID retrieved from the [WalletConnect dashboard](https://cloud.walletconnect.com).
+  - Optionally, `showQrModal` to enable connection via QR codes with the QR modal.
+- `wallet`, an optional parameter to dictate whether or not the embedded wallet interface is shown; if it is, you can use `wallet` to customize the style, lock chain selection, etc. Although in this case, we'll pass the following parameter:
+  - `visible`, which will be `false` in this case, as we'll be relying on the component from GoldRush to view balances, rather than using the embedded wallet (although that's not to say both wouldn't work; for the sake of this example we'll allow the GoldRush component to be the exclusive interface for asset information).
+
+With these fields defined, your `index` file, or wherever you're wrapping your application component(s) with `ModalProvider`, should look like the following example.
+
+```typescript TypeScript
+import React from 'react'
+import ReactDOM from 'react-dom/client'
+import { Ethereum } from '@particle-network/chains';
+import { ModalProvider } from '@particle-network/connectkit';
+import '@particle-network/connectkit/dist/index.css';
+import { evmWallets } from '@particle-network/connectors';
+import App from './App'
+
+ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
+  <React.StrictMode>
+    <ModalProvider
+        options={{
+            projectId: process.env.REACT_APP_PROJECT_ID as string,
+            clientKey: process.env.REACT_APP_CLIENT_KEY as string,
+            appId: process.env.REACT_APP_APP_ID as string,
+            chains: [Ethereum],
+            connectors: [
+                ...evmWallets({ projectId: process.env.REACT_APP_COVALENT_API_KEY, showQrModal: true }),
+            ],
+            erc4337: {
+              name: "SIMPLE",
+              version: "1.0.0"
+            },
+            wallet: {
+                visible: false,
+            },
+        }}
+    >
+        <App />
+    </ModalProvider>
+  </React.StrictMode>
+)
+```
+
+## Building The Application
+
+Now that `ModalProvider` has been configured and therefore Particle Connect is ready to be used, we'll need to build out our application component (this was `App` referenced within the previous code snippet). This will be quite simple and primarily involve:
+
+1. Showing the "Connect Wallet" button through `ConnectButton` **if** the user hasn't already connected. To do this, we'll be pulling the active wallet address with the `useAccount` hook, imported from `@particle-network/connectkit`.
+2. Once a user has connected (meaning `account` from `useAccount` is populated), we'll shift to a page containing `TokenBalancesListView`, passing in `address` (the address from which balances will be reflected) as `account`.
+3. `TokenBalancesListView` will be wrapped within `GoldRushProvider`, using the API key retrieved prior to authenticate the (built-in) Covalent API.
+
+Particle Connect, like [Particle Auth Core](/guides/integrations/waas/auth), is controlled exclusively through hooks alongside a core `ConnectButton` component (facilitating wallet connection). As mentioned, we'll only be using one hook for this example, `useAccount`. This'll automatically update the variable assigned to it with a wallet address after a user has connected through `ConnectButton`, allowing us to use it as an anchor for deciding whether or not a user has already logged in (and thus determining which page to display). An example of initializing an address variable attached to `useAccount` has been included below.
+
+```typescript TypeScript
+import { ConnectButton, useAccount } from '@particle-network/connectkit';
+
+const account = useAccount(); // Automatically updates with the wallet address upon connection, undefined otherwise
+```
+
+Assigning `useAccount` will be the only line within this component, everything else will be formatted within its JSX. Moving on, we'll need to conditionally display the "Connect Wallet" button based upon the truthy/falsy value of `account`. If `account` is undefined, indicating a user has yet to connect their wallet, the `ConnectButton` component will be shown (through `<ConnectButton />`).
+
+Otherwise, if `account` is defined, `GoldRushProvider` and `TokenBalancesListView` can be shown. `GoldRushProvider`, in this example, will take one parameter:
+
+- `apikey`, the Covalent API key previously retrieved from the [Covalent dashboard](https://www.covalenthq.com/platform).
+- Optionally, you can pass in parameters such as `theme`, `mode`, `border_radius`, and `color` for high-level, global customizations (affecting all GoldRush components wrapped by `GoldRushProvider`).
+
+Within `GoldRushProvider` should be `TokenBalancesListView`, which contains:
+
+- `chain_names`, the list of chains to be included in the list of token balances (they'll be queried collectivelly, each contributing to the list of balances). The full list of supported chains can be found on the [Covalent documentation](https://www.covalenthq.com/docs/networks).
+- `address`, the targeted address (one at a time). We'll be using `account` (from `useAccount`) for this.
+- Optionally, Booleans such as `mask_balances` and `hide_small_balances` can be included, alongside the `on_transfer_click` function (which will handle the "View Transfer History" button attached to each token; this should be linked to the `TokenTransfersListView` component if you're planning on using it).
+
+Following a structure similar to the process detailed above, your application should look like the following snippet:
+
+```typescript TypeScript
+import { ConnectButton, useAccount } from '@particle-network/connectkit';
+import { TokenBalancesListView, GoldRushProvider } from "@covalenthq/goldrush-kit";
+import "@covalenthq/goldrush-kit/styles.css";
+
+const App = () => {
+  const accounts = useAccount();
+
+  return (
+    <div className="App">
+      {!accounts ? (
+        <div className="connect-page">
+          <ConnectButton />
+        </div>
+      ) : (
+        <GoldRushProvider apikey="cqt_rQ7h6XHhY3CHQW9mMCtwXrtJK6cY">
+          <div>
+            <TokenBalancesListView
+              chain_names={[
+                  "eth-sepolia",
+                  "matic-mainnet",
+                  "linea-mainnet",
+                  "avalanche-mainnet",
+    							// Add more according to supported chains listed on https://www.covalenthq.com/docs/networks
+              ]}
+              address={accounts}
+            />
+          </div>
+        </GoldRushProvider>
+      )}
+    </div>
+  );
+};
+
+export default App;
+```
+
+Upon connecting their wallet (through `ConnectButton`), users will now be presented with a detailed, in-app view of their token balances across every chain listed within `chain_names` (on `TokenBalancesListView`). Although GoldRush aims to provide a cohesive suite of components, meaning `TokenTransfersListView`, `NFTDetailView`, `NFTWalletTokensListView`, etc. will fit in as easily as was shown above with `TokenBalancesListView`, enabling a simple, data-rich alternative for displaying wallet information with Particle Connect in under 50 lines of code.
+
+***
+
+## Conclusion
+
+Particle Connect fits seamlessly into Covalent's GoldRush Kit and other libraries like it, allowing developers to leverage it within any possible application scenario, remaining unbound to any specific interface or means of interaction. 
+
+Using Particle Connect alongside GoldRush goes further than the example shown today; to view a complete demo repository, implementing Particle Connect within the flagship GoldRush web demo, allowing the resulting wallet to be used within every component in the kit, take a look at the link [here](https://github.com/covalenthq-demos/goldrush-particle-connect-wallet-ui).
+
+<Note>A video covering this dynamic, produced by Covalent, is also available.</Note>
+
+<Frame>
+<iframe 
+width="600"
+height="400" 
+src="https://www.youtube.com/embed/PvP4LQF7z6M" 
+title="Building with GoldRush Kit & Particle Connect" 
+alt="Building with GoldRush Kit & Particle Connect"
+frameborder="0"
+allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+allowfullscreen
+></iframe>
+</Frame>

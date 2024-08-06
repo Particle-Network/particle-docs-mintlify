@@ -1,7 +1,6 @@
 ---
 title: "Omnichain Paymaster"
 description: "Our proprietary Paymaster allows developers to recharge and spend across different chains."
-mode: "wide"
 ---
 
 ***
@@ -16,6 +15,11 @@ Particle's Paymaster offers several compelling advantages, making it a powerful 
 - **Adaptable sponsorship logic using Webhooks:** Configuring webhooks allows developers to accurately control which UserOP can be accepted by the cross-chain Paymaster
 - **Monitoring:** Developers are able to monitor every UserOp they sponsored.
 - **Expiration times:** Developers can define an expiration time for the Paymaster signature. Once the UserOperation reaches its expiration, the Paymaster signature will automatically lapse.
+
+## How to use
+
+1. Use [Particle Network's AA SDKs](/api-reference/aa/sdks/desktop/web.mdx), Particle's Paymaster will be automatically included, and no extra configuration is needed;
+2. Use [Particle Paymaster's RPC](/api-reference/aa/paymaster) directly to plug the multi-chain paymaster in your AA project.
 
 ## Webhooks
 
@@ -63,7 +67,17 @@ This hook will trigger after the Paymaster signs. It includes:
   - `entryPoint` - The entryPoint address.
   - `parsed` - Transaction struct. The Paymaster will attempt to parse the calldata of the `UserOP`. If it cannot be parsed, this field may not exist.
 
-## Using Webhooks for your sponsorship policy within the cross-chain Paymaster
+### Whitelist Smart Contract
+
+Developers can configure a whitelist of contract methods they want to sponsor in the backend. This means that after configuration, our server will only provide the Paymaster’s signature for the specified contract methods.
+
+<Frame caption="Whitelist Smart Contracts for Paymaster on Dashbaord">
+![Whitelist Smart Contracts for Paymaster on Dashbaord](/landing/wallet-abstraction/waas/images/paymaster-whitelist.png)
+</Frame>
+
+## Sponsorship Policy
+
+The simplest way is to configure a whitelist of contract methods to sponsor. However, using Webhooks provides more flexibility, allowing for unlimited sponsorship strategies.
 
 Developers can use Webhooks to implement any sponsorship logic they wish in conjunction with the Paymaster.
 
@@ -88,3 +102,16 @@ This allows, for example, for the following business scenarios:
 - An NFT platform can enable users to trade NFTs without gas, using their own fees to cover gas.
 
 In many cases, programmatic sponsorship policies can be used and adapted to create a friendly experience and simplify experiences where it matters most.
+
+## Config & Check Paymaster
+
+1. Check Balance & Deposit;
+2. Check UserOp sponsor records.
+
+<Frame caption="Config Paymaster on Dashbaord">
+![Config Paymaster on Dashbaord](/landing/wallet-abstraction/waas/images/paymaster-dashboard.png)
+</Frame>
+
+## More
+
+Click to learn more about [Particle’s AA Stack](/api-reference/aa/introduction).

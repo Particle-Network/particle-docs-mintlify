@@ -1,0 +1,10 @@
+---
+title: "Introduction to Swap API"
+---
+
+1. If you're swapping `from` an ERC-20 token, you'll need to check token approval with `checkApprove`. If approval doesn't meet your requirements for the swap, you'll need to request approval.
+2. Get a quote for the swap with `getQuote`.
+3. Retrieve the swap transaction object with `getSwap`.
+4. Execute the swap transaction.
+
+<Tip>Native tokens, such as ETH, are represented as `0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee`</Tip>

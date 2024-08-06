@@ -1,0 +1,550 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Particle Network Enhanced RPC Swap",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://rpc.particle.network/evm-chain"
+    }
+  ],
+  "security": [
+    {
+      "basicAuth": []
+    }
+  ],
+  "paths": {
+    "/#particle_swap_checkApprove": {
+      "post": {
+        "summary": "checkApprove",
+        "operationId": "checkApprove",
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ],
+        "requestBody": {
+          "description": "Request to check if a token is approved for swapping.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CheckApproveRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response with approval status.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CheckApproveResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/#particle_swap_getQuote": {
+      "post": {
+        "summary": "getQuote",
+        "operationId": "getQuote",
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ],
+        "requestBody": {
+          "description": "Request to get a quote for a token swap.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetQuoteRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response with swap quote.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetQuoteResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/#particle_swap_getSwap": {
+      "post": {
+        "summary": "getSwap",
+        "operationId": "getSwap",
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ],
+        "requestBody": {
+          "description": "Request to execute a token swap.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetSwapRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response with swap transaction details.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetSwapResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "basicAuth": {
+        "type": "http",
+        "scheme": "basic"
+      }
+    },
+    "schemas": {
+      "AnyValue": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "number"
+          },
+          {
+            "type": "integer"
+          },
+          {
+            "type": "boolean"
+          },
+          {
+            "type": "object"
+          },
+          {
+            "type": "array",
+            "items": {}
+          }
+        ]
+      },
+      "RPCRequest": {
+        "type": "object",
+        "required": [
+          "jsonrpc",
+          "id",
+          "method",
+          "params"
+        ],
+        "properties": {
+          "jsonrpc": {
+            "type": "string",
+            "default": "2.0",
+            "description": "Version of the JSON-RPC protocol, should be 2.0.",
+            "example": "2.0"
+          },
+          "id": {
+            "type": "integer",
+            "default": 1,
+            "description": "The request identifier.",
+            "example": 1
+          },
+          "method": {
+            "type": "string",
+            "description": "API method being called."
+          },
+          "params": {
+            "type": "array",
+            "description": "Parameters for the API method call."
+          },
+          "chainId": {
+            "type": "integer",
+            "description": "The blockchain chain ID.",
+            "example": 1
+          }
+        }
+      },
+      "RPCResponse": {
+        "type": "object",
+        "required": [
+          "jsonrpc",
+          "id",
+          "result"
+        ],
+        "properties": {
+          "jsonrpc": {
+            "type": "string",
+            "default": "2.0",
+            "description": "Version of the JSON-RPC protocol, should be 2.0.",
+            "example": "2.0"
+          },
+          "id": {
+            "type": "integer",
+            "default": 1,
+            "description": "The request identifier.",
+            "example": 1
+          },
+          "result": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/AnyValue"
+              }
+            ]
+          },
+          "chainId": {
+            "type": "integer",
+            "description": "The blockchain chain ID.",
+            "example": 1
+          }
+        }
+      },
+      "CheckApproveRequest": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/RPCRequest"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "method": {
+                "enum": [
+                  "particle_swap_checkApprove"
+                ]
+              },
+              "params": {
+                "type": "array",
+                "description": "Parameters for checking token approval.",
+                "items": {
+                  "oneOf": [
+                    {
+                      "type": "string",
+                      "description": "User address.",
+                      "example": "0x369aa8a7a7BE683E1a46d9A056806B2B3FD778C8"
+                    },
+                    {
+                      "type": "object",
+                      "description": "Token approval details.",
+                      "properties": {
+                        "tokenAddress": {
+                          "type": "string",
+                          "description": "Token contract address.",
+                          "example": "0x111111111117dc0aa78b770fa6a738034120c302"
+                        },
+                        "amount": {
+                          "type": "string",
+                          "description": "Amount to be approved.",
+                          "example": "1000000000"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        ]
+      },
+      "CheckApproveResponse": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/RPCResponse"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "result": {
+                "type": "object",
+                "description": "Approval status and transaction details.",
+                "properties": {
+                  "approved": {
+                    "type": "boolean",
+                    "description": "Approval status."
+                  },
+                  "tx": {
+                    "type": "object",
+                    "description": "Transaction details.",
+                    "properties": {
+                      "to": {
+                        "type": "string",
+                        "description": "Recipient address.",
+                        "example": "0x111111111117dC0aa78b770fA6A738034120C302"
+                      },
+                      "data": {
+                        "type": "string",
+                        "description": "Transaction data.",
+                        "example": "0x095ea7b30000000000000000000000001111111254fb6c44bac0bed2854e76f90643097d000000000000000000000000000000000000000000000000000000003b9aca00"
+                      },
+                      "value": {
+                        "type": "string",
+                        "description": "Transaction value.",
+                        "example": "0x0"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ]
+      },
+      "GetQuoteRequest": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/RPCRequest"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "method": {
+                "enum": [
+                  "particle_swap_getQuote"
+                ]
+              },
+              "params": {
+                "type": "array",
+                "description": "Parameters for getting a swap quote.",
+                "items": {
+                  "oneOf": [
+                    {
+                      "type": "string",
+                      "description": "User address.",
+                      "example": "0x369aa8a7a7BE683E1a46d9A056806B2B3FD778C8"
+                    },
+                    {
+                      "type": "object",
+                      "description": "Swap quote details.",
+                      "properties": {
+                        "fromTokenAddress": {
+                          "type": "string",
+                          "description": "Address of the token to be swapped.",
+                          "example": "0x111111111117dc0aa78b770fa6a738034120c302"
+                        },
+                        "toTokenAddress": {
+                          "type": "string",
+                          "description": "Address of the token to receive.",
+                          "example": "0x6B175474E89094C44Da98b954EedeAC495271d0F"
+                        },
+                        "amount": {
+                          "type": "string",
+                          "description": "Amount to be swapped.",
+                          "example": "1000000000"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        ]
+      },
+      "GetQuoteResponse": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/RPCResponse"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "result": {
+                "type": "object",
+                "description": "Swap quote details.",
+                "properties": {
+                  "fromToken": {
+                    "$ref": "#/components/schemas/TokenInfo",
+                    "description": "Details of the token being swapped."
+                  },
+                  "toToken": {
+                    "$ref": "#/components/schemas/TokenInfo",
+                    "description": "Details of the token to be received."
+                  },
+                  "toTokenAmount": {
+                    "type": "string",
+                    "description": "Amount of the token to be received.",
+                    "example": "781970036"
+                  },
+                  "fromTokenAmount": {
+                    "type": "string",
+                    "description": "Amount of the token being swapped.",
+                    "example": "1000000000"
+                  },
+                  "estimatedGas": {
+                    "type": "string",
+                    "description": "Estimated gas for the swap.",
+                    "example": "0x4079f"
+                  }
+                }
+              }
+            }
+          }
+        ]
+      },
+      "GetSwapRequest": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/RPCRequest"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "method": {
+                "enum": [
+                  "particle_swap_getSwap"
+                ]
+              },
+              "params": {
+                "type": "array",
+                "description": "Parameters for executing a swap.",
+                "items": {
+                  "oneOf": [
+                    {
+                      "type": "string",
+                      "description": "User address.",
+                      "example": "0x369aa8a7a7BE683E1a46d9A056806B2B3FD778C8"
+                    },
+                    {
+                      "type": "object",
+                      "description": "Swap execution details.",
+                      "properties": {
+                        "fromTokenAddress": {
+                          "type": "string",
+                          "description": "Address of the token to be swapped.",
+                          "example": "0x111111111117dc0aa78b770fa6a738034120c302"
+                        },
+                        "toTokenAddress": {
+                          "type": "string",
+                          "description": "Address of the token to receive.",
+                          "example": "0x6B175474E89094C44Da98b954EedeAC495271d0F"
+                        },
+                        "amount": {
+                          "type": "string",
+                          "description": "Amount to be swapped.",
+                          "example": "1000000000"
+                        },
+                        "slippage": {
+                          "type": "integer",
+                          "description": "Slippage tolerance in percentage.",
+                          "example": 1
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        ]
+      },
+      "GetSwapResponse": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/RPCResponse"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "result": {
+                "type": "object",
+                "description": "Swap transaction details.",
+                "properties": {
+                  "fromToken": {
+                    "$ref": "#/components/schemas/TokenInfo",
+                    "description": "Details of the token being swapped."
+                  },
+                  "toToken": {
+                    "$ref": "#/components/schemas/TokenInfo",
+                    "description": "Details of the token to be received."
+                  },
+                  "toTokenAmount": {
+                    "type": "string",
+                    "description": "Amount of the token to be received.",
+                    "example": "781970036"
+                  },
+                  "fromTokenAmount": {
+                    "type": "string",
+                    "description": "Amount of the token being swapped.",
+                    "example": "1000000000"
+                  },
+                  "tx": {
+                    "type": "object",
+                    "description": "Transaction details.",
+                    "properties": {
+                      "to": {
+                        "type": "string",
+                        "description": "Recipient address.",
+                        "example": "0x1111111254fb6c44bAC0beD2854e76F90643097d"
+                      },
+                      "data": {
+                        "type": "string",
+                        "description": "Transaction data.",
+                        "example": "0x000"
+                      },
+                      "value": {
+                        "type": "string",
+                        "description": "Transaction value.",
+                        "example": "0x0"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ]
+      },
+      "TokenInfo": {
+        "type": "object",
+        "properties": {
+          "chainId": {
+            "type": "integer",
+            "description": "Blockchain chain ID.",
+            "example": 1
+          },
+          "address": {
+            "type": "string",
+            "description": "Token contract address.",
+            "example": "0x6B175474E89094C44Da98b954EedeAC495271d0F"
+          },
+          "symbol": {
+            "type": "string",
+            "description": "Token symbol.",
+            "example": "DAI"
+          },
+          "name": {
+            "type": "string",
+            "description": "Token name.",
+            "example": "Dai Stablecoin"
+          },
+          "decimals": {
+            "type": "integer",
+            "description": "Token decimals.",
+            "example": 18
+          },
+          "logoURI": {
+            "type": "string",
+            "description": "URI of the token logo.",
+            "example": "https://static.particle.network/token-list/ethereum/0x6B175474E89094C44Da98b954EedeAC495271d0F.png"
+          }
+        }
+      }
+    }
+  }
+}

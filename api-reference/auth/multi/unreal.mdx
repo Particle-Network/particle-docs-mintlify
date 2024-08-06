@@ -28,15 +28,15 @@ To install:
 
 To begin, you'll need to create a config object with your `projectId`, `clientKey`, and `appId` filled in.
 
-<Note>Follow the quickstart tutorial to set up a project and find the required keys: [Create a new project](/resources/quickstart/waas/mobile-quickstart#configuring-particle-auth).</Note>
+<Note>Follow the quickstart tutorial to set up a project and find the required keys: [Create a new project](/guides/quickstart/waas/mobile-quickstart#configuring-particle-auth).</Note>
 
 With these retrieved and set, you'll need to call the `Init` function for formal initialization. The `Init` function takes the following parameters:
 
 - `Default Browser Widget`. Generally, this can be set to `W_ExecuteWebBrowser`, although if you'd like to use a custom `WebBrowser` blueprint, you can use that instead (it must follow the structure of `W_ExecuteWebBrowser`).
 - `In Config`, which links back to the previously defined config object containing `projectId`, `clientKey`, and `appId`.
-- `In Theme`, an optional JSON string containing customization configuration. See [Particle Auth Set Auth Theme](https://docs.particle.network/developers/auth-service/sdks/web#set-auth-theme) for more information.
+- `In Theme`, an optional JSON string containing customization configuration. See [Particle Auth Set Auth Theme](/api-reference/auth/desktop-sdks/web#usecustomize) for more information.
 - `In Language`, the language used within the modal, either `en`, `zh-cn`, `zh-tw`, `ja`, or `ko`.
-- `In Chain Name` & `In Chain Id`; the primary chain to be used, either EVM or Solana. For more information on specific chainId and chainName configurations, see [EVM Chains Structure](https://docs.particle.network/developers/other-services/node-service/evm-chains-api#structure).
+- `In Chain Name` & `In Chain Id`; the primary chain to be used, either EVM or Solana. For more information on specific chainId and chainName configurations, see [EVM Chains Structure](/guides/network-coverage).
 
 <img
   className="block dark:hidden"
