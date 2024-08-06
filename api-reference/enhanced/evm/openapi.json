@@ -1,0 +1,1693 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Particle Network Enhanced RPC",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://rpc.particle.network/evm-chain"
+    }
+  ],
+  "paths": {
+    "/#particle_abi_encodeFunctionCall": {
+      "post": {
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ],
+        "summary": "abiEncodeFunctionCall",
+        "operationId": "abiEncodeFunctionCall",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ABIEncodeFunctionCallRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ABIEncodeFunctionCallResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/#particle_abi_getContractAbi": {
+      "post": {
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ],
+        "summary": "getContractABI",
+        "operationId": "getContractABI",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetContractABIRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetContractABIResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/#particle_crosschain_getNFTs": {
+      "post": {
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ],
+        "summary": "crosschainGetNFTs",
+        "operationId": "crosschainGetNFTs",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CrosschainGetNFTsRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CrosschainGetNFTsResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/#particle_deserializeTransaction": {
+      "post": {
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ],
+        "summary": "deserializeTransaction",
+        "operationId": "deserializeTransaction",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DeserializeTransactionRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeserializeTransactionResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/#particle_getTokensAndNFTs": {
+      "post": {
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ],
+        "summary": "getTokensAndNFTs",
+        "operationId": "getTokensAndNFTs",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetTokensAndNFTsRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetTokensAndNFTsResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/#particle_getTokens": {
+      "post": {
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ],
+        "summary": "getTokens",
+        "operationId": "getTokens",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetTokensRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetTokensResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/#particle_getNFTs": {
+      "post": {
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ],
+        "summary": "getNFTs",
+        "operationId": "getNFTs",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetNFTsRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetNFTsResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/#particle_getPrice": {
+      "post": {
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ],
+        "summary": "getPrice",
+        "operationId": "getPrice",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetPriceRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetPriceResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/#particle_getTransactionsByAddress": {
+      "post": {
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ],
+        "summary": "getTransactionsByAddress",
+        "operationId": "getTransactionsByAddress",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetTransactionsByAddressRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetTransactionsByAddressResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/#particle_getPendingTransactionsByAddress": {
+      "post": {
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ],
+        "summary": "getPendingTransactionsByAddress",
+        "operationId": "getPendingTransactionsByAddress",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetPendingTransactionsByAddressRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetPendingTransactionsByAddressResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/#particle_getLatestBlock": {
+      "post": {
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ],
+        "summary": "getLatestBlock",
+        "operationId": "getLatestBlock",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "type": "object",
+                    "required": [
+                      "jsonrpc",
+                      "id",
+                      "method",
+                      "params",
+                      "chainId"
+                    ],
+                    "properties": {
+                      "jsonrpc": {
+                        "type": "string",
+                        "default": 2,
+                        "description": "Version of the JSON-RPC protocol, should be 2.0.",
+                        "example": "2.0"
+                      },
+                      "id": {
+                        "type": "integer",
+                        "default": 1,
+                        "description": "The request identifier.",
+                        "example": 1
+                      },
+                      "method": {
+                        "type": "string",
+                        "description": "API method being called."
+                      },
+                      "chainId": {
+                        "type": "integer",
+                        "description": "The chain ID.",
+                        "example": 1
+                      },
+                      "params": {
+                        "type": "array",
+                        "description": "Parameters for the API method call."
+                      }
+                    }
+                  },
+                  {
+                    "type": "object",
+                    "required": [
+                      "method"
+                    ],
+                    "properties": {
+                      "method": {
+                        "type": "string",
+                        "default": "particle_getLatestBlock",
+                        "enum": [
+                          "particle_getLatestBlock"
+                        ]
+                      },
+                      "params": {
+                        "type": "array",
+                        "enum": [
+                          []
+                        ]
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "jsonrpc": {
+                          "type": "string",
+                          "description": "Version of the JSON-RPC protocol, should be 2.0.",
+                          "example": "2.0"
+                        },
+                        "id": {
+                          "type": "integer",
+                          "description": "The request identifier.",
+                          "example": 1
+                        },
+                        "result": {
+                          "type": "object",
+                          "description": "Result of the API call."
+                        }
+                      }
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "result": {
+                          "type": "object",
+                          "properties": {
+                            "difficulty": {
+                              "type": "string",
+                              "description": "Difficulty of the block."
+                            },
+                            "extraData": {
+                              "type": "string",
+                              "description": "Extra data of the block."
+                            },
+                            "gasLimit": {
+                              "type": "string",
+                              "description": "Gas limit of the block."
+                            },
+                            "gasUsed": {
+                              "type": "string",
+                              "description": "Gas used in the block."
+                            },
+                            "hash": {
+                              "type": "string",
+                              "description": "Hash of the block."
+                            },
+                            "logsBloom": {
+                              "type": "string",
+                              "description": "Logs bloom filter of the block."
+                            },
+                            "miner": {
+                              "type": "string",
+                              "description": "Miner of the block."
+                            },
+                            "mixHash": {
+                              "type": "string",
+                              "description": "Mix hash of the block."
+                            },
+                            "nonce": {
+                              "type": "string",
+                              "description": "Nonce of the block."
+                            },
+                            "number": {
+                              "type": "string",
+                              "description": "Number of the block."
+                            },
+                            "parentHash": {
+                              "type": "string",
+                              "description": "Parent hash of the block."
+                            },
+                            "receiptsRoot": {
+                              "type": "string",
+                              "description": "Receipts root of the block."
+                            },
+                            "sha3Uncles": {
+                              "type": "string",
+                              "description": "SHA3 uncles hash of the block."
+                            },
+                            "size": {
+                              "type": "string",
+                              "description": "Size of the block."
+                            },
+                            "stateRoot": {
+                              "type": "string",
+                              "description": "State root of the block."
+                            },
+                            "timestamp": {
+                              "type": "string",
+                              "description": "Timestamp of the block."
+                            },
+                            "totalDifficulty": {
+                              "type": "string",
+                              "description": "Total difficulty of the block."
+                            },
+                            "transactions": {
+                              "type": "array",
+                              "description": "Array of transactions in the block.",
+                              "items": {
+                                "type": "object"
+                              }
+                            },
+                            "transactionsRoot": {
+                              "type": "string",
+                              "description": "Transactions root of the block."
+                            },
+                            "uncles": {
+                              "type": "array",
+                              "description": "Array of uncles in the block.",
+                              "items": {
+                                "type": "object"
+                              }
+                            },
+                            "receipts": {
+                              "type": "array",
+                              "description": "Array of receipts in the block.",
+                              "items": {
+                                "type": "object"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/#particle_suggestedGasFees": {
+      "post": {
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ],
+        "summary": "suggestedGasFees",
+        "operationId": "suggestedGasFees",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SuggestedGasFeesRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuggestedGasFeesResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "basicAuth": {
+        "type": "http",
+        "scheme": "basic"
+      }
+    },
+    "schemas": {
+      "AnyValue": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "number"
+          },
+          {
+            "type": "integer"
+          },
+          {
+            "type": "boolean"
+          },
+          {
+            "type": "object"
+          },
+          {
+            "type": "array",
+            "items": {}
+          }
+        ]
+      },
+      "RPCRequest": {
+        "type": "object",
+        "required": [
+          "jsonrpc",
+          "id",
+          "method",
+          "params",
+          "chainId"
+        ],
+        "properties": {
+          "jsonrpc": {
+            "type": "string",
+            "default": 2,
+            "description": "Version of the JSON-RPC protocol, should be 2.0.",
+            "example": "2.0"
+          },
+          "id": {
+            "type": "integer",
+            "default": 1,
+            "description": "The request identifier.",
+            "example": 1
+          },
+          "method": {
+            "type": "string",
+            "description": "API method being called."
+          },
+          "chainId": {
+            "type": "integer",
+            "example": 1,
+            "description": "The chain ID."
+          },
+          "params": {
+            "type": "array",
+            "description": "Parameters for the API method call."
+          }
+        }
+      },
+      "RPCResponse": {
+        "type": "object",
+        "properties": {
+          "jsonrpc": {
+            "type": "string",
+            "description": "Version of the JSON-RPC protocol, should be 2.0.",
+            "example": "2.0"
+          },
+          "id": {
+            "type": "integer",
+            "description": "The request identifier.",
+            "example": 1
+          },
+          "result": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/AnyValue"
+              }
+            ]
+          }
+        }
+      },
+      "GetTokensRequest": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/RPCRequest"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "method": {
+                "enum": [
+                  "particle_getTokens"
+                ]
+              },
+              "params": {
+                "type": "array",
+                "items": {}
+              }
+            }
+          }
+        ]
+      },
+      "GetTokensAndNFTsRequest": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/RPCRequest"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "method": {
+                "enum": [
+                  "particle_getTokensAndNFTs"
+                ]
+              },
+              "params": {
+                "type": "array",
+                "items": {}
+              }
+            }
+          }
+        ]
+      },
+      "GetTokensAndNFTsResponse": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/RPCResponse"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "result": {
+                "type": "object",
+                "required": [
+                  "native",
+                  "tokens",
+                  "nfts"
+                ],
+                "properties": {
+                  "native": {
+                    "type": "string",
+                    "description": "Native token balance."
+                  },
+                  "tokens": {
+                    "type": "array",
+                    "description": "Array of tokens.",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "decimals": {
+                          "type": "integer",
+                          "description": "Number of decimals for the token."
+                        },
+                        "amount": {
+                          "type": "string",
+                          "description": "Amount of tokens."
+                        },
+                        "address": {
+                          "type": "string",
+                          "description": "Token contract address."
+                        },
+                        "name": {
+                          "type": "string",
+                          "description": "Name of the token."
+                        },
+                        "symbol": {
+                          "type": "string",
+                          "description": "Symbol of the token."
+                        },
+                        "image": {
+                          "type": "string",
+                          "description": "Image URL of the token."
+                        }
+                      }
+                    }
+                  },
+                  "nfts": {
+                    "type": "array",
+                    "description": "Array of NFTs.",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "address": {
+                          "type": "string",
+                          "description": "NFT contract address."
+                        },
+                        "isSemiFungible": {
+                          "type": "boolean",
+                          "description": "Indicates if the NFT is semi-fungible."
+                        },
+                        "tokenId": {
+                          "type": "string",
+                          "description": "Token ID of the NFT."
+                        },
+                        "tokenBalance": {
+                          "type": "string",
+                          "description": "Token balance of the NFT."
+                        },
+                        "tokenURI": {
+                          "type": "string",
+                          "description": "Token URI of the NFT."
+                        },
+                        "name": {
+                          "type": "string",
+                          "description": "Name of the NFT."
+                        },
+                        "symbol": {
+                          "type": "string",
+                          "description": "Symbol of the NFT."
+                        },
+                        "image": {
+                          "type": "string",
+                          "description": "Image URL of the NFT."
+                        },
+                        "data": {
+                          "type": "object",
+                          "description": "Additional data of the NFT."
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ]
+      },
+      "GetTokensResponse": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/RPCResponse"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "result": {
+                "type": "object",
+                "required": [
+                  "native",
+                  "tokens"
+                ],
+                "properties": {
+                  "native": {
+                    "type": "string",
+                    "description": "Native token balance."
+                  },
+                  "tokens": {
+                    "type": "array",
+                    "description": "Array of tokens.",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "decimals": {
+                          "type": "integer",
+                          "description": "Number of decimals for the token."
+                        },
+                        "amount": {
+                          "type": "string",
+                          "description": "Amount of tokens."
+                        },
+                        "address": {
+                          "type": "string",
+                          "description": "Token contract address."
+                        },
+                        "name": {
+                          "type": "string",
+                          "description": "Name of the token."
+                        },
+                        "symbol": {
+                          "type": "string",
+                          "description": "Symbol of the token."
+                        },
+                        "image": {
+                          "type": "string",
+                          "description": "Image URL of the token."
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ]
+      },
+      "GetPriceRequest": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/RPCRequest"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "method": {
+                "enum": [
+                  "particle_getPrice"
+                ]
+              },
+              "params": {
+                "type": "array",
+                "items": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        ]
+      },
+      "CrosschainGetNFTsRequest": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/RPCRequest"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "method": {
+                "enum": [
+                  "particle_crosschain_getNFTs"
+                ]
+              },
+              "params": {
+                "type": "array",
+                "items": {}
+              }
+            }
+          }
+        ]
+      },
+      "CrosschainGetNFTsResponse": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/RPCResponse"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "result": {
+                "type": "object",
+                "properties": {
+                  "nfts": {
+                    "type": "array",
+                    "description": "Array of NFTs.",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "address": {
+                          "type": "string",
+                          "description": "NFT contract address."
+                        },
+                        "isSemiFungible": {
+                          "type": "boolean",
+                          "description": "Indicates if the NFT is semi-fungible."
+                        },
+                        "tokenId": {
+                          "type": "string",
+                          "description": "Token ID of the NFT."
+                        },
+                        "tokenBalance": {
+                          "type": "string",
+                          "description": "Token balance of the NFT."
+                        },
+                        "tokenURI": {
+                          "type": "string",
+                          "description": "Token URI of the NFT."
+                        },
+                        "name": {
+                          "type": "string",
+                          "description": "Name of the NFT."
+                        },
+                        "symbol": {
+                          "type": "string",
+                          "description": "Symbol of the NFT."
+                        },
+                        "image": {
+                          "type": "string",
+                          "description": "Image URL of the NFT."
+                        },
+                        "data": {
+                          "type": "object",
+                          "description": "Additional data of the NFT."
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ]
+      },
+      "GetPriceResponse": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/RPCResponse"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "result": {
+                "type": "array",
+                "description": "Array of token price details.",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "address": {
+                      "type": "string",
+                      "description": "Token contract address."
+                    },
+                    "currencies": {
+                      "type": "array",
+                      "description": "Array of currency details.",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "type": {
+                            "type": "string",
+                            "description": "Currency type."
+                          },
+                          "price": {
+                            "type": "number",
+                            "description": "Price of the token."
+                          },
+                          "marketCap": {
+                            "type": "number",
+                            "description": "Market capitalization."
+                          },
+                          "24hChange": {
+                            "type": "number",
+                            "description": "24-hour price change."
+                          },
+                          "24hVol": {
+                            "type": "number",
+                            "description": "24-hour trading volume."
+                          },
+                          "lastUpdatedAt": {
+                            "type": "integer",
+                            "description": "Timestamp of the last update."
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ]
+      },
+      "SuggestedGasFeesRequest": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/RPCRequest"
+          },
+          {
+            "type": "object",
+            "required": [
+              "method"
+            ],
+            "properties": {
+              "method": {
+                "type": "string",
+                "default": "particle_suggestedGasFees",
+                "enum": [
+                  "particle_suggestedGasFees"
+                ]
+              },
+              "params": {
+                "type": "array",
+                "enum": [
+                  []
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "SuggestedGasFeesResponse": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/RPCResponse"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "result": {
+                "type": "object",
+                "properties": {
+                  "low": {
+                    "type": "object",
+                    "description": "Low gas fee estimate."
+                  },
+                  "medium": {
+                    "type": "object",
+                    "description": "Medium gas fee estimate."
+                  },
+                  "high": {
+                    "type": "object",
+                    "description": "High gas fee estimate."
+                  },
+                  "baseFee": {
+                    "type": "string",
+                    "description": "Base gas fee."
+                  }
+                }
+              }
+            }
+          }
+        ]
+      },
+      "GetTransactionsByAddressRequest": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/RPCRequest"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "method": {
+                "enum": [
+                  "particle_getTransactionsByAddress"
+                ]
+              },
+              "params": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ]
+      },
+      "GetTransactionsByAddressResponse": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/RPCResponse"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "result": {
+                "type": "array",
+                "description": "Array of transactions.",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "hash": {
+                      "type": "string",
+                      "description": "Transaction hash."
+                    },
+                    "from": {
+                      "type": "string",
+                      "description": "Sender address."
+                    },
+                    "to": {
+                      "type": "string",
+                      "description": "Receiver address."
+                    },
+                    "value": {
+                      "type": "string",
+                      "description": "Transaction value."
+                    },
+                    "data": {
+                      "type": "string",
+                      "description": "Transaction data."
+                    },
+                    "gasLimit": {
+                      "type": "integer",
+                      "description": "Gas limit for the transaction."
+                    },
+                    "timestamp": {
+                      "type": "integer",
+                      "description": "Timestamp of the transaction."
+                    },
+                    "status": {
+                      "type": "integer",
+                      "description": "Status of the transaction."
+                    },
+                    "type": {
+                      "type": "integer",
+                      "description": "Type of the transaction."
+                    },
+                    "nonce": {
+                      "type": "integer",
+                      "description": "Nonce of the transaction."
+                    },
+                    "accessList": {
+                      "type": "array",
+                      "description": "Access list for the transaction.",
+                      "items": {
+                        "type": "object"
+                      }
+                    },
+                    "maxPriorityFeePerGas": {
+                      "type": "string",
+                      "description": "Max priority fee per gas."
+                    },
+                    "maxFeePerGas": {
+                      "type": "string",
+                      "description": "Max fee per gas."
+                    },
+                    "gasSpent": {
+                      "type": "string",
+                      "description": "Gas spent for the transaction."
+                    },
+                    "gasPrice": {
+                      "type": "string",
+                      "description": "Gas price for the transaction."
+                    },
+                    "fees": {
+                      "type": "string",
+                      "description": "Transaction fees."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ]
+      },
+      "GetPendingTransactionsByAddressRequest": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/RPCRequest"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "method": {
+                "enum": [
+                  "particle_getPendingTransactionsByAddress"
+                ]
+              },
+              "params": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ]
+      },
+      "GetPendingTransactionsByAddressResponse": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/RPCResponse"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "result": {
+                "type": "array",
+                "description": "Array of pending transactions.",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "hash": {
+                      "type": "string",
+                      "description": "Transaction hash."
+                    },
+                    "from": {
+                      "type": "string",
+                      "description": "Sender address."
+                    },
+                    "to": {
+                      "type": "string",
+                      "description": "Receiver address."
+                    },
+                    "value": {
+                      "type": "string",
+                      "description": "Transaction value."
+                    },
+                    "data": {
+                      "type": "string",
+                      "description": "Transaction data."
+                    },
+                    "gasLimit": {
+                      "type": "integer",
+                      "description": "Gas limit for the transaction."
+                    },
+                    "timestamp": {
+                      "type": "integer",
+                      "description": "Timestamp of the transaction."
+                    },
+                    "status": {
+                      "type": "integer",
+                      "description": "Status of the transaction."
+                    },
+                    "type": {
+                      "type": "integer",
+                      "description": "Type of the transaction."
+                    },
+                    "nonce": {
+                      "type": "integer",
+                      "description": "Nonce of the transaction."
+                    },
+                    "accessList": {
+                      "type": "array",
+                      "description": "Access list for the transaction.",
+                      "items": {
+                        "type": "object"
+                      }
+                    },
+                    "maxPriorityFeePerGas": {
+                      "type": "string",
+                      "description": "Max priority fee per gas."
+                    },
+                    "maxFeePerGas": {
+                      "type": "string",
+                      "description": "Max fee per gas."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ]
+      },
+      "ABIEncodeFunctionCallRequest": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/RPCRequest"
+          },
+          {
+            "type": "object",
+            "required": [
+              "method"
+            ],
+            "properties": {
+              "method": {
+                "type": "string",
+                "default": "particle_abi_encodeFunctionCall",
+                "enum": [
+                  "particle_abi_encodeFunctionCall"
+                ]
+              },
+              "params": {
+                "type": "array",
+                "items": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "array"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        ]
+      },
+      "ABIEncodeFunctionCallResponse": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/RPCResponse"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "result": {
+                "type": "string",
+                "description": "Encoded function call data."
+              }
+            }
+          }
+        ]
+      },
+      "GetContractABIRequest": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/RPCRequest"
+          },
+          {
+            "type": "object",
+            "required": [
+              "method"
+            ],
+            "properties": {
+              "method": {
+                "type": "string",
+                "default": "particle_abi_getContractAbi",
+                "enum": [
+                  "particle_abi_getContractAbi"
+                ]
+              },
+              "params": {
+                "type": "array",
+                "items": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "boolean"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        ]
+      },
+      "GetContractABIResponse": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/RPCResponse"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "result": {
+                "type": "string",
+                "description": "Contract ABI."
+              }
+            }
+          }
+        ]
+      },
+      "DeserializeTransactionRequest": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/RPCRequest"
+          },
+          {
+            "type": "object",
+            "required": [
+              "method"
+            ],
+            "properties": {
+              "method": {
+                "type": "string",
+                "default": "particle_deserializeTransaction",
+                "enum": [
+                  "particle_deserializeTransaction"
+                ]
+              },
+              "params": {
+                "type": "array",
+                "items": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        ]
+      },
+      "DeserializeTransactionResponse": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/RPCResponse"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "result": {
+                "type": "object",
+                "properties": {
+                  "estimatedChanges": {
+                    "type": "object",
+                    "description": "Estimated changes resulting from the transaction."
+                  },
+                  "data": {
+                    "type": "object",
+                    "description": "Data of the transaction."
+                  }
+                }
+              }
+            }
+          }
+        ]
+      },
+      "GetLatestBlockRequest": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/RPCRequest"
+          },
+          {
+            "type": "object",
+            "required": [
+              "method"
+            ],
+            "properties": {
+              "method": {
+                "type": "string",
+                "default": "particle_getLatestBlock",
+                "enum": [
+                  "particle_getLatestBlock"
+                ]
+              },
+              "params": {
+                "type": "array",
+                "enum": [
+                  []
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "GetLatestBlockResponse": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/RPCResponse"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "result": {
+                "type": "object",
+                "properties": {
+                  "difficulty": {
+                    "type": "string",
+                    "description": "Difficulty of the block."
+                  },
+                  "extraData": {
+                    "type": "string",
+                    "description": "Extra data of the block."
+                  },
+                  "gasLimit": {
+                    "type": "string",
+                    "description": "Gas limit of the block."
+                  },
+                  "gasUsed": {
+                    "type": "string",
+                    "description": "Gas used in the block."
+                  },
+                  "hash": {
+                    "type": "string",
+                    "description": "Hash of the block."
+                  },
+                  "logsBloom": {
+                    "type": "string",
+                    "description": "Logs bloom filter of the block."
+                  },
+                  "miner": {
+                    "type": "string",
+                    "description": "Miner of the block."
+                  },
+                  "mixHash": {
+                    "type": "string",
+                    "description": "Mix hash of the block."
+                  },
+                  "nonce": {
+                    "type": "string",
+                    "description": "Nonce of the block."
+                  },
+                  "number": {
+                    "type": "string",
+                    "description": "Number of the block."
+                  },
+                  "parentHash": {
+                    "type": "string",
+                    "description": "Parent hash of the block."
+                  },
+                  "receiptsRoot": {
+                    "type": "string",
+                    "description": "Receipts root of the block."
+                  },
+                  "sha3Uncles": {
+                    "type": "string",
+                    "description": "SHA3 uncles hash of the block."
+                  },
+                  "size": {
+                    "type": "string",
+                    "description": "Size of the block."
+                  },
+                  "stateRoot": {
+                    "type": "string",
+                    "description": "State root of the block."
+                  },
+                  "timestamp": {
+                    "type": "string",
+                    "description": "Timestamp of the block."
+                  },
+                  "totalDifficulty": {
+                    "type": "string",
+                    "description": "Total difficulty of the block."
+                  },
+                  "transactions": {
+                    "type": "array",
+                    "description": "Array of transactions in the block.",
+                    "items": {
+                      "type": "object"
+                    }
+                  },
+                  "transactionsRoot": {
+                    "type": "string",
+                    "description": "Transactions root of the block."
+                  },
+                  "uncles": {
+                    "type": "array",
+                    "description": "Array of uncles in the block.",
+                    "items": {
+                      "type": "object"
+                    }
+                  },
+                  "receipts": {
+                    "type": "array",
+                    "description": "Array of receipts in the block.",
+                    "items": {
+                      "type": "object"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ]
+      },
+      "GetNFTsRequest": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/RPCRequest"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "method": {
+                "enum": [
+                  "particle_getNFTs"
+                ]
+              },
+              "params": {
+                "type": "array",
+                "items": {}
+              }
+            }
+          }
+        ]
+      },
+      "GetNFTsResponse": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/RPCResponse"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "result": {
+                "type": "object",
+                "properties": {
+                  "nfts": {
+                    "type": "array",
+                    "description": "Array of NFTs.",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "address": {
+                          "type": "string",
+                          "description": "NFT contract address."
+                        },
+                        "isSemiFungible": {
+                          "type": "boolean",
+                          "description": "Indicates if the NFT is semi-fungible."
+                        },
+                        "tokenId": {
+                          "type": "string",
+                          "description": "Token ID of the NFT."
+                        },
+                        "tokenBalance": {
+                          "type": "string",
+                          "description": "Token balance of the NFT."
+                        },
+                        "tokenURI": {
+                          "type": "string",
+                          "description": "Token URI of the NFT."
+                        },
+                        "name": {
+                          "type": "string",
+                          "description": "Name of the NFT."
+                        },
+                        "symbol": {
+                          "type": "string",
+                          "description": "Symbol of the NFT."
+                        },
+                        "image": {
+                          "type": "string",
+                          "description": "Image URL of the NFT."
+                        },
+                        "data": {
+                          "type": "object",
+                          "description": "Additional data of the NFT."
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
+}
