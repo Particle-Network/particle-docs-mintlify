@@ -163,7 +163,7 @@ Additionally, head over to your `Info.plist` file and include the following snip
   <string>We use Face ID for secure access to the app.</string>
 ```
 
-Finally, you'll need to edit your Podfile to ensure `particle_connect` is correctly imported. If you have not already, head over to the [linked guide](https://pub.dev/packages/particle_connect/install) to complete this.
+Finally, you'll need to edit your Podfile to ensure `particle_connect` is correctly imported. If you have not already, head over to the [linked guide](/api-reference/connect/mobile/flutter) to complete this.
 
 ***
 
@@ -324,6 +324,7 @@ Particle Wallet has a native swap page (retrieves multiple quotes from different
 | `fromTokenAddress` | `String?` | (Optional) the swap pair from token address |
 | `toTokenAddress` | `String?` |  (Optional) the swap pair to token address   |
 | `amount` | `String?` |  (Optional) the swap from token amount, should pass the minimal unit string, for example 0.01 ETH, it's decimals is 18, should pass "10000000000000000"  |
+
 E.g.:
 
 ```dart
@@ -395,6 +396,10 @@ await ParticleWallet.switchWallet(walletType, publicAddress);
 ### Custom UI
 
 Additional interface customizations can be manually set through a variety of methods on `ParticleWallet`. Each of these will change a specific configuration or UI element present within the Particle Wallet interface. These methods include:
+
+- `setSwapDisabled`, whether or not the "Swap" functionality is displayed within the interface. This takes one parameter, either `true` or `false`, with the default being `false`.
+
+- `setPayDisabled`, whether or not the "Buy" functionality is displayed within the interface. This takes one parameter, either `true` or `false`, with the default being `false`.
 
 - `setShowTestNetwork`, configures the visibility of the Testnets within the interface. It accepts a boolean value, `true` or `false`.
 

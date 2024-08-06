@@ -10,6 +10,10 @@ Run this command:
 
 ```shell Terminal
 npm install @particle-network/rn-aa
+
+// Or
+
+yarn add @particle-network/rn-aa
 ```
 
 Click [here](https://github.com/Particle-Network/particle-react-native/tree/master/particle-aa) to get the demo source code
@@ -25,173 +29,162 @@ Important details before initialization.
 <p></p>
 <p>- All Testnets automatically have the Verifying Particle Network Omnichain Paymaster enabled. Transactions that request it will automatically be sponsored and thus gasless.</p>
 <p>- On the occasion that you'd like to use the Particle Network Omnichain Paymaster for Mainnets, you'll need to deposit USDT on either Ethereum or BNB Chain within the <a href="https://dashboard.particle.network">Particle dashboard</a>. This USDT will then automatically be converted as needed into the native token of the network you're requesting (and qualifying for) sponsorship on.</p>
-<p>- Alternatively, if you'd like to instead use Biconomy's Verifying Paymaster, you can head over to the <a href="https://dashboard.biconomy.io">Biconomy dashboard</a>, create a new Paymaster, and fill in `biconomyAppKeys` within `particleAA.init`.</p>
-<p>- The Particle Network AA SDK automatically uses Biconomy's Token Paymaster (for paying gas in ERC20 tokens). Transactions that request it will be able to leverage it without additional configuration.</p>
 </Note>
 
 ## Initialize the SDK
 
 Before using the SDK, you have to call init(Required)
 
-```js JavaScript
+```typeScript
 import * as particleAA from '@particle-network/rn-aa';
-import { AAVersion } from '@particle-network/rn-auth';
+import { AAVersion } from '@particle-network/rn-base';
 
-const biconomyAppKeys = {
-  1: 'your ethereum mainnet key',
-  137: 'your polygon mainnet key',
-}
-particleAA.init(AccountName.BICONOMY_V2(), biconomyApiKeys);
-```
-
-## Is support chainInfo
-
-check if support the chainInfo
-
-```js JavaScript
-const result = await particleAA.isSupportChainInfo(ChainInfo.Ethereum);
-```
-
-## Is deploy AA wallet
-
-```js JavaScript
-const eoaAddress = "";
-const result = await particleAA.isDeploy(eoaAddress);
-
-if (result.status) {
-  const isDeploy = result.data;
-  console.log('isDeploy result', isDeploy);
-} else {
-  const error = result.data;
-  console.log('isDeploy result', error);
-}
-```
-
-## Is AA mode enable
-
-```js JavaScript
-const result = await particleAA.isAAModeEnable();
-```
-
-## Enable AA mode
-
-```js JavaScript
+particleAA.init(AccountName.BICONOMY_V2());
 particleAA.enableAAMode();
 ```
 
-## Disable AA mode
+---
 
-```js JavaScript
-particleAA.disableAAMode();
+### Is Deployed
+
+Now that you've initialized the AA SDK, you can move onto several methods to utilize it. First, it's important to note that the smart account implementation you chose will be automatically deployed with the first transaction it initiates. The deployment transaction will be bundled (batched) in with the first transaction. 
+
+However, if you'd like to check the deployment status of a given smart account manually, you can first retrieve the host address with `evm.getAddress`, then pass that into `particleAA.isDeploy`, which returns a Boolean indicating deployment status.
+
+E.g.:
+
+```typeScript
+const eoaAddress = await evm.getAddress();
+const isDeploy = await particleAA.isDeploy(eoaAddress);
 ```
+
+---
+
+### Disable AA Mode
+
+If you'd like to exit AA mode and thus disable account abstraction functionality within your application, you'll need to call `ParticleAA.disableAAMode`. This will immediately render the usage of AA incompatible. Additionally, if you're unsure whether or not AA mode is enabled, you can call `ParticleAA.isAAModeEnable`, which will return a Boolean representing this status. E.g.:
+
+```typeScript
+particleAA.disableAAMode();
+
+const result = await particleAA.isAAModeEnable();
+```
+
+---
 
 ## Rpc get fee quotes
 
 Always used with send Transaction, pick one feeQuote then send transaction in custom feeMode.
 
-```js JavaScript
-const eoaAddress = await particleAuth.getAddress();
-console.log('eoaAddress', eoaAddress);
-const receiver = TestAccountEVM.receiverAddress;
-const amount = TestAccountEVM.amount;
-const transaction = await Helper.getEthereumTransacion(eoaAddress, receiver, amount);
-
-console.log('transaction', transaction);
-const result = await particleAA.rpcGetFeeQuotes(eoaAddress, [transaction]);
+```typeScript
+const wholeFeeQuote = (await particleAA.rpcGetFeeQuotes(eoaAddress, [transaction])) as WholeFeeQuote;
 ```
 
-## SignAndSendTransaction with Auth Service
+### Send Transaction
 
-```js JavaScript
-const eoaAddress = await particleAuth.getAddress();
-const receiver = TestAccountEVM.receiverAddress;
-const amount = TestAccountEVM.amount;
-const transaction = await Helper.getEthereumTransacion(eoaAddress, receiver, amount);
+Sending a transaction (UserOperation) is as simple as calling pre-existing methods within `ParticleConnect` or `Evm` in `@particle-network/rn-auth-core` and just passing in an additional parameter, `feeMode`. There are two ways to send transactions with the AA SDK: The first is with `signAndSendTransaction` of `sendTransaction` , which will send a singular transaction to the network. Alternatively, you can use `batchSendTransactions` to send batched transactions within a single UserOperation.
 
-// send transaction in auto mode, auto means use native to pay gas fee.
-const result = await particleAuth.signAndSendTransaction(transaction, AAFeeMode.auto())
-  
-// send transaction in gasless mode, gasless means user dont need to pay gas fee.
-const result = await particleAuth.signAndSendTransaction(transaction, AAFeeMode.gasless())
+`particleConnect.signAndSendTransaction` or `Evm.sendTransaction` in `@particle-network/rn-auth-core` takes the following parameters:
+
+- For Particle Connect, `walletType`, dictates the specific adapter being used/targeted.
+- `account`, the public address of the smart account sending the transaction, which can be retrieved through `EvmService.getSmartAccount`.
+- `transaction`, a stringified standard transaction object.
+- `feeMode`, the mechanism to be used for paying gas fees, can be:
+  - `AAFeeMode.gasless`, for sponsored transactions. This will happen automatically for Testnets and will pull from your previously defined (or configured) Paymaster for Mainnets. Takes one parameter:
+    - `wholeFeeQuote`, which can be retrieved through `particleAA.rpcGetFeeQuotes(EoaPublicAddress, [transaction])`.
+  - `AAFeeMode.native`, paying for gas fees in a native token (such as ETH). Takes one parameter:
+    - `wholeFeeQuote`, which can be retrieved through `particleAA.rpcGetFeeQuotes(EoaPublicAddress, [transaction])`.
+  - `AAFeeMode.token`, paying for gas fees in an ERC-20 token (such as USDC). Takes one parameter:
+    - `feeQuote`, to be used when leveraging a Token Paymaster. It can be retrieved through `particleAA.rpcGetFeeQuotes(EoaPublicAddress, [transaction])`.
+    - `tokenPaymasterAddress`, can be  retrieved through `particleAA.rpcGetFeeQuotes(eoaPublicAddress, [transaction])`.
+
+Alternatively, for `particleConnect.batchSendTransactions` or ParticleAuthCore `Evm.batchSendTransactions`, the parameters will be the same, with the exception of `transaction` being an array of transactions.
+
+```typeScript
+// with @particle-network/rn-auth-core
+await evm.sendTransaction(transaction,
+        feeMode: AAFeeMode.gasless(result));
+
+await evm.sendTransaction(transactions,
+        feeMode: AAFeeMode.native(result));
+
+await evm.signAndSendTransaction(transaction,
+        feeMode: AAFeeMode.token(feeQuote, tokenPaymasterAddress));
+
+await evm.batchSendTransactions(transactions,
+        feeMode: AAFeeMode.native(result));
+
+// with @particle-network/rn-connect
+await ParticleConnect.signAndSendTransaction(
+        WalletType.AuthCore, eoaPublicAddress, transaction,
+        feeMode: AAFeeMode.gasless(result));
+
+await ParticleConnect.signAndSendTransaction(
+        WalletType.AuthCore, eoaPublicAddress, transaction,
+        feeMode: AAFeeMode.native(result));
+
+await ParticleConnect.signAndSendTransaction(
+        WalletType.AuthCore, eoaPublicAddress, transaction,
+        feeMode: AAFeeMode.token(feeQuote, tokenPaymasterAddress));
+
+await ParticleConnect.batchSendTransactions(
+        WalletType.AuthCore, eoaPublicAddress, transactions,
+        feeMode: AAFeeMode.native(result));
+```
+
+Check if you can send with AAFeeMode.gasless/native/token.
+
+```typeScript
+const wholeFeeQuote = await particleAA.rpcGetFeeQuotes(eoaAddress, [
+        transaction,
+      ]) as WholeFeeQuote;
       
-// send transaction in custom mode, custom means user pick one token or native to pay gas fee.  
-const feeQutotes = await particleAA.rpcGetFeeQuotes(eoaAddress, [transaction]);
-// pick one quote  
-const result = await particleAuth.signAndSendTransaction(transaction, AAFeeMode.custom(feeQutotes[0]))
+const feeQuote = wholeFeeQuote.verifyingPaymasterNative['feeQuote'];
+const fee = BigNumber(feeQuote['fee']);
+const balance = BigNumber(feeQuote['balance']);
 
-if (result.status) {
-  const signature = result.data;
-  console.log('signAndSendTransaction result', signature);
-} else {
-  const error = result.data;
-  console.log('signAndSendTransaction result', error);
+// check if enough native for gas fee
+if (balance.isLessThan(fee)) {
+  console.log("can't natively paid, native balance if not enough for gas fee");
+  return;
 }
+
+// check if gasless available
+const verifyingPaymasterGasless = wholeFeeQuote.verifyingPaymasterGasless;
+if (verifyingPaymasterGasless == undefined) {
+  console.log("gasless is not available");
+  return;
+}
+
+// check if can token paid
+ const feeQuotes = wholeFeeQuote.tokenPaymaster['feeQuotes'] as any[];
+
+const validFeeQuotes = feeQuotes.filter(item => {
+  const fee = BigNumber(item['fee']);
+  const balance = BigNumber(item['balance']);
+  if (balance.isLessThan(fee)) {
+    return false;
+  } else {
+    return true;
+  }
+});
+
+
+if (validFeeQuotes.length == 0) {
+  console.log("can't token paid, no valid token for gas fee");
+  return;
+}
+
+// select a fee quote, for example the first.
+const feeQuote = validFeeQuotes[0];
+
+const tokenPaymasterAddress =
+        wholeFeeQuote.tokenPaymaster["tokenPaymasterAddress"] as string;
+
 ```
 
-## SignAndSendTransaction with Connect Service
+***
 
-```js JavaScript
-// confirm your eoa public address and current wallet type
-const publicAddress = '';
-const walletType = WalletType.MetaMask;
+## Dive Deeper
 
-// send transaction in auto mode, auto means use native to pay gas fee.
-const result = await particleConnect.signAndSendTransaction(this.walletType, this.publicAddress, transaction, 
-  
-// send transaction in gasless mode, gasless means user dont need to pay gas fee.
-const result = await particleConnect.signAndSendTransaction(this.walletType, this.publicAddress, transaction, AAFeeMode.gasless())
-
-// send transaction in custom mode, custom means user pick one token or native to pay gas fee.   
-const feeQutotes = await particleAA.rpcGetFeeQuotes(eoaAddress, [transaction]);
-const result = await particleConnect.signAndSendTransaction(this.walletType, this.publicAddress, transaction, AAFeeMode.custom(feeQutotes[0]))
-
-
-if (result.status) {
-  const signature = result.data;
-  console.log('signature', signature);
-} else {
-  const error = result.data;
-  console.log('result error', error);
-}
-```
-
-## Batch send transaction with Auth Service
-
-```js JavaScript
-const eoaAddress = await particleAuth.getAddress();
-const receiver = TestAccountEVM.receiverAddress;
-const amount = TestAccountEVM.amount;
-const transaction = await Helper.getEthereumTransacion(eoaAddress, receiver, amount);
-
-// batch your transacitons into a list  
-const transactions = [transaction, transaction];
-
-// support auto, gasless and custom feeMode.
-const result = await particleAuth.batchSendTransactions(transactions, AAFeeMode.auto);
-if (result.status) {
-  const signature = result.data;
-  console.log('signAndSendTransaction result', signature);
-} else {
-  const error = result.data;
-  console.log('signAndSendTransaction result', error);
-}
-```
-
-## Batch send transaction with Connect Service
-
-```js JavaScript
-// confirm your eoa public address and current wallet type
-const publicAddress = ''; 
-const walletType = WalletType.MetaMask;
-// get your transaction array
-const transactions = [transaction, transaction];
-
-const result = await particleConnect.batchSendTransactions(this.walletType, this.publicAddress, transactions, AAFeeMode.auto());
-if (result.status) {
-  const signature = result.data;
-  console.log('signature', signature);
-} else {
-  const error = result.data;
-  console.log('result error', error);
-}
-```
+See the [Particle Auth](/api-reference/auth/mobile-sdks/react) and [Particle Connect](/api-reference/connect/mobile/react) pages for insights into additional compatible methods (such as `signAndSendTransaction`), as shown here.

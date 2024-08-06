@@ -150,7 +150,9 @@ Additionally, head over to your `Info.plist` file and include the following snip
 </array>
 ```
 
-Finally, you'll need to edit your Podfile to ensure `particle_connect` (which, as mentioned, Particle Wallet depends on) is properly imported. Head over to the [linked guide](https://pub.dev/packages/particle_auth/install) to complete this if you have not already.
+Finally, you'll need to edit your Podfile to ensure `particle_connect` (which, as mentioned, Particle Wallet depends on) is properly imported. Head over to the [linked guide](/api-reference/connect/mobile/react) to complete this if you have not already.
+
+---
 
 ## Examples of Utilization
 
@@ -167,12 +169,12 @@ The Particle Wallet SDK won't function until initialization occurs. This will se
 
 If you're also using Particle Connect within the same file, you can call `init`, passing in `chainInfo` and `env`. For more information on Particle Connect, see the [Particle Connect React Native SDK](https://particlenetwork.readme.io/reference/react-native-javascript-1).
 
-```js JavaScript
+```typeScript
 import * as particleWallet from '@particle-network/rn-wallet';
 import * as particleConnect from '@particle-network/rn-connect';
-import * as ParticleAuthCore from '@particle-network/rn-auth-core';
+import * as particleAuthCore from '@particle-network/rn-auth-core';
 
-const chainInfo = PolygonAmoy;
+const chainInfo = Ethereum;
 const env = Env.Dev;
 const metaData = {
   walletConnectProjectId: 'your wallet connect project id, get it from wallet connect',
@@ -182,25 +184,32 @@ const metaData = {
   description: 'Particle Wallet',
 };
 particleConnect.init(chainInfo, env, metaData);
-ParticleAuthCore.init();
+particleAuthCore.init();
 particleWallet.initWallet(metaData);
 ```
 
+---
+
 ### Open Wallet
 
-To open the main (front) page of the wallet interface, you can call `particleWallet.navigatorWallet`. This only takes one parameter, `display`, which should be a binary choice, (`0`, or `1`), that dictates whether the front page includes general token balances (`0`), or NFT balances (`1`). E.g.:
+To programmatically force the main wallet page open, you can call `particleWallet.navigatorWallet`. `navigatorWallet` takes one parameter, a binary selection indicating whether tokens or NFTs are displayed within the main wallet page. `WalletDisplay.token` sets this to tokens, and `WalletDisplay.nft` to NFTs. E.g.:
 
-```js JavaScript
+```typeScript
+const display = WalletDisplay.Token;
 particleWallet.navigatorWallet(display);
 ```
+
+---
 
 ### Open Token Receive
 
 `particleWallet.navigatorTokenReceive` opens a page dedicated to receiving tokens, through both a general address and a QR code. This takes one optional parameter, `tokenAddress`, that can change the associated QR code to be specific to a given token, including its icon at the center of the QR code image. E.g.
 
-```js JavaScript
+```typeScript
 particleWallet.navigatorTokenReceive(tokenAddress);
 ```
+
+---
 
 ### Open Token Send
 
@@ -212,17 +221,21 @@ You can also open a page for sending tokens (ERC20/SPL/native) directly to other
 
 E.g.
 
-```js JavaScript
+```typeScript
 particleWallet.navigatorTokenSend(tokenAddress, toAddress, amount);
 ```
+
+---
 
 ### Open Transaction Records
 
 It's also quite simple to open a page containing transaction records (history) for a connected wallet: `particleWallet.navigatorTokenTransactionRecords`. If you'd like to filter these records only to show entries that include a specific token, then you can pass in a `tokenAddress` representing the token to be filtered. E.g.
 
-```js JavaScript
+```typeScript
 particleWallet.navigatorTokenTransactionRecords(tokenAddress);
 ```
+
+---
 
 ### Open NFT Send
 
@@ -234,168 +247,209 @@ Alike `navigatorTokenSend`, you can use `particleWallet.navigatorNFTSend` to pro
 
 E.g.
 
-```js JavaScript
+```typeScript
 particleWallet.navigatorNFTSend(receiverAddress, mint, tokenId);
 ```
+
+---
 
 ### Open NFT Details
 
 To open the details of a specific NFT (image, attributes, description, etc.) on-screen, you'll need to call `particleWallet.navigatorNFTDetails` by passing in `mint` (`contractAddress`) and the associated `tokenId` that you'd like to view. E.g.
 
-```js JavaScript
+```typeScript
 particleWallet.navigatorNFTDetails(mint, tokenId);
 ```
 
+---
+
 ### Open Buy Crypto
 
-Particle Wallet also has a native onramp aggregator (featuring providers like Transak, FatPay, AlchemyPay, etc.), allowing users to bring fiat on-chain through various onramp providers. Opening this programmatically can happen through `particleWallet.navigatorBuyCrypto`, passing in several optional parameters to customize the values used within the onramp. Upon calling, this will throw a popup or total redirect over to a corresponding configuration of https://ramp.particle.network.
+### Open Buy Crypto
 
-The specific parameters that can be used within `navigatorBuyCrypto` are listed below:
+Particle Wallet also has a native onramp aggregator, allowing users to bring fiat on-chain through various onramp providers. Opening this programmatically can happen through `ParticleWallet.navigatorBuyCrypto`, passing in several optional parameters to customize the values used within the onramp. Upon calling, this will return a popup or total redirect over to a configuration of https://ramp.particle.network.
 
-| Name          | Description                                                              | Type   | Required                                 |
-| :------------ | :----------------------------------------------------------------------- | :----- | :--------------------------------------- |
-| network       | [Solana, Ethereum, Binance Smart Chain, Polygon, Tron, Optimism, etc.]   | string | False _(True if Particle not connected)_ |
-| fiatCoin      | Fiat currency denomination.                                              | string | False                                    |
-| cryptoCoin    | Cryptocurrency denomination.                                             | string | False                                    |
-| fiatAmt       | The amount of fiat to be automatically filled in as the purchase volume. | number | False                                    |
-| bool          | Lock selection of fiat currency in the buy menu.                         | bool   | False                                    |
-| fixCryptoCoin | Lock selection of cryptocurrency in the buy menu.                        | bool   | False                                    |
-| fixFiatAmt    | Lock selection of fiat amount in the buy menu.                           | bool   | False                                    |
-| walletAddress | The wallet address to receive the cryptocurrency.                        | string | False _(True if Particle not connected)_ |
+The specific parameters that can be used within `ParticleWallet.navigatorBuyCrypto` are listed below:
 
-```js JavaScript
-particleWallet.navigatorBuyCrypto();
+| Field           | Type         | Description                                                                                   |
+| --------------- | ------------ | --------------------------------------------------------------------------------------------- |
+| `walletAddress` | `string?`    | (Optional) the wallet address to receive the cryptocurrency, default is current user address. |
+| `cryptoCoin`    | `string?`    | (Optional) cryptocurrency denomination. default is current chain native token symbol.         |
+| `fiatCoin`      | `string?`    | (Optional) fiat currency denomination. defualt is current fiat coin.                          |
+| `fiatAmt`       | `int?`       | (Optional) the amount of fiat to be automatically filled in as the purchase volume.           |
+| `chainInfo`     | `ChainInfo?` | (Optional) the chainInfo, default is current chainInfo.                                       |
+| `fixFiatCoin`   | `boolean`    | (Optional) lock selection of fiat coin in the buy menu, default is false.                     |
+| `fixFiatAmt`    | `boolean`    | (Optional) lock selection of fiat amount in the buy menu, default is false.                   |
+| `fixCryptoCoin` | `boolean`    | (Optional) lock selection of crypto coin in the buy menu, default is false.                   |
+| `theme`         | `string?`    | (Optional) the buy page theme, `dark` or `light`, default is curreny appearance.              |
+| `language`      | `Language?`  | (Optional) the buy page lanuage, default is current language.                                 |
 
-const config = new BuyCryptoConfig("0xa0869E99886e1b6737A4364F2cf9Bb454FD637E4", "BNB", "USD", 1000, OpenBuyNetwork.BinanceSmartChain);
+```typeScript
+const config = {
+  walletAddres: '0xa0869E99886e1b6737A4364F2cf9Bb454FD637E4',
+  cryptoCoin: 'BNB',
+  fiatCoin: 'USD',
+  fiatAmt: 1000,
+  chainInfo: Polygon,
+  fixFiatCoin: true,
+  fixCryptoCoin: true,
+  fixFiatAmt: true,
+  theme: 'dark',
+  language: Language.JA
+};
+    
 particleWallet.navigatorBuyCrypto(config);
 ```
+
+---
 
 ### Open Swap
 
 Particle Wallet features a built-in swap widget, aggregating multiple providers such as 1inch to initiate and execute swaps. This widget/interface can be thrown by using `particleWallet.navigatorSwap`, and optionally passing in the following parameters (can work without them):
 
-- `fromTokenAddress`, the contract address for the token being swapped.
-- `toTokenAddress`, the contract address for the token being swapped to.
-- `amount`, the volume of `fromTokenAddress` to be swapped.
+| Field              | Type      | Description                                                                                                                                            |
+| ------------------ | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `fromTokenAddress` | `string?` | (Optional) the swap pair from token address                                                                                                            |
+| `toTokenAddress`   | `string?` | (Optional) the swap pair to token address                                                                                                              |
+| `amount`           | `string?` | (Optional) the swap from token amount, should pass the minimal unit string, for example 0.01 ETH, it's decimals is 18, should pass "10000000000000000" |
 
-E.g.
+E.g.:
 
-```js JavaScript
+```typeScript
 particleWallet.navigatorSwap(fromTokenAddress, toTokenAddress, amount);
 ```
 
+---
+
+### Open DApp Browser
+
+Particle Wallet also includes a **dApp Browser**, enabling users to open different dApps (web apps) and automatically connect with the account loaded into the instance of Particle Wallet. This enables account usage across any web-based dApp. This can be programmatically opened through `particleWallet.navigatorDappBrowser`, taking one parameter, `url`, which will dictate the specific site opened. E.g.:
+
+```typeScript
+particleWallet.navigatorDappBrowser("https://opensea.io");
+```
+
+---
 ### Set Supported Chains
 
-Narrowing the specific chains supported/accessible within the Particle Wallet interface can be done through `particleWallet.setSupportChain`, which takes an array of `ChainInfo` objects (imported from `@particle-network/chains`). Network options will be confined to the corresponding chains within this array. E.g.
+To set the specific supported chain(s) available within the chain selection menu on Particle Wallet, you can use `ParticleWallet.setSupportChain`, which takes an array of `ChainInfo` objects. Each object (representing different chains) will directly enable an additional chain within the wallet interface.
 
-```js JavaScript
-const chainInfos = [Ethereum, Polygon];
-particleWallet.setSupportChain(chainInfos);
+If you add a Testnet to this list and pass it to `setSupportChain`, you'll also need to ensure that `ParticleWallet.setShowTestNetwork` is set to `true` (by passing in `true`). E.g.:
+
+```typeScript
+const chainInfos = [Ethereum, EthereumSepolia, PolygonAmoy];
+    particleWallet.setSupportChain(chainInfos);
 ```
+
+---
 
 ### Switch Wallet
 
-You can also switch the `walletType` being used within Particle Wallet. For example, if you're using Metamask as a wallet type within Particle Wallet and would like to switch to Particle (social logins), this would be the method you'd use. You can initiate this switch through `particleWallet.switchWallet`, passing in the new `walletType` object (of type `WalletType`), and the targeted user address of the current active session. E.g.
+You can also switch the `walletType` being used within Particle Wallet. For example, if you're using Metamask as a wallet type within Particle Wallet and would like to switch to Particle (social logins), this would be the method you'd use. You can initiate this switch through `particleWallet.createSelectedWallet`, passing in the new `walletType` object (of type `WalletType`), and the targeted user address of the current active session. E.g.
 
-```js JavaScript
-WalletType walletType = WalletType.particle;
-String result = await particleWallet.switchWallet(walletType, publicAddress);
+`WalletType` contains the following:
+
+- `AuthCore`, Particle Auth Core, an alternative to Particle Auth (`Particle`).
+- `EvmPrivateKey`, custom EVM wallet imports/exports.
+- `SolanaPrivateKey`, custom Solana wallet imports/exports.
+- `MetaMask`.
+- `Rainbow`.
+- `Trust`.
+- `ImToken`.
+- `BitKeep`.
+- `WalletConnect`.
+- `Phantom`, intended for Solana.
+- `Zerion`.
+- `Math`.
+- `Inch1`, 1inch.
+- `Zengo`.
+- `Alpha`.
+- `Bitpie`.
+- `OKX`.
+- `TokenPocket`, not supported by iOS.
+
+
+```typeScript
+particleWallet.createSelectedWallet(account.publicAddress, WalletType.AuthCore, "Custom Wallet Name");
 ```
+
+## Set Wallet Name
+
+You can customize the wallet name and icon by `particleWallet.setCustomWalletName`, 
+
+| Field  | Type     | Description                                                                                                               |
+| ------ | -------- | ------------------------------------------------------------------------------------------------------------------------- |
+| `name` | `string` | Wallet name, for Android, you need call createSelectedWallet to customize the wallet name after particle wallet connected |
+| `icon` | `string` | Wallet icon, a uri such as https://example.com/icon.png                                                                   |
+
+```typeScript
+particleWallet.setCustomWalletName('My Wallet', "https://example.com/icon.png")
+```
+
+### Set Custom Localizable
+
+You can use custom localization strings. For example, when customizing a wallet name, you need to update the localization strings with method `particleWallet.setCustomLocalizable`. This method only support iOS, 
+
+```typeScript
+if (Platform.OS === 'ios') {
+      // use language code in type Language
+      const localizables: any = {
+        'en': {
+          "network fee": "Service Fee",
+          "particle auth wallet": "Playbux Wallet"
+        },
+      };
+
+      console.log()
+
+      particleWallet.setCustomLocalizable(localizables);
+    }
+```
+
+--- 
 
 ## Custom UI
 
 Particle Wallet can also undergo additional customization, specifically regarding which UI elements are shown and how. Each of these configurations are accessed through a unique method on `particleWallet` (`@particle-network/rn-wallet`). These methods include (but are not limited to):
 
-- `setDisplayTokenAddresses`, an asynchronous function to set specific token addresses to be displayed in the Particle Wallet. It takes an array of token addresses as a parameter, `tokenAddresses`.
+- `setSwapDisabled`, whether or not the "Swap" functionality is displayed within the interface. This takes one parameter, either `true` or `false`, with the default being `false`.
 
-- `setDisplayNFTContractAddresses`, an asynchronous function for setting specific NFT contract addresses to be displayed in the Particle Wallet. This function accepts an array of NFT contract addresses, `nftContractAddresses`.
+- `setPayDisabled`, whether or not the "Buy" functionality is displayed within the interface. This takes one parameter, either `true` or `false`, with the default being `false`.
 
-- `setPriorityTokenAddresses`, an async function that prioritizes certain token addresses to appear at the top of lists within the Particle Wallet. It requires an array of token addresses, `tokenAddresses`.
+- `setDisplayTokenAddresses`, an synchronous function to set specific token addresses to be displayed in the Particle Wallet. It takes an array of token addresses as a parameter, `tokenAddresses`.
 
-- `setPriorityNFTContractAddresses`, an asynchronous function to prioritize specific NFT contract addresses in the Particle Wallet, making them appear at the top of lists. It takes an array of NFT contract addresses, `nftContractAddresses`.
+- `setDisplayNFTContractAddresses`, an synchronous function for setting specific NFT contract addresses to be displayed in the Particle Wallet. This function accepts an array of NFT contract addresses, `nftContractAddresses`.
 
-- `setShowLanguageSetting`, an async function to toggle the visibility of the language setting option in the Particle Wallet. It takes a Boolean value, `true` or `false`.
+- `setPriorityTokenAddresses`, an synchronous function that prioritizes certain token addresses to appear at the top of lists within the Particle Wallet. It requires an array of token addresses, `tokenAddresses`.
 
-- `setShowAppearanceSetting`, an asynchronous function that controls the display of the appearance setting in the Particle Wallet. It accepts a Boolean parameter, either `true` or `false`.
+- `setPriorityNFTContractAddresses`, an synchronous function to prioritize specific NFT contract addresses in the Particle Wallet, making them appear at the top of lists. It takes an array of NFT contract addresses, `nftContractAddresses`.
 
-- `setSupportAddToken`, an async function to toggle the option to add tokens in the Particle Wallet. It takes a Boolean value of `true` or `false`.
+- `setShowLanguageSetting`, an synchronous function to toggle the visibility of the language setting option in the Particle Wallet. It takes a Boolean value, `true` or `false`.
+
+- `setShowAppearanceSetting`, an synchronous function that controls the display of the appearance setting in the Particle Wallet. It accepts a Boolean parameter, either `true` or `false`.
+
+- `setSupportAddToken`, an synchronous function to toggle the option to add tokens in the Particle Wallet. It takes a Boolean value of `true` or `false`.
+
+- `setSupportWalletConnect`, an synchronous function set whether WalletConnect is supported on the wallet page. It takes a boolean value, `true` or `false`. 
+
+- `setSupportDappBrowser`, configures the availability of the dApp browser feature. It accepts a boolean parameter, `true` or `false`.
 
 E.g.
 
-```js JavaScript
-setDisplayTokenAddresses = async () => {
-  const tokenAddresses = ["", ""];
-  particleWallet.setDisplayTokenAddresses(tokenAddresses);
-}
+```typeScript
+particleWallet.setDisplayTokenAddresses(tokenAddresses);
 
-setDisplayNFTContractAddresses = async () => {
-  const nftContractAddresses = ["", ""];
-  particleWallet.setDisplayNFTContractAddresses(nftContractAddresses); 
-}
+particleWallet.setDisplayNFTContractAddresses(nftContractAddresses); 
 
-setPriorityTokenAddresses = async () => {
-  const tokenAddresses = ["", ""];
-  particleWallet.setPriorityTokenAddresses(tokenAddresses);
-}
+particleWallet.setPriorityTokenAddresses(tokenAddresses);
 
-setPriorityNFTContractAddresses = async () => {
-  const nftContractAddresses = ["", ""];
-  particleWallet.setPriorityNFTContractAddresses(nftContractAddresses);
-}
+particleWallet.setPriorityNFTContractAddresses(nftContractAddresses);
 
-setShowLanguageSetting = async () => {
-  particleWallet.setShowLanguageSetting(false); 
-}
+particleWallet.setShowLanguageSetting(false); 
 
-setShowAppearanceSetting = async () => {
-  particleWallet.setShowAppearanceSetting(false);
-}
-  
-setSupportAddToken = async () => {
-  particleWallet.setSupportAddToken(false); 
-}
+particleWallet.setShowAppearanceSetting(false);
+
+particleWallet.setSupportAddToken(false); 
 ```
 
 ***
-
-## Master reference
-
-For a direct, raw view into every method provided through `particleWallet` (`@particle-network/rn-wallet`), below is a table containing every relevant one alongside specific parameters and a short description. For methods listed that weren't covered in the above examples, live implementation often mimics the common structure covered throughout this document.
-
-<Tip>
-<p>`ParticleWallet` on this table refers to the importation and complete assignment of `@particle-network/rn-wallet`</p>
-<p></p>
-<p>In this above examples, this has been referred to by `particleWallet`.</p>
-</Tip>
-
-| Class          | Methods                          | Parameters (\* indicates optional)             |
-| -------------- | -------------------------------- | ---------------------------------------------- |
-| ParticleWallet | initWallet                       | walletMetaData                                 |
-| ParticleWallet | navigatorWallet                  | display                                        |
-| ParticleWallet | createSelectedWallet             | publicAddress, walletType                      |
-| ParticleWallet | navigatorTokenReceive            | tokenAddress\*                                 |
-| ParticleWallet | navigatorTokenSend               | tokenAddress\*, toAddress\*, amount\*          |
-| ParticleWallet | navigatorTokenTransactionRecords | tokenAddress\*                                 |
-| ParticleWallet | navigatorNFTSend                 | mint, tokenId, receiverAddress\*, amount\*     |
-| ParticleWallet | navigatorNFTDetails              | mint, tokenId                                  |
-| ParticleWallet | navigatorBuyCrypto               | config\*                                       |
-| ParticleWallet | navigatorLoginList               |                                                |
-| ParticleWallet | navigatorSwap                    | fromTokenAddress\*, toTokenAddress\*, amount\* |
-| ParticleWallet | setShowTestNetwork               | isShow\*                                       |
-| ParticleWallet | setShowManageWallet              | isShow\*                                       |
-| ParticleWallet | setSupportChain                  | chainInfos                                     |
-| ParticleWallet | setPayDisabled                   | disabled                                       |
-| ParticleWallet | getPayDisabled                   |                                                |
-| ParticleWallet | setSwapDisabled                  | disabled                                       |
-| ParticleWallet | getSwapDisabled                  |                                                |
-| ParticleWallet | switchWallet                     | walletType, publicAddress                      |
-| ParticleWallet | setDisplayTokenAddresses         | tokenAddresses                                 |
-| ParticleWallet | setDisplayNFTContractAddresses   | nftContractAddresses                           |
-| ParticleWallet | setPriorityTokenAddresses        | tokenAddresses                                 |
-| ParticleWallet | setPriorityNFTContractAddresses  | nftContractAddresses                           |
-| ParticleWallet | setShowLanguageSetting           | isShow\*                                       |
-| ParticleWallet | setShowAppearanceSetting         | isShow\*                                       |
-| ParticleWallet | setSupportAddToken               | isShow\*                                       |
-| ParticleWallet | setSupportWalletConnect          | isEnable\*                                     |
-| ParticleWallet | setWalletConnectV2ProjectId      | walletConnectV2ProjectId                       |
-| ParticleWallet | setSupportDappBrowser            | isShow\*                                       |
