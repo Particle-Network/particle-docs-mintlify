@@ -237,7 +237,7 @@
         },
         {
           "group": "Authentication",
-          "pages": ["guides/configuration/auth/jwt"]
+          "pages": ["guides/configuration/auth/jwt", "guides/configuration/auth/social-prompt"]
         }
       ]
     },

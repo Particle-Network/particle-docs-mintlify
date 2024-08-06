@@ -1,0 +1,28 @@
+---
+title: "Set Social Authentication Prompt"
+---
+
+For some social account platforms, such as Google, Discord, and Microsoft login, during the login authorization process, they can configure the timing of the consent page displayed to users. Generally, three options are provided:
+
+    1.	`none`: Do not display any authentication or consent screens. Must not be specified with other values.
+    2.	`consent`: Prompt the user for consent.
+    3.	`select_account`: Prompt the user to select an account.
+
+Our SDK does not pass this parameter by default, which corresponds to the `none` process above. After the user authorizes, they won’t need to choose next time; if you want the user to choose each time, you need to configure it to `select_account`. The configuration items for the SDK on different platforms are as follows:
+
+    1.	Web
+
+```typescript
+// connect with social type.
+
+const userInfo = await connect({
+  socialType: "google",
+  prompt: "select_account", //optional, only google, discord and microsoft support it.
+});
+```
+
+2. Android: `prompt` parameter
+3. iOS: `socialLoginPrompt` parameter
+4. ReactNative: `SocialLoginPrompt` parameter
+5. Unity: `SocialLoginPrompt` parameter
+6. Flutter: `SocialLoginPrompt` parameter
