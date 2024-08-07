@@ -208,9 +208,9 @@ This is achieved and configured through `ParticleAuthCore.connect`. Once this me
 | `supportAuthTypes` | `List<SupportAuthType>?` | The methods of authentication visible on the authentication popup UI. By default, this will be exclusive to the chosen social login method, although by passing in additional types, you can expand the UI to include the ability to login with those as an alternative to type. |
 
 ```dart
-ParticleAuthCore.connect(LoginType.google, prompt: SocialLoginPrompt.select_account);
+final userInfo = ParticleAuthCore.connect(LoginType.google, prompt: SocialLoginPrompt.select_account);
 
-ParticleAuthCore.connect(LoginType.email, supportAuthTypes: SupportAuthType.values, prompt: SocialLoginPrompt.select_account);
+final userInfo = ParticleAuthCore.connect(LoginType.email, supportAuthTypes: SupportAuthType.values, prompt: SocialLoginPrompt.select_account);
 ```
 
 ### Is Connected
