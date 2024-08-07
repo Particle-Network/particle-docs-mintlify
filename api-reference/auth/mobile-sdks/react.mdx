@@ -229,7 +229,7 @@ Onboarding a user with Particle's Wallet-as-a-Service (Particle Auth) happens th
 | `type`            | `LoginType`          | The specific social login to be used. This can be either `.email`, `.phone`, `.google`, `.apple`, `.jwt`, `.facebook`, `.twitter`, `.discord`, `.github`, `.twitch`, `.microsoft` or `linkedin`.                                                                                 |
 | `account`         | `string?`            | (Optional) when `type` is set to either `.email`, `.phone`, or `.jwt`, you can use the `account` parameter to pass in an expected email, phone number, or JWT. This is optional for the former two, but required for `.jwt`. The phone number must be in E.164 format.           |
 | `supportAuthType` | `SupportAuthType[]`  | The methods of authentication visible on the authentication popup UI. By default, this will be exclusive to the chosen social login method, although by passing in additional types, you can expand the UI to include the ability to login with those as an alternative to type. |
-| `prompt`          | `SocialLoginPrompt?` | (Optional) either `.none`, `.consent`, or `.select_account`                                                                                                                                                                                                                      |
+| `prompt`          | `SocialLoginPrompt?` | (Optional) either `.none`, `.consent`, or `.select_account`, only google, discord and microsoft support it.                                                                                                                                                                                                                      |
 | `loginPageConfig` | `LoginPageConfig?`   | (Optional) to customize the UI page, contains project name, icon and description.                                                                                                                                                                                                |
 
 
@@ -462,6 +462,24 @@ particleBase.setLanguage(Language.en);
 
 const language = particleBase.getLanguage();
 ```
+
+---
+
+### Blind Sign Enable
+
+Silently sign messages/transactions, this switch will work if the following conditions are met:
+
+1. your account is connected with JWT
+2. your account does not set payment password
+3. SecurityAccountConfig.promptSettingWhenSign is 0, you can call `particleBase.setSecurityAccountConfig` to update its value.
+
+```typeScript
+// set blind sign enable  
+particleAuthCore.setBlindEnable(true);
+// get current blind sign enable state  
+const result = await particleAuthCore.getBlindEnable();
+```
+
 ---
 
 ## `EvmService` utilization examples

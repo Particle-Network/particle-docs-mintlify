@@ -114,13 +114,12 @@ You'll now need to fill in `PROJECT_UUID` (`projectId`), `PROJECT_CLIENT_KEY`, a
 
 Next, you'll need to go to your `AppDelegate.swift` file to add an import of `ParticleConnect` (which Particle Wallet is dependent on).
 
-```swift Swift
-import ParticleConnect
-```
-
 Additionally, within your application's `application` method (as shown below), you'll need to include a handler condition derived from `ParticleConnect.handleUrl`. This should be as simple as a `true` return upon a truthy value of `ParticleConnect.handleUrl`, and a `super.application(app, open: url, options: options)` return upon a falsy value. 
 
-```swift Swift
+```swift AppDelegate.swift
+
+import ParticleConnect
+
 override func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
   if ParticleConnect.handleUrl(url) {
       return true
