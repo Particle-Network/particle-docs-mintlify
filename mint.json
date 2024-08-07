@@ -172,6 +172,7 @@
           "group": "Quickstarts",
           "pages": [
             "guides/wallet-as-a-service/waas/web-quickstart",
+            "guides/wallet-as-a-service/waas/tg-quickstart",
             "guides/wallet-as-a-service/waas/mobile-quickstart"
           ]
         },
