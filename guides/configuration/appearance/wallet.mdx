@@ -107,3 +107,117 @@ customStyle: {
 This specific custom style above translates into a highly customized version of the wallet model, with gradients, major color changes, and feature removals, as shown in the following image.
 
 <Tip>Try out an [interactive demo showcasing custom styles](https://web-demo.particle.network).</Tip>
+
+## Customizing the Wallet Entry Point
+
+You can tailor the positioning of the wallet interface using Particle Network's Auth Core Modal.
+
+<Note>Find a full Next.js demo in the [Customizing Wallet Position repository](https://github.com/Particle-Network/custom-wallet-entry).</Note>
+
+### Custom Wallet Entry Point with openWallet()
+
+The `openWallet()` method imported from `useAuthCore()` triggers the opening of the wallet modal. 
+
+To implement it keep `visible: true`, but create your own wallet entry, such as a button labeled **Open Wallet**, and use the `openWallet()` method to trigger the modal.
+
+```jsx
+const { openWallet } = useAuthCore();
+
+// Open the wallet modal from a custom button
+const toggleParticleWallet = async () => {
+    openWallet({
+        windowSize: 'small',
+        topMenuType: 'close',
+    });
+};
+```
+
+To remove the default Particle button used as the wallet entry point, add the following CSS to your `global.css`:
+
+```css
+.particle-pwe-btn {
+    display: none;
+}
+```
+
+Use the `particle-pwe-iframe-content` class to position the wallet modal on the screen:
+
+```css
+.particle-pwe-iframe-content {
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+}
+```
+
+This method allows limited customization of the modal's display location by modifying the CSS class in your `global.css`.
+
+
+
+### Custom opening with buildWalletUrl()
+
+For advanced flexible customization, set `visible: true` and use `buildWalletUrl()` to have full control over the wallet's position.
+
+The `buildWalletUrl()` method from `useAuthCore()` generates a wallet URL that can be embedded within an iframe, giving you the freedom to place the iframe wherever you want.
+
+```tsx
+const { buildWalletUrl } = useAuthCore();
+
+// State to store the wallet URL and modal visibility
+const [walletUrl, setWalletUrl] = useState<string>('');
+const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+
+// Generate the wallet URL and open the modal
+const generateWalletUrl = async () => {
+    const url = buildWalletUrl({
+        topMenuType: 'close',
+    });
+
+    // Set the URL in the state and open the modal
+    setWalletUrl(url);
+    setIsModalOpen(true);
+};
+
+// Add the message event listener
+// This is required to close the wallet from the 'x' button
+useEffect(() => {
+    const handleMessage = (event: MessageEvent) => {
+        if (event.data === 'PARTICLE_WALLET_CLOSE_IFRAME') {
+            console.log('Wallet iframe closed.');
+            setIsModalOpen(false);
+            setWalletUrl(''); // Optionally clear the wallet URL or take other actions
+        }
+    };
+
+    window.addEventListener('message', handleMessage);
+
+    // Cleanup listener on component unmount
+    return () => {
+        window.removeEventListener('message', handleMessage);
+    };
+}, []);
+
+// Place the iframe in your UI components
+return isModalOpen ? (
+    <iframe
+        id="particle-auth-core-iframe-wallet"
+        className="w-96"
+        style={{ height: '40rem' }}
+        src={walletUrl}
+    />
+) : (
+    <button onClick={generateWalletUrl}>Open Wallet</button>
+);
+```
+
+> Note: The iframe ID must be `particle-auth-core-iframe-wallet`.
+
+To hide the original Particle button, update the `particle-pwe-btn` class in your `global.css`:
+
+```css
+.particle-pwe-btn {
+    display: none;
+}
+```
+
+This approach provides greater flexibility and control over the wallet's behavior and appearance, allowing you to integrate it into your application's UI seamlessly.
