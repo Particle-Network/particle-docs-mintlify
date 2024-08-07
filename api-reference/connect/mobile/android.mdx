@@ -1,6 +1,6 @@
 ---
-title: "Android (Kotlin) - Connect"
-description: "Leveraging Particle Connect within Android applications."
+title: Android (Kotlin) - Connect
+description: Leveraging Particle Connect within Android applications.
 ---
 
 ## Particle Connect for Android
@@ -32,9 +32,17 @@ It is strongly discouraged to use a private key or the mnemonic import/generate 
 
 ## Getting Started
 
+### Prerequisites
+
+- minSdkVersion **23** or higher.
+- compileSdkVersion, targetSdkVersion **34** or higher.
+- JavaVersion **17**.
+- [Jetpack (AndroidX)](https://developer.android.com/jetpack/androidx/migrate?authuser=0).
+- Android Gradle Plugin Version : 8.5.1 or higher.
+- Gradle Version : 8.9 or higher.
 ### Dependencies
 
-Installing and initializing Particle Connect is quite simple. In this case, this can be summed up in three steps. The first of them involves dependency management within your `build.gradle` file. Particle Connect requires numerous dependencies, the extent of which depends on the functions you intend to use within your application. 
+Installing and initializing Particle Connect is quite simple. In this case, this can be summed up in three steps. The first of them involves dependency management within your `build.gradle` file. Particle Connect requires numerous dependencies, the extent of which depends on the functions you intend to use within your application.
 
 To configure these dependencies, open your `build.gradle` file, and either paste the below code or conditionally define dependencies based upon which types of wallets you'd like to support:
 
@@ -57,14 +65,14 @@ dependencies {
       replacedBy("org.bouncycastle:bcprov-jdk15on")
     }
   }
-  implementation 'network.particle:auth-core:{latest-version}'
   implementation 'network.particle:connect:{latest-version}'
   implementation 'network.particle:connect-auth-core-adapter:{latest-version}'
+  implementation 'network.particle:connect-wallet-connect-adapter:{latest-version}'
+  implementation 'network.particle:connect-phantom-adapter:{latest-version}'
+  implementation 'network.particle:connect-kit:{latest-version}'
   implementation 'network.particle:connect-evm-adapter:{latest-version}'
   implementation 'network.particle:connect-solana-adapter:{latest-version}'
-  implementation 'network.particle:connect-phantom-adapter:{latest-version}'
-  implementation 'network.particle:connect-wallet-connect-adapter:{latest-version}'
-}
+ }
 ```
 
 ### Setting up the Particle dashboard
@@ -75,7 +83,7 @@ All implementations of Particle Connect (and Particle Auth) require three univer
 
 ### Configuration
 
-Now that you've set your dependencies and retrieved your `projectId` (`pn_project_id`), `clientKey` (`pn_project_client_key`), and `appId` (`pn_app_id`), from the [Particle dashboard](https://dashboard.particle.network), you'll need to move on to configuring `AndroidManifest.xml` using the previously retrieved values to authenticate your implementation of Particle Connect. 
+Now that you've set your dependencies and retrieved your `projectId` (`pn_project_id`), `clientKey` (`pn_project_client_key`), and `appId` (`pn_app_id`), from the [Particle dashboard](https://dashboard.particle.network), you'll need to move on to configuring `AndroidManifest.xml` using the previously retrieved values to authenticate your implementation of Particle Connect.
 
 Open `AndroidManifest.xml` and either paste the below code or add a configuration that looks as the following:
 
@@ -96,7 +104,7 @@ Open `AndroidManifest.xml` and either paste the below code or add a configuratio
             <category android:name="android.intent.category.BROWSABLE" />
         </intent-filter>
     </activity>
-    
+
     <activity
         android:name="com.connect.common.controller.RedirectActivity"
         android:exported="true"
@@ -112,7 +120,7 @@ Open `AndroidManifest.xml` and either paste the below code or add a configuratio
             <data android:scheme="connect${PN_APP_ID}" />
         </intent-filter>
     </activity>
-    
+
     <meta-data
         android:name="particle.network.project_id"
         android:value="${pn_project_id}"/>
@@ -127,7 +135,7 @@ Open `AndroidManifest.xml` and either paste the below code or add a configuratio
 
 ### Initialization
 
-Before jumping into utilization and implementation, you'll need to finish the setup process by initializing Particle Connect within `Application#Create()` (`onCreate()`). Until initialization happens, Particle Connect won't work. This acts as the primary means of configuration. 
+Before jumping into utilization and implementation, you'll need to finish the setup process by initializing Particle Connect within `Application#Create()` (`onCreate()`). Until initialization happens, Particle Connect won't work. This acts as the primary means of configuration.
 
 Initialization can be started through the `init` method on `ParticleConnect` (from `com.particle.connect.ParticleConnect`). `init` takes the following parameters:
 
@@ -142,14 +150,14 @@ Initialization can be started through the `init` method on `ParticleConnect` (fr
   - `description`, a short description to be used in representing your project.
 - Additionally, within the body of the`init`, you'll need to define a list (`listOf`) wallets (adapters) that you'd like to be provided as an option within your instance of Particle Connect (these can be imported from `com.wallet.connect.adapter.{Adapter name}`).
 
-| Field          | Type                           | Description                                                  |
-| :------------- | :----------------------------- | :----------------------------------------------------------- |
-| application    | Application                    | Android applicaiton                                          |
-| env            | Env                            | DEV, STAGING, PRODUCTION,Different levels display different log information |
-| chain          | ChainInfo                      | the primary chain to be used within your application. `ChainInfo` can be set as a `ChainInfo` object imported from `network.particle.chains.ChainInfo.Companion.{chain}`.  such as ChainInfo.Ethereum、ChainInfo.Solana |
-| dAppData       | DAppMetadata                   | metadata outlining the description of your application. This should be set as an instance of `DAppMetadata` (imported from `com.particle.base.model.DAppMetadata`) with the following parameters set:<br /><br />  `walletConnectProjectId`, your WalletConnect project ID retrieved from the [WalletConnect dashboard](https://cloud.walletconnect.com).<br /> `name`, the name of your project. <br />`icon`, a link containing the logo (icon) of your project; this should be 512x512, ideally.<br /> `url`, the URL of your project's website. <br />`description`, a short description to be used in representing your project. |
-| createAdapters | (() -> List`<IConnectAdapter>`)? | you'll need to define a list (`listOf`) wallets (adapters) that you'd like to be provided as an option within your instance of Particle Connect (these can be imported from `com.wallet.connect.adapter.{Adapter name}`). |
-|                |                                |                                                              |
+| Field          | Type                             | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+| :------------- | :------------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| application    | Application                      | Android applicaiton                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+| env            | Env                              | DEV, STAGING, PRODUCTION,Different levels display different log information                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+| chain          | ChainInfo                        | the primary chain to be used within your application. `ChainInfo` can be set as a `ChainInfo` object imported from `network.particle.chains.ChainInfo.Companion.{chain}`. such as ChainInfo.Ethereum、ChainInfo.Solana                                                                                                                                                                                                                                                                                                                                                                                                               |
+| dAppData       | DAppMetadata                     | metadata outlining the description of your application. This should be set as an instance of `DAppMetadata` (imported from `com.particle.base.model.DAppMetadata`) with the following parameters set:<br /><br /> `walletConnectProjectId`, your WalletConnect project ID retrieved from the [WalletConnect dashboard](https://cloud.walletconnect.com).<br /> `name`, the name of your project. <br />`icon`, a link containing the logo (icon) of your project; this should be 512x512, ideally.<br /> `url`, the URL of your project's website. <br />`description`, a short description to be used in representing your project. |
+| createAdapters | (() -> List`<IConnectAdapter>`)? | you'll need to define a list (`listOf`) wallets (adapters) that you'd like to be provided as an option within your instance of Particle Connect (these can be imported from `com.wallet.connect.adapter.{Adapter name}`).                                                                                                                                                                                                                                                                                                                                                                                                            |
+|                |                                  |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 
 ```kotlin Kotlin
 val dAppMetadata = DAppMetadata(
@@ -165,7 +173,7 @@ ParticleConnect.init(
     this,
     Env.DEV,
     ChainInfo.Ethereum,
-    dAppMetadata 
+    dAppMetadata
 ) {
     listOf(
         AuthCoreAdapter(),
@@ -209,26 +217,93 @@ For a list of all currently connected accounts/addresses (via Particle Connect),
 val accounts = ParticleConnect.getAccounts(chainType)
 ```
 
-### Connect Wallet
+### Connect Wallet V2
+
+Preconditions:
+dependencies contains implementation 'network.particle:connect-kit:{latest-version}'
+
+`ParticleConnectKit.connect` is one click login function, which can present a customizable login UI. The parameter config can be derived from `ConnectKitConfig`.
+
+`ConnectKitConfig` have these parameters
+
+| Field                     | Type                          | Description                                                                                                                                                                  |
+| ------------------------- | ----------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `connectOptions`          | `List<ConnectOption>`         | Connect options, support `EMAIL`, `PHONE`, `SOCIAL` and `WALLET`, the sort order is used for connect kit login UI.                                                           |
+| `socialProviders`         | `List<EnableSocialProvider>?` | Social providers, support `GOOGLE`、`FACEBOOK`、`APPLE`、`TWITTER`、`DISCORD`、`GITHUB`、`TWITCH`、`MICROSOFT`、`LINKEDIN`, the sort order is used for connect kit login UI. |
+| `walletProviders`         | `List<EnableWalletProvider>?` | Wallet providers, support `MetaMask`、`Rainbow`、`Trust`、`ImToken`、`Bitget`、`OKX`、`Phantom`、`WalletConnect`, the sort order is used for connect kit login UI.           |
+| `additionalLayoutOptions` | `AdditionalLayoutOptions`     | Layout options                                                                                                                                                               |
+| `logo`                    | `String?`                     | The top logo of login ui, Image link or base64-encoded image,null will use particle‘s logo                                                                                   |
+
+`AdditionalLayoutOptions`have these parameters
+| Field | Type | Description |
+|--------|--------|----------------------------------------------------------------------------------------------------------|
+| `isCollapseWalletList` | `Boolean` | Indicates whether the wallet list should be collapsed. |
+| `isSplitEmailAndSocial`| `Boolean` | Specifies whether email and social login options should be split. |
+| `isSplitEmailAndPhone` | `Boolean` | Determines if email and phone login options should be split. |
+| `isHideContinueButton` | `Boolean` | Indicates whether the continue button should be hidden. |
+
+```kotlin
+  val config = ConnectKitConfig(
+            logo = "https://static.particle.network/logo-text.png",
+            connectOptions = listOf(
+                ConnectOption.EMAIL,
+                ConnectOption.PHONE,
+                ConnectOption.SOCIAL,
+                ConnectOption.WALLET),
+            socialProviders = listOf(
+                EnableSocialProvider.GOOGLE,
+                EnableSocialProvider.APPLE,
+                EnableSocialProvider.GITHUB,
+                EnableSocialProvider.FACEBOOK,
+                EnableSocialProvider.TWITTER,
+                EnableSocialProvider.MICROSOFT,
+                EnableSocialProvider.DISCORD,
+                EnableSocialProvider.TWITCH,
+                EnableSocialProvider.LINKEDIN),
+            walletProviders = listOf(
+                EnableWalletProvider(EnableWallet.MetaMask,EnableWalletLabel.RECOMMENDED),
+                EnableWalletProvider(EnableWallet.Bitget,EnableWalletLabel.POPULAR),
+                EnableWalletProvider(EnableWallet.OKX),
+                EnableWalletProvider(EnableWallet.Trust),
+            ),
+            additionalLayoutOptions = AdditionalLayoutOptions(
+                isCollapseWalletList = false,
+                isSplitEmailAndSocial = false,
+                isSplitEmailAndPhone = false,
+                isHideContinueButton = false
+            )
+        )
+
+        ParticleConnectKit.connect(config, object : ConnectKitCallback {
+            override fun onConnected(walletName: String, account: Account) {
+                Log.i("onConnected", "walletName: $walletName, account: $account")
+            }
+            override fun onError(error: ConnectError) {
+            }
+        })
+    }
+```
+
+### Connect Wallet V1
 
 Likely one of the most important methods, specific adapters can initiate connection (through an initialization in a variable such as `adapter`) with the `connect`method. Depending on the specific adapter, this method will throw a modal facilitating connection.
 
 For `EVMConnectAdapter` and `SolanaConnectAdapter`, this will generate a fresh account (public and private key pair). Otherwise, the specific connection flow will be dependent upon the adapter in which `connect` is called. E.g.:
 
-| Field    | Type             | Description                                                  |
-| :------- | :--------------- | :----------------------------------------------------------- |
+| Field    | Type             | Description                                                                                                                                                                                                                                     |
+| :------- | :--------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `config` | `ConnectConifg?` | The `ConnectConfig` will only be effective when `adapter.name` is MobileWCWalletName.AuthCore.name`. You can construct a valid object using the subclass `ParticleAuthCoreConfig`. When `adapter.walletType` is other value, you can pass null. |
 
 `ConnectConfig` ` There are 4 already implemented subclasses that can correspond to different connection scenarios
 
-| **Field**         | **Type**                          | **Description**                                              |
-| ----------------- | --------------------------------- | ------------------------------------------------------------ |
-| loginType         | LoginType                         | the social login method preferred. This supports either EMAIL, PHONE, TWITTER, GOOGLE, FACEBOOK, APPLE, DISCORD, GITHUB, TWITCH, MICROSOFT, LINKEDIN, JWT. |
-| account           | String                            | Default is empty, you can use the `account` parameter to pass in an expected email, phone number, or JWT. This is optional for the former two, but required for `.jwt`. The phone number must be in E.164 format. |
+| **Field**         | **Type**                            | **Description**                                                                                                                                                                                                                          |
+| ----------------- | ----------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| loginType         | LoginType                           | the social login method preferred. This supports either EMAIL, PHONE, TWITTER, GOOGLE, FACEBOOK, APPLE, DISCORD, GITHUB, TWITCH, MICROSOFT, LINKEDIN, JWT.                                                                               |
+| account           | String                              | Default is empty, you can use the `account` parameter to pass in an expected email, phone number, or JWT. This is optional for the former two, but required for `.jwt`. The phone number must be in E.164 format.                        |
 | supportLoginTypes | List`<SupportLoginType>`            | The default setting includes support for all SupportLoginTypes: EMAIL, PHONE, FACEBOOK, GOOGLE, APPLE, TWITTER, DISCORD, GITHUB, TWITCH, MICROSOFT, and LINKEDIN. You can also provide a specific subset of SupportLoginTypes if needed. |
-| prompt            | LoginPrompt?                      | the prompt to be displayed following social login, such as a request to set a master password, payment password, etc. This is `null` by default. |
-| loginPageConfig   | LoginPageConfig?                  | If you use a Google to log in, you can control the Google account login prompt with this parameter: None、Consent or SelectAccount. |
-| loginCallback     | AuthCoreServiceCallback`<UserInfo>` | success : wiil return UserInfo. <br /><br />failure : will return a ErrorInfo |
+| prompt            | LoginPrompt?                        | the prompt to be displayed following social login, such as a request to set a master password, payment password, etc. This is `null` by default.                                                                                         |
+| loginPageConfig   | LoginPageConfig?                    | If you use a Google to log in, you can control the Google account login prompt with this parameter: None、Consent or SelectAccount.                                                                                                      |
+| loginCallback     | AuthCoreServiceCallback`<UserInfo>` | success : wiil return UserInfo. <br /><br />failure : will return a ErrorInfo                                                                                                                                                            |
 
 ```kotlin Kotlin
 
@@ -257,8 +332,8 @@ data class ConnectConfigSocialLogin(
     @SerializedName("prompt") val prompt: LoginPrompt? = null,
 ) : ConnectConfig
 
-//jwt connect 
-val adapter = ParticleConnect.getAdapters().first { it is AuthCoreAdapter } 
+//jwt connect
+val adapter = ParticleConnect.getAdapters().first { it is AuthCoreAdapter }
 val connectConfigJWT = ConnectConfigJWT(jwt = "your jwt")
 adapter.connect(connectConfigJWT, object : ConnectCallback {
   override fun onConnected(account: Account) {
@@ -268,7 +343,7 @@ adapter.connect(connectConfigJWT, object : ConnectCallback {
      //handle error
   }
 })
-//social connect 
+//social connect
 val connectConfigSocialLogin =  ConnectConfigSocialLogin(loginType = SocialLoginType.GOOGLE, prompt = LoginPrompt.SelectAccount)
 adapter.connect(connectConfigSocialLogin,callback)
 
@@ -286,7 +361,7 @@ adapter.connect(connectConfigPhone, callback)
 To programmatically force an account to disconnect from your application, you'll need to call `connectAdapter.disconnect`, with `connectAdapter` referring to an instance of a given wallet adapter. This takes one parameter (other than the callback), `address`, in which you can specify the address to disconnect. An example of this has been included below. E.g.:
 
 ```kotlin Kotlin
-connectAdapter.disconnect(address, callback) 
+connectAdapter.disconnect(address, callback)
 ```
 
 ### Is Connected
@@ -327,11 +402,11 @@ To initiate a transaction for signature and ultimately settlement on-chain, you'
 - `transaction`, a stringified transaction object (containing fields like 'to', 'from', 'value', 'data', etc.).
 - `callback`, return handling.
 
-| Field           | Type                | Description                                                  |
-| :-------------- | :------------------ | :----------------------------------------------------------- |
+| Field           | Type                | Description                                                                                                                                                     |
+| :-------------- | :------------------ | :-------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `publicAddress` | `String`            | the connected public address, if `adapter` is `AuthCoreAdapter`, you can pass an empty string, for other walletTypes, you need pass a connected public address. |
-| `transaction`   | `String`            | evm transaction is expressed as a hexadecimal string, solana transaction is expressed as a base58 string. |
-| callback        | TransactionCallback | Callback function, callback different methods according to success or failure |
+| `transaction`   | `String`            | evm transaction is expressed as a hexadecimal string, solana transaction is expressed as a base58 string.                                                       |
+| callback        | TransactionCallback | Callback function, callback different methods according to success or failure                                                                                   |
 
 E.g.:
 
@@ -353,11 +428,11 @@ connectAdapter.signAndSendTransaction(address, transaction, callback)
 
 `connectAdapter.signTransaction` is a **Solana-specific** method for signing a transaction without pushing it to the network. Specifically, this method requires the following parameters:
 
-| Field           | Type         | Description                                                  |
-| :-------------- | :----------- | :----------------------------------------------------------- |
+| Field           | Type         | Description                                                                                                                                                     |
+| :-------------- | :----------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `publicAddress` | `String`     | the connected public address, if `adapter` is `AuthCoreAdapter`, you can pass an empty string, for other walletTypes, you need pass a connected public address. |
-| `transaction`   | `String`     | evm transaction is expressed as a hexadecimal string, solana transaction is expressed as a base58 string. |
-| callback        | SignCallback | Callback function, callback different methods according to success or failure |
+| `transaction`   | `String`     | evm transaction is expressed as a hexadecimal string, solana transaction is expressed as a base58 string.                                                       |
+| callback        | SignCallback | Callback function, callback different methods according to success or failure                                                                                   |
 
 E.g.:
 
@@ -372,11 +447,11 @@ connectAdapter.signAllTransactions(address, transactions, callback)
 
 To sign a basic UTF-8 message (string), you can use `connectAdapter.signMessage` to prompt the user for a signature alongside the message in question. `connectAdapter.signMessage` takes the following parameters:
 
-| Field           | Type         | Description                                                  |
-| :-------------- | :----------- | :----------------------------------------------------------- |
+| Field           | Type         | Description                                                                                                                                                     |
+| :-------------- | :----------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `publicAddress` | `String`     | the connected public address, if `adapter` is `AuthCoreAdapter`, you can pass an empty string, for other walletTypes, you need pass a connected public address. |
-| `message`       | `String`     | the message you'd like the user to sign. For EVM, this should be a hex-encoded string (prefixed by '0x'), while for Solana, you can pass in a standard string. |
-| callback        | SignCallback | Callback function, callback different methods according to success or failure |
+| `message`       | `String`     | the message you'd like the user to sign. For EVM, this should be a hex-encoded string (prefixed by '0x'), while for Solana, you can pass in a standard string.  |
+| callback        | SignCallback | Callback function, callback different methods according to success or failure                                                                                   |
 
 E.g.:
 
@@ -388,11 +463,11 @@ connectAdapter.signMessage(address, message, callback)
 
 Alternatively, **for EVM chains**, you can request that a user signs typed (structured) data rather than purely a raw string. To do this, you can use `connectAdapter.signTypedData` (equivalent to `eth_signTypedData`). This takes the following parameters:
 
-| Field           | Type         | Description                                                  |
-| :-------------- | :----------- | :----------------------------------------------------------- |
+| Field           | Type         | Description                                                                                                                                                     |
+| :-------------- | :----------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `publicAddress` | `String`     | the connected public address, if `adapter` is `AuthCoreAdapter`, you can pass an empty string, for other walletTypes, you need pass a connected public address. |
-| `data`          | `String`     | the typed data to be signed; see the [Web (JavaScript/TypeScript)](/api-reference/auth/desktop-sdks/web) page for additional guidance. |
-| callback        | SignCallback | Callback function, callback different methods according to success or failure |
+| `data`          | `String`     | the typed data to be signed; see the [Web (JavaScript/TypeScript)](/api-reference/auth/desktop-sdks/web) page for additional guidance.                          |
+| callback        | SignCallback | Callback function, callback different methods according to success or failure                                                                                   |
 
 - `address`, the user address to target for signature initiation.
 - `data`, the typed data to be signed; see the [Web (JavaScript/TypeScript)](/api-reference/auth/desktop-sdks/web) page for additional guidance.

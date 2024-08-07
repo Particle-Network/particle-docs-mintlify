@@ -40,10 +40,12 @@ yarn add @particle-network/rn-wallet
 
 If you're planning on using Android for your React Native application, ensure you're meeting the following prerequisites (otherwise, expect issues or non-functionality):
 
-- Targets **API Level 23** (Marshmallow) or higher.
-- Uses **Android 6.0** or higher.
-- Uses **Jetpack** (Android X).
-- Uses **Java 11**.
+ - minSdkVersion **23** or higher.
+  - compileSdkVersion, targetSdkVersion **34** or higher.
+  - JavaVersion **17**.
+  - [Jetpack (AndroidX)](https://developer.android.com/jetpack/androidx/migrate?authuser=0).
+  - Android Gradle Plugin Version : 8.5.1 or higher.
+  - Gradle Version : 8.9 or higher.
 
 Once you've made sure your project meets these requirements, you'll need to move on and define the aforementioned configuration values (`projectId`, `clientKey`, and `appId`) within your `build.grade` file (generally found at `${project name}/android/app/build.gradle`). These directly link your application's instance of Particle Connect with the [dashboard](https://dashboard.particle.network).
 
