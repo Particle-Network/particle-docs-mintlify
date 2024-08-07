@@ -8,9 +8,11 @@ description: "Particle's Modular Smart WaaS relies on MPC-TSS to protect users' 
 <Frame caption="Particle Auth TSS - 2 key shares model">
 <img
   className="block dark:hidden"
-  src="/landing/wallet-abstraction/images/mpc-tss.gif"
-  alt="Particle Network TSS - 2 key shares model"
-  style={{ width: '100%', maxWidth: '400px' }}
+  src="/landing/wallet-abstraction/waas/images/mpc-tss.png"
+/>
+<img
+  className="hidden dark:block"
+  src="/landing/wallet-abstraction/waas/images/mpc-tss.png"
 />
 </Frame>
 
@@ -34,19 +36,6 @@ MPC-TSS ensures that the secret is never present at a single location nor held b
 Particle Network provides a 2/2 advanced TSS approach that ensures that the private keys’ security is never concentrated in a single location or entity throughout its lifecycle. This method involves distributedly generating two independent shares, stored separately, ensuring that each share reveals nothing about the full key, even upon signature generation. Of these shares, one is stored locally by the user, and the other by Particle’s Trusted Execution Environment. All cryptographic operations are executed without combining these shares, maintaining key integrity. 
 
 Particle also allows the user to create a Master Password, used to encrypt their local key fragment, thereby further increasing security by introducing an encryption layer on top of the initial social login. This allows users to safely restore their wallets across devices with full security. The system's robustness is also reinforced by a continuous key share refresh mechanism, enhancing security and making an attack virtually impossible.
-
-<Frame caption="Particle's MPC-TSS approach.">
-<img
-  className="block dark:hidden"
-  src="/landing/wallet-abstraction/waas/images/mpc-tss.png"
-  alt="Particle's MPC-TSS approach."
-/>
-<img
-  className="hidden dark:block"
-  src="/landing/wallet-abstraction/waas/images/mpc-tss.png"
-  alt="Particle's MPC-TSS approach."
-/>
-</Frame>
 
 
 Particle Network includes a secure MPC implementation of the following algorithms:
