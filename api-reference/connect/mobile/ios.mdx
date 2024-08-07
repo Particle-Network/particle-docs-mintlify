@@ -58,13 +58,26 @@ pod init
 
 Then, within your Podfile, you'll need to throw in a few different dependencies, the specifics of which depend on the functions of Particle Connect that you'd like to use.
 
+## Connect V2
+Starting from version 2.0.0, you can quickly integrate the `ParticleConnectKit` SDK, which includes features such as social login, SNS login, third-party wallet login, and customizable login UI.
+
+```ruby Podfile
+pod `ParticleConnectKit`
+pod 'AuthCoreAdapter'
+pod 'ParticleConnect'
+pod 'ConnectPhantomAdapter'
+pod 'ConnectWalletConnectAdapter'
+pod 'ConnectCommon'
+```
+
+## Connect V1 (Legacy)
 1. Regardless of specific functions, you'll need `ConnectCommon` and `ParticleConnect`, alongside `AuthCoreAdapter`.
 2. If you'd like to support importing (or generating fresh) wallets on EVM chains, you'll need `ConnectEVMAdapter`.
    1. To do the same on Solana, you can use `ConnectSolanaAdapter`.
 3. To support connection with Phantom (on Solana), you'll need to use `ConnectPhantomAdapter`
 4. For general WalletConnect-based connection, you can use `ConnectWalletConnectAdapter`:
 
-```ruby
+```ruby Podfile
 pod 'ConnectCommon'
 pod 'ParticleConnect'
 pod 'ConnectWalletConnectAdapter'
@@ -118,15 +131,14 @@ Within this file, you must enter the authentication credentials retrieved from t
 
 Additionally, head over to your `UIApplicationDelegate`. Here, you'll need to import the various libraries previously declared within your Podfile at the top of the file. An example of this can be seen below:
 
-```swift Swift
+```swift
+import AuthCoreAdapter
 import ConnectCommon
-import ConnectEVMAdapter
 import ConnectPhantomAdapter
-import ConnectSolanaAdapter
 import ConnectWalletConnectAdapter
 import ParticleNetworkBase
+import ParticleNetworkChains
 import ParticleConnect
-import AuthCoreAdapter
 ```
 
 ### Initialization
@@ -144,14 +156,12 @@ Specifically, `ParticleConnect.initialize` takes the following parameters:
 
 An **example** of initialization can be found below.
 
-```swift Swift
+```swift
 var adapters: [ConnectAdapter] = [
        AuthCoreAdaper(),
        WalletConnectAdapter(),
        MetaMaskConnectAdapter(),
        PhantomConnectAdapter(),
-       EVMConnectAdapter(),
-       SolanaConnectAdapter(),
        ImtokenConnectAdapter(),
        BitkeepConnectAdapter(),
        RainbowConnectAdapter(),
@@ -164,16 +174,14 @@ var adapters: [ConnectAdapter] = [
        OKXConnectAdapter()
        ]
  
-ParticleConnect.initialize(env: .debug, chainInfo: .ethereum, dAppData: .standard) {
-            adapters
-        }
+ParticleConnect.initialize(env: .debug, chainInfo: .ethereumSepolia, dAppData: .standard, adapters: adapters)
 ```
 
 ### Scheme Configuration
 
 The final step in setting up your iOS project is the configuration of a scheme URL and `LSAApplicationQueriesSchemes` within your application. Beginning with the scheme URL, add the following to your dApp's `application(_:open:options:)` method:
 
-```swift Swift
+```swift
 return ParticleConnect.handleUrl(url)
 ```
 
@@ -214,7 +222,7 @@ With the scheme URL configured, you'll also need to head into `info.plist` and a
 
 If you're planning on using WalletConnect V2 as your primary method of connection for traditional Web3 wallets, you'll need to use the `setWalletConnectV2ProjectId` method on `ParticleConnect`, passing in your WalletConnect project ID retrieved from the [WalletConnect dashboard](https://cloud.walletconnect.com). Additionally, you can set specific chains to be used within WalletConnect (`chainInfo` structures) with `setWalletConnectV2SupportChainInfos`. An example of this can be found below.
 
-```swift Swift
+```swift
 ParticleConnect.setWalletConnectV2ProjectId("WalletConnect V2 Project ID")
 
 ParticleConnect.setWalletConnectV2SupportChainInfos([.ethereum, .polygon])
@@ -228,7 +236,7 @@ To retrieve all wallet adapters either in total, by `chainType` (`evm` or `solan
 - `ParticleConnect.getAdapters`, retrieves adapters by `chainType` (`evm` or `solana`).
 - `ParticleConnect.getAdapterByAddress`, returns all adapters associated with a specific (user) public address.
 
-```swift Swift
+```swift
 let adapter = ParticleConnect.getAllAdapters()
             .filter { $0.walletType == .authCore }.first
 
@@ -241,7 +249,7 @@ let adapters = ParticleConnect.getAdapterByAddress(publicAddress: address)
 
 `adapter.getAccounts` returns a list of accounts associated/connected with a specific adapter. `adapter` is an instance of a given wallet adapter, such as `AuthCoreAdapter`. Each adapter has a `getAccounts` method by default. Alternatively, to retrieve smart accounts associated with a given adapter, you'll need to call `adapter.getSmartAccounts`. E.g.:
 
-```swift Swift
+```swift
 let accounts = adapter.getAccounts()
 
 // Alternatively
@@ -254,7 +262,7 @@ Oftentimes, the primary chain initially set through `initialize` won't be the _o
 
 `WalletType.authCore` comes from Particle Auth Core, supports evm and solana, if you need switch chain for there two account, and have switch from solana to evm or evm to solana, you can call `(adapter as! ParticleAdapter).switchChain`.
 
-```swift Swift
+```swift
 ParticleNetwork.setChainInfo(.ethereum)
 
 // switch chain asynchronous from evm to solana or solana to evm.
@@ -262,7 +270,26 @@ ParticleNetwork.setChainInfo(.ethereum)
 let result = try await (adapter as! ParticleAdapter).switchChain(.ethereum).value
 ```
 
-### Connect Wallet
+### Connect Wallet V2
+
+`ParticleConnectUI.connect` is one click login function, which can present a customizable login UI. The parameter config can be derived from `ConnectKitConfig`.
+
+`ConnectKitConfig.init` have these parameters
+
+| Field  | Type   | Description                                                                                              |
+|--------|--------|----------------------------------------------------------------------------------------------------------|
+| `connectOptions` | `[ConnectOption]` |  Connect options, support `email`, `phone`, `social` and `wallet`, the sort order is used for connect kit login UI. |
+| `socialProviders` | `[EnableSocialProvider]` |  Social providers, support `google`, `apple` and other social options, the sort order is used for connect kit login UI. |
+| `walletProviders` | `[EnableWalletProvider]` |  Wallet providers, support `metamask`, `trust` and other wallet options, the sort order is used for connect kit login UI. |
+| `additionalLayoutOptions` | `AdditionalLayoutOptions` |  Layout options |
+| `designOptions` | `DesignOptions` | Design options |
+
+```swift
+let config = ConnectKitConfig(connectOptions: connectOptions, socialProviders: socialProviders, walletProviders: walletProviders, additionalLayoutOptions: additionalLayoutOptions, designOptions: designOptions)
+let account = try await ParticleConnectUI.connect(config: config).value
+```
+
+### Connect Wallet V1 (Legacy)
 
 Likely one of the most important methods, specific adapters can initiate connection (through an initialization in a variable such as `adapter`) with the `connect` method. Depending on the specific adapter, this method will throw a modal facilitating connection. 
 
@@ -283,7 +310,7 @@ For `EVMConnectAdapter` and `SolanaConnectAdapter`, this will generate a fresh a
 | `socialLoginPrompt` | `SocialLoginPrompt?` | (Optional) either `.none`, `.consent`, or `.select_account` |
 | `loginPageConfig` | `LoginPageConfig?`| (Optional) to customize the UI page, contains project name, icon and description. |
 
-```swift Swift
+```swift
 
 // show connect with metamask
 let adapter = ParticleConnect.getAllAdapters().first { $0.walletType == .metaMask }!
@@ -309,10 +336,9 @@ Alternatively, if a user has already connected their wallet, you'll be able to u
 | `publicAddress` | `String` | The connected public address, if `adapter.WalletType` is `.authCore`, you can pass an empty string, for other walletTypes, you need pass a connected public address. |
 
 
-```swift Swift
+```swift
 let result = try await adapter.disconnect(address).value
 ```
-
 
 ### Is Connected
 
@@ -322,9 +348,19 @@ Another quite important method is `isConnected`, returning a Boolean based on wh
 |--------|--------|----------------------------------------------------------------------------------------------------------|
 | `publicAddress` | `String` | The connected public address, if `adapter.WalletType` is `.authCore`, you can pass an empty string, for other walletTypes, you need pass a connected public address. |
 
-```swift Swift
+```swift
 let result = adapter.isConnected(publicAddress: address)
 ```
+
+<Note>
+<p> If the account is from `.authCore`, to check the user's login status, you'd better use `auth.isConnected` directly. </p>
+```swift
+import ParticleAuthCore
+
+let auth = Auth()
+let result = try await auth.isConnected()
+```
+</Note>
 
 ### Import Wallet
 
@@ -337,7 +373,7 @@ Additionally, you can export one of these wallets with `adapter.exportWalletPriv
 <p>This is specific to custom account connection with Particle Connect.</p>
 </Note>
 
-```swift Swift
+```swift
 let account = try await adapter.importWalletFromPrivateKey(privateKey).value
 
 let account = try await adapter.importWalletFromMnemonic(mnemonic).value
@@ -357,7 +393,7 @@ To initiate a transaction for signature and ultimately settlement on-chain, you'
 | `publicAddress` | `String` | The connected public address, if `adapter.WalletType` is `.authCore`, you can pass an empty string, for other walletTypes, you need pass a connected public address. |
 | `transaction` | `String` | Evm transaction is expressed as a hexadecimal string, solana transaction is expressed as a base58 string. |
 
-```swift Swift
+```swift
 let txHash = try await adapter.signAndSendTransaction(publicAddress: address, transaction: transaction).value
 ```
 
@@ -375,7 +411,7 @@ You can create en EVM transaction with class `TxData` or `FeeMarketEIP1559TxData
 
 This will return a popup requesting confirmation to either `SolanaConnectAdapter` or `PhantomConnectAdapter` depending on which you've defined as `adapter` (or, alternatively, a custom adapter you've set up). E.g.:
 
-```swift Swift
+```swift
 let signed = try await adapter.signTransaction(publicAddress: address, transaction: transaction).value
 
 // Alternatively, the plural form of this method, takes a list of transactions
@@ -392,7 +428,7 @@ To sign a basic UTF-8 message (string), you can use `adapter.signMessage` to pro
 | `message` | `String` | The message you'd like the user to sign; for EVM, this should be a hex-encoded string (prefixed by '0x'), while for Solana, you can pass in a standard string (no encoding needed). |
 
 
-```swift Swift
+```swift
 let signed = try await adapter.signMessage(publicAddress: address, message: message).value
 ```
 
@@ -406,7 +442,7 @@ As an alternative to `signMessage`, for **EVM chains**, you can request that a u
 | `data` | `String` | The typed data to be signed; see the [Web (JavaScript/TypeScript)](/api-reference/auth/desktop-sdks/web) page for additional guidance. |
 
 
-```swift Swift
+```swift
 let signed = try await adapter.signTypedData(publicAddress: publicAddress, data: message).value
 ```
 
@@ -414,7 +450,7 @@ let signed = try await adapter.signTypedData(publicAddress: publicAddress, data:
 
 There may be cases where the existing selection of adapters doesn't include a wallet you'd like to be featured within Particle Connect. In this situation, creating a custom adapter (using `WalletConnectAdapter` as the parent class) is quite simple. Doing so will require a structure similar to the example below, in which a custom Coin98 adapter is made by overriding `walletType` with a custom `AdapterInfo` instance.
 
-```swift Swift
+```swift
 public class Coin98WalletConnectAdapter: WalletConnectAdapter {
   public override var walletType: WalletType {
       return WalletType.custom(info: AdapterInfo.init(name: "Coin98",

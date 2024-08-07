@@ -108,13 +108,11 @@ Similar to the Android configuration, you'll need to fill in `PROJECT_UUID` (`pr
 
 Next, you'll need to head over to your `AppDelegate.swift` file to add an import of `react_native_particle_connect`, which Particle Wallet depends on in a large capacity.
 
-```swift Swift
-#import <react_native_particle_connect/react_native_particle_connect-Swift.h>
-```
-
 Additionally, within your application's `application` method (as shown below), you'll need to include a handler condition derived from `ParticleConnectSchemeManager handleUrl:url`. This should be as simple as a `YES` (true) return upon a truthy value of `ParticleConnectSchemeManager handleUrl:url`.
 
-```swift Swift
+```swift AppDelegate.swift
+#import <react_native_particle_connect/react_native_particle_connect-Swift.h>
+
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options {
   if ([ParticleConnectSchemeManager handleUrl:url] == YES) {
     return YES;

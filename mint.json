@@ -312,6 +312,7 @@
       "group": "PARTICLE WALLET",
       "pages": [
         "api-reference/wallet/introduction",
+        "api-reference/wallet/on-ramp",
         {
           "group": "SDKs (Desktop)",
           "pages": ["api-reference/wallet/desktop/web"]
