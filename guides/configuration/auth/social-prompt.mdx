@@ -2,7 +2,8 @@
 title: "Set Social Authentication Prompt"
 ---
 
-For some social account platforms, such as Google, Discord, and Microsoft login, during the login authorization process, they can configure the timing of the consent page displayed to users. Generally, three options are provided:
+
+For some social platforms, specifically Google, Discord, and Microsoft, you can configure the timing of the consent page displayed to users during the login process. Generally, three options are provided:
 
     1.	`none`: Do not display any authentication or consent screens. Must not be specified with other values.
     2.	`consent`: Prompt the user for consent.
@@ -26,13 +27,13 @@ const userInfo = await connect({
 ```kotlin
 AuthCore.connect(LoginType.GOOGLE, prompt = LoginPrompt.SelectAccount, loginCallback)
 ```
-   3. iOS `socialLoginPrompt` parameter
+   3. iOS: `socialLoginPrompt` parameter
    
 ```swift
 let userInfo = try await auth.connect(type: .google, socialLoginPrompt: .selectAccount) 
 ```
 
-   4. ReactNative `socialLoginPrompt` parameter
+   4. ReactNative: `socialLoginPrompt` parameter
 ```typeScript
 const userInfo = await particleAuthCore.connect(LoginType.Google, null, [], SocialLoginPrompt.SelectAccount);
 ```

@@ -75,7 +75,7 @@ const playerAccountAddress = await openfort.players.create({
 });
 ```
 
-This account creation process should be called immediately upon logging in with Particle Auth (through `particle.auth.login` or `connect`, see [Web (Desktop) Quickstart](/guides/quickstart/waas/web-quickstart)). In this example, we've set up the login process through an API call that returns the player ID to be used in session key creation and transaction execution. This endpoint is executed automatically after logging in with Particle Auth, setting a state for the player ID.
+This account creation process should be called immediately upon logging in with Particle Auth (through `particle.auth.login` or `connect`, see [Web (Desktop) Quickstart](/guides/wallet-as-a-service/waas/web-quickstart)). In this example, we've set up the login process through an API call that returns the player ID to be used in session key creation and transaction execution. This endpoint is executed automatically after logging in with Particle Auth, setting a state for the player ID.
 
 If successful, a new entry should be made to the "Players" tab on the [Openfort dashboard](https://dashboard.openfort.xyz/), logging the data previously used to initialize the account.
 
