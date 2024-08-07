@@ -276,14 +276,7 @@
       "group": "PARTICLE AUTH",
       "pages": [
         "api-reference/auth/introduction",
-        {
-          "group": "Server API",
-          "pages": [
-            "api-reference/auth/server/getuserinfo",
-            "api-reference/auth/server/getuserinfobyidentity",
-            "api-reference/auth/server/isprojectuser"
-          ]
-        },
+
         {
           "group": "SDKs (Desktop)",
           "pages": [
@@ -305,6 +298,13 @@
         {
           "group": "SDKs (Multi-platform)",
           "pages": ["api-reference/auth/multi/unreal"]
+        },        {
+          "group": "Server API",
+          "pages": [
+            "api-reference/auth/server/getuserinfo",
+            "api-reference/auth/server/getuserinfobyidentity",
+            "api-reference/auth/server/isprojectuser"
+          ]
         }
       ]
     },

@@ -72,9 +72,9 @@ const result = await particleAA.isAAModeEnable();
 
 ---
 
-## Rpc get fee quotes
+## RPC get fee quotes
 
-Always used with send Transaction, pick one feeQuote then send transaction in custom feeMode.
+This is always used with `sendTransaction`. Select a `feeQuote`, and then send the transaction using the chosen custom fee mode.
 
 ```typeScript
 const wholeFeeQuote = (await particleAA.rpcGetFeeQuotes(eoaAddress, [transaction])) as WholeFeeQuote;
@@ -82,7 +82,11 @@ const wholeFeeQuote = (await particleAA.rpcGetFeeQuotes(eoaAddress, [transaction
 
 ### Send Transaction
 
-Sending a transaction (UserOperation) is as simple as calling pre-existing methods within `ParticleConnect` or `Evm` in `@particle-network/rn-auth-core` and just passing in an additional parameter, `feeMode`. There are two ways to send transactions with the AA SDK: The first is with `signAndSendTransaction` of `sendTransaction` , which will send a singular transaction to the network. Alternatively, you can use `batchSendTransactions` to send batched transactions within a single UserOperation.
+Sending a transaction (UserOperation) is as simple as calling pre-existing methods within `ParticleConnect` or `Evm` in `@particle-network/rn-auth-core` and just passing in an additional parameter, `feeMode`. 
+
+There are two ways to send transactions with the AA SDK: 
+
+The first is with `signAndSendTransaction` of `sendTransaction` , which will send a singular transaction to the network. Alternatively, you can use `batchSendTransactions` to send batched transactions within a single UserOperation.
 
 `particleConnect.signAndSendTransaction` or `Evm.sendTransaction` in `@particle-network/rn-auth-core` takes the following parameters:
 
@@ -132,7 +136,7 @@ await ParticleConnect.batchSendTransactions(
         feeMode: AAFeeMode.native(result));
 ```
 
-Check if you can send with AAFeeMode.gasless/native/token.
+Check if you can send a transaction with AAFeeMode.gasless/native/token.
 
 ```typeScript
 const wholeFeeQuote = await particleAA.rpcGetFeeQuotes(eoaAddress, [
@@ -143,20 +147,20 @@ const feeQuote = wholeFeeQuote.verifyingPaymasterNative['feeQuote'];
 const fee = BigNumber(feeQuote['fee']);
 const balance = BigNumber(feeQuote['balance']);
 
-// check if enough native for gas fee
+// check if enough native token is available for gas fees
 if (balance.isLessThan(fee)) {
-  console.log("can't natively paid, native balance if not enough for gas fee");
+  console.log("Native balance too low to pay for gas fees");
   return;
 }
 
-// check if gasless available
+// check if gasless mode is available
 const verifyingPaymasterGasless = wholeFeeQuote.verifyingPaymasterGasless;
 if (verifyingPaymasterGasless == undefined) {
-  console.log("gasless is not available");
+  console.log("Gasless mode is not available");
   return;
 }
 
-// check if can token paid
+// check if can a token can be used to pay for fees
  const feeQuotes = wholeFeeQuote.tokenPaymaster['feeQuotes'] as any[];
 
 const validFeeQuotes = feeQuotes.filter(item => {
@@ -171,7 +175,7 @@ const validFeeQuotes = feeQuotes.filter(item => {
 
 
 if (validFeeQuotes.length == 0) {
-  console.log("can't token paid, no valid token for gas fee");
+  console.log("Token not valid to pay gas fees");
   return;
 }
 
