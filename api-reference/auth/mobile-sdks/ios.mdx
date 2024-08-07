@@ -118,8 +118,8 @@ Now that you've configured your [Particle dashboard](https://dashboard.particle.
 
 To switch the used chain after initial configuration, `auth.switchChain` is used. This enables asynchronous switching. Similar to the initial configuration, chain information derived from `ParticleNetwork.ChainInfo` can be passed as the primary parameter, determining the destination chain.
 
-| Field       | Type       | Description                                                          |
-| ----------- | ---------- | -------------------------------------------------------------------- |
+| Field       | Type        | Description                                                          |
+| ----------- | ----------- | -------------------------------------------------------------------- |
 | `chainInfo` | `ChainInfo` | A chainInfo object, can be derived from `ParticleNetwork.ChainInfo`. |
 
 
@@ -142,7 +142,7 @@ ParticleNetwork.setChainInfo(.ethereum)
 | `type`              | `LoginType`          | The specific social login to be used. This can be either `.email`, `.phone`, `.google`, `.apple`, `.jwt`, `.facebook`, `.twitter`, `.discord`, `.github`, `.twitch`, `.microsoft` or `linkedin`.                                                                       |
 | `account`           | `String?`            | (Optional) when `type` is set to either `.email`, `.phone`, or `.jwt`, you can use the `account` parameter to pass in an expected email, phone number, or JWT. This is optional for the former two, but required for `.jwt`. The phone number must be in E.164 format. |
 | `code`              | `String?`            | (Optional) when `type` is set to either `.email` pr `.phone`, you can use the code parameter to pass the verification code.                                                                                                                                            |
-| `socialLoginPrompt` | `SocialLoginPrompt?` | (Optional) either `.none`, `.consent`, or `.select_account`                                                                                                                                                                                                            |
+| `socialLoginPrompt` | `SocialLoginPrompt?` | (Optional) either `.none`, `.consent`, or `.select_account`, only google, discord and microsoft support it.                                                                                                                                                            |
 
 
 ```swift
@@ -169,7 +169,7 @@ let userInfo = try await auth.connect(type: .jwt, account: jwt)
 | `type`               | `LoginType`          | The specific social login to be used. This can be either `.email`, `.phone`, `.google`, `.apple`, `.jwt`, `.facebook`, `.twitter`, `.discord`, `.github`, `.twitch`, `.microsoft` or `linkedin`.                                                                                 |
 | `account`            | `String?`            | (Optional) when `type` is set to either `.email`, `.phone`, or `.jwt`, you can use the `account` parameter to pass in an expected email, phone number, or JWT. This is optional for the former two, but required for `.jwt`. The phone number must be in E.164 format.           |
 | `supportAuthTypeode` | `[SupportAuthType]`  | The methods of authentication visible on the authentication popup UI. By default, this will be exclusive to the chosen social login method, although by passing in additional types, you can expand the UI to include the ability to login with those as an alternative to type. |
-| `socialLoginPrompt`  | `SocialLoginPrompt?` | (Optional) either `'.none'`, `'.consent'`, or `'.selectAccount'`                                                                                                                                                                                                                |
+| `socialLoginPrompt`  | `SocialLoginPrompt?` | (Optional) either `'.none'`, `'.consent'`, or `'.selectAccount'`                                                                                                                                                                                                                 |
 | `config`             | `LoginPageConfig?`   | (Optional) to customize the UI page, contains project name, icon and description.                                                                                                                                                                                                |
 
 
@@ -181,7 +181,7 @@ After connect is successful, detailed user information can be retrieved by calli
 
 ### Is Connected
 
-`auth.getUserInfo() != nil` returns a Boolean based upon the current state of a session (whether or not a user is currently logged into an account). Additionally, an adjacent method, `auth.isConnected` can be called and subscribed to, returning `userInfo` upon a status of `true`.
+To check the user's login status, `auth.getUserInfo() != nil` returns a Boolean based upon the current state of a session (whether or not a user is currently logged into an account). Additionally, an asynchronous method, `auth.isConnected` can be called and subscribed to, returning `userInfo` upon a status of `true`.
 
 ```swift
 // local side
@@ -218,8 +218,8 @@ Once `ParticleNetwork` has been initialized and a user has successfully logged i
 
 To request an EIP191 signature from a user's embedded wallet, you can use either the `auth.evm.personalSign` or `auth.evm.personalSignUnique` method. If you need the same message to return a unique signature each time, use the `auth.evm.personalSignUnique` method. Otherwise, the `auth.evm.personalSign` method is generally recommended.
 
-| Field       | Type         | Description  |
-| ----------- | ------------ | ---------------------------------------------------------------- |
+| Field       | Type         | Description                                                                            |
+| ----------- | ------------ | -------------------------------------------------------------------------------------- |
 | `message`   | `String`     | Either a hexadecimal string starting with '0x' or a human-readable string is required. |
 | `chainInfo` | `ChainInfo?` | (Optional) default is current chainInfo, the specific use which chain to sign          |
 
@@ -418,11 +418,11 @@ ParticleNetwork.getFiatCoin()
 
 ### Blind Sign Enable
 
-This switch will work if the following conditions are met:
+Silently sign messages/transactions, this switch will work if the following conditions are met:
 
 1. your account is connected with JWT
 2. your account does not set payment password
-3. SecurityAccountConfig.promptSettingWhenSign is 0, you can call ParticleNetwork.setSecurityAccountConfig to update its value.
+3. SecurityAccountConfig.promptSettingWhenSign is 0, you can call `ParticleNetwork.setSecurityAccountConfig` to update its value.
 
 ```swift
 // set blind sign enable  
