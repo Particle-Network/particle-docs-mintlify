@@ -21,8 +21,29 @@ const userInfo = await connect({
 });
 ```
 
-2. Android: `prompt` parameter
-3. iOS: `socialLoginPrompt` parameter
-4. ReactNative: `SocialLoginPrompt` parameter
-5. Unity: `SocialLoginPrompt` parameter
-6. Flutter: `SocialLoginPrompt` parameter
+    2. Android: `prompt` parameter
+   
+```kotlin
+AuthCore.connect(LoginType.GOOGLE, prompt = LoginPrompt.SelectAccount, loginCallback)
+```
+   3. iOS `socialLoginPrompt` parameter
+   
+```swift
+let userInfo = try await auth.connect(type: .google, socialLoginPrompt: .selectAccount) 
+```
+
+   4. ReactNative `socialLoginPrompt` parameter
+```typeScript
+const userInfo = await particleAuthCore.connect(LoginType.Google, null, [], SocialLoginPrompt.SelectAccount);
+```
+
+   5. Unity: `socialLoginPrompt` parameter
+```csharp
+await ParticleAuthCore.Instance.Connect(LoginType.GOOGLE, null, [], SocialLoginPrompt.SelectAccount, null);
+```
+   6. Flutter: `socialLoginPrompt` parameter
+   
+```dart
+final userInfo = ParticleAuthCore.connect(LoginType.google, prompt: SocialLoginPrompt.select_account);
+```
+
