@@ -103,12 +103,53 @@ With your `projectId`, `clientKey`, and `appId` retrieved, you'll need to config
 <Step title="Configuring `AuthCoreContextProvider`">
 Within your `src/app/layout.tsx` file, or in an equivalent location, wrap `{children}` (your application component) with `AuthCoreContextProvider`.
 
-Below is an interactive example of how `AuthCoreContextProvider` can be configured.
+Below is an example of how `AuthCoreContextProvider` can be configured.
 
+```ts layout.tsx
 
-import { InteractiveLayout } from '/snippets/InteractiveLayout.mdx';
+    "use client";
+    import { Inter } from "next/font/google";
+    import "./globals.css";
 
-<InteractiveLayout />
+    // Particle imports
+    import { Ethereum, BNBChain, BerachainbArtio } from "@particle-network/chains"; // Chains are imported here
+    import { AuthType } from "@particle-network/auth-core";
+    import { AuthCoreContextProvider } from "@particle-network/auth-core-modal";
+
+    const inter = Inter({ subsets: ["latin"] });
+
+    export default function RootLayout({
+      children,
+    }: Readonly<{
+      children: React.ReactNode;
+    }>) {
+      return (
+        <html lang="en">
+          <body className={inter.className}>
+            <AuthCoreContextProvider
+              options={{
+                projectId: process.env.NEXT_PUBLIC_PROJECT_ID!,
+                clientKey: process.env.NEXT_PUBLIC_CLIENT_KEY!,
+                appId: process.env.NEXT_PUBLIC_APP_ID!,
+                // Remove authTypes if you want to allow for all the options
+                authTypes: [AuthType.email, AuthType.google, AuthType.twitter, AuthType.github],
+                themeType: "dark",
+                wallet: {
+                  visible: true,
+                  customStyle: {
+                  // List the chains you want to include
+                    supportChains: [Ethereum, BNBChain, BerachainbArtio], 
+                  },
+                },
+              }}
+            >
+              {children}
+            </AuthCoreContextProvider>
+          </body>
+        </html>
+      );
+    }
+```
 
 </Step>
 
