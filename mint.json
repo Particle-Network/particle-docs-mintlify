@@ -146,9 +146,9 @@
     {
       "group": "GETTING STARTED",
       "pages": [
-        "guides/overview", 
-        "guides/network-coverage", 
-        "guides/dashboard" ,
+        "guides/overview",
+        "guides/network-coverage",
+        "guides/dashboard",
         {
           "group": "Platform Coverage",
           "pages": [
@@ -706,6 +706,18 @@
     {
       "source": "/docs/custom-authentication-jwt",
       "destination": "/guides/configuration/auth/jwt"
+    },
+    {
+      "source": "/resources/terms-and-conditions/privacy-policy",
+      "destination": "/landing/tos/privacy-policy"
+    },
+    {
+      "source": "/resources/terms-and-conditions/terms-of-use",
+      "destination": "/landing/tos/terms-of-use"
+    },
+    {
+      "source": "/resources/terms-and-conditions/api-and-sdk-license-agreement",
+      "destination": "/landing/tos/license-agreement"
     }
   ]
 }
