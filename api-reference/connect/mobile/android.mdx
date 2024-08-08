@@ -219,9 +219,12 @@ val accounts = ParticleConnect.getAccounts(chainType)
 
 ### Connect Wallet V2
 
-Preconditions:
-dependencies contains implementation 'network.particle:connect-kit:{latest-version}'
+#### Dependencies
+To include the Particle Connect Kit in your project, Ensure that the following dependency is present in your `build.gradle` file:
 
+```gradle
+implementation("network.particle:connect-kit:{latest-version}")
+```
 `ParticleConnectKit.connect` is one click login function, which can present a customizable login UI. The parameter config can be derived from `ConnectKitConfig`.
 
 `ConnectKitConfig` have these parameters
@@ -234,7 +237,7 @@ dependencies contains implementation 'network.particle:connect-kit:{latest-versi
 | `additionalLayoutOptions` | `AdditionalLayoutOptions`     | Layout options                                                                                                                                                               |
 | `logo`                    | `String?`                     | The top logo of login ui, Image link or base64-encoded image,null will use particle‘s logo                                                                                   |
 
-`AdditionalLayoutOptions`have these parameters
+`AdditionalLayoutOptions` have these parameters
 | Field | Type | Description |
 |--------|--------|----------------------------------------------------------------------------------------------------------|
 | `isCollapseWalletList` | `Boolean` | Indicates whether the wallet list should be collapsed. |
