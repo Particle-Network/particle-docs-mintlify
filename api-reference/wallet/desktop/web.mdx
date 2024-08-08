@@ -6,9 +6,9 @@ description: "Using Particle Wallet within a web application."
 
 ## Particle Wallet for Web
 
-[Particle Wallet](doc:building-with-particle-wallet) is a customizable embedded interface allowing users to interact with EOAs (Externally Owned Accounts) or smart accounts natively within a React or Vue application. Native to Particle Network's Smart Wallet-as-a-Service and BTC Connect SDKs, Particle Wallet acts as the central mechanism driving UI-based wallet interaction within Particle Network's tech stack. Particle Wallet can wrap accounts from any existing wallet, or from various smart account instances.
+Particle Wallet is a customizable embedded interface allowing users to interact with EOAs (Externally Owned Accounts) or smart accounts natively within a React or Vue application. Native to Particle Network's Smart Wallet-as-a-Service and BTC Connect SDKs, Particle Wallet acts as the central mechanism driving UI-based wallet interaction within Particle Network's tech stack. Particle Wallet can wrap accounts from any existing wallet, or from various smart account instances.
 
-For web applications leveraging [Particle Auth](doc:building-with-particle-auth), [Particle Connect](doc:building-with-particle-connect), or [BTC Connect](doc:btc-connect), Particle Wallet is automatically included and will be used as the default embedded wallet interface. Otherwise, for isolated usage of Particle Wallet, `@particle-network/wallet` handles the low-level implementation of Particle Wallet.
+For web applications leveraging Particle Auth, Particle Connect, or BTC Connect, Particle Wallet is automatically included and will be used as the default embedded wallet interface. Otherwise, for isolated usage of Particle Wallet, `@particle-network/wallet` handles the low-level implementation of Particle Wallet.
 
 This document will cover the process of initializing `@particle-network/wallet` and creating an embedded wallet instance using an EIP-1193 provider.
 
@@ -64,7 +64,7 @@ Initializing Particle Wallet will require three key values, these will be your `
 
 All of Particle Network's SDKs require these values for API authentication, and thus they're easily accessible through the [Particle dashboard](https://particle-docs-demo.replit.app/).
 
-<Note>Follow the quickstart tutorial to set up a project and find the required keys: [Create a new project](/guides/quickstart/waas/web-quickstart#configuring-particle-auth).</Note>
+<Note>Follow the quickstart tutorial to set up a project and find the required keys: [Create a new project](/guides/wallet-as-a-service/waas/web-quickstart#configuring-particle-auth).</Note>
 
 ## Initialization
 
@@ -83,7 +83,7 @@ Both initialization and implementation will be handled by `walletEntryPlugin`, a
 - Optionally, `themeType`, which should be either `'light'` or `'dark'` indicating the color theme of the wallet modal.
 - Optionally, `language`, a string specifying an alternative language for the modal (English being the default).
 - Optionally, `topMenuType`, to change the button in the top left of the embedded wallet modal to either close the interface, or open it in fullscreen. This should either be `'close'` or `'fullscreen'`.
-- Optionally, `customStyle`, for deeply customizing the styling (coloring, border weight, etc.) of the wallet modal. For more information on this, take a look at [Customizing Particle Wallet](doc:particle-wallet-customization).
+- Optionally, `customStyle`, for deeply customizing the styling (coloring, border weight, etc.) of the wallet modal. For more information on this, take a look at [Customizing Particle Wallet](/guides/configuration/appearance/wallet.mdx).
 
 An example of initializing `walletEntryPlugin` has been included below.
 
@@ -144,7 +144,7 @@ walletEntryPlugin.setWalletCore({
 At this point, you should have a configured and initialized instance of `walletEntryPlugin` with a provider (account) assigned. To open the embedded wallet modal (or initiate the wallet entry modal), you have 3 options:
 
 1. `walletEntryCreate`, a method on `walletEntryPlugin` that will display the wallet entry modal (a button in the corner of your application, as you optionally defined through `entryPosition`). This should be called after the provider is set through `setWalletCore`.
-2. `openWallet`, an alternative to `walletEntryCreate` that directly opens the wallet modal in fullscreen upon calling.  This takes various additional parameters, which you can learn more about at [Customizing Particle Wallet](doc:particle-wallet-customization).
+2. `openWallet`, an alternative to `walletEntryCreate` that directly opens the wallet modal in fullscreen upon calling.  This takes various additional parameters, which you can learn more about at [Customizing Particle Wallet](/guides/configuration/appearance/wallet.mdx).
 3. Finally, \``getWalletUrl` can be called to retrieve an associated URL for the wallet modal, which could instead be opened in an iframe rather than directly through the library as the former two options do.
 
 `walletEntryCreate` will provide the most out-of-the-box experience, with the latter two requiring custom handling.

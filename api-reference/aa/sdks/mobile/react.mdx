@@ -95,12 +95,12 @@ The first is with `signAndSendTransaction` of `sendTransaction` , which will sen
 - `transaction`, a stringified standard transaction object.
 - `feeMode`, the mechanism to be used for paying gas fees, can be:
   - `AAFeeMode.gasless`, for sponsored transactions. This will happen automatically for Testnets and will pull from your previously defined (or configured) Paymaster for Mainnets. Takes one parameter:
-    - `wholeFeeQuote`, which can be retrieved through `particleAA.rpcGetFeeQuotes(EoaPublicAddress, [transaction])`.
+    - `wholeFeeQuote`, which can be retrieved through `particleAA.rpcGetFeeQuotes`.
   - `AAFeeMode.native`, paying for gas fees in a native token (such as ETH). Takes one parameter:
-    - `wholeFeeQuote`, which can be retrieved through `particleAA.rpcGetFeeQuotes(EoaPublicAddress, [transaction])`.
+    - `wholeFeeQuote`, which can be retrieved through `particleAA.rpcGetFeeQuotes`.
   - `AAFeeMode.token`, paying for gas fees in an ERC-20 token (such as USDC). Takes one parameter:
-    - `feeQuote`, to be used when leveraging a Token Paymaster. It can be retrieved through `particleAA.rpcGetFeeQuotes(EoaPublicAddress, [transaction])`.
-    - `tokenPaymasterAddress`, can be  retrieved through `particleAA.rpcGetFeeQuotes(eoaPublicAddress, [transaction])`.
+    - `feeQuote`, to be used when leveraging a Token Paymaster. It can be retrieved through `particleAA.rpcGetFeeQuotes`.
+    - `tokenPaymasterAddress`, can be  retrieved through `particleAA.rpcGetFeeQuotes`.
 
 Alternatively, for `particleConnect.batchSendTransactions` or ParticleAuthCore `Evm.batchSendTransactions`, the parameters will be the same, with the exception of `transaction` being an array of transactions.
 
@@ -153,7 +153,7 @@ if (balance.isLessThan(fee)) {
   return;
 }
 
-// check if gasless mode is available
+// check if gasless paymaster is available
 const verifyingPaymasterGasless = wholeFeeQuote.verifyingPaymasterGasless;
 if (verifyingPaymasterGasless == undefined) {
   console.log("Gasless mode is not available");

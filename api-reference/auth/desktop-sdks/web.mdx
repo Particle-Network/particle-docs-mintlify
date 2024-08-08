@@ -34,7 +34,7 @@ Although before we import and configure this object, you'll need to retrieve the
 
 Regardless of the Particle Auth SDK you use, you'll have the opportunity to define your `projectId`, `clientKey`, and `appId` to authenticate your instance of Particle Auth. In addition to this, customizations can be applied to the resulting wallet modal.
 
-<Note>Follow the quickstart tutorial to set up a project and find the required keys: [Create a new project](/guides/quickstart/waas/web-quickstart#configuring-particle-auth).</Note>
+<Note>Follow the quickstart tutorial to set up a project and find the required keys: [Create a new project](/guides/wallet-as-a-service/waas/web-quickstart#configuring-particle-auth).</Note>
 
 <CodeGroup>
 ```typescript @particle-network/auth-core-modal
@@ -159,7 +159,7 @@ href="https://particle-docs-demo.replit.app">
 </Frame>
 </Tip>
 
-Additionally, specific configurations can be set within `connect()` to customize the login experience beyond [frontend customizations](/guides/quickstart/customization/auth).
+Additionally, specific configurations can be set within `connect()` to customize the login experience beyond [frontend customizations](/guides/configuration/appearance/auth).
 
 ```typescript TypeScript
 const userInfo = connect({
@@ -455,7 +455,7 @@ yarn create @particle-network/auth-core-modal
 ```
 
 <Tip>
-  Alternatively, take a look at our [Particle Auth quickstart](/guides/quickstart/waas/web-quickstart).
+  Alternatively, take a look at our [Particle Auth quickstart](/guides/wallet-as-a-service/waas/web-quickstart).
 </Tip>
 
 ### useConnect
@@ -572,13 +572,13 @@ const {
 Integrating and leveraging Particle Auth isn't only bound to interfaces provided by Particle Network, rather it's built to fit into nearly every implementation scenario. Whether you're using RainbowKit, Web3Modal, Solana's `wallet-adapter`, or would instead like to have a standalone social login button within your application, Particle Auth can be used. 
 
 <CardGroup cols={3}>
-  <Card title="RainbowKit" href="/guides/quickstart/connection-kits/rainbow">
+  <Card title="RainbowKit" href="/guides/wallet-as-a-service/connection-kits/rainbow">
     Particle Auth through RainbowKit, by Rainbow.
   </Card>
-  <Card title="Web3Modal" href="/guides/quickstart/connection-kits/web3modal">
+  <Card title="Web3Modal" href="/guides/wallet-as-a-service/connection-kits/web3modal">
     Particle Auth through Web3Modal, by WalletConnect.
   </Card>
-  <Card title="Web3-Onboard" href="/guides/quickstart/connection-kits/web3-onboard">
+  <Card title="Web3-Onboard" href="/guides/wallet-as-a-service/connection-kits/web3-onboard">
     Particle Auth through Web3-Onboard, by Blocknative.
   </Card>
 </CardGroup>
