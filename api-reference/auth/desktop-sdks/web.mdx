@@ -336,22 +336,31 @@ Sending transactions using Particle as the Signer/underlying wallet is also quit
 When a given transaction is sent and a signature is needed for authentication, a standard confirmation popup (also customizable through the Particle dashboard) will appear directly within the application. Transactions can be sent through the following:
 
 <CodeGroup>
+```typescript Ethers.js
+const signer = ethersProvider.getSigner();
+
+const executeTx = async () => {
+  const signer = await ethersProvider.getSigner();
+
+  const tx = {
+    to: recipientAddress,
+    value: ethers.parseEther("0.01"),
+    data: "0x",
+  };
+
+  const txResponse = await signer.sendTransaction(tx);
+  const txReceipt = await txResponse.wait();
+
+  // You can log or handle the receipt here
+  console.log(txReceipt);
+};
+
+```
 ```typescript Web3.js
 window.web3.eth.sendTransaction(txnParams, (error, txnHash) => {
     if (error) throw error;
     console.log(txnHash);
 });
-```
-```typescript Ethers.js
-const signer = ethersProvider.getSigner();
-
-signer.sendTransaction(txnParams)
-  .then(tx => {
-    console.log(tx);
-  })
-  .catch(error => {
-    throw error;
-  });
 ```
 ```typescript Particle (EVM)
 // After configuring AuthCoreContextProvider and logging in
@@ -397,19 +406,6 @@ Similar to sending transactions, signatures will be formatted and displayed to y
 ### Personal Signatures
 
 <CodeGroup>
-```typescript Web3.js
-const msg = "GM, Particle!";
-const accounts = await window.web3.eth.getAccounts();
-
-window.web3.eth.personal
-  .sign(msg, accounts[0])
-  .then((result) => {
-    console.log("personal_sign", result);
-  })
-  .catch((error) => {
-    console.error("personal_sign", error);
-  });
-```
 ```typescript Ethers.js
 const msg = "GM, Particle!";
 const signer = ethersProvider.getSigner();
@@ -423,6 +419,19 @@ signer.signMessage(msg)
     console.error("personal_sign", error);
   });
 
+```
+```typescript Web3.js
+const msg = "GM, Particle!";
+const accounts = await window.web3.eth.getAccounts();
+
+window.web3.eth.personal
+  .sign(msg, accounts[0])
+  .then((result) => {
+    console.log("personal_sign", result);
+  })
+  .catch((error) => {
+    console.error("personal_sign", error);
+  });
 ```
 ```typescript Particle (EVM)
 const msg = "GM, Particle!";
@@ -445,39 +454,6 @@ const result = await signMessage('base58 string');
 ### Sign Typed Data (V1)
 
 <CodeGroup>
-```typescript Web3.js
-const accounts = await window.web3.eth.getAccounts();
-const from = accounts[0];
-
-// Placeholder data
-const msg = [
-    {
-      type: "string",
-      name: "fullName",
-      value: "John Doe",
-    },
-    {
-      type: "uint32",
-      name: "userId",
-      value: "1234",
-    },
-  ];
-
-const params = [msg, from];
-const method = "eth_signTypedData_v1";
-
-window.web3.currentProvider
-  .request({
-    method,
-    params,
-  })
-  .then((result) => {
-    console.log("signTypedData result", result);
-  })
-  .catch((err) => {
-    console.log("signTypedData error", err);
-  });
-```
 ```typescript Ethers.js
 const signer = provider.getSigner();
 
@@ -513,6 +489,39 @@ const msg = [
     console.log('Error:', err);
   }
 })();
+```
+```typescript Web3.js
+const accounts = await window.web3.eth.getAccounts();
+const from = accounts[0];
+
+// Placeholder data
+const msg = [
+    {
+      type: "string",
+      name: "fullName",
+      value: "John Doe",
+    },
+    {
+      type: "uint32",
+      name: "userId",
+      value: "1234",
+    },
+  ];
+
+const params = [msg, from];
+const method = "eth_signTypedData_v1";
+
+window.web3.currentProvider
+  .request({
+    method,
+    params,
+  })
+  .then((result) => {
+    console.log("signTypedData result", result);
+  })
+  .catch((err) => {
+    console.log("signTypedData error", err);
+  });
 ```
 ```typescript Particle (EVM)
 // Placeholder data
