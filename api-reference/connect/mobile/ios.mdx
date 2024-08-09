@@ -203,7 +203,7 @@ For example, if your `appId` is `63bfa427-cf5f-4742-9ff1-e8f5a1b9828f`, then the
 
 With the scheme URL configured, you'll also need to head into `info.plist` and add `LSApplicationQueriesSchemes` according to your specific utilization of Web3 wallets (not Particle Auth, but independent wallet adapters). An example of this can be seen below (each of these is optional and dependent upon your given implementation)
 
-```xml XML
+```xml Info.plist
 <key>LSApplicationQueriesSchemes</key>
 <array>
 	<string>metamask</string>
@@ -212,20 +212,18 @@ With the scheme URL configured, you'll also need to head into `info.plist` and a
 	<string>imtokenv2</string>
 	<string>rainbow</string>
 	<string>trust</string>
-
 	<string>zerion</string>
   <string>mathwallet</string>
-  <string>1inch</string>
+  <string>oneinch</string>
   <string>awallet</string>
   <string>okex</string>
-
-  <key>NSPhotoLibraryUsageDescription</key>
-  <string>We need access in order to open photos of barcodes</string>
-  <key>NSCameraUsageDescription</key>
-  <string>We use the camera to scan barcodes</string>
-  <key>NSFaceIDUsageDescription</key>
-  <string>We use Face ID for secure access to the app.</string>
 </array>
+<key>NSPhotoLibraryUsageDescription</key>
+<string>We need access in order to open photos of barcodes</string>
+<key>NSCameraUsageDescription</key>
+<string>We use the camera to scan barcodes</string>
+<key>NSFaceIDUsageDescription</key>
+<string>We use Face ID for secure access to the app.</string>
 ```
 
 ## Examples of Utilization
