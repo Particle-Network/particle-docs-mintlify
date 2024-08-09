@@ -22,7 +22,7 @@ Before beginning, if you'd like to view a demo for Particle Connect, the officia
 
 ### Installation
 
-Implementing Particle Connect can be achieved in four main steps. By the end of step four, your application will have a "Connect" button capable of onboarding both Web2 and Web3 users alike, powered directly by Particle Network.
+Implementing Particle Connect can be achieved in four main steps. By the end of step four, your application will have a **Connect** button capable of onboarding both Web2 and Web3 users alike, powered directly by Particle Network.
 
 For step one, you'll need to install the Particle Connect Web SDK.
 
@@ -118,7 +118,7 @@ You can save this code snippet to a file named `connectkit.tsx`, and use `Partic
 
 ### Adding the connection button
 
-Moving out of your `index` file and into your main `App` component, you'll need to include the "Connect" button (`ConnectButton` from `@particle-network/connectkit`) to facilitate the utilization of Particle Connect.
+Moving out of your `index` file and into your main `App` component, you'll need to include the **Connect** button (`ConnectButton` from `@particle-network/connectkit`) to facilitate the utilization of Particle Connect.
 
 ```jsx JSX
 import { ConnectButton } from '@particle-network/connectkit';
@@ -382,7 +382,7 @@ As you may have noticed, Particle Connect comes with a number of important React
 
 -   `useModal` - Opens the connect modal (`setOpen`) without using `ConnectButton`.
 
--   `usePublicClient` - A Public Client is an interface to "public" JSON-RPC API methods such as retrieving block numbers, transactions, reading from smart contracts.
+-   `usePublicClient` - A Public Client interface for accessing external JSON-RPC API methods, enabling you to retrieve block numbers, fetch transactions, and read data from smart contracts.
 
 -   `useSwitchChain` - Switches and retrieves the current primary chain.
 
