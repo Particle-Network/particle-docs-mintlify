@@ -12,6 +12,8 @@ Among all of the SDKs for Particle Auth, the Web SDK (`@particle-network/auth-co
 
 The Particle Auth SDK is one of the primary mechanisms of **configuring** and **using** Particle. **Whether you're starting from scratch** or **already have an onboarding or authentication flow set up within your application**, the Particle Auth Core Web SDK is a simple yet powerful integration.
 
+<Note>Particle Auth allows you to easily integrate social logins in your dApp</Note>
+
 ***
 
 ## Getting Started
@@ -43,7 +45,7 @@ Regardless of the Particle Auth SDK you use, you'll have the opportunity to defi
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { AuthType } from '@particle-network/auth-core';
-import { EthereumGoerli } from '@particle-network/chains';
+import { EthereumSepolia } from '@particle-network/chains';
 import { AuthCoreContextProvider, PromptSettingType } from '@particle-network/auth-core-modal';
 import App from './App'
 
@@ -55,25 +57,32 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
     <AuthCoreContextProvider
       options={{
-        projectId: process.env.REACT_APP_PROJECT_ID,
-        clientKey: process.env.REACT_APP_CLIENT_KEY,
-        appId: process.env.REACT_APP_APP_ID,
+        projectId: process.env.REACT_APP_PROJECT_ID!,
+        clientKey: process.env.REACT_APP_CLIENT_KEY!,
+        appId: process.env.REACT_APP_APP_ID!,
+        
+        // Remove the authTypes array to enable all supported social logins 
         authTypes: [AuthType.email, AuthType.google, AuthType.twitter],
-        themeType: 'dark',
+
+
+        themeType: 'dark', // Login modal theme
         fiatCoin: 'USD',
         language: 'en',
         erc4337: {
           name: 'SIMPLE',
           version: '1.0.0',
         },
+
+        // You can prompt the user to set up extra security measure upon login or other interactions
         promptSettingConfig: {
           promptPaymentPasswordSettingWhenSign: PromptSettingType.first,
           promptMasterPasswordSettingWhenLogin: PromptSettingType.first,
         },
         wallet: {
+          themeType: 'dark', // Wallet modal theme
           visible: true,
           customStyle: {
-            supportChains: [EthereumGoerli],
+            supportChains: [EthereumSepolia],
           }
         },
       }}
