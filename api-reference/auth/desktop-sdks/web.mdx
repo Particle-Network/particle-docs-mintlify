@@ -200,7 +200,11 @@ href="https://particle-docs-demo.replit.app">
 </Frame>
 </Tip>
 
+### Customize the login expereince
+
 Additionally, specific configurations can be set within `connect()` to customize the login experience beyond [frontend customizations](/guides/configuration/appearance/auth).
+
+The following snippet demonstrates all the available configuration options within `connect()`:
 
 ```typescript TypeScript
 const userInfo = connect({
@@ -218,6 +222,23 @@ const userInfo = connect({
 ```
 
 <Note>`web3.eth.getAccounts` will also initiate login automatically if user isn't already logged in.</Note>
+
+#### Log in with a Specific Social Platform
+
+You can configure the login flow to bypass the login modal entirely, prompting the user to log in directly with a specific social platform.
+
+The following example demonstrates how to prompt the user to log in with their Google account, skipping the login modal.
+
+```tsx App.tsx
+  // Handle user login
+  const handleLogin = async () => {
+    if (!connected) {
+      await connect({
+        socialType: "google",
+      });
+    }
+  };
+```
 
 ***
 
