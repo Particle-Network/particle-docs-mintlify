@@ -14,7 +14,7 @@ Configuration and utilization processes **are detailed below**.
 
 Before jumping in, it may be worth looking at the [Particle Wallet React Native GitHub repository](https://github.com/Particle-Network/particle-react-native/tree/master/particle-wallet) to contextualize the SDK with a preliminary understanding of the underlying architecture and implementation flow by viewing the source code alongside included demos.
 
-***
+---
 
 ## Getting Started
 
@@ -22,7 +22,11 @@ The setup process for the Particle Wallet React Native SDK is quite similar to t
 
 Before diving into platform-specific configuration, all Particle Wallet (& Connect/Auth) SDKs require three standard values for initialization: `projectId`, `clientKey`, and `appId`, all of which can be retrieved from the [Particle dashboard](https://dashboard.particle.network).
 
-<Note>Follow the quickstart tutorial to set up a project and find the required keys: [Create a new project](/guides/wallet-as-a-service/waas/mobile-quickstart#configuring-particle-auth).</Note>
+<Note>
+  Follow the quickstart tutorial to set up a project and find the required keys:
+  [Create a new
+  project](/guides/wallet-as-a-service/waas/mobile-quickstart#configuring-particle-auth).
+</Note>
 
 ### Adding the Particle Wallet React Native SDK to your application
 
@@ -40,12 +44,12 @@ yarn add @particle-network/rn-wallet
 
 If you're planning on using Android for your React Native application, ensure you're meeting the following prerequisites (otherwise, expect issues or non-functionality):
 
- - minSdkVersion **23** or higher.
-  - compileSdkVersion, targetSdkVersion **34** or higher.
-  - JavaVersion **17**.
-  - [Jetpack (AndroidX)](https://developer.android.com/jetpack/androidx/migrate?authuser=0).
-  - Android Gradle Plugin Version : 8.5.1 or higher.
-  - Gradle Version : 8.9 or higher.
+- minSdkVersion **23** or higher.
+- compileSdkVersion, targetSdkVersion **34** or higher.
+- JavaVersion **17**.
+- [Jetpack (AndroidX)](https://developer.android.com/jetpack/androidx/migrate?authuser=0).
+- Android Gradle Plugin Version : 8.5.1 or higher.
+- Gradle Version : 8.9 or higher.
 
 Once you've made sure your project meets these requirements, you'll need to move on and define the aforementioned configuration values (`projectId`, `clientKey`, and `appId`) within your `build.grade` file (generally found at `${project name}/android/app/build.gradle`). These directly link your application's instance of Particle Connect with the [dashboard](https://dashboard.particle.network).
 
@@ -65,7 +69,7 @@ android {
       manifestPlaceholders["PN_PROJECT_CLIENT_KEY"] = "your project client key"
       manifestPlaceholders["PN_APP_ID"] = "your app id"
   }
-  
+
   dataBinding {
       enabled = true
   }
@@ -73,7 +77,7 @@ android {
 }
 ```
 
-***
+---
 
 ### iOS configuration
 
@@ -297,7 +301,7 @@ const config = {
   theme: 'dark',
   language: Language.JA
 };
-    
+
 particleWallet.navigatorBuyCrypto(config);
 ```
 
@@ -330,6 +334,7 @@ particleWallet.navigatorDappBrowser("https://opensea.io");
 ```
 
 ---
+
 ### Set Supported Chains
 
 To set the specific supported chain(s) available within the chain selection menu on Particle Wallet, you can use `ParticleWallet.setSupportChain`, which takes an array of `ChainInfo` objects. Each object (representing different chains) will directly enable an additional chain within the wallet interface.
@@ -368,14 +373,13 @@ You can also switch the `walletType` being used within Particle Wallet. For exam
 - `OKX`.
 - `TokenPocket`, not supported by iOS.
 
-
 ```typeScript
 particleWallet.createSelectedWallet(account.publicAddress, WalletType.AuthCore, "Custom Wallet Name");
 ```
 
 ## Set Wallet Name
 
-You can customize the wallet name and icon by `particleWallet.setCustomWalletName`, 
+You can customize the wallet name and icon by `particleWallet.setCustomWalletName`,
 
 | Field  | Type     | Description                                                                                                               |
 | ------ | -------- | ------------------------------------------------------------------------------------------------------------------------- |
@@ -388,7 +392,7 @@ particleWallet.setCustomWalletName('My Wallet', "https://example.com/icon.png")
 
 ### Set Custom Localizable
 
-You can use custom localization strings. For example, when customizing a wallet name, you need to update the localization strings with method `particleWallet.setCustomLocalizable`. This method only support iOS, 
+You can use custom localization strings. For example, when customizing a wallet name, you need to update the localization strings with method `particleWallet.setCustomLocalizable`. This method only support iOS,
 
 ```typeScript
 if (Platform.OS === 'ios') {
@@ -406,7 +410,7 @@ if (Platform.OS === 'ios') {
     }
 ```
 
---- 
+---
 
 ## Custom UI
 
@@ -430,7 +434,7 @@ Particle Wallet can also undergo additional customization, specifically regardin
 
 - `setSupportAddToken`, an synchronous function to toggle the option to add tokens in the Particle Wallet. It takes a Boolean value of `true` or `false`.
 
-- `setSupportWalletConnect`, an synchronous function set whether WalletConnect is supported on the wallet page. It takes a boolean value, `true` or `false`. 
+- `setSupportWalletConnect`, an synchronous function set whether WalletConnect is supported on the wallet page. It takes a boolean value, `true` or `false`.
 
 - `setSupportDappBrowser`, configures the availability of the dApp browser feature. It accepts a boolean parameter, `true` or `false`.
 
@@ -439,17 +443,17 @@ E.g.
 ```typeScript
 particleWallet.setDisplayTokenAddresses(tokenAddresses);
 
-particleWallet.setDisplayNFTContractAddresses(nftContractAddresses); 
+particleWallet.setDisplayNFTContractAddresses(nftContractAddresses);
 
 particleWallet.setPriorityTokenAddresses(tokenAddresses);
 
 particleWallet.setPriorityNFTContractAddresses(nftContractAddresses);
 
-particleWallet.setShowLanguageSetting(false); 
+particleWallet.setShowLanguageSetting(false);
 
 particleWallet.setShowAppearanceSetting(false);
 
-particleWallet.setSupportAddToken(false); 
+particleWallet.setSupportAddToken(false);
 ```
 
-***
+---

@@ -13,11 +13,18 @@ Platform-specific configuration instructions, alongside examples of utilization,
 
 Interaction with the Particle Auth Flutter SDK is quite standard and in line with other Particle Auth SDKs, although the key deviations can be found within the configuration process.
 
-<Tip>The configuration process of this SDK differs significantly based on whether you're using Flutter on Android or iOS.</Tip>
+<Tip>
+  The configuration process of this SDK differs significantly based on whether
+  you're using Flutter on Android or iOS.
+</Tip>
 
 To begin, you'll need to head over to the [Particle dashboard](https://dashboard.particle.network) and retrieve your `projectId`, `clientKey`, and `appId`.
 
-<Note>Follow the quickstart tutorial to set up a project and find the required keys: [Create a new project](/guides/wallet-as-a-service/waas/mobile-quickstart#configuring-particle-auth).</Note>
+<Note>
+  Follow the quickstart tutorial to set up a project and find the required keys:
+  [Create a new
+  project](/guides/wallet-as-a-service/waas/mobile-quickstart#configuring-particle-auth).
+</Note>
 
 ### Adding the Particle Auth Flutter SDK to your application
 
@@ -28,7 +35,9 @@ flutter pub add particle_auth_core
 ```
 
 ### Android configuration
+
 #### Prerequisites
+
 - minSdkVersion **23** or higher.
 - compileSdkVersion, targetSdkVersion **34** or higher.
 - JavaVersion **17**.
@@ -109,7 +118,7 @@ allprojects {
 
 ```
 
-***
+---
 
 ### iOS configuration
 
@@ -180,9 +189,7 @@ end
 </p>
 </Note>
 
-
-
-***
+---
 
 ## Examples of utilization
 
@@ -210,7 +217,7 @@ This is achieved and configured through `ParticleAuthCore.connect`. Once this me
 | ------------------ | ------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `loginType`        | `LoginType`              | The specific social login to be used. This can be either `.email`, `.phone`, `.google`, `.apple`, `.jwt`, `.facebook`, `.twitter`, `.discord`, `.github`, `.twitch`, `.microsoft` or `linkedin`.                                                                                 |
 | `account`          | `String?`                | (Optional) when `type` is set to either `.email`, `.phone`, or `.jwt`, you can use the `account` parameter to pass in an expected email, phone number, or JWT. This is optional for the former two, but required for `.jwt`. The phone number must be in E.164 format.           |
-| `prompt`           | `SocialLoginPrompt?`     | (Optional) either `.none`, `.consent`, or `.select_account`, only google, discord and microsoft support it.                                                                                                                                                                                                                      |
+| `prompt`           | `SocialLoginPrompt?`     | (Optional) either `.none`, `.consent`, or `.select_account`, only google, discord and microsoft support it.                                                                                                                                                                      |
 | `loginPageConfig`  | `LoginPageConfig?`       | (Optional) to customize the UI page, contains project name, icon and description.                                                                                                                                                                                                |
 | `supportAuthTypes` | `List<SupportAuthType>?` | The methods of authentication visible on the authentication popup UI. By default, this will be exclusive to the chosen social login method, although by passing in additional types, you can expand the UI to include the ability to login with those as an alternative to type. |
 
@@ -257,7 +264,6 @@ final address = await Solana.getAddress();
 
 To request an EIP191 signature from a user's embedded wallet, you can use either the `Evm.personalSign` or `Evm.personalSignUnique` method. If you need the same message to return a unique signature each time, use the `Evm.personalSignUnique` method. Otherwise, the `Evm.personalSign` method is generally recommended. On Solana, you can call `Solana.signMessage`, you can pass in a UTF-8/readable string.
 
-
 | Field     | Type     | Description                                                                       |
 | --------- | -------- | --------------------------------------------------------------------------------- |
 | `message` | `String` | On Evm requires a hexadeciaml string, on Solana, requires a UTF-8/readable string |
@@ -291,7 +297,6 @@ Following the aforementioned method, you can use `Solana.signAllTransactions` to
 | -------------- | -------------- | ------------------------------------- |
 | `transactions` | `List<String>` | Each element requires a base58 string |
 
-
 ```dart
 List<String> signatures = await Solana.signAllTransactions(transactions);
 ```
@@ -303,7 +308,6 @@ For more generalized transaction sending, `Evm.sendTransaction`and `Solana.signA
 | Field         | Type     | Description                                                               |
 | ------------- | -------- | ------------------------------------------------------------------------- |
 | `transaction` | `String` | On Evm requires a hexadeciaml string, on Solana, requires a base58 string |
-
 
 ```dart
 final signature = await Evm.sendTransaction(transaction);
@@ -317,7 +321,6 @@ To request an EIP712 signature from a user's embedded wallet, you can use either
 | Field     | Type     | Description                   |
 | --------- | -------- | ----------------------------- |
 | `message` | `String` | Requires a hexadeciaml string |
-
 
 ```dart
 // your typed data is a json string
@@ -460,7 +463,6 @@ In addition to `ParticleAuthCore` for authentication and interaction with Partic
 | `abiJsonString`   | `String`       | The abi json string of this method.                                         |
 | `gasFeeLevel`     | `GasFeeLevel`  | (Optional) the gas fee level, `high`, `medium` or `low`, default is `high`. |
 
-
 ```dart
 String contractAddress = "your contract address";
 String methodName = "your method name"; // this is your contract method name, like balanceOf, mint.
@@ -588,7 +590,6 @@ In addition to `ParticleAuth` for authentication and interaction with Particle's
 
 `SolanaService` also extends to Data API methods such as `getTokensAndNFTs`, which returns a highly detailed JSON list of SPL tokens and NFTs belonging to a specified address. This is accessible through `SolanaService.getTokensAndNFTs`, passing in the public address to retrieve the tokens and NFTs of.
 
-
 | Field              | Type     | Description                 |
 | ------------------ | -------- | --------------------------- |
 | `address`          | `String` | The user's public address.  |
@@ -600,9 +601,9 @@ final result = await SolanaService.getTokensAndNFTs(publicAddress, true);
 
 ### Serialize Transactions
 
-`SolanaService.serializeSolTransaction`  facilitates the construction of a SOL transaction object,
+`SolanaService.serializeSolTransaction` facilitates the construction of a SOL transaction object,
 
-`SolanaService.serializeSplTokenTransaction`  facilitates the construction of a Spl-token transaction object,
+`SolanaService.serializeSplTokenTransaction` facilitates the construction of a Spl-token transaction object,
 
 `SolanaService.serializeWSolTokenTransaction` facilitates the construction of a unwrap wsol transaction object.
 
@@ -649,7 +650,6 @@ To retrieve token price based upon current network conditions, you can call `Sol
 | ---------------- | -------------- | ----------------------------------------------------------------- |
 | `tokenAddresses` | `List<String>` | The tokens's addresses, for native token, you can pass `"native"` |
 | `currencies`     | `List<String>` | The price unity, such as `"usd"`                                  |
-
 
 ```dart
 final result = await SolanaService.getPrice(tokenAddresses, currencies);

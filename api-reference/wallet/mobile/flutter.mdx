@@ -13,7 +13,7 @@ A rundown on getting started and utilizing the Particle Wallet Flutter SDK **is 
 
 All of the Particle Network Flutter SDKs, including Particle Wallet, can be found within the [`particle-flutter` GitHub repository](https://github.com/Particle-Network/particle-flutter). Before diving in, it may be worth looking through [this repository](https://github.com/Particle-Network/particle-flutter/tree/master/particle-wallet) to contextualize usage of the SDK with an understanding of its underlying architecture.
 
-***
+---
 
 ## Getting Started
 
@@ -21,7 +21,11 @@ Setting up and getting started with the Particle Wallet Flutter SDK is relativel
 
 To begin, you'll need to, regardless of platform, head over to the [Particle dashboard](https://dashboard.particle.network) and retrieve your `projectId`, `clientKey`, and `appId` to connect your Flutter project with the dashboard. This enables configuration, analytics, tracking, etc.
 
-<Note>Follow the quickstart tutorial to set up a project and find the required keys: [Create a new project](/guides/wallet-as-a-service/waas/mobile-quickstart#configuring-particle-auth).</Note>
+<Note>
+  Follow the quickstart tutorial to set up a project and find the required keys:
+  [Create a new
+  project](/guides/wallet-as-a-service/waas/mobile-quickstart#configuring-particle-auth).
+</Note>
 
 ### Adding the Particle Wallet Flutter SDK to your application
 
@@ -34,7 +38,9 @@ flutter pub add particle_wallet
 ### Android configuration
 
 If you're building an Android application, you must follow the following steps to configure Particle Wallet and prepare for utilization.
+
 #### Prerequisites
+
 - minSdkVersion **23** or higher.
 - compileSdkVersion, targetSdkVersion **34** or higher.
 - JavaVersion **17**.
@@ -86,7 +92,7 @@ dataBinding {
 }
 ```
 
-***
+---
 
 ### iOS configuration
 
@@ -171,7 +177,7 @@ Additionally, head over to your `Info.plist` file and include the following snip
 
 Finally, you'll need to edit your Podfile to ensure `particle_connect` is correctly imported. If you have not already, head over to the [linked guide](/api-reference/connect/mobile/flutter) to complete this.
 
-***
+---
 
 ## Examples of Utilization
 
@@ -181,13 +187,13 @@ Before the SDK is usable, you'll have to go through initialization. This is requ
 
 With `setWalletConnectV2ProjectId` set, you can also call `ParticleWallet.init`, passing in a `WalletMetaData` object (included within the `package:particle_wallet/particle_wallet.dart` import) containing:
 
-| Field  | Type   | Description                                                                                              |
-|--------|--------|----------------------------------------------------------------------------------------------------------|
-| `name` | `String` | Your project's name. |
-| `icon` | `String` | The link to an icon/logo representing your project - ideally 512x512.  |
-| `url` | `String` | The URL for your project's website. |
-| `description` | `String` | A short description of your project.  |
-| `walletConnectProjectId`| `String` | Wallet connect project id, get it from [WalletConnect dashboard](https://cloud.walletconnect.com) |
+| Field                    | Type     | Description                                                                                       |
+| ------------------------ | -------- | ------------------------------------------------------------------------------------------------- |
+| `name`                   | `String` | Your project's name.                                                                              |
+| `icon`                   | `String` | The link to an icon/logo representing your project - ideally 512x512.                             |
+| `url`                    | `String` | The URL for your project's website.                                                               |
+| `description`            | `String` | A short description of your project.                                                              |
+| `walletConnectProjectId` | `String` | Wallet connect project id, get it from [WalletConnect dashboard](https://cloud.walletconnect.com) |
 
 E.g.:
 
@@ -209,6 +215,7 @@ To programmatically force the main wallet page open, you can call `ParticleWalle
 ```dart
 ParticleWallet.navigatorWallet();
 ```
+
 ---
 
 ### Open Receive Token
@@ -227,11 +234,11 @@ ParticleWallet.navigatorTokenReceive(tokenAddress);
 
 You can also open a send token (token referring to ERC20/SPL/native) page by calling `ParticleWallet.navigatorTokenSend`. Specifically, `navigatorTokenSend` optionally takes the following parameters:
 
-| Field  | Type   | Description                                                                                              |
-|--------|--------|----------------------------------------------------------------------------------------------------------|
+| Field          | Type     | Description                                                                                                     |
+| -------------- | -------- | --------------------------------------------------------------------------------------------------------------- |
 | `tokenAddress` | `String` | The address of a token to be auto-filled within the send menu. This can be `native` for a default/native token. |
-| `toAddress` | `String` | The recipient's address.  |
-| `amount` | `String` | The volume of tokens (`tokenAddress`) to be sent. |
+| `toAddress`    | `String` | The recipient's address.                                                                                        |
+| `amount`       | `String` | The volume of tokens (`tokenAddress`) to be sent.                                                               |
 
 E.g.:
 
@@ -259,12 +266,12 @@ ParticleWallet.navigatorTokenTransactionRecords(tokenAddress: tokenAddress);
 
 Similar to `navigatorTokenSend`, you can call `ParticleWallet.navigatorNFTSend` to throw a page explicitly meant for sending a given NFT (one specific token). `navigatorNFTSend` takes the following parameters:
 
-| Field  | Type   | Description                                                                                              |
-|--------|--------|----------------------------------------------------------------------------------------------------------|
-| `mint` | `String` | (`contractAddress`) of a given NFT. |
-| `tokenId` | `String` |  The token ID of an NFT (within the collection defined by `mint`). This can be left as `null` for Solana.  |
-| `amount` | `String?` | The volume of NFT (`mint`) to be sent, ERC172 NFT should set 1 |
-| `receiveAddress` | `String?` | The recipient address, a blank string by default.|
+| Field            | Type      | Description                                                                                              |
+| ---------------- | --------- | -------------------------------------------------------------------------------------------------------- |
+| `mint`           | `String`  | (`contractAddress`) of a given NFT.                                                                      |
+| `tokenId`        | `String`  | The token ID of an NFT (within the collection defined by `mint`). This can be left as `null` for Solana. |
+| `amount`         | `String?` | The volume of NFT (`mint`) to be sent, ERC172 NFT should set 1                                           |
+| `receiveAddress` | `String?` | The recipient address, a blank string by default.                                                        |
 
 E.g.:
 
@@ -276,15 +283,14 @@ ParticleWallet.navigatorNFTSend(mintAddress, tokenId, amount: null, receiveAddre
 
 ---
 
-
 ### Open NFT Details
 
 Particle Wallet also natively supports viewing specific NFTs' traits, description, image, etc. Forcing this menu programmatically can happen through `ParticleWallet.navigatorNFTDetails`, passing in the `contractAddress` (`mint`) of the NFT and the specific tokenId. For Solana, tokenId can be left blank. E.g.:
 
-| Field  | Type   | Description                                                                                              |
-|--------|--------|----------------------------------------------------------------------------------------------------------|
-| `mint` | `String` | (`contractAddress`) of a given NFT. |
-| `tokenId` | `String` |  The token ID of an NFT (within the collection defined by `mint`). This can be left as `null` for Solana.  |
+| Field     | Type     | Description                                                                                              |
+| --------- | -------- | -------------------------------------------------------------------------------------------------------- |
+| `mint`    | `String` | (`contractAddress`) of a given NFT.                                                                      |
+| `tokenId` | `String` | The token ID of an NFT (within the collection defined by `mint`). This can be left as `null` for Solana. |
 
 ```dart
 String mint = "0xD000F000Aa1F8accbd5815056Ea32A54777b2Fc4";
@@ -300,19 +306,19 @@ Particle Wallet also has a native onramp aggregator, allowing users to bring fia
 
 The specific parameters that can be used within `ParticleWallet.navigatorBuyCrypto` are listed below:
 
-| Field  | Type   | Description                                                                                              |
-|--------|--------|----------------------------------------------------------------------------------------------------------|
-| `walletAddress` | `String?` | (Optional) the wallet address to receive the cryptocurrency, default is current user address.|
-| `cryptoCoin` | `String?` |  (Optional) cryptocurrency denomination. default is current chain native token symbol.|
-| `fiatCoin` | `String?` | (Optional) fiat currency denomination. defualt is current fiat coin.|
-| `fiatAmt` | `int?` | (Optional) the amount of fiat to be automatically filled in as the purchase volume.|
-| `chainInfo` | `ChainInfo?` |(Optional) the chainInfo, default is current chainInfo.|
-| `fixFiatCoin` | `bool` | (Optional) lock selection of fiat coin in the buy menu, default is false.|
-| `fixFiatAmt` | `bool` | (Optional) lock selection of fiat amount in the buy menu, default is false.|
-| `fixCryptoCoin` | `bool` | (Optional) lock selection of crypto coin in the buy menu, default is false. |
-| `theme` | `Theme` | (Optional) the buy page theme, `dark` or `light`, default is curreny appearance.|
-| `language` | `Language?` | (Optional) the buy page lanuage, default is current language.|
-| `modalStyle` | `IOSModalPresentStyle?` | (Optional) control iOS presentation style, default is `pageSheet`.|
+| Field           | Type                    | Description                                                                                   |
+| --------------- | ----------------------- | --------------------------------------------------------------------------------------------- |
+| `walletAddress` | `String?`               | (Optional) the wallet address to receive the cryptocurrency, default is current user address. |
+| `cryptoCoin`    | `String?`               | (Optional) cryptocurrency denomination. default is current chain native token symbol.         |
+| `fiatCoin`      | `String?`               | (Optional) fiat currency denomination. defualt is current fiat coin.                          |
+| `fiatAmt`       | `int?`                  | (Optional) the amount of fiat to be automatically filled in as the purchase volume.           |
+| `chainInfo`     | `ChainInfo?`            | (Optional) the chainInfo, default is current chainInfo.                                       |
+| `fixFiatCoin`   | `bool`                  | (Optional) lock selection of fiat coin in the buy menu, default is false.                     |
+| `fixFiatAmt`    | `bool`                  | (Optional) lock selection of fiat amount in the buy menu, default is false.                   |
+| `fixCryptoCoin` | `bool`                  | (Optional) lock selection of crypto coin in the buy menu, default is false.                   |
+| `theme`         | `Theme`                 | (Optional) the buy page theme, `dark` or `light`, default is curreny appearance.              |
+| `language`      | `Language?`             | (Optional) the buy page lanuage, default is current language.                                 |
+| `modalStyle`    | `IOSModalPresentStyle?` | (Optional) control iOS presentation style, default is `pageSheet`.                            |
 
 ```dart
 final config = BuyCryptoConfig(walletAddress:"Wallet Address", cryptoCoin:"USDT", fiatCoin:"USD", fiatAmt:1000,  chainInfo: ChainInfo.Ethereum);
@@ -325,11 +331,11 @@ ParticleWallet.navigatorBuyCrypto(config: config);
 
 Particle Wallet has a native swap page (retrieves multiple quotes from different providers, routing the swap through the best one) for Mainnets (Solana and EVM). Throwing this menu can be done through `ParticleWallet.navigatorSwap`, which alone will open the default swap menu without values filled in, although you can pass in several optional parameters, including:
 
-| Field  | Type   | Description                                                                                              |
-|--------|--------|----------------------------------------------------------------------------------------------------------|
-| `fromTokenAddress` | `String?` | (Optional) the swap pair from token address |
-| `toTokenAddress` | `String?` |  (Optional) the swap pair to token address   |
-| `amount` | `String?` |  (Optional) the swap from token amount, should pass the minimal unit string, for example 0.01 ETH, it's decimals is 18, should pass "10000000000000000"  |
+| Field              | Type      | Description                                                                                                                                            |
+| ------------------ | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `fromTokenAddress` | `String?` | (Optional) the swap pair from token address                                                                                                            |
+| `toTokenAddress`   | `String?` | (Optional) the swap pair to token address                                                                                                              |
+| `amount`           | `String?` | (Optional) the swap from token amount, should pass the minimal unit string, for example 0.01 ETH, it's decimals is 18, should pass "10000000000000000" |
 
 E.g.:
 
@@ -497,5 +503,4 @@ if (Platform.isIOS) {
 }
 ```
 
-***
-
+---

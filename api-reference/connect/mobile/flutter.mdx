@@ -30,7 +30,10 @@ The Particle Connect Flutter SDK is also largely open-source through the [GitHub
 </div>
 
 <Warning>
-It is strongly discouraged to use a private key or the mnemonic import/generate function. If you use it, you need to secure the data yourself, as Particle doesn't have a relationship with the imported/generated mnemonic or private key.
+  It is strongly discouraged to use a private key or the mnemonic
+  import/generate function. If you use it, you need to secure the data yourself,
+  as Particle doesn't have a relationship with the imported/generated mnemonic
+  or private key.
 </Warning>
 
 ## Getting Started
@@ -41,7 +44,11 @@ To begin, regardless of your platform, you must head over to the [Particle dashb
 
 These values tie a given implementation to the [Particle dashboard](https://dashboard.particle.network/), enabling configuration, analytics, tracking, etc.
 
-<Note>Follow the quickstart tutorial to set up a project and find the required keys: [Create a new project](/guides/wallet-as-a-service/waas/mobile-quickstart#configuring-particle-auth).</Note>
+<Note>
+  Follow the quickstart tutorial to set up a project and find the required keys:
+  [Create a new
+  project](/guides/wallet-as-a-service/waas/mobile-quickstart#configuring-particle-auth).
+</Note>
 
 ### Adding the Particle Connect Flutter SDK to your application
 
@@ -52,7 +59,9 @@ flutter pub add particle_connect
 ```
 
 ### Android configuration
+
 #### Prerequisites
+
 - minSdkVersion **23** or higher.
 - compileSdkVersion, targetSdkVersion **34** or higher.
 - JavaVersion **17**.
@@ -103,7 +112,7 @@ dataBinding {
 }
 ```
 
-***
+---
 
 ### iOS configuration
 
@@ -193,14 +202,14 @@ Finally, you'll need to edit your Podfile to ensure `particle_connect` is proper
 
 ### Initialization
 
-Now that you've spun up a project on the [Particle dashboard](<>) and configured your application, you're ready to move on to the initialization of the SDK itself. This must happen before the other methods become functional. To begin, you'll need to call `ParticleInfo.set`, passing in your `projectId` and client key (`clientK`). Next, initialization can happen through the `init` function on `ParticleConnect`, which can be imported from `package:particle_connect/particle_connect.dart`. `init` takes the following parameters:
+Now that you've spun up a project on the [Particle dashboard]() and configured your application, you're ready to move on to the initialization of the SDK itself. This must happen before the other methods become functional. To begin, you'll need to call `ParticleInfo.set`, passing in your `projectId` and client key (`clientK`). Next, initialization can happen through the `init` function on `ParticleConnect`, which can be imported from `package:particle_connect/particle_connect.dart`. `init` takes the following parameters:
 
-| Field          | Type            | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
-| -------------- | --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `chainInfo`    | `ChainInfo`     | The primary chain to be used within your application. This should be dictated by an overall blockchain, followed by a specific network (testnet). Within this example, it's `.Ethereum`(alternatively it could be `.EthereumSepolia`, and so on.)                                                                                                                                                                                                                                                                                                                               |
-| `dAppData`     | `DAppMetadata`  | Metadata outlining the description of your application, This should be an instance of `DAppMetadata` with the following parameters: `walletConnectProjectId`, the wallet connect project id retrieved from the [WalletConnect dashboard](https://cloud.walletconnect.com), `name`, the name of your project. `icon`, a URL linking to the icon of your project; this should be 512x512, ideally.  `url`, the URL of your project's website. `description`, the description of your project, `redirect`, optional, redirect universal link of you project, `verifyUrl`, optional |
-| `env`          | `Env`           | The specific environmennt to be used. This can be either `.dev`, `.staging`, `.production`, this should be set to `.production` when release                                                                                                                                                                                                                                                                                                                                                                                                                                    |
-| `rpcUrlConfig` | `RpcUrlConfig?` | Customize rpc url                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+| Field          | Type            | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| -------------- | --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `chainInfo`    | `ChainInfo`     | The primary chain to be used within your application. This should be dictated by an overall blockchain, followed by a specific network (testnet). Within this example, it's `.Ethereum`(alternatively it could be `.EthereumSepolia`, and so on.)                                                                                                                                                                                                                                                                                                                              |
+| `dAppData`     | `DAppMetadata`  | Metadata outlining the description of your application, This should be an instance of `DAppMetadata` with the following parameters: `walletConnectProjectId`, the wallet connect project id retrieved from the [WalletConnect dashboard](https://cloud.walletconnect.com), `name`, the name of your project. `icon`, a URL linking to the icon of your project; this should be 512x512, ideally. `url`, the URL of your project's website. `description`, the description of your project, `redirect`, optional, redirect universal link of you project, `verifyUrl`, optional |
+| `env`          | `Env`           | The specific environmennt to be used. This can be either `.dev`, `.staging`, `.production`, this should be set to `.production` when release                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| `rpcUrlConfig` | `RpcUrlConfig?` | Customize rpc url                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
 
 ```dart
 ParticleInfo.set(projectId, clientKey);
@@ -221,6 +230,7 @@ Additionally, if you'd like to define multiple chains to be available through Wa
 List<ChainInfo> chainInfos = <ChainInfo>[ChainInfo.Ethereum];
 ParticleConnect.setWalletConnectV2SupportChainInfos(chainInfos);
 ```
+
 ---
 
 ### Connect

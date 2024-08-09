@@ -1,6 +1,8 @@
- ---
+---
+
 title: Android (Kotlin) - Connect
 description: Leveraging Particle Connect within Android applications.
+
 ---
 
 ## Particle Connect for Android
@@ -16,22 +18,25 @@ Before diving into the configuration and utilization process, if you'd like to t
 <div className="flex justify-center">
 
 <img
-style={{ width: '300px'}}
-className="block dark:hidden"
-src="/api-reference/connect/mobile/images/connectkit-mobile.svg"
-alt="Particle Connect Wallet."
+  style={{ width: "300px" }}
+  className="block dark:hidden"
+  src="/api-reference/connect/mobile/images/connectkit-mobile.svg"
+  alt="Particle Connect Wallet."
 />
 <img
-style={{ width: '300px'}}
-className="hidden dark:block"
-src="/api-reference/connect/mobile/images/connectkit-mobile.svg"
-alt="Particle Connect Wallet."
+  style={{ width: "300px" }}
+  className="hidden dark:block"
+  src="/api-reference/connect/mobile/images/connectkit-mobile.svg"
+  alt="Particle Connect Wallet."
 />
 
 </div>
 
 <Warning>
-It is strongly discouraged to use a private key or the mnemonic import/generate function. If you use it, you need to secure the data yourself, as Particle doesn't have a relationship with the imported/generated mnemonic or private key.
+  It is strongly discouraged to use a private key or the mnemonic
+  import/generate function. If you use it, you need to secure the data yourself,
+  as Particle doesn't have a relationship with the imported/generated mnemonic
+  or private key.
 </Warning>
 
 ## Getting Started
@@ -76,7 +81,11 @@ dependencies {
 
 All implementations of Particle Connect (and Particle Auth) require three universal values: `projectId`, `appId`, and `clientKey`. These values tie a given implementation to the [Particle dashboard](https://dashboard.particle.network/), enabling configuration, analytics, tracking, etc.
 
-<Note>Follow the quickstart tutorial to set up a project and find the required keys: [Create a new project](/guides/wallet-as-a-service/waas/mobile-quickstart#configuring-particle-auth).</Note>
+<Note>
+  Follow the quickstart tutorial to set up a project and find the required keys:
+  [Create a new
+  project](/guides/wallet-as-a-service/waas/mobile-quickstart#configuring-particle-auth).
+</Note>
 
 ### Configuration
 
@@ -370,8 +379,12 @@ If you're using an instance of either `EVMConnectAdapter` or `SolanaConnectAdapt
 Additionally, you can export one of these wallets with `connectAdapter.exportWalletPrivateKey`, passing in the address (of the `EVMConnectAdapter` or `SolanaConnectAdapter` imported/generated wallet) that you'd like to export.
 
 <Note>
-<p>This does not refer to importing/exporting wallets within Particle Auth; Particle Network's MPC-TSS accounts do not support importing/exporting private keys.</p>
-<p>This is specific to custom account connection with Particle Connect.</p>
+  <p>
+    This does not refer to importing/exporting wallets within Particle Auth;
+    Particle Network's MPC-TSS accounts do not support importing/exporting
+    private keys.
+  </p>
+  <p>This is specific to custom account connection with Particle Connect.</p>
 </Note>
 
 ```kotlin Kotlin

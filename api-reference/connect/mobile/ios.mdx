@@ -30,7 +30,10 @@ Before diving into the configuration and utilization process, if you'd like to l
 </div>
 
 <Warning>
-It is strongly discouraged to use a private key or the mnemonic import/generate function. If you use it, you need to secure the data yourself, as Particle doesn't have a relationship with the imported/generated mnemonic or private key.
+  It is strongly discouraged to use a private key or the mnemonic
+  import/generate function. If you use it, you need to secure the data yourself,
+  as Particle doesn't have a relationship with the imported/generated mnemonic
+  or private key.
 </Warning>
 
 ## Getting Started
@@ -47,7 +50,11 @@ The setup process on iOS can be somewhat lengthy, so to ensure you don't run int
 
 Additionally, before diving in, you'll need to retrieve three universally required values from the [Particle dashboard](https://dashboard.particle.network): your `projectId`, `clientKey`, and `appId`. These directly link your project (instance of Particle Connect) with the Particle dashboard to enable customization, analytics, tracking, etc.
 
-<Note>Follow the quickstart tutorial to set up a project and find the required keys: [Create a new project](/guides/wallet-as-a-service/waas/mobile-quickstart#configuring-particle-auth).</Note>
+<Note>
+  Follow the quickstart tutorial to set up a project and find the required keys:
+  [Create a new
+  project](/guides/wallet-as-a-service/waas/mobile-quickstart#configuring-particle-auth).
+</Note>
 
 ### Dependencies
 
@@ -62,6 +69,7 @@ pod init
 Then, within your Podfile, you'll need to throw in a few different dependencies, the specifics of which depend on the functions of Particle Connect that you'd like to use.
 
 ## Connect V2
+
 Starting from version 2.0.0, you can quickly integrate the `ParticleConnectKit` SDK, which includes features such as social login, SNS login, third-party wallet login, and customizable login UI.
 
 ```ruby Podfile
@@ -74,6 +82,7 @@ pod 'ConnectCommon'
 ```
 
 ## Connect V1 (Legacy)
+
 1. Regardless of specific functions, you'll need `ConnectCommon` and `ParticleConnect`, alongside `AuthCoreAdapter`.
 2. If you'd like to support importing (or generating fresh) wallets on EVM chains, you'll need `ConnectEVMAdapter`.
    1. To do the same on Solana, you can use `ConnectSolanaAdapter`.
@@ -84,10 +93,10 @@ pod 'ConnectCommon'
 pod 'ConnectCommon'
 pod 'ParticleConnect'
 pod 'ConnectWalletConnectAdapter'
-pod 'ConnectEVMAdapter' 
+pod 'ConnectEVMAdapter'
 pod 'ConnectSolanaAdapter'
 pod 'ConnectPhantomAdapter'
-pod 'AuthCoreAdapter' 
+pod 'AuthCoreAdapter'
 ```
 
 With this set, you can simply run the following command to ensure changes are saved:
@@ -150,12 +159,12 @@ Now that these are set, you'll need to initialize Particle Connect itself (withi
 
 Specifically, `ParticleConnect.initialize` takes the following parameters:
 
-| Field       | Type               | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
-| ----------- | ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `env`       | `DevEnvironment`   | The specific environmennt to be used. This can be either `.debug`, `.staging`, `.production`, this should be set to `.production` when release                                                                                                                                                                                                                                                                                                                      |
-| `chainInfo` | `ChainInfo`        | The primary chain to be used within your application. This should be dictated by an overall blockchain, followed by a specific network (testnet). Within this example, it's `.ethereum`(alternatively it could be `.ethereumSepolia`, and so on.)                                                                                                                                                                                                                   |
-| `dAppData`  | `DAppMetadata`     | Metadata outlining the description of your application, This should be an instance of `DAppMetadata` with the following parameters: `name`, the name of your project. `icon`, a URL linking to the icon of your project; this should be 512x512, ideally.  `url`, the URL of your project's website. `description`, the description of your project, `redirectUniversalLink`, optional, redirect universal link of you project, default is `DAppMetadata.standard`. |
-| `adapters`  | `[ConnectAdapter]` | You'll need to pass in a list of adapters to be offered within the connection modal. This can be defined as a simple array containing various imported adapters (such as `AuthCoreAdapter`, `MetaMaskConnectAdapter`, etc.)                                                                                                                                                                                                                                         |
+| Field       | Type               | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
+| ----------- | ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `env`       | `DevEnvironment`   | The specific environmennt to be used. This can be either `.debug`, `.staging`, `.production`, this should be set to `.production` when release                                                                                                                                                                                                                                                                                                                     |
+| `chainInfo` | `ChainInfo`        | The primary chain to be used within your application. This should be dictated by an overall blockchain, followed by a specific network (testnet). Within this example, it's `.ethereum`(alternatively it could be `.ethereumSepolia`, and so on.)                                                                                                                                                                                                                  |
+| `dAppData`  | `DAppMetadata`     | Metadata outlining the description of your application, This should be an instance of `DAppMetadata` with the following parameters: `name`, the name of your project. `icon`, a URL linking to the icon of your project; this should be 512x512, ideally. `url`, the URL of your project's website. `description`, the description of your project, `redirectUniversalLink`, optional, redirect universal link of you project, default is `DAppMetadata.standard`. |
+| `adapters`  | `[ConnectAdapter]` | You'll need to pass in a list of adapters to be offered within the connection modal. This can be defined as a simple array containing various imported adapters (such as `AuthCoreAdapter`, `MetaMaskConnectAdapter`, etc.)                                                                                                                                                                                                                                        |
 
 An **example** of initialization can be found below.
 
@@ -176,7 +185,7 @@ var adapters: [ConnectAdapter] = [
        AlphaConnectAdapter(),
        OKXConnectAdapter()
        ]
- 
+
 ParticleConnect.initialize(env: .debug, chainInfo: .ethereumSepolia, dAppData: .standard, adapters: adapters)
 ```
 
@@ -203,7 +212,7 @@ With the scheme URL configured, you'll also need to head into `info.plist` and a
 	<string>imtokenv2</string>
 	<string>rainbow</string>
 	<string>trust</string>
-	
+
 	<string>zerion</string>
   <string>mathwallet</string>
   <string>1inch</string>
@@ -294,7 +303,7 @@ let account = try await ParticleConnectUI.connect(config: config).value
 
 ### Connect Wallet V1 (Legacy)
 
-Likely one of the most important methods, specific adapters can initiate connection (through an initialization in a variable such as `adapter`) with the `connect` method. Depending on the specific adapter, this method will throw a modal facilitating connection. 
+Likely one of the most important methods, specific adapters can initiate connection (through an initialization in a variable such as `adapter`) with the `connect` method. Depending on the specific adapter, this method will throw a modal facilitating connection.
 
 For `EVMConnectAdapter` and `SolanaConnectAdapter`, this will generate a fresh account (public and private key pair). Otherwise, the specific connection flow will be dependent upon the adapter in which `connect` is called. E.g.:
 
@@ -338,7 +347,6 @@ Alternatively, if a user has already connected their wallet, you'll be able to u
 | --------------- | -------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `publicAddress` | `String` | The connected public address, if `adapter.WalletType` is `.authCore`, you can pass an empty string, for other walletTypes, you need pass a connected public address. |
 
-
 ```swift
 let result = try await adapter.disconnect(address).value
 ```
@@ -362,7 +370,8 @@ import ParticleAuthCore
 
 let auth = Auth()
 let result = try await auth.isConnected()
-```
+
+````
 </Note>
 
 ### Import Wallet
@@ -383,7 +392,7 @@ let account = try await adapter.importWalletFromMnemonic(mnemonic).value
 
 // Exportation
 let privateKey = try await adapter.exportWalletPrivateKey(publicAddress: address).value
-```
+````
 
 ### Sign and Send Transaction
 
@@ -401,7 +410,6 @@ let txHash = try await adapter.signAndSendTransaction(publicAddress: address, tr
 ```
 
 You can create en EVM transaction with class `TxData` or `FeeMarketEIP1559TxData`, also you can use another SDK `ParticleWalletAPI` to create transaction, you can reference the examples from [Wallet SDK reference](/api-reference/wallet/mobile/ios.mdx#create-transaction)
-
 
 ### Sign Transaction
 
@@ -430,7 +438,6 @@ To sign a basic UTF-8 message (string), you can use `adapter.signMessage` to pro
 | `publicAddress` | `String` | The connected public address, if `adapter.WalletType` is `.authCore`, you can pass an empty string, for other walletTypes, you need pass a connected public address.                |
 | `message`       | `String` | The message you'd like the user to sign; for EVM, this should be a hex-encoded string (prefixed by '0x'), while for Solana, you can pass in a standard string (no encoding needed). |
 
-
 ```swift
 let signed = try await adapter.signMessage(publicAddress: address, message: message).value
 ```
@@ -443,7 +450,6 @@ As an alternative to `signMessage`, for **EVM chains**, you can request that a u
 | --------------- | -------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `publicAddress` | `String` | The connected public address, if `adapter.WalletType` is `.authCore`, you can pass an empty string, for other walletTypes, you need pass a connected public address. |
 | `data`          | `String` | The typed data to be signed; see the [Web (JavaScript/TypeScript)](/api-reference/auth/desktop-sdks/web) page for additional guidance.                               |
-
 
 ```swift
 let signed = try await adapter.signTypedData(publicAddress: publicAddress, data: message).value

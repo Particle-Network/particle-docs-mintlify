@@ -13,7 +13,7 @@ Details regarding the configuration and utilization of the Particle Wallet Unity
 
 Before diving in, all of the Particle Network Unity SDKs (for Particle Auth, Particle Connect, and Particle Wallet) are publicly available and viewable through the [official repository](https://github.com/Particle-Network/particle-unity). Feel free to look at the underlying architecture and demos showcasing end-to-end implementation for an initial understanding of working with Particle Wallet on Unity.
 
-***
+---
 
 ## Getting Started
 
@@ -36,11 +36,15 @@ To start, your Unity project must meet several requirements to avoid compatibili
 
 ### Setting up the Particle dashboard
 
-Once you've ensured your project meets the above prerequisites, you'll also need three key values from the [Particle dashboard](https://dashboard.particle.network): your `projectId`, `clientKey`, and `appId`. 
+Once you've ensured your project meets the above prerequisites, you'll also need three key values from the [Particle dashboard](https://dashboard.particle.network): your `projectId`, `clientKey`, and `appId`.
 
 These directly connect your Unity project with the Particle dashboard, enabling customization, analytics, tracking, etc.
 
-<Note>Follow the quickstart tutorial to set up a project and find the required keys: [Create a new project](/guides/wallet-as-a-service/waas/mobile-quickstart#configuring-particle-auth).</Note>
+<Note>
+  Follow the quickstart tutorial to set up a project and find the required keys:
+  [Create a new
+  project](/guides/wallet-as-a-service/waas/mobile-quickstart#configuring-particle-auth).
+</Note>
 
 ### Configuration
 
@@ -58,15 +62,21 @@ If you're building a Unity game on iOS, you must follow a specific configuration
    For example, if your `projectId` (from the [Particle dashboard](https://dashboard.particle.network)) is something like `63bfa427-cf5f-4742-9ff1-e8f5a1b9828f`, then the scheme URL, in this case, would be `pn63bfa427-cf5f-4742-9ff1-e8f5a1b9828f`.
 
 <Note>
-<p>Remove other services, if needed</p>
-<p></p>
-<p>Within `ParticleNetworkIOSBridge.cs`, you'll have a number of services included in the SDK:</p>
-<p></p>
-<p>- `ParticleNetworkBase` - required universally.</p>
-<p>- `ParticleAuthCore` - required for Particle Auth Core.</p>
-<p>- `ParticleConnect`-  required for Particle Connect.</p>
-<p>- `ParticleWalletGUI` - usage of the Particle Wallet UI, contains all services.</p>
-<p>- `ParticleAA` - usage of the Particle AA, contains all services.</p>
+  <p>Remove other services, if needed</p>
+  <p></p>
+  <p>
+    Within `ParticleNetworkIOSBridge.cs`, you'll have a number of services
+    included in the SDK:
+  </p>
+  <p></p>
+  <p>- `ParticleNetworkBase` - required universally.</p>
+  <p>- `ParticleAuthCore` - required for Particle Auth Core.</p>
+  <p>- `ParticleConnect`- required for Particle Connect.</p>
+  <p>
+    - `ParticleWalletGUI` - usage of the Particle Wallet UI, contains all
+    services.
+  </p>
+  <p>- `ParticleAA` - usage of the Particle AA, contains all services.</p>
 </Note>
 
 You'll also need to configure your Podfile if you haven't already. If you don't have a Podfile, go to the root of your project directory and run `pod init`to generate one.
@@ -132,7 +142,7 @@ You'll need the following dependencies at a minimum:
 
 ```groovy launcherTemplate.gradle
 dependencies {
-    implementation project(':unityLibrary') 
+    implementation project(':unityLibrary')
     implementation "network.particle:wallet-service:${sdkVersion}"
     implementation "network.particle:unity-bridge:${sdkVersion}"
   	// Other dependencies
@@ -149,13 +159,13 @@ particle.network.app_id=Your App ID
 
 With all of this set up, you can now drag the `ParticleWalletGUI.prefab` file into your first scene.
 
-***
+---
 
 ## Examples of Utilization
 
 ### Initialization
 
-With your Unity project configured and ready to go, you'll need to do one more thing before the full extent of the SDK is available: initialization. `ParticleWalletGUI` will need to be initialized before Particle Wallet will work properly. 
+With your Unity project configured and ready to go, you'll need to do one more thing before the full extent of the SDK is available: initialization. `ParticleWalletGUI` will need to be initialized before Particle Wallet will work properly.
 
 To do this, you'll need to call `ParticleWalletGUI.ParticleWalletConnectInitialize`, passing in `metadata`, which contains the following:
 
@@ -223,7 +233,7 @@ ParticleNetwork.SetAppearance(UserInterfaceStyle.DARK);
 
 ParticleWalletGUI.SetDisplayTokenAddresses(new []{"Your token address"});
 ParticleWalletGUI.SetDisplayNFTContractAddresses(new []{"Your NFT address"});
- 
+
 ParticleWalletGUI.SetPriorityTokenAddresses(new []{"Your token address"});
 ParticleWalletGUI.SetPriorityNFTContractAddresses(new []{"Your NFT address"});
 
@@ -280,17 +290,17 @@ ParticleWalletGUI.NavigatorTokenTransactionRecords(tokenAddress);
 
 Similar to the token sending page, you can also return an NFT sending page for moving (sending) a specific NFT to a different address. This can be done through `ParticleWalletGUI.NavigatorNFTSend`, taking:
 
-| Field  | Type   | Description                                                                                              |
-|--------|--------|----------------------------------------------------------------------------------------------------------|
-| `mint` | `string` | (`contractAddress`) of a given NFT. |
-| `tokenId` | `string` |  The token ID of an NFT (within the collection defined by `mint`). This can be left as `null` for Solana.  |
-| `receiveAddress` | `string?` | The recipient address, a blank string by default.|
-| `amount` | `string?` | The volume of NFT (`mint`) to be sent, ERC172 NFT should set 1 |
+| Field            | Type      | Description                                                                                              |
+| ---------------- | --------- | -------------------------------------------------------------------------------------------------------- |
+| `mint`           | `string`  | (`contractAddress`) of a given NFT.                                                                      |
+| `tokenId`        | `string`  | The token ID of an NFT (within the collection defined by `mint`). This can be left as `null` for Solana. |
+| `receiveAddress` | `string?` | The recipient address, a blank string by default.                                                        |
+| `amount`         | `string?` | The volume of NFT (`mint`) to be sent, ERC172 NFT should set 1                                           |
 
 E.g.:
 
 ```csharp
-ParticleWalletGUI.NavigatorNFTSend(contractAddress, tokenId, null, null); 
+ParticleWalletGUI.NavigatorNFTSend(contractAddress, tokenId, null, null);
 ```
 
 ### Open NFT Details
@@ -307,18 +317,18 @@ Particle Wallet also has a native onramp aggregator, allowing users to bring fia
 
 The specific parameters that can be used within `ParticleWalletGUI.NavigatorBuyCrypto` are listed below:
 
-| Field  | Type   | Description                                                                                              |
-|--------|--------|----------------------------------------------------------------------------------------------------------|
-| `WalletAddress` | `string?` | (Optional) the wallet address to receive the cryptocurrency, default is current user address. |
-| `ChainInfo` | `ChainInfo?` | (Optional) the chainInfo, default is current chainInfo.|
-| `CryptoCoin` | `string?` |  (Optional) cryptocurrency denomination. default is current chain native token symbol.  |
-| `FiatCoin` | `String?` | (Optional) fiat currency denomination. defualt is current fiat coin.   |
-| `FiatAmt` | `int?` | (Optional) the amount of fiat to be automatically filled in as the purchase volume.|
-| `FixFiatCoin` | `bool` | (Optional) lock selection of fiat coin in the buy menu, default is false.|
-| `FixCryptoCoin` | `bool` | (Optional) lock selection of fiat amount in the buy menu, default is false. |
-| `Theme` | `Theme?` | (Optional) the buy page theme, `Dark` or `Light`, default is false.|
-| `Language` | `Language?` |  (Optional) the buy page lanuage, default is current language.|
-| `modalStyle`| `iOSModalPresentStyle?` | (Optional) control iOS presentation style, default is `PageSheet`.|
+| Field           | Type                    | Description                                                                                   |
+| --------------- | ----------------------- | --------------------------------------------------------------------------------------------- |
+| `WalletAddress` | `string?`               | (Optional) the wallet address to receive the cryptocurrency, default is current user address. |
+| `ChainInfo`     | `ChainInfo?`            | (Optional) the chainInfo, default is current chainInfo.                                       |
+| `CryptoCoin`    | `string?`               | (Optional) cryptocurrency denomination. default is current chain native token symbol.         |
+| `FiatCoin`      | `String?`               | (Optional) fiat currency denomination. defualt is current fiat coin.                          |
+| `FiatAmt`       | `int?`                  | (Optional) the amount of fiat to be automatically filled in as the purchase volume.           |
+| `FixFiatCoin`   | `bool`                  | (Optional) lock selection of fiat coin in the buy menu, default is false.                     |
+| `FixCryptoCoin` | `bool`                  | (Optional) lock selection of fiat amount in the buy menu, default is false.                   |
+| `Theme`         | `Theme?`                | (Optional) the buy page theme, `Dark` or `Light`, default is false.                           |
+| `Language`      | `Language?`             | (Optional) the buy page lanuage, default is current language.                                 |
+| `modalStyle`    | `iOSModalPresentStyle?` | (Optional) control iOS presentation style, default is `PageSheet`.                            |
 
 ```csharp
 BuyCryptoConfig config = new BuyCryptoConfig(TestAccount.EVM.PublicAddress,
@@ -332,13 +342,12 @@ ParticleWalletGUI.NavigatorBuyCrypto();
 
 Additionally, Particle Wallet has a built-in swap functionality (retrieves multiple quotes from different providers such as 1inch, iZUMi, etc., routing the swap through the best one) for Mainnets (Solana and EVM). Throwing this menu can be done through `ParticleWalletGUI.NavigatorSwap`, which alone will open the default swap menu without values filled in, although you can pass in several optional parameters, including:
 
-| Field  | Type   | Description                                                                                              |
-|--------|--------|----------------------------------------------------------------------------------------------------------|
-| `fromTokenAddress` | `string` | (Optional) the swap pair from token address |
-| `toTokenAddress` | `string` |  (Optional) the swap pair to token address   |
-| `amount` | `string` |  (Optional) the swap from token amount, should pass the minimal unit string, for example 0.01 ETH, it's decimals is 18, should pass "10000000000000000"  |
-| `modalStyle`| `iOSModalPresentStyle` | (Optional) control iOS presentation style, default is `PageSheet`.|
-
+| Field              | Type                   | Description                                                                                                                                            |
+| ------------------ | ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `fromTokenAddress` | `string`               | (Optional) the swap pair from token address                                                                                                            |
+| `toTokenAddress`   | `string`               | (Optional) the swap pair to token address                                                                                                              |
+| `amount`           | `string`               | (Optional) the swap from token amount, should pass the minimal unit string, for example 0.01 ETH, it's decimals is 18, should pass "10000000000000000" |
+| `modalStyle`       | `iOSModalPresentStyle` | (Optional) control iOS presentation style, default is `PageSheet`.                                                                                     |
 
 E.g.:
 
@@ -357,4 +366,4 @@ var walletType = WalletType.MetaMask;
 var nativeResultData = await ParticleWalletGUI.Instance.SwitchWallet(walletType, publicAddress);
 ```
 
-***
+---

@@ -22,11 +22,15 @@ Implementation of the Particle Auth iOS SDK only takes a few lines of code, alth
 
 ### Configuration
 
-To begin the initialization process, you must head over to the [Particle dashboard](https://dashboard.particle.network) and create a project alongside a corresponding application. 
+To begin the initialization process, you must head over to the [Particle dashboard](https://dashboard.particle.network) and create a project alongside a corresponding application.
 
 These will control specific customizations, statistics, and more for your instance of Particle's Wallet-as-a-Service. After creating an application, you'll need to retrieve three key values: `projectId`, `clientKey`, and `appId`. We'll be using these down the road.
 
-<Note>Follow the quickstart tutorial to set up a project and find the required keys: [Create a new project](/guides/wallet-as-a-service/waas/mobile-quickstart#configuring-particle-auth).</Note>
+<Note>
+  Follow the quickstart tutorial to set up a project and find the required keys:
+  [Create a new
+  project](/guides/wallet-as-a-service/waas/mobile-quickstart#configuring-particle-auth).
+</Note>
 
 ### Installation
 
@@ -53,7 +57,10 @@ Now that you've created a project and an application within the [Particle dashbo
    open your-project.xcworkspace
    ```
 
-<Tip>For release updates, subscribe to the [GitHub repository](https://github.com/Particle-Network/particle-ios).</Tip>
+<Tip>
+  For release updates, subscribe to the [GitHub
+  repository](https://github.com/Particle-Network/particle-ios).
+</Tip>
 
 #### Podfile Configuration
 
@@ -107,6 +114,7 @@ Now that you've configured your [Particle dashboard](https://dashboard.particle.
    // For release, this can be set to DevEnvironment.production
    ParticleNetwork.initialize(config: .init(chainInfo: .ethereum, devEnv: .debug))
    ```
+
 6. Add Privacy - Face ID Usage Description to your info.plist file, head over to your `Info.plist` file and include the following snippet:
 
    ```xml Info.plist
@@ -121,7 +129,6 @@ To switch the used chain after initial configuration, `auth.switchChain` is used
 | Field       | Type        | Description                                                          |
 | ----------- | ----------- | -------------------------------------------------------------------- |
 | `chainInfo` | `ChainInfo` | A chainInfo object, can be derived from `ParticleNetwork.ChainInfo`. |
-
 
 ```swift
 let auth = Auth()
@@ -143,7 +150,6 @@ ParticleNetwork.setChainInfo(.ethereum)
 | `account`           | `String?`            | (Optional) when `type` is set to either `.email`, `.phone`, or `.jwt`, you can use the `account` parameter to pass in an expected email, phone number, or JWT. This is optional for the former two, but required for `.jwt`. The phone number must be in E.164 format. |
 | `code`              | `String?`            | (Optional) when `type` is set to either `.email` pr `.phone`, you can use the code parameter to pass the verification code.                                                                                                                                            |
 | `socialLoginPrompt` | `SocialLoginPrompt?` | (Optional) either `.none`, `.consent`, or `.select_account`, only google, discord and microsoft support it.                                                                                                                                                            |
-
 
 ```swift
 // connect with Google
@@ -172,7 +178,6 @@ let userInfo = try await auth.connect(type: .jwt, account: jwt)
 | `socialLoginPrompt`  | `SocialLoginPrompt?` | (Optional) either `'.none'`, `'.consent'`, or `'.selectAccount'`                                                                                                                                                                                                                 |
 | `config`             | `LoginPageConfig?`   | (Optional) to customize the UI page, contains project name, icon and description.                                                                                                                                                                                                |
 
-
 ```swift
 var userInfo = try await auth.presentLoginPage(type: type, account: text, socialLoginPrompt: .selectAccount, config: config)
 ```
@@ -192,7 +197,7 @@ let result = try await auth.isConnected()
 
 ### Disconnect
 
-`auth.disconnect` will simply log a user out of their existing session, assuming they're logged in. 
+`auth.disconnect` will simply log a user out of their existing session, assuming they're logged in.
 
 ```swift
 let result = try await auth.disconnect()
@@ -207,6 +212,7 @@ auth.getUserInfo()
 auth.evm.getAddress()
 auth.solana.getAddress()
 ```
+
 ---
 
 ### Signatures
@@ -214,6 +220,7 @@ auth.solana.getAddress()
 Once `ParticleNetwork` has been initialized and a user has successfully logged in, signatures can be proposed for confirmation through a popup
 
 ### EVM
+
 ### Sign Message (EIP191)
 
 To request an EIP191 signature from a user's embedded wallet, you can use either the `auth.evm.personalSign` or `auth.evm.personalSignUnique` method. If you need the same message to return a unique signature each time, use the `auth.evm.personalSignUnique` method. Otherwise, the `auth.evm.personalSign` method is generally recommended.
@@ -222,7 +229,6 @@ To request an EIP191 signature from a user's embedded wallet, you can use either
 | ----------- | ------------ | -------------------------------------------------------------------------------------- |
 | `message`   | `String`     | Either a hexadecimal string starting with '0x' or a human-readable string is required. |
 | `chainInfo` | `ChainInfo?` | (Optional) default is current chainInfo, the specific use which chain to sign          |
-
 
 ```swift
 let result = try await auth.evm.personalSign("This is the message that is being signed", chainInfo: nil)
@@ -261,6 +267,7 @@ let result = try await auth.evm.sendTransaction(transaction, chainInfo: nil)
 ---
 
 ### Solana
+
 ### Signing Messages
 
 To request a signature from a user's embedded wallet, you can use `auth.solana.signMessage`.
@@ -269,7 +276,6 @@ To request a signature from a user's embedded wallet, you can use `auth.solana.s
 | ----------- | ------------ | ----------------------------------------------------------------------------- |
 | `message`   | `String`     | A base58 formatted string is required.                                        |
 | `chainInfo` | `ChainInfo?` | (Optional) default is current chainInfo, the specific use which chain to sign |
-
 
 ```swift
 let message = Base58.encode("This is the message that is being signed".data(using: .utf8)!)
@@ -341,6 +347,7 @@ ParticleNetwork.setSecurityAccountConfig(config:
 
 let securityAccountConfig = PartilceNetwork.getSecurityAccountConfig()
 ```
+
 ---
 
 ### Master Password and Payment Password
@@ -348,12 +355,12 @@ let securityAccountConfig = PartilceNetwork.getSecurityAccountConfig()
 User can set master password and payment password to protect assets, call `auth.changeMasterPassword` to set or change master password, call `auth.openAccountAndSecurity()` to set or change payment password.
 
 ```swift
-// check user has master password or not  
+// check user has master password or not
 let result = try auth.hasMasterPassword()
-// set or change master password  
-let result = try await auth.changeMasterPassword()  
+// set or change master password
+let result = try await auth.changeMasterPassword()
 
-// check user has payment password or not  
+// check user has payment password or not
 let result = try auth.hasPaymentPassword()
 // open securiy account page
 let result = try auth.openAccountAndSecurity()
@@ -370,11 +377,11 @@ You can forcibly set a specific appearance to be used within the UI using `Parti
 | `appearance` | `UIUserInterfaceStyle` | The specific appearance to be used. This can be either `.unspefified`, `.dark`, `.light`. |
 
 ```swift
-// this is the default setting  
-ParticleNetwork.setAppearance(.unspecified)  
-// dark  
-ParticleNetwork.setAppearance(.dark)  
-// light  
+// this is the default setting
+ParticleNetwork.setAppearance(.unspecified)
+// dark
+ParticleNetwork.setAppearance(.dark)
+// light
 ParticleNetwork.setAppearance(.light)
 ```
 
@@ -394,16 +401,16 @@ ParticleNetwork.setLanguage(Language.en)
 ParticleNetwork.getLanguage()
 ```
 
-
 ### Set Custom UI JSON string
 
 ```swift
-// Set custom ui is pass json string  
-let jsonString = "your custom ui json string, keys should be the same with customUIConfig.json in demo"  
+// Set custom ui is pass json string
+let jsonString = "your custom ui json string, keys should be the same with customUIConfig.json in demo"
 Auth.loadCustomUIJsonString(jsonString)
 ```
 
 ### Set FiatCoin
+
 You can forcibly set a specific fiatCoin to be used within the UI using `ParticleNetwork.setFiatCoin`, with retrieval of the current active language facilitated by `ParticleNetwork.getFiatCoin`. By default, this is set to USD.
 
 | Field      | Type       | Description                                                                                          |
@@ -425,8 +432,8 @@ Silently sign messages/transactions, this switch will work if the following cond
 3. SecurityAccountConfig.promptSettingWhenSign is 0, you can call `ParticleNetwork.setSecurityAccountConfig` to update its value.
 
 ```swift
-// set blind sign enable  
-Auth.setBlindEnable(true)  
-// get current blind sign enable state  
+// set blind sign enable
+Auth.setBlindEnable(true)
+// get current blind sign enable state
 let result = Auth.getBlindEnable()
 ```
