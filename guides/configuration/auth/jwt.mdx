@@ -4,17 +4,17 @@ title: "Custom Authentication (JWT)"
 
 ### Introduction
 
-**JSON Web Tokens (JWTs)** are a compact and self-contained way for securely transmitting information between parties as a JSON object.  In the context of **Particle Network**, JWT custom authentication allows you to integrate Particle Auth with your existing user base and authentication methods. By leveraging JWTs, you can seamlessly enable users to log in using their current accounts while maintaining the security and efficiency of the authentication process. This
+**JSON Web Tokens (JWTs)** are a compact and self-contained way for securely transmitting information between parties as a JSON object.  Within **Particle Network**, JWT custom authentication allows you to integrate Particle Auth with your existing user base and authentication methods. By leveraging JWTs, you can seamlessly enable users to log in using their current accounts while maintaining the security and efficiency of the authentication process. 
 
-Particle Network's [Dashboard](/guides/dashboard) allows developers to configure custom JWT settings to seamlessly integrate their existing user base or authentication methods, such as a custom OAuth provider.
+Particle Network's [Dashboard](/guides/quickstart/dashboard) allows developers to configure custom JWT settings to seamlessly integrate their existing user base or authentication methods, such as a custom OAuth provider.
 
 In this tutorial, you will learn how to:
 
 - Build a basic server to handle JWT operations, including:
-    - Serving public keys in JWK format
-    - Generate a sample JWT with a static payload.
-    - Verifying a username against a predetermined value and generates a JWT if the username is valid.
-    - Decode and verify a JWT.
+  - Serving public keys in JWK format
+  - Generate a sample JWT with a static payload.
+  - Verifying a username against a predetermined value and generate a JWT if the username is valid.
+  - Decode and verify a JWT.
 - Integrate JWT authentication in your dApp using Particle Auth.
 
 <Tip>💡 You can find the repository with the complete project and instructions on GitHub: [Particle Auth JWT demo](https://github.com/soos3d/jwt-demo-particle-auth).</Tip>
@@ -25,13 +25,11 @@ JWTs are compact, URL-safe means of representing claims between two parties. Thi
 
 ### Structure of a JWT
 
-A JSON Web Token (JWT) comprises three main parts: the **header**, the **payload**, and the **signature**. These segments are Base64Url-encoded and concatenated with periods (.) to form the complete JWT.
+A JSON Web Token (JWT) comprises three main parts: a **header**, a **payload**, and a **signature**. These segments are Base64Url-encoded and concatenated with periods (.) to form the complete JWT.
 
 ### Header
 
-The header is a JSON object that usually contains two fields: the token type (commonly JWT) and the signing algorithm (e.g., RS256 for RSA SHA-256).
-
-This part provides details about how the JWT is encoded and secured.
+The header is a JSON object that usually contains two fields: a token type (commonly JWT) and a signing algorithm (e.g., RS256 for RSA SHA-256). As such, it provides details about how the JWT is encoded and secured.
 
 Example of a header:
 
@@ -44,7 +42,7 @@ Example of a header:
 
 ### Payload
 
-The payload is a JSON object containing claims and information about the user and other relevant data. Claims are key-value pairs and can be registered, public, or private. Registered claims are predefined by the JWT specification (e.g., iss for issuer and exp for expiration time), while the developer can define public and private claims.
+The payload is a JSON object containing claims and information about the user and other relevant data. Claims are key-value pairs and can be registered, public, or private. Registered claims are predefined by the JWT specification (e.g., **iss** for issuer and **exp **for expiration time), while the developer can define public and private claims.
 
 Common keys within JWT claims include:
 
@@ -75,7 +73,7 @@ Example of a payload:
 
 The signature is a cryptographic hash created using the encoded header, payload, and a secret key. It ensures the token's integrity and authenticity.
 
-The encoded header and payload are concatenated with a period (.) and then hashed with the secret key using the specified algorithm to generate the signature.
+The encoded header and payload are concatenated with a period (.) and then hashed with the secret key, using a specified algorithm to generate the signature.
 
 Example of signature creation with RSA SHA-256:
 
@@ -89,7 +87,7 @@ RSASHA256(
 
 This approach ensures that the JWT has not been tampered with and can be trusted as authentic.
 
-The final JWT token is a combination of the encoded header, payload, and signature, separated by periods (.), like the following:
+The final JWT token is a combination of the encoded header, payload, and signature, separated by periods (.), as shown below:
 
 ```tsx
 <encoded_header>.<encoded_payload>.<signature>
@@ -105,42 +103,38 @@ eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ1c2VyLW51bWJlci0yMCIsImlzcyI6Im1
 
 This guide will demonstrate how to integrate JWT authentication with Particle Auth, allowing you to seamlessly incorporate your existing user base or custom authentication system into your dApp.
 
-In the [repository](https://github.com/Particle-Network/jwt-demo-particle-auth), you will find two directories: one containing the code for the JWT server, and the other containing the frontend project built with Next.js.
+In the following [repository](https://github.com/Particle-Network/jwt-demo-particle-auth), you will find two directories: one containing code for a JWT server, and the other containing a frontend project built with Next.js.
 
 ### General JWT Authentication Flow
 
-To understand how JWTs are typically used for authentication, let's refer to this flow:
+To understand how JWTs are typically used for authentication, let's consider the following flow:
 
-1. **User Information Storage**: You have a database that holds user information, including a unique user ID, username, password for authentication, and other data relevant to your application.
+1. **User Information Storage**: You have a database that holds a user's information, including a unique user ID, username, password for authentication, and other data relevant to your application.
 2. **User Login**: When the user logs in from the front end using their username and password, the front end sends these credentials to the server for verification.
-3. **JWT Generation**: If the credentials are correct, the server generates a JWT that includes the user's unique ID and possibly other claims.
+3. **JWT Generation**: If the user's credentials are correct, the server generates a JWT that includes their unique ID and possibly other claims.
 4. **JWT Storage**: The JWT is sent back to the front end, where it is stored (typically in local storage or cookies) and used for subsequent authenticated requests.
 5. **JWT Validation**: For each request from the front end, the server validates the JWT to ensure it is still valid and has not been tampered with. Particle Auth can validate the JWT by accessing the server’s endpoint serving the public key.
 6. **Public Key Endpoint**: If using asymmetric keys (RSA), the server provides an endpoint for retrieving the public key to verify the JWT's signature.
 
 ### Demo Project’s Flow
 
-To keep things simpler here, our project follows a more basic flow:
+To keep things simpler here, our demo project follows a basic flow:
 
-- **User Information Storage**: In this example, a single user is created within the JWT server to simulate a database entry. Only the username is needed for authentication.
-- **JWT Configuration**: You configure JWT settings in the Particle Network Dashboard, which we will cover later.
+- **User Information Storage**: In this example, a single user is created within the JWT server to simulate a database entry. Only a username is needed for authentication.
 - **User Login**: When a user logs in from the front end using their username, the front end sends a request to the server to verify the user's identity.
-- **JWT Generation**: If the username matches the “database,” the server takes the unique ID and uses it to generate and issue a new valid JWT.
-- **JWT Validation**: The front end receives the JWT from the server, and Particle Auth validates it by accessing the server’s endpoint that serves the public keys.
+- **JWT Generation**: If the username matches the “database,” the server takes their unique ID and uses it to generate and issue a new valid JWT.
+- **JWT Validation**: The front end receives the JWT from the server, and Particle Auth validates it by accessing the server’s endpoint that serves public keys.
 - **JWT Decoding**: As a bonus, the front end calls the server again to decode the JWT and extract information to display to the user.
 
-The following section will review how the server handles JWTs operations and how to get it up and running.
+The following section will review how the server handles JWTs operations and how to set it up.
 
 ### The JWT Server
 
 The JWT server implementation in the [`jwt-server`](https://github.com/soos3d/jwt-demo-particle-auth/tree/main/jwt-server) directory is built using Node.js and the Express framework. It manages key generation, JWT issuance, and verification, serving as an example of a server that handles user authentication in a dApp.
 
-<aside>
-💡 Note that this is an basic implementation for demonstration purposes and should not be used in a production environment.
+<Tip>Note that this is a basic implementation for demonstration purposes and should not be used in a production environment.</Tip>
 
-</aside>
-
-### Code Breakdown
+## Code Breakdown
 
 ### Dependencies and Setup
 
@@ -280,13 +274,13 @@ node index
 
 The server is now running on `http://localhost:4000`. It needs to be accessible from the Internet since Particle Auth will need to call the `/.well-known/jwks.json` endpoint to validate the JWT. Make sure to deploy this server on a platform like [Digital Ocean](https://cloud.digitalocean.com/projects/default?i=0002ad) or use [Ngrok](https://ngrok.com/docs/getting-started/) to expose the server when running locally. 
 
-## Integrate JWT Auth with Particle Auth
+## Integrating JWT Auth with Particle Auth
 
-With the server set up, let’s integrate it with Particle Auth. You can find the full implementation in Next.js within the [particle-auth-frontend](https://github.com/soos3d/jwt-demo-particle-auth/tree/main/particle-auth-frontend) directory. Here, we’ll cover the main steps to handle the JWT flow.
+With the server set up, you can integrate it with Particle Auth. You can find the full implementation in Next.js within the [particle-auth-frontend](https://github.com/soos3d/jwt-demo-particle-auth/tree/main/particle-auth-frontend) directory. Here, we’ll cover the main steps to handle the JWT flow.
 
-### Set up the Dashboard
+### Setting up a Dashboard
 
-The first step is to configure JWT custom authentication in the [Particle Dashboard](https://dashboard.particle.network/). Create a new project and application, then navigate to the **Custom** section in the side menu.
+- The first step is configuring JWT custom authentication in the [Particle Dashboard](https://dashboard.particle.network/). Create a new project and application, then navigate to the **Custom** section on the side menu.
 
 <Tip>Follow the steps outlined in the [Web Quickstart](/guides/wallet-as-a-service/waas/web-quickstart#configuring-particle-auth) to create a new project and retrieve the necessary API keys.</Tip>
 
@@ -403,9 +397,9 @@ export const decodeJWT = async (token: string): Promise<any> => {
 
 ```
 
-### Integrate JWT Handling with the UI
+### Integrating JWT Handling within your dApp's UI
 
-Now, integrate the login and JWT handling functionality with the UI in `page.tsx`. This includes an input field for the username and a login button to trigger the login logic.
+After the above, you can integrate integrate the login and JWT handling functionality with your dApp's UI. These are contained in `page.tsx`, which includes an input field for the username and a login button to trigger login logic.
 
 ```tsx src/app/page.tsx
   // Handle user login
@@ -431,17 +425,17 @@ Now, integrate the login and JWT handling functionality with the UI in `page.tsx
   };
 ```
 
-The login workflow is as follow:
+The login workflow is as follows:
 
-- The user enters their username and clicks the login button.
+- A user enters their username and clicks the login button.
 - The `handleLogin` function sends a login request to the server.
-- If the username is valid, the server returns a JWT.
+- If their username is valid, the server returns a JWT.
 - The JWT is used to connect with Particle Auth.
 - The JWT is decoded to extract user information, which is then displayed in the UI.
 
-## Run the full application
+## Running the full application
 
-Now you can run the application and try it yourself. Ensure the server is running and configured in the Particle Dashboard, then run the front end by following the instructions:
+Now, you can run and test your application. Make sure your server is running and configured in the Particle Dashboard, then follow the instructions below to run the front end :
 
 After cloning the repository, move into the front end directory:
 
@@ -463,7 +457,7 @@ npm run dev
 
 ## Using Production-Ready Services for JWT Authentication
 
-While the tutorial provides a foundational understanding of JWT authentication with a custom server, it's recommended that robust authentication services be used for production environments. Services like Auth0, Firebase Authentication, and AWS Cognito are good options to consider.
+While this tutorial provides a foundational understanding of JWT authentication with a custom server, it's recommended that robust authentication services be used for production environments. Services like Auth0, Firebase Authentication, and AWS Cognito are good options to consider.
 
 ### Auth0
 
@@ -477,7 +471,10 @@ Firebase Authentication provides backend services to help authenticate users in 
 
 AWS Cognito provides user sign-up, sign-in, and access control, allowing you to add user authentication to your web and mobile apps easily.
 
-### Conclusion
+## Conclusion
 
-By following this tutorial, you've learned how to integrate JSON Web Tokens (JWTs) effectively into your dApp using Particle Auth. JWTs provide a secure, stateless way to handle authentication, making them ideal for modern web applications. You now have a robust server that can generate, verify, and decode JWTs and a front end that can authenticate users with these tokens.
-This setup ensures that your authentication process is secure and scalable and allows for seamless integration with your existing user base. With Particle Auth, you can now leverage JWTs to enhance your dApp's security and user experience, providing a flexible and efficient authentication solution.
+By following this tutorial, you've learned how to integrate JSON Web Tokens (JWTs) effectively into your dApp using Particle Auth. JWTs provide a secure, stateless way to handle authentication, making them ideal for modern web applications. 
+
+You now also have a robust server that can generate, verify, and decode JWTs and a front end that can authenticate users with these tokens. This setup ensures that your authentication process is secure and scalable, allowing for seamless integration with your existing user base. 
+
+With Particle Auth, you can now leverage JWTs to enhance your dApp's security and user experience, providing a flexible and efficient authentication solution.
