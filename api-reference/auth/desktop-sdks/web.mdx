@@ -264,6 +264,53 @@ This object provides a wealth of information that can enhance the user experienc
 
 For example, you can use it to display the user's `name` and `avatar`, or access security details such as `has_set_master_password`. This allows you to implement logic that prompts the user to set a master password if they haven’t already, thereby improving security.
 
+<Accordion title="Available Fields in `userInfo`">
+- **uuid**: Unique identifier for the user.
+- **created_at**: Timestamp of when the user account was created.
+- **updated_at**: Timestamp of the last update to the user account.
+- **phone**: User's phone number (if available).
+- **email**: User's email address (if available).
+- **apple_email**: Email associated with Apple ID (if available).
+- **apple_id**: Apple ID (if available).
+- **avatar**: URL to the user’s avatar image.
+- **discord_email**: Email associated with Discord (if available).
+- **discord_id**: Discord ID (if available).
+- **facebook_email**: Email associated with Facebook (if available).
+- **facebook_id**: Facebook ID (if available).
+- **github_email**: Email associated with GitHub (if available).
+- **github_id**: GitHub ID (if available).
+- **google_email**: Email associated with Google.
+- **google_id**: Google ID.
+- **jwt_id**: JSON Web Token ID (if available).
+- **linkedin_email**: Email associated with LinkedIn (if available).
+- **linkedin_id**: LinkedIn ID (if available).
+- **microsoft_email**: Email associated with Microsoft (if available).
+- **microsoft_id**: Microsoft ID (if available).
+- **name**: Full name of the user.
+- **passkeys_id**: Passkeys ID (if available).
+- **security_account**: Object containing security-related fields:
+  - **has_set_master_password**: Boolean indicating if a master password is set.
+  - **has_set_payment_password**: Boolean indicating if a payment password is set.
+  - **payment_password_updated_at**: Timestamp of the last update to the payment password.
+- **telegram_id**: Telegram ID (if available).
+- **telegram_phone**: Phone number associated with Telegram (if available).
+- **thirdparty_user_info**: Object containing third-party authentication info:
+  - **provider**: Name of the third-party provider (e.g., "Google").
+  - **user_info**: Object with detailed user information:
+    - **email**: Email used with the third-party provider.
+    - **id**: User ID associated with the third-party provider.
+    - **name**: Name associated with the third-party provider.
+    - **picture**: URL to the user’s profile picture from the third-party provider.
+- **token**: Token used for authentication.
+- **twitch_email**: Email associated with Twitch (if available).
+- **twitch_id**: Twitch ID (if available).
+- **twitter_email**: Email associated with Twitter (if available).
+- **twitter_id**: Twitter ID (if available).
+- **wallets**: Array of wallet objects:
+  - **uuid**: Unique identifier for the wallet.
+  - **chain_name**: Name of the blockchain associated with the wallet (e.g., "evm_chain", "solana").
+</Accordion>
+
 ## Retrieving Public Address
 
 Retrieving the public address associated with a given user's account (assuming you're not pulling it from the login via `userInfo`) can be achieved through the following:
