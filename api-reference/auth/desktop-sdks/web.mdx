@@ -242,11 +242,60 @@ The following example demonstrates how to prompt the user to log in with their G
 
 ***
 
+### Verify the User's Login Status
+
+The `useConnect()` hook provides several functions to check the user's connection status:
+
+- `connected` — Returns a boolean value indicating whether the user is logged in (`true`) or not (`false`). This is useful for managing login logic.
+
+- `connectionStatus` — Returns a string representing the current stage of the user's flow:
+  - `loading`
+  - `connecting`
+  - `connected`
+  - `disconnected`
+
+  You can use `connectionStatus` to manage login logic or to display relevant status information in the UI.
+
 ## Retrieving Public Address
 
 Retrieving the public address associated with a given user's account (assuming you're not pulling it from the login via `userInfo`) can be achieved through the following:
 
 <CodeGroup>
+
+```typescript Ethers.js V6
+import { ethers } from "ethers";
+
+import { useEthereum } from '@particle-network/auth-core-modal';
+const { provider } = useEthereum();
+
+// Assuming Ethers is not already initialized
+const ethersProvider = new ethers.BrowserProvider(
+  provider as Eip1193Provider,
+  "any"
+);
+
+const accounts = await ethersProvider.listAccounts();
+const address = accounts[0].address;
+
+// Or
+
+const signer = await ethersProvider.getSigner();
+const address = await signer.getAddress();
+```
+```typescript Ethers.js V5
+import { ethers } from "ethers";
+
+import { useEthereum } from '@particle-network/auth-core-modal';
+const { provider } = useEthereum();
+
+const ethersProvider = new ethers.providers.Web3Provider(provider, "any");
+// Assuming Ethers is not already initialized
+
+const accounts = await ethersProvider.listAccounts();
+const address = accounts[0].address;
+```
+
+
 ```typescript Web3.js
 import Web3 from 'web3';
 
@@ -259,17 +308,7 @@ const web3 = new Web3(provider);
 
 const accounts = await web3.eth.getAccounts();
 ```
-```typescript Ethers.js
-import { ethers } from "ethers";
 
-import { useEthereum } from '@particle-network/auth-core-modal';
-const { provider } = useEthereum();
-
-const ethersProvider = new ethers.providers.Web3Provider(provider, "any");
-// Assuming Ethers is not already initialized
-
-const accounts = await ethersProvider.listAccounts();
-```
 ```typescript Particle (EVM)
 import { useEthereum } from '@particle-network/auth-core-modal';
 
