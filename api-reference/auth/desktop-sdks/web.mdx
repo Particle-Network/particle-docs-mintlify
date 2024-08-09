@@ -155,29 +155,45 @@ const viemProvider = createWalletClient({
 ```
 </CodeGroup>
 
+You can now use the provider object to interact with Web3, enabling actions like fetching account balances or sending transactions.
+
 ***
 
 ## Initiating Social Login
 
-To enable interaction with a given user's account (wallet), they'll first need to log in with Particle Auth (or [Particle Connect](/api-reference/connect/desktop/web)), akin to the requirement of entering a password and opening MetaMask. Before interaction is possible, a user must either already be logged in (an application needs to be able to recognize this), go through the login process.
+To interact with a user's account (wallet), they must first log in using Particle Auth or [Particle Connect](/api-reference/connect/desktop/web), similar to how one would enter a password and unlock MetaMask. 
 
-Both of the above can be achieved through the following snippet:
+The application must either recognize that the user is already logged in or prompt them to complete the login process before any interactions can occur.
 
-```typescript
+
+You can use the `connect` and `connected` functions from the `useConnect()` hook to handle the connection logic:
+
+```typescript App.tsx
 import { useConnect } from '@particle-network/auth-core-modal';
 
-const { connect, connected } = useConnect();
-if (connected) {
-	const userInfo = await connect();
-}
+const { connect, disconnect, connected } = useConnect();
+
+// Handle user login
+const handleLogin = async () => {
+  if (!connected) {
+    await connect({});
+  }
+};
+
+// Logout user
+const handleLogout = async () => {
+    await disconnect();
+};
 ```
+
+In this example, the `handleLogin` function initiates the login process by displaying the login modal if the `connected` status is `false`, indicating that the user is not currently logged in.
 
 <Tip>
 <p>Give it a try yourself (embedded demo)</p>
 <Frame>
 <iframe 
-width="100%"
-height="500" 
+width="500"
+height="800" 
 src="https://particle-docs-demo.replit.app"
 href="https://particle-docs-demo.replit.app">
 </iframe>
