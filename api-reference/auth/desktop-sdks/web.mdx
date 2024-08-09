@@ -256,6 +256,14 @@ The `useConnect()` hook provides several functions to check the user's connectio
 
   You can use `connectionStatus` to manage login logic or to display relevant status information in the UI.
 
+### Handling User Information
+
+Once the user is logged in, the `userInfo` object from the `useAuthCore()` hook becomes available. 
+
+This object provides a wealth of information that can enhance the user experience (UX). 
+
+For example, you can use it to display the user's `name` and `avatar`, or access security details such as `has_set_master_password`. This allows you to implement logic that prompts the user to set a master password if they haven’t already, thereby improving security.
+
 ## Retrieving Public Address
 
 Retrieving the public address associated with a given user's account (assuming you're not pulling it from the login via `userInfo`) can be achieved through the following:
