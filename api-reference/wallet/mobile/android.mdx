@@ -1,6 +1,6 @@
 ---
-title: "Android (Kotlin/Java) - Wallet"
-description: "Working with Particle Wallet within Android applications."
+title: Android (Kotlin/Java) - Wallet
+description: Working with Particle Wallet within Android applications.
 ---
 
 ## Particle Wallet for Android
@@ -9,7 +9,7 @@ Particle Wallet is the primary interface outside of integrated applications for 
 
 Details regarding the programmatic usage of Particle Wallet **can be found below**.
 
-***
+---
 
 ## Getting Started
 
@@ -28,11 +28,15 @@ Before jumping in, several requirements are needed to avoid compatibility issues
 
 ### Setting up the Particle dashboard
 
-Once your project meets the aforementioned requirements, you'll need to move onto retrieving three key (and universally required across all SDKs) values from the [Particle dashboard](https://dashboard.particle.network). 
+Once your project meets the aforementioned requirements, you'll need to move onto retrieving three key (and universally required across all SDKs) values from the [Particle dashboard](https://dashboard.particle.network).
 
 These are your `projectId`, `clientKey`, and `appId`. During configuration, you'll need these to connect your project with the [Particle dashboard](https://dashboard.particle.network), unlocking customization, analytics, tracking, etc.
 
-<Note>Follow the quickstart tutorial to set up a project and find the required keys: [Create a new project](/guides/wallet-as-a-service/waas/mobile-quickstart#configuring-particle-auth).</Note>
+<Note>
+  Follow the quickstart tutorial to set up a project and find the required keys:
+  [Create a new
+  project](/guides/wallet-as-a-service/waas/mobile-quickstart#configuring-particle-auth).
+</Note>
 
 ### Configuration
 
@@ -66,12 +70,12 @@ dependencies {
             replacedBy("org.bouncycastle:bcprov-jdk15on")
         }
     }
-  
+
     implementation 'network.particle:connect:{latest-version}'
-    
+
     implementation 'network.particle:connect-auth-core-adapter:${latest_version}'
  		// Other adapters, such as network.particle:connect-phantom-adapter
-    
+
     implementation 'network.particle:api-service:${latest_version}'
     implementation 'network.particle:wallet-service:${latest_version}'
     // ...
@@ -111,19 +115,19 @@ ParticleWallet.init(
 
 ### Custom Wallet UI
 
-Once initialization is complete, you can apply additional customizations and configurations to Particle Wallet. 
+Once initialization is complete, you can apply additional customizations and configurations to Particle Wallet.
 
-The first of these is the ability to apply initialization configurations (such as `setShowTestNetworkSetting`) after initial configuration through methods such as `ParticleWallet.showTestNetworks()`, `ParticleWallet.hideManageWallet()`, and so on. 
+The first of these is the ability to apply initialization configurations (such as `setShowTestNetworkSetting`) after initial configuration through methods such as `ParticleWallet.showTestNetworks()`, `ParticleWallet.hideManageWallet()`, and so on.
 
 Additionally, if you'd like to use a custom wallet within the Particle Wallet interface (for example, a wallet name, network, etc., specific to your project), then you'll need to use `WalletInfo.createWallet` to create a custom wallet object. This takes the following parameters:
 
-| Field       | Type   | Description                                                  |
-| :---------- | :----- | :----------------------------------------------------------- |
+| Field       | Type   | Description                                                                                         |
+| :---------- | :----- | :-------------------------------------------------------------------------------------------------- |
 | address     | String | the user's public address belonging to the current active session (connected via Particle Connect). |
-| chainName   | String | the name of the chain to be used within Particle Wallet.     |
-| chainId     | Long   | the ID of the chain to be used within Particle Wallet        |
-| walletName  | String | he name of your wallet/project to be shown in UI.            |
-| adapterName | String | the name of the adapter you're using for this wallet (such as `MobileWCWalletName.AuthCore.name`). |
+| chainName   | String | the name of the chain to be used within Particle Wallet.                                            |
+| chainId     | Long   | the ID of the chain to be used within Particle Wallet                                               |
+| walletName  | String | he name of your wallet/project to be shown in UI.                                                   |
+| adapterName | String | the name of the adapter you're using for this wallet (such as `MobileWCWalletName.AuthCore.name`).  |
 
 Saving this as an object, you can pass it into `ParticleWallet.setWallet`, changing the active interface/wallet according to the parameters outlined within `WalletInfo.createWallet`. E.g.:
 
@@ -147,7 +151,7 @@ ParticleWallet.setWallet(wallet)
 
 
 // If you'd like, you can set your custom localizable string
-// Overlay strings.xml  
+// Overlay strings.xml
 YourProject/app/src/main/res/
   values/strings.xml
   values-ja-rJP/strings.xml
@@ -155,10 +159,26 @@ YourProject/app/src/main/res/
   values-zh-rCN/strings.xml
   values-zh-rHK/strings.xml
   values-zh-rTW/strings.xml
-  
+
 // Reassign a value
 <string name="pn_network_fee">new NetworkFee</string>
 <string name="pn_particle_auth_wallet">New Wallet</string>
+```
+
+### Set Wallet
+
+Before open a wallet, you need to set up a wallet, When you log in using [connect](//api-reference/connect/mobile/android/), a wallet information will be returned. You can directly use the SDK method to set it
+
+```kotlin kotlin
+        adapter.connect(null, object : ConnectCallback {
+            override fun onConnected(account: Account) {
+                lifecycleScope.launch {
+                    ParticleWallet.setWallet(account.publicAddress, adapter)
+                    PNRouter.build(RouterPath.Wallet).navigation()
+                }
+            }
+            override fun onError(error: ConnectError) {}
+        })
 ```
 
 ### Open Wallet
@@ -191,7 +211,7 @@ PNRouter.build(RouterPath.TokenSend).navigation()
 A page displaying both the user's address and an associated QR code can be opened through `PNRouter.build`, using `RouterPath.TokenReceive`. E.g.:
 
 ```kotlin Kotlin
-PNRouter.build(RouterPath.TokenReceive).navigation() 
+PNRouter.build(RouterPath.TokenReceive).navigation()
 ```
 
 ### Open Transaction Records
@@ -242,7 +262,7 @@ ParticleNetwork.openBuy(
   fixCryptoCoin: Boolean = false,
   theme: String = "light",
   language: String = "en-us",
-  chainName: String? = null  
+  chainName: String? = null
 )
 ```
 
@@ -320,4 +340,4 @@ ParticleNetwork.evm.getTransactionsByAddress(address)
 ParticleNetwork.evm.getTransactionsByAddressFromDB(address)
 ```
 
-***
+---

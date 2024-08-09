@@ -9,7 +9,7 @@ In addition to the Windows/macOS Unity SDK, Particle Auth also extends to standa
 
 Instructions setting up, and a rundown of some common functions and examples are covered below.
 
-***
+---
 
 ## Getting Started
 
@@ -23,22 +23,28 @@ Your Unity project needs to meet several requirements to avoid any compatibility
   - **CocoaPods 1.14.3** or higher.
   - **iOS 14** or higher.
 - If you're using Android:
-  - **Minimum API level 23** or higher.
-  - **Targets API level 33** or higher.
-  - **Java SDK version 11**.
-
+  - minSdkVersion **23** or higher.
+  - compileSdkVersion, targetSdkVersion **34** or higher.
+  - JavaVersion **17**.
+  - [Jetpack (AndroidX)](https://developer.android.com/jetpack/androidx/migrate?authuser=0).
+  - Android Gradle Plugin Version : 8.5.1 or higher.
+  - Gradle Version : 8.9 or higher.
 
 ### Setting up the Particle dashboard
 
-Once you've ensured that your project meets the above prerequisites, you'll also need three key values from the [Particle dashboard](https://dashboard.particle.network): your `projectId`, `clientKey`, and `appId`. 
+Once you've ensured that your project meets the above prerequisites, you'll also need three key values from the [Particle dashboard](https://dashboard.particle.network): your `projectId`, `clientKey`, and `appId`.
 
 These connect your Unity project with the Particle dashboard, enabling customization, analytics, tracking, etc.
 
-<Note>Follow the quickstart tutorial to set up a project and find the required keys: [Create a new project](/guides/wallet-as-a-service/waas/mobile-quickstart#configuring-particle-auth).</Note>
+<Note>
+  Follow the quickstart tutorial to set up a project and find the required keys:
+  [Create a new
+  project](/guides/wallet-as-a-service/waas/mobile-quickstart#configuring-particle-auth).
+</Note>
 
 ### Configuration
 
-With these values retrieved, you can move on to initial configuration and dependency management. This will vary in complexity depending on the platform in question. To begin, you'll need to download and install the Particle Unity package, which includes the necessary files for both Particle Connect and Particle Auth. 
+With these values retrieved, you can move on to initial configuration and dependency management. This will vary in complexity depending on the platform in question. To begin, you'll need to download and install the Particle Unity package, which includes the necessary files for both Particle Connect and Particle Auth.
 
 Head over to the [`particle-unity` GitHub repository](https://github.com/Particle-Network/particle-unity/releases), and download the latest release (`.unitypackage`), then import it into your project.
 
@@ -52,23 +58,33 @@ If you're building a Unity game on iOS, you must follow a specific configuration
    1. For example, if your `projectId` (from the [Particle dashboard](https://dashboard.particle.network)) is something like `63bfa427-cf5f-4742-9ff1-e8f5a1b9828f`, then the scheme URL would be `pn63bfa427-cf5f-4742-9ff1-e8f5a1b9828f`.
 
 <Note>
-<p>Remove other services, if needed</p>
-<p></p>
-<p>Within `ParticleNetworkIOSBridge.cs`, you'll have a number of services included in the SDK:</p>
-<p></p>
-<p>- `ParticleNetworkBase` - required universally.</p>
-<p>- `ParticleAuthCore` - required for Particle Auth Core.</p>
-<p>- `ParticleConnect`-  required for Particle Connect.</p>
-<p>- `ParticleWalletGUI` - usage of the Particle Wallet UI, contains all services.</p>
-<p>- `ParticleAA` - usage of the Particle AA, contains all services.</p>
+  <p>Remove other services, if needed</p>
+  <p></p>
+  <p>
+    Within `ParticleNetworkIOSBridge.cs`, you'll have a number of services
+    included in the SDK:
+  </p>
+  <p></p>
+  <p>- `ParticleNetworkBase` - required universally.</p>
+  <p>- `ParticleAuthCore` - required for Particle Auth Core.</p>
+  <p>- `ParticleConnect`- required for Particle Connect.</p>
+  <p>
+    - `ParticleWalletGUI` - usage of the Particle Wallet UI, contains all
+    services.
+  </p>
+  <p>- `ParticleAA` - usage of the Particle AA, contains all services.</p>
 </Note>
 
 You'll also need to configure your Podfile if you haven't already. If you don't have a Podfile, go to the root of your project directory and run `pod init`, which will generate a Podfile.
 
 <Note>
-<p>Copy our example Podfile</p>
-<p></p>
-<p>You can copy our examole [Podfile](https://github.com/Particle-Network/particle-unity/blob/main/ios-build/Podfile), it will always use the latest version.</p>
+  <p>Copy our example Podfile</p>
+  <p></p>
+  <p>
+    You can copy our examole
+    [Podfile](https://github.com/Particle-Network/particle-unity/blob/main/ios-build/Podfile),
+    it will always use the latest version.
+  </p>
 </Note>
 
 Open this Podfile, and insert the specific pods (services) you'd like to use within your project. In this case, `ParticleConnect` and `CommonConnect` will generally suffice, but additional services can be added if needed.
@@ -78,7 +94,7 @@ Additionally, you'll need to paste the code snippet below for installation handl
 ```groovy Podfile
   # Particle Network Base
   pod 'ParticleNetworkBase', '1.4.10'
-  
+
   # Particle Connect Service
   pod 'ConnectCommon', '0.2.26'
   pod 'ConnectEVMAdapter', '0.2.26'
@@ -91,20 +107,20 @@ Additionally, you'll need to paste the code snippet below for installation handl
   pod 'ParticleWalletConnect', '1.4.10'
   pod 'ParticleWalletAPI', '1.4.10'
   pod 'ParticleWalletGUI', '1.4.10'
-  
+
   # Particle AA
   pod 'ParticleAA', '1.4.10'
-  
+
   # Particle Auth Core
   pod 'AuthCoreAdapter', '1.4.10'
   pod 'ParticleAuthCore', '1.4.10'
   pod 'ParticleMPCCore', '1.4.10'
   pod 'Thresh', '1.4.10'
-    
+
   pod 'SkeletonView', :git => 'https://github.com/SunZhiC/SkeletonView.git', :branch => 'main'
   pod 'SwiftyUserDefaults', :git => 'https://github.com/SunZhiC/SwiftyUserDefaults.git', :branch => 'master'
   pod 'WalletConnectSwiftV2', :git => 'https://github.com/SunZhiC/WalletConnectSwiftV2.git', :branch => 'particle'
-  
+
 // Paste this
 post_install do |installer|
 installer.pods_project.targets.each do |target|
@@ -141,39 +157,42 @@ Finally, for iOS, you'll need to formally use the `projectId`, `clientKey`, and 
 </dict>
 </plist>
 ```
-Follow the steps to configure your  Xcode workspace.
 
-1. Download `UnityManger.swift`, `Unity-iPhone-Bridging-Header.h` and `AppDelegate.swift` from under github [/Assets/Plugins/iOS/.Swift](https://github.com/Particle-Network/particle-unity/tree/main/Assets/Plugins/iOS/.Swift) , Copy files into the root of your Xcode project. Xcode will ask you if auto create Bridging file, click yes.
+Follow the steps to configure your Xcode workspace.
+
+1.  Download `UnityManger.swift`, `Unity-iPhone-Bridging-Header.h` and `AppDelegate.swift` from under github [/Assets/Plugins/iOS/.Swift](https://github.com/Particle-Network/particle-unity/tree/main/Assets/Plugins/iOS/.Swift) , Copy files into the root of your Xcode project. Xcode will ask you if auto create Bridging file, click yes.
 
     <img
-    className="block dark:hidden"
-    src="/api-reference/auth/mobile-sdks/images/unity-config.png"
-    alt="Particle Network Unity config."
+      className="block dark:hidden"
+      src="/api-reference/auth/mobile-sdks/images/unity-config.png"
+      alt="Particle Network Unity config."
     />
     <img
-    className="hidden dark:block"
-    src="/api-reference/auth/mobile-sdks/images/unity-config.png"
-    alt="Particle Network Unity config."
+      className="hidden dark:block"
+      src="/api-reference/auth/mobile-sdks/images/unity-config.png"
+      alt="Particle Network Unity config."
     />
 
-2. Make sure Build Settings, Swift Compiler - General, has Objective-C Bridging Header, its connect is Unity-iPhone-Bridging-Header.h 's local path.
+2.  Make sure Build Settings, Swift Compiler - General, has Objective-C Bridging Header, its connect is Unity-iPhone-Bridging-Header.h 's local path.
 
         <img
+
     className="block dark:hidden"
     src="/api-reference/auth/mobile-sdks/images/unity-configure-2.png"
     alt="Particle Network Unity config."
     />
+
     <img
-    className="hidden dark:block"
-    src="/api-reference/auth/mobile-sdks/images/unity-configure-2.png"
-    alt="Particle Network Unity config."
+      className="hidden dark:block"
+      src="/api-reference/auth/mobile-sdks/images/unity-configure-2.png"
+      alt="Particle Network Unity config."
     />
 
-3. Remove main.mm under MainApp folder.
-4. Under [/Assets/Plugins/iOS](https://github.com/Particle-Network/particle-unity/tree/main/Assets/Plugins/iOS) are NativeCallProxy files and Swift files , they are required by Unity to interact with iOS code. Remove code under Particle Wallet GUI if you don't need wallet service.
-5. In `UnityManger.swift`, it has implemented methods defined in `NativeCallProxy.h`.
-6. Select `NativeCallProxy.h`, in the file inspector, check public in Target Membership.
-7. If you want to use `ParticleConnect`, you should add `LSApplicationQueriesSchemes` to info.plist. 
+3.  Remove main.mm under MainApp folder.
+4.  Under [/Assets/Plugins/iOS](https://github.com/Particle-Network/particle-unity/tree/main/Assets/Plugins/iOS) are NativeCallProxy files and Swift files , they are required by Unity to interact with iOS code. Remove code under Particle Wallet GUI if you don't need wallet service.
+5.  In `UnityManger.swift`, it has implemented methods defined in `NativeCallProxy.h`.
+6.  Select `NativeCallProxy.h`, in the file inspector, check public in Target Membership.
+7.  If you want to use `ParticleConnect`, you should add `LSApplicationQueriesSchemes` to info.plist.
 
 ```
 <key>LSApplicationQueriesSchemes</key>
@@ -210,7 +229,7 @@ Specifically, you'll need the following dependencies at a minimum:
 
 ```groovy launcherTemplate.gradle
 dependencies {
-    implementation project(':unityLibrary') 
+    implementation project(':unityLibrary')
     implementation "network.particle:auth-service:${sdkVersion}"
     implementation "network.particle:unity-bridge:${sdkVersion}"
   	implementation "network.particle:connect:${sdkVersion}"
@@ -226,24 +245,27 @@ particle.network.project_id=Your Project ID
 particle.network.app_id=Your App ID
 ```
 
-***
+---
 
 ### Initialization
 
 Before you can call core functions within the SDK, you'll need to initialize `ParticleNetwork`. For the Unity SDK, this is handled by calling `init` on `ParticleNetwork`, which is derived from `Network.Particle.Scripts.Core` and passing in information about the primary chain being used. This is generally pulled from a child of `ChainInfo`.
 
-<Tip>The Particle Auth Unity SDK does not require authentication from the [Particle dashboard](https://dashboard.particle.network).</Tip>
+<Tip>
+  The Particle Auth Unity SDK does not require authentication from the [Particle
+  dashboard](https://dashboard.particle.network).
+</Tip>
 
 ```csharp
-ParticleNetwork.Init(ChainInfo.Ethereum); 
+ParticleNetwork.Init(ChainInfo.Ethereum);
 ParticleAuthCoreInteraction.Init();
 ```
 
 #### Add the prefab to your scene
 
-Additionally, you'll need to ensure `ParticleAuthCore.prefab` is added to your main scene. This is required as Particle Auth Core will not function otherwise. 
+Additionally, you'll need to ensure `ParticleAuthCore.prefab` is added to your main scene. This is required as Particle Auth Core will not function otherwise.
 
-***
+---
 
 ## Examples of Utilization
 
@@ -255,16 +277,16 @@ This is achieved and configured via `ParticleAuthCore.Instance.Connect`. Once th
 
 `ParticleAuthCore.Instance.Connect` takes the following parameters:
 
-| Field  | Type   | Description                                                                                              |
-|--------|--------|----------------------------------------------------------------------------------------------------------|
-| `loginType` | `LoginType` | The specific social login to be used. This can be either `.EMAIL`, `.PHONE`, `.GOOGLE`, `.FACEBOOK`, `.APPLE`, `.TWITTER`, `.DISCORD`, `.GITHUB`, `.TWITCH`, `.MICROSOFT`, `.LINKEDIN` or `JWT`.|
-| `account` | `String?` | (Optional) when `type` is set to either `.email`, `.phone`, or `.jwt`, you can use the `account` parameter to pass in an expected email, phone number, or JWT. This is optional for the former two, but required for `.jwt`. The phone number must be in E.164 format. |
-| `supportAuthTypeode`| `[SupportAuthType]`| the methods of authentication visible on the authentication popup UI. By default, this will be exclusive to the chosen social login method, although by passing in additional types, you can expand the UI to include the ability to login with those as an alternative to type. |
-| `socialLoginPrompt`| `SocialLoginPrompt?`| (Optional) either `.none`, `.consent`, or `.select_account`, only google, discord and microsoft support it.|
-| `loginPageConfig` | `LoginPageConfig?`| (Optional) to customize the UI page, contains project name, icon and description.| 
+| Field                | Type                 | Description                                                                                                                                                                                                                                                                      |
+| -------------------- | -------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `loginType`          | `LoginType`          | The specific social login to be used. This can be either `.EMAIL`, `.PHONE`, `.GOOGLE`, `.FACEBOOK`, `.APPLE`, `.TWITTER`, `.DISCORD`, `.GITHUB`, `.TWITCH`, `.MICROSOFT`, `.LINKEDIN` or `JWT`.                                                                                 |
+| `account`            | `String?`            | (Optional) when `type` is set to either `.email`, `.phone`, or `.jwt`, you can use the `account` parameter to pass in an expected email, phone number, or JWT. This is optional for the former two, but required for `.jwt`. The phone number must be in E.164 format.           |
+| `supportAuthTypeode` | `[SupportAuthType]`  | the methods of authentication visible on the authentication popup UI. By default, this will be exclusive to the chosen social login method, although by passing in additional types, you can expand the UI to include the ability to login with those as an alternative to type. |
+| `socialLoginPrompt`  | `SocialLoginPrompt?` | (Optional) either `.none`, `.consent`, or `.select_account`, only google, discord and microsoft support it.                                                                                                                                                                      |
+| `loginPageConfig`    | `LoginPageConfig?`   | (Optional) to customize the UI page, contains project name, icon and description.                                                                                                                                                                                                |
 
 ```csharp
-var loginConfig = new LoginPageConfig("Particle Unity Example", "Welcome to login", 
+var loginConfig = new LoginPageConfig("Particle Unity Example", "Welcome to login",
                             "https://connect.particle.network/icons/512.png");
 List<SupportLoginType> allSupportLoginTypes =
                     new List<SupportLoginType>(Enum.GetValues(typeof(SupportLoginType)) as SupportLoginType[]);
@@ -286,7 +308,6 @@ await ParticleAuthCore.Instance.ConnectWithCode(phone, null, code);
 ```
 
 </CodeGroup>
-
 
 ### Disconnect
 
@@ -352,7 +373,7 @@ var transaction1 = "transaction1";
 var transaction2 = "transaction2";
 
 string[] transactions = new[] { transaction1, transaction2 };
-  
+
 await ParticleAuthCore.Instance.SolanaSignAllTransactions(transactions);
 ```
 
@@ -362,7 +383,7 @@ await ParticleAuthCore.Instance.SolanaSignAllTransactions(transactions);
 
 ```csharp
 var transaction = "transaction";
-  
+
 var nativeResultData = await ParticleAuthCore.Instance.EvmSendTransaction(transaction);
 
 var nativeResultData = await ParticleAuthCore.Instance.SolanaSendTransaction(transaction);
@@ -374,7 +395,7 @@ var nativeResultData = await ParticleAuthCore.Instance.SolanaSendTransaction(tra
 
 ```csharp
 string typedData = "your typedata";
-  
+
 await ParticleAuthCore.Instance.EvmSignTypedData(typedData);
 ```
 
@@ -422,9 +443,9 @@ Silently sign messages/transactions, this switch will work if the following cond
 3. SecurityAccountConfig.promptSettingWhenSign is 0, you can call `ParticleNetwork.SetSecurityAccountConfig` to update its value.
 
 ```csharp
-// set blind sign enable  
+// set blind sign enable
 ParticleAuthCoreInteraction.SetBlindEnable(true);
-// get current blind sign enable state  
+// get current blind sign enable state
 var enable = ParticleAuthCoreInteraction.GetBlindEnable();
 ```
 
@@ -438,14 +459,14 @@ In addition to `ParticleAuthCore` for authentication and interaction with Partic
 
 `EvmService.WriteContract` allows you to execute a write contract call defined by a specific method and set of parameters. This requires a corresponding ABI, contract address, and requester public address.
 
-| Field  | Type   | Description                                                                                              |
-|--------|--------|----------------------------------------------------------------------------------------------------------|
-| `from` | `string` | The user's public address|
-| `contractAddress` | `string` | The contract address|
-| `methodName` | `string` | The method name that defined in the contract, add prefix `custom_`, like `custom_balanceOf`, `custom_mint`|
-| `parameters` | `List<object>` | The method's parameters|
-| `abiJsonString` | `string?` | The method's abi json string|
-| `gasFeeLevel` | `GasFeeLevel` | (Optional) the gas fee level, `High`, `Medium` or `Low`, default is `High`|
+| Field             | Type           | Description                                                                                                |
+| ----------------- | -------------- | ---------------------------------------------------------------------------------------------------------- |
+| `from`            | `string`       | The user's public address                                                                                  |
+| `contractAddress` | `string`       | The contract address                                                                                       |
+| `methodName`      | `string`       | The method name that defined in the contract, add prefix `custom_`, like `custom_balanceOf`, `custom_mint` |
+| `parameters`      | `List<object>` | The method's parameters                                                                                    |
+| `abiJsonString`   | `string?`      | The method's abi json string                                                                               |
+| `gasFeeLevel`     | `GasFeeLevel`  | (Optional) the gas fee level, `High`, `Medium` or `Low`, default is `High`                                 |
 
 ```csharp
 // abi json string, you can get it from your contract developer.
@@ -459,14 +480,13 @@ var transaction = await EvmService.WriteContract(from, contractAddress, methodNa
 
 `EvmService.ReadContract` allows you to execute a read-only contract call defined by a specific method and set of parameters. This requires a corresponding ABI, contract address, and requester public address.
 
-| Field  | Type   | Description                                                                                              |
-|--------|--------|----------------------------------------------------------------------------------------------------------|
-| `from` | `string` | The user's public address|
-| `contractAddress` | `string` | The contract address|
-| `methodName` | `string` | The method name that defined in the contract, add prefix `custom_`, like `custom_balanceOf`, `custom_mint`|
-| `parameters` | `List<object>` | The method's parameters|
-| `abiJsonString` | `string?` | The method's abi json string|
-
+| Field             | Type           | Description                                                                                                |
+| ----------------- | -------------- | ---------------------------------------------------------------------------------------------------------- |
+| `from`            | `string`       | The user's public address                                                                                  |
+| `contractAddress` | `string`       | The contract address                                                                                       |
+| `methodName`      | `string`       | The method name that defined in the contract, add prefix `custom_`, like `custom_balanceOf`, `custom_mint` |
+| `parameters`      | `List<object>` | The method's parameters                                                                                    |
+| `abiJsonString`   | `string?`      | The method's abi json string                                                                               |
 
 ```csharp
 // abi json string, you can get it from your contract developer.
@@ -483,14 +503,13 @@ var result = (string)JObject.Parse(rpcResult)["result"];
 
 `EvmService.CreateTransaction` facilitates the construction of a transaction object derived from the standard `from`, `to` (`receiver` in this example), `amount` (`value`), and `data` fields. This transaction, once constructed with `EvmService.CreateTransaction`, can be passed for in-UI proposal with `ParticleAuthCore.Instance.EvmSendTransaction`.
 
-| Field         | Type          | Description                                                      |
-| ------------- | ------------- | ---------------------------------------------------------------- |
-| `from`        | `string`      | The user's public address.                                       |
-| `data`        | `string`      | The transaction's data.                                          |
-| `value`       | `BigInteger`  | The native amount.                                               |
-| `to`          | `String`      | The parameters of this method.                                   |
+| Field         | Type          | Description                                                                 |
+| ------------- | ------------- | --------------------------------------------------------------------------- |
+| `from`        | `string`      | The user's public address.                                                  |
+| `data`        | `string`      | The transaction's data.                                                     |
+| `value`       | `BigInteger`  | The native amount.                                                          |
+| `to`          | `String`      | The parameters of this method.                                              |
 | `gasFeeLevel` | `GasFeeLevel` | (Optional) the gas fee level, `High`, `Medium` or `Low`, default is `High`. |
-
 
 ```csharp
 var transaction = await EvmService.CreateTransaction(from, data, value, reciver);
@@ -563,7 +582,7 @@ await SolanaService.GetTokensAndNFTs(publicAddress, true);
 
 ### Serialize Transactions
 
-`SolanaService.SerializeSOLTransaction`  facilitates the construction of a SOL transaction object. 
+`SolanaService.SerializeSOLTransaction` facilitates the construction of a SOL transaction object.
 
 These transactions, once constructed , can be passed for in-UI proposal with `ParticleAuthCore.Instance.SolanaSendTransaction`.
 

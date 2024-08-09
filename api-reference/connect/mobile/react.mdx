@@ -6,7 +6,7 @@ description: "Leveraging Particle Connect within applications built using React 
 
 ## Particle Connect for React Native
 
-Particle Connect fully supports React Native, facilitating unified Web2 and Web3 onboarding within mobile applications leveraging React Native. Particle Connect is a custom connection modal meant to act as an "SSO for Web3," aggregating both social logins and traditional Web3 wallets (even using imported accounts) within one interface, enabling universal accessibility for both Web3 natives and typical Web2 consumers. 
+Particle Connect fully supports React Native, facilitating unified Web2 and Web3 onboarding within mobile applications leveraging React Native. Particle Connect is a custom connection modal meant to act as an "SSO for Web3," aggregating both social logins and traditional Web3 wallets (even using imported accounts) within one interface, enabling universal accessibility for both Web3 natives and typical Web2 consumers.
 
 Details on installing, configuring, and utilizing the Particle Connect React Native SDK **are below**.
 
@@ -31,16 +31,23 @@ A demo showcasing the utilization of the Particle Connect React Native SDK can b
 </div>
 
 <Warning>
-It is strongly discouraged to use a private key or the mnemonic import/generate function. If you use it, you need to secure the data yourself, as Particle doesn't have a relationship with the imported/generated mnemonic or private key.
+  It is strongly discouraged to use a private key or the mnemonic
+  import/generate function. If you use it, you need to secure the data yourself,
+  as Particle doesn't have a relationship with the imported/generated mnemonic
+  or private key.
 </Warning>
 
 ## Getting Started
 
-The setup process for the Particle Connect React Native SDK is relatively straightforward but expectedly deviates depending on the platform in question. 
+The setup process for the Particle Connect React Native SDK is relatively straightforward but expectedly deviates depending on the platform in question.
 
 Before diving into platform-specific configuration, all Particle Connect (& Auth) SDKs require three standard values for initialization: `projectId`, `clientKey`, and `appId`, all of which can be retrieved from the [Particle dashboard](https://dashboard.particle.network).
 
-<Note>Follow the quickstart tutorial to set up a project and find the required keys: [Create a new project](/guides/wallet-as-a-service/waas/mobile-quickstart#configuring-particle-auth).</Note>
+<Note>
+  Follow the quickstart tutorial to set up a project and find the required keys:
+  [Create a new
+  project](/guides/wallet-as-a-service/waas/mobile-quickstart#configuring-particle-auth).
+</Note>
 
 ### Adding the Particle Connect React Native SDK to your application
 
@@ -58,10 +65,12 @@ yarn add @particle-network/rn-connect
 
 If you're planning on using Android for your React Native application, ensure that you meet the following prerequisites (otherwise, expect issues or non-functionality):
 
-- Targets **API Level 23** (Marshmallow) or higher.
-- Uses **Android 6.0** or higher.
-- Uses **Jetpack** (Android X).
-- Uses **Java 11**.
+- minSdkVersion **23** or higher.
+- compileSdkVersion, targetSdkVersion **34** or higher.
+- JavaVersion **17**.
+- [Jetpack (AndroidX)](https://developer.android.com/jetpack/androidx/migrate?authuser=0).
+- Android Gradle Plugin Version : 8.5.1 or higher.
+- Gradle Version : 8.9 or higher.
 
 Once you've made sure your project meets these requirements, you'll need to move on and define the aforementioned configuration values (`projectId`, `clientKey`, and `appId`) within your `build.grade` file (generally found at `${project name}/android/app/build.gradle`). These directly link your application's instance of Particle Connect with the [dashboard](https://dashboard.particle.network).
 
@@ -81,7 +90,7 @@ android {
       manifestPlaceholders["PN_PROJECT_CLIENT_KEY"] = "your project client key"
       manifestPlaceholders["PN_APP_ID"] = "your app id"
   }
-  
+
   dataBinding {
       enabled = true
   }
@@ -89,7 +98,7 @@ android {
 }
 ```
 
-***
+---
 
 ### iOS configuration
 
@@ -176,7 +185,7 @@ Additionally, head over to your `Info.plist` file and include the following snip
 
 Finally, you'll need to edit your Podfile to ensure `particle_connect` is properly imported. Head over to the [linked guide](https://github.com/Particle-Network/particle-react-native/blob/master/particle-connect/example/ios/Podfile) to complete this if you have not already.
 
-***
+---
 
 ## Examples of Utilization
 
@@ -204,7 +213,7 @@ Initialization happens through `init` on your imported instance of `@particle-ne
   - `redirect`, a provided redirect; can be left blank.
   - `verifyUrl`, a URL for verification; can be left blank.
 
-Additionally, extra chains can be configured for WalletConnect through `setWalletConnectV2SupportChainInfos`, and passing in an array of `ChainInfo`  objects representing the different chains you'd like to be supported by your instance of WalletConnect. E.g:
+Additionally, extra chains can be configured for WalletConnect through `setWalletConnectV2SupportChainInfos`, and passing in an array of `ChainInfo` objects representing the different chains you'd like to be supported by your instance of WalletConnect. E.g:
 
 ```typeScript
 const chainInfo: ChainInfo = Ethereum;
@@ -251,14 +260,14 @@ To directly connect a user with a given wallet type (throwing a connection menu 
 
 If you're using `AuthCore`, you'll also need to pass in a `ParticleConnectConfig` object containing:
 
-| Field               | Type                     | Description                                                                                                                                                                                                                                                                      |
-| ------------------- | ------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `loginType`         | `LoginType`              | The specific social login to be used. This can be either `.email`, `.phone`, `.google`, `.apple`, `.jwt`, `.facebook`, `.twitter`, `.discord`, `.github`, `.twitch`, `.microsoft` or `linkedin`.                                                                                 |
-| `account`           | `string?`                | (Optional) when `type` is set to either `.email`, `.phone`, or `.jwt`, you can use the `account` parameter to pass in an expected email, phone number, or JWT. This is optional for the former two, but required for `.jwt`. The phone number must be in E.164 format.           |
-| `code`              | `string?`                | (Optional) when `type` is set to either `.email` pr `.phone`, you can use the code parameter to pass the verification code.                                                                                                                                                      |
-| `supportAuthType`  | `SupportAuthType[]` | The methods of authentication visible on the authentication popup UI. By default, this will be exclusive to the chosen social login method, although by passing in additional types, you can expand the UI to include the ability to login with those as an alternative to type. |
-| `socialLoginPrompt` | `SocialLoginPrompt?`     | (Optional) either `.None`, `.Consent`, or `.SelectAccount`                                                                                                                                                                                                                      |
-| `loginPageConfig`   | `LoginPageConfig?`       | (Optional) to customize the UI page, contains project name, icon and description.                                                                                                                                                                                                |
+| Field               | Type                 | Description                                                                                                                                                                                                                                                                      |
+| ------------------- | -------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `loginType`         | `LoginType`          | The specific social login to be used. This can be either `.email`, `.phone`, `.google`, `.apple`, `.jwt`, `.facebook`, `.twitter`, `.discord`, `.github`, `.twitch`, `.microsoft` or `linkedin`.                                                                                 |
+| `account`           | `string?`            | (Optional) when `type` is set to either `.email`, `.phone`, or `.jwt`, you can use the `account` parameter to pass in an expected email, phone number, or JWT. This is optional for the former two, but required for `.jwt`. The phone number must be in E.164 format.           |
+| `code`              | `string?`            | (Optional) when `type` is set to either `.email` pr `.phone`, you can use the code parameter to pass the verification code.                                                                                                                                                      |
+| `supportAuthType`   | `SupportAuthType[]`  | The methods of authentication visible on the authentication popup UI. By default, this will be exclusive to the chosen social login method, although by passing in additional types, you can expand the UI to include the ability to login with those as an alternative to type. |
+| `socialLoginPrompt` | `SocialLoginPrompt?` | (Optional) either `.None`, `.Consent`, or `.SelectAccount`                                                                                                                                                                                                                       |
+| `loginPageConfig`   | `LoginPageConfig?`   | (Optional) to customize the UI page, contains project name, icon and description.                                                                                                                                                                                                |
 
 E.g:
 
@@ -306,7 +315,6 @@ const result = await particleConnect.isConnected(walletType, publicAddress);
 
 A simple message (UTF-8 string) can be signed on both EVM & Solana through `ParticleConnect.signMessage`, passing in the `WalletType`, `address` (`publicAddress` in this example), and the `message` in question. `message` should either be a hex-encoded string for EVM, or a base58 string for Solana. E.g.:
 
-
 ```typeScript
 const signature = await particleConnect.signMessage(walletType, publicAddress, message);
 ```
@@ -345,6 +353,7 @@ Additionally, for **EVM chains**, if standard UTF-8 string signatures aren't eno
 ```typeScript
 const signature = await particleConnect.signTypedData(walletType, publicAddress, typedData)
 ```
+
 ---
 
 ### Import Wallet
@@ -371,7 +380,7 @@ Within an active session, you can retrieve the accounts (addresses) that belong 
 const accounts = await particleConnect.getAccounts(walletType);
 ```
 
-***
+---
 
 ## Dive Deeper
 

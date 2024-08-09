@@ -11,23 +11,39 @@ Platform-specific configuration instructions, alongside examples of utilization,
 
 ## Getting Started
 
-Interaction with the Particle Auth Flutter SDK is quite standard and in line with other Particle Auth SDKs, although the key deviations can be found within the configuration process. 
+Interaction with the Particle Auth Flutter SDK is quite standard and in line with other Particle Auth SDKs, although the key deviations can be found within the configuration process.
 
-<Tip>The configuration process of this SDK differs significantly based on whether you're using Flutter on Android or iOS.</Tip>
+<Tip>
+  The configuration process of this SDK differs significantly based on whether
+  you're using Flutter on Android or iOS.
+</Tip>
 
 To begin, you'll need to head over to the [Particle dashboard](https://dashboard.particle.network) and retrieve your `projectId`, `clientKey`, and `appId`.
 
-<Note>Follow the quickstart tutorial to set up a project and find the required keys: [Create a new project](/guides/wallet-as-a-service/waas/mobile-quickstart#configuring-particle-auth).</Note>
+<Note>
+  Follow the quickstart tutorial to set up a project and find the required keys:
+  [Create a new
+  project](/guides/wallet-as-a-service/waas/mobile-quickstart#configuring-particle-auth).
+</Note>
 
 ### Adding the Particle Auth Flutter SDK to your application
 
 Additionally, regardless of platform, you'll need to begin by adding `particle_auth_core` to your Flutter application; this is a requirement before moving onto platform-specific configuration.
 
 ```shell Terminal
-flutter pub add particle_auth_core 
+flutter pub add particle_auth_core
 ```
 
 ### Android configuration
+
+#### Prerequisites
+
+- minSdkVersion **23** or higher.
+- compileSdkVersion, targetSdkVersion **34** or higher.
+- JavaVersion **17**.
+- [Jetpack (AndroidX)](https://developer.android.com/jetpack/androidx/migrate?authuser=0).
+- Android Gradle Plugin Version : 8.5.1 or higher.
+- Gradle Version : 8.9 or higher.
 
 If you're building an Android application with Flutter, you must follow the steps below to configure Particle Auth. To begin, you'll need to go ahead and open your `build.gradle` file, often found at the following file path: `${project name}/android/app/build.gradle`
 
@@ -64,7 +80,7 @@ compileOptions {
 }
 
 kotlinOptions {
-  jvmTarget = JavaVersion.VERSION_11 
+  jvmTarget = JavaVersion.VERSION_11
 }
 
 dataBinding {
@@ -102,7 +118,7 @@ allprojects {
 
 ```
 
-***
+---
 
 ### iOS configuration
 
@@ -112,7 +128,7 @@ If you're building an iOS application with Flutter, this also entails a unique a
 
 - iOS 14 or later.
 
-With these requirements set, you'll need to open an exported iOS project and find `apps/{project name}.xcworkspace`. 
+With these requirements set, you'll need to open an exported iOS project and find `apps/{project name}.xcworkspace`.
 
 At the root of your Xcode project, create a new file, `ParticleNetwork-Info.plist`. Ensure this is marked under `Target Membership`.
 
@@ -156,7 +172,7 @@ Finally, you'll need to edit your Podfile to ensure `particle_auth_core` is prop
    pod 'ParticleMPCCore'
    pod 'ParticleAuthCore'
    pod 'AuthCoreAdapter'
- 
+
    pod 'ParticleNetworkBase'
    pod 'ConnectCommon'
   end
@@ -173,9 +189,7 @@ end
 </p>
 </Note>
 
-
-
-***
+---
 
 ## Examples of utilization
 
@@ -203,7 +217,7 @@ This is achieved and configured through `ParticleAuthCore.connect`. Once this me
 | ------------------ | ------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `loginType`        | `LoginType`              | The specific social login to be used. This can be either `.email`, `.phone`, `.google`, `.apple`, `.jwt`, `.facebook`, `.twitter`, `.discord`, `.github`, `.twitch`, `.microsoft` or `linkedin`.                                                                                 |
 | `account`          | `String?`                | (Optional) when `type` is set to either `.email`, `.phone`, or `.jwt`, you can use the `account` parameter to pass in an expected email, phone number, or JWT. This is optional for the former two, but required for `.jwt`. The phone number must be in E.164 format.           |
-| `prompt`           | `SocialLoginPrompt?`     | (Optional) either `.none`, `.consent`, or `.select_account`, only google, discord and microsoft support it.                                                                                                                                                                                                                      |
+| `prompt`           | `SocialLoginPrompt?`     | (Optional) either `.none`, `.consent`, or `.select_account`, only google, discord and microsoft support it.                                                                                                                                                                      |
 | `loginPageConfig`  | `LoginPageConfig?`       | (Optional) to customize the UI page, contains project name, icon and description.                                                                                                                                                                                                |
 | `supportAuthTypes` | `List<SupportAuthType>?` | The methods of authentication visible on the authentication popup UI. By default, this will be exclusive to the chosen social login method, although by passing in additional types, you can expand the UI to include the ability to login with those as an alternative to type. |
 
@@ -239,7 +253,7 @@ final userInfo = await ParticleAuthCore.getUserInfo();
 
 ### Get Address
 
-To retrieve the address, you can call `Evm.getAddress` or `Solana.getAddress`. 
+To retrieve the address, you can call `Evm.getAddress` or `Solana.getAddress`.
 
 ```dart
 final address = await Evm.getAddress();
@@ -249,7 +263,6 @@ final address = await Solana.getAddress();
 ### Sign Message (EIP191)
 
 To request an EIP191 signature from a user's embedded wallet, you can use either the `Evm.personalSign` or `Evm.personalSignUnique` method. If you need the same message to return a unique signature each time, use the `Evm.personalSignUnique` method. Otherwise, the `Evm.personalSign` method is generally recommended. On Solana, you can call `Solana.signMessage`, you can pass in a UTF-8/readable string.
-
 
 | Field     | Type     | Description                                                                       |
 | --------- | -------- | --------------------------------------------------------------------------------- |
@@ -266,7 +279,7 @@ final signature = await Solana.signMessage(message);
 
 ### Sign Transaction
 
-This is a **Solana-specific** method for signing a transaction without sending it. Similar to message signing, this will prompt a signature in-UI with details about the transaction. Programmatically, the proposed transaction should be formatted as a (converted to a) base58 string. Passing in an object directly will not work in this case. 
+This is a **Solana-specific** method for signing a transaction without sending it. Similar to message signing, this will prompt a signature in-UI with details about the transaction. Programmatically, the proposed transaction should be formatted as a (converted to a) base58 string. Passing in an object directly will not work in this case.
 
 | Field         | Type     | Description              |
 | ------------- | -------- | ------------------------ |
@@ -284,7 +297,6 @@ Following the aforementioned method, you can use `Solana.signAllTransactions` to
 | -------------- | -------------- | ------------------------------------- |
 | `transactions` | `List<String>` | Each element requires a base58 string |
 
-
 ```dart
 List<String> signatures = await Solana.signAllTransactions(transactions);
 ```
@@ -296,7 +308,6 @@ For more generalized transaction sending, `Evm.sendTransaction`and `Solana.signA
 | Field         | Type     | Description                                                               |
 | ------------- | -------- | ------------------------------------------------------------------------- |
 | `transaction` | `String` | On Evm requires a hexadeciaml string, on Solana, requires a base58 string |
-
 
 ```dart
 final signature = await Evm.sendTransaction(transaction);
@@ -310,7 +321,6 @@ To request an EIP712 signature from a user's embedded wallet, you can use either
 | Field     | Type     | Description                   |
 | --------- | -------- | ----------------------------- |
 | `message` | `String` | Requires a hexadeciaml string |
-
 
 ```dart
 // your typed data is a json string
@@ -395,11 +405,11 @@ You can forcibly set a specific appearance to be used within the UI using `Parti
 | `appearance` | `Appearance` | The specific appearance to be used. This can be either `.system`, `.dark`, `.light`. |
 
 ```dart
-// this is the default setting  
+// this is the default setting
 ParticleBase.setAppearance(Appearance.system);
-// dark  
+// dark
 ParticleBase.setAppearance(Appearance.dark);
-// light  
+// light
 ParticleBase.setAppearance(Appearance.light);
 ```
 
@@ -428,9 +438,9 @@ Silently sign messages/transactions, this switch will work if the following cond
 3. SecurityAccountConfig.promptSettingWhenSign is 0, you can call `ParticleBase.setSecurityAccountConfig` to update its value.
 
 ```dart
-// set blind sign enable  
+// set blind sign enable
 ParticleAuthCore.setBlindEnable(enable);
-// get current blind sign enable state  
+// get current blind sign enable state
 final result = ParticleAuthCore.getBlindEnable();
 ```
 
@@ -452,7 +462,6 @@ In addition to `ParticleAuthCore` for authentication and interaction with Partic
 | `parameters`      | `List<Object>` | The parameters of this method.                                              |
 | `abiJsonString`   | `String`       | The abi json string of this method.                                         |
 | `gasFeeLevel`     | `GasFeeLevel`  | (Optional) the gas fee level, `high`, `medium` or `low`, default is `high`. |
-
 
 ```dart
 String contractAddress = "your contract address";
@@ -480,11 +489,11 @@ final result = EvmService.writeContract(publicAddress, contractAddress, methodNa
 
 ```dart
 String publicAddress = "your public address";
-String contractAddress = "your contract address"; 
+String contractAddress = "your contract address";
 String methodName ="your method name"; // ex: balanceOf, mint
 List<Object> parameters = <Object>["0x1"];  // this is the method params, each parameter requires a hexadecimal string.
 
-// ex: [{"inputs":[{"internalType":"uint256","name":"quantity","type":"uint256"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"mint","outputs":[],"stateMutability":"nonpayable","type":"function"}]  
+// ex: [{"inputs":[{"internalType":"uint256","name":"quantity","type":"uint256"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"mint","outputs":[],"stateMutability":"nonpayable","type":"function"}]
 const abiJsonString = null;
 
 final result = await EvmService.readContract(publicAddress, contractAddress, methodName, parameters, abiJsonString);
@@ -504,7 +513,7 @@ final result = await EvmService.readContract(publicAddress, contractAddress, met
 
 ```dart
 String from = "your public address";
-String receiver = "receiver address"  
+String receiver = "receiver address"
 String contractAddress = "contract address"
 BigInt amount = BigInt.from(1000000000000000);
 String to = contractAddress;
@@ -581,7 +590,6 @@ In addition to `ParticleAuth` for authentication and interaction with Particle's
 
 `SolanaService` also extends to Data API methods such as `getTokensAndNFTs`, which returns a highly detailed JSON list of SPL tokens and NFTs belonging to a specified address. This is accessible through `SolanaService.getTokensAndNFTs`, passing in the public address to retrieve the tokens and NFTs of.
 
-
 | Field              | Type     | Description                 |
 | ------------------ | -------- | --------------------------- |
 | `address`          | `String` | The user's public address.  |
@@ -593,20 +601,20 @@ final result = await SolanaService.getTokensAndNFTs(publicAddress, true);
 
 ### Serialize Transactions
 
-`SolanaService.serializeSolTransaction`  facilitates the construction of a SOL transaction object,
+`SolanaService.serializeSolTransaction` facilitates the construction of a SOL transaction object,
 
-`SolanaService.serializeSplTokenTransaction`  facilitates the construction of a Spl-token transaction object,
+`SolanaService.serializeSplTokenTransaction` facilitates the construction of a Spl-token transaction object,
 
-`SolanaService.serializeWSolTokenTransaction` facilitates the construction of a unwrap wsol transaction object. 
+`SolanaService.serializeWSolTokenTransaction` facilitates the construction of a unwrap wsol transaction object.
 
 These transactions, once constructed, can be passed for in-UI proposal with `Solana.signAndSendTransaction`.
 
 <CodeGroup>
 
 ```dart Send sol
-final transaction = SerializeSOLTransaction();  
-transaction.lamports = TestAccount.solana.amount.toInt();  
-transaction.receiver = TestAccount.solana.publicAddress;  
+final transaction = SerializeSOLTransaction();
+transaction.lamports = TestAccount.solana.amount.toInt();
+transaction.receiver = TestAccount.solana.publicAddress;
 transaction.sender = publicAddress;
 
 final result = await SolanaService.serializeSolTransaction(transaction);
@@ -642,7 +650,6 @@ To retrieve token price based upon current network conditions, you can call `Sol
 | ---------------- | -------------- | ----------------------------------------------------------------- |
 | `tokenAddresses` | `List<String>` | The tokens's addresses, for native token, you can pass `"native"` |
 | `currencies`     | `List<String>` | The price unity, such as `"usd"`                                  |
-
 
 ```dart
 final result = await SolanaService.getPrice(tokenAddresses, currencies);

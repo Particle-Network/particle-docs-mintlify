@@ -15,7 +15,11 @@ The setup process for the Particle Auth React Native SDK is relatively straightf
 
 Before diving into platform-specific configuration, all Particle Auth SDKs require three standard values for initialization: `projectId`, `clientKey`, and `appId`, all of which can be retrieved from the [Particle dashboard](https://dashboard.particle.network).
 
-<Note>Follow the quickstart tutorial to set up a project and find the required keys: [Create a new project](/guides/wallet-as-a-service/waas/mobile-quickstart#configuring-particle-auth).</Note>
+<Note>
+  Follow the quickstart tutorial to set up a project and find the required keys:
+  [Create a new
+  project](/guides/wallet-as-a-service/waas/mobile-quickstart#configuring-particle-auth).
+</Note>
 
 ### Adding the Particle Auth React Native SDK to your application
 
@@ -35,10 +39,14 @@ yarn add @particle-network/rn-base
 
 If you're planning on using Android for your React Native application, ensure you meet the following prerequisites (otherwise, expect issues or non-functionality):
 
-- Targets **API Level 23** (Marshmallow) or higher.
-- Uses **Android 6.0** or higher.
-- Uses **Jetpack** (Android X).
-- Uses **Java 11**.
+#### Prerequisites
+
+- minSdkVersion **23** or higher.
+- compileSdkVersion, targetSdkVersion **34** or higher.
+- JavaVersion **17**.
+- [Jetpack (AndroidX)](https://developer.android.com/jetpack/androidx/migrate?authuser=0).
+- Android Gradle Plugin Version : 8.5.1 or higher.
+- Gradle Version : 8.9 or higher.
 
 Once you've made sure your project meets these requirements, you'll need to move on and define the aforementioned configuration values (`projectId`, `clientKey`, and `appId`) within your `build.grade` file (generally found at `${project name}/android/app/build.gradle`). These directly link your application's instance of Particle Auth with the [dashboard](https://dashboard.particle.network).
 
@@ -58,7 +66,7 @@ android {
       manifestPlaceholders["PN_PROJECT_CLIENT_KEY"] = "your project client key"
       manifestPlaceholders["PN_APP_ID"] = "your app id"
   }
-  
+
   dataBinding {
       enabled = true
   }
@@ -66,7 +74,7 @@ android {
 }
 ```
 
-***
+---
 
 ### iOS configuration
 
@@ -142,7 +150,7 @@ installer.pods_project.targets.each do |target|
 ```ruby
 post_install do |installer|
   installer.pods_project.targets.each do |target|
-      if target.name == 'ParticleNetworkBase' or 
+      if target.name == 'ParticleNetworkBase' or
          target.name == 'ParticleWalletAPI' or
          target.name == 'ParticleWalletGUI' or
          target.name == 'ParticleWalletConnect' or
@@ -175,18 +183,19 @@ post_install do |installer|
          target.name == 'Thresh' or
          target.name == 'ParticleMPCCore' or
          target.name == 'ParticleAuthCore' or
-         target.name == 'AuthCoreAdapter' 
-         
+         target.name == 'AuthCoreAdapter'
+
          target.build_configurations.each do |config|
               config.build_settings['BUILD_LIBRARY_FOR_DISTRIBUTION'] = 'YES'
       end
     end
 end
 ```
+
 </p>
 </Note>
 
-***
+---
 
 ## Examples of utilization
 
@@ -218,6 +227,7 @@ const env = Env.Production;
 particleBase.init(chainInfo, env);
 particleAuthCore.init();
 ```
+
 ---
 
 ### Connect
@@ -229,9 +239,8 @@ Onboarding a user with Particle's Wallet-as-a-Service (Particle Auth) happens th
 | `type`            | `LoginType`          | The specific social login to be used. This can be either `.email`, `.phone`, `.google`, `.apple`, `.jwt`, `.facebook`, `.twitter`, `.discord`, `.github`, `.twitch`, `.microsoft` or `linkedin`.                                                                                 |
 | `account`         | `string?`            | (Optional) when `type` is set to either `.email`, `.phone`, or `.jwt`, you can use the `account` parameter to pass in an expected email, phone number, or JWT. This is optional for the former two, but required for `.jwt`. The phone number must be in E.164 format.           |
 | `supportAuthType` | `SupportAuthType[]`  | The methods of authentication visible on the authentication popup UI. By default, this will be exclusive to the chosen social login method, although by passing in additional types, you can expand the UI to include the ability to login with those as an alternative to type. |
-| `prompt`          | `SocialLoginPrompt?` | (Optional) either `.none`, `.consent`, or `.select_account`, only google, discord and microsoft support it.                                                                                                                                                                                                                      |
+| `prompt`          | `SocialLoginPrompt?` | (Optional) either `.none`, `.consent`, or `.select_account`, only google, discord and microsoft support it.                                                                                                                                                                      |
 | `loginPageConfig` | `LoginPageConfig?`   | (Optional) to customize the UI page, contains project name, icon and description.                                                                                                                                                                                                |
-
 
 ```typeScript
 import type { LoginType, SupportAuthType } from '@particle-network/rn-base'
@@ -245,29 +254,32 @@ const userInfo = await particleAuthCore.connect(LoginType.Email, null, supportAu
       imagePath: "https://connect.particle.network/icons/512.png"
     });
 ```
+
 ---
 
 ### Disconnect
 
-An active session (logged-in user) can be disconnected (logged out) by simply calling this method `particleAuthCore.disconnect` for logout, 
+An active session (logged-in user) can be disconnected (logged out) by simply calling this method `particleAuthCore.disconnect` for logout,
 
 ```typeScript
 const status = await particleAuthCore.disconnect();
 ```
+
 ---
 
 ### Is connected
 
-Another important method is `particleAuthCore.isConnected`. This method returns a Boolean indicating whether a user is logged in. 
+Another important method is `particleAuthCore.isConnected`. This method returns a Boolean indicating whether a user is logged in.
 
 ```typeScript
 const result = await particleAuthCore.isConnected()
 ```
+
 ---
 
 ### Get address
 
-To retrieve the address of a currently logged-in user (EVM address if connected to an EVM chain, otherwise their Solana address), `evm.getAddress` or `solana.getAddress`can be called. 
+To retrieve the address of a currently logged-in user (EVM address if connected to an EVM chain, otherwise their Solana address), `evm.getAddress` or `solana.getAddress`can be called.
 
 For first-time users, only the address of the current chain will be generated. For example, if the current chain is an EVM chain, the user will only get the EVM address upon first login. If the user also needs a Solana address, they will need to call await particleAuthCore.switchChain(Solana) to obtain it. After switching successfully, the current chain will be changed to Solana, and the user can use `solana.getAddress` to get the address.
 
@@ -277,6 +289,7 @@ import {evm, solana} from '@particle-network/rn-auth-core';
 const evmAaddress = await evm.getAddress();
 const solanaAddress = await solana.getAddress();
 ```
+
 ---
 
 ### Get userInfo
@@ -286,12 +299,12 @@ If a user has logged in, their user info (email, name, wallet addresses, and oth
 ```typeScript
 const userInfo = await particleAuthCore.getUserInfo();
 ```
+
 ---
 
 ### Sign Message (EIP191)
 
 To request an EIP191 signature from a user's embedded wallet, you can use either the `evm.personalSign` or `evm.personalSignUnique` method. If you need the same message to return a unique signature each time, use the `evm.personalSignUnique` method. Otherwise, the `evm.personalSign` method is generally recommended. On Solana, you can call `solana.signMessage`, you can pass in a UTF-8/readable string.
-
 
 | Field     | Type     | Description                                                                                                  |
 | --------- | -------- | ------------------------------------------------------------------------------------------------------------ |
@@ -303,11 +316,12 @@ const result = await evm.personalSign(message);
 
 const result = await solana.signMessage(message);
 ```
+
 ---
 
 ### Sign Transaction
 
-This is a **Solana-specific** method for signing a transaction without sending it. Similar to message signing, this will prompt a signature in-UI with details about the transaction. Programmatically, the proposed transaction should be formatted as a (converted to a) base58 string. Passing in an object directly will not work in this case. 
+This is a **Solana-specific** method for signing a transaction without sending it. Similar to message signing, this will prompt a signature in-UI with details about the transaction. Programmatically, the proposed transaction should be formatted as a (converted to a) base58 string. Passing in an object directly will not work in this case.
 
 | Field         | Type     | Description              |
 | ------------- | -------- | ------------------------ |
@@ -316,6 +330,7 @@ This is a **Solana-specific** method for signing a transaction without sending i
 ```typeScript
 const signature = await solana.signTransaction(transaction);
 ```
+
 ---
 
 ### Sign All Transactions
@@ -326,10 +341,10 @@ Following the aforementioned method, you can use `solana.signAllTransactions` to
 | -------------- | ---------- | ------------------------------------- |
 | `transactions` | `string[]` | Each element requires a base58 string |
 
-
 ```typeScript
 const signatures = await solana.signAllTransactions(transactions);
 ```
+
 ---
 
 ### Sign and Send Transaction
@@ -340,12 +355,12 @@ For more generalized transaction sending, `evm.sendTransaction`and `solana.signA
 | ------------- | -------- | ------------------------------------------------------------------------- |
 | `transaction` | `string` | On Evm requires a hexadeciaml string, on Solana, requires a base58 string |
 
-
 ```typeScript
 const txHash = await evm.sendTransaction(transaction);
 
 const txHash = await solana.signAndSendTransaction(transaction);
 ```
+
 ---
 
 ### Sign Typed Data V4 (EIP712)
@@ -356,10 +371,10 @@ To request an EIP712 signature from a user's embedded wallet, you can use either
 | --------- | -------- | ---------------------------------------------- |
 | `message` | `string` | Requires a hexadeciaml string or a json string |
 
-
 ```typeScript
  const signature = await evm.signTypedData(typedData);
 ```
+
 ---
 
 ### Set Chain Info
@@ -371,6 +386,7 @@ await particleBase.setChainInfo(Ethereum);
 
 await particleAuthCore.switchChain(Ethereum);
 ```
+
 ---
 
 ### Get Chain Info
@@ -385,6 +401,7 @@ For the retrieval of the currently selected (primary) chain within an active ses
 const chainInfo = await particleBase.getChainInfo();
 
 ```
+
 ---
 
 ### Set Security Account Config
@@ -406,6 +423,7 @@ Within the SDK, you can configure the frequency (or requirement) a user is asked
 ```typeScript
 particleBase.setSecurityAccountConfig(new SecurityAccountConfig(0, 0));
 ```
+
 ---
 
 ### Open Account and Security Page
@@ -415,6 +433,7 @@ Following the above, if you'd like to force the opening of account/security sett
 ```typeScript
 const status = await particleAuthCore.openAccountAndSecurity();
 ```
+
 ---
 
 ### Has Master Password, Payment Password, Security Account
@@ -428,6 +447,7 @@ const hasMasterPassword = await particleAuthCore.hasMasterPassword();
 const hasPaymentPassword = await particleAuthCore.hasPaymentPassword();
 const isChangedMasterPassword = await particleAuthCore.changeMasterPassword();
 ```
+
 ---
 
 ### Set Appearance
@@ -438,15 +458,15 @@ You can forcibly set a specific appearance to be used within the UI using `parti
 | ------------ | ------------ | ------------------------------------------------------------------------------------ |
 | `appearance` | `Appearance` | The specific appearance to be used. This can be either `.system`, `.dark`, `.light`. |
 
-
 ```typeScript
-// this is the default setting  
+// this is the default setting
 particleBase.setAppearance(Appearance.System);
-// dark  
+// dark
 particleBase.setAppearance(Appearance.Dark);
-// light  
+// light
 particleBase.setAppearance(Appearance.Dark);
 ```
+
 ---
 
 ### Set and Get Language
@@ -474,9 +494,9 @@ Silently sign messages/transactions, this switch will work if the following cond
 3. SecurityAccountConfig.promptSettingWhenSign is 0, you can call `particleBase.setSecurityAccountConfig` to update its value.
 
 ```typeScript
-// set blind sign enable  
+// set blind sign enable
 particleAuthCore.setBlindEnable(true);
-// get current blind sign enable state  
+// get current blind sign enable state
 const result = await particleAuthCore.getBlindEnable();
 ```
 
@@ -500,7 +520,6 @@ Also present within `@particle-network/rn-base` is `EvmService`, an object for f
 | `abiJsonString`   | `string`      | The abi json string of this method.                                         |
 | `gasFeeLevel`     | `GasFeeLevel` | (Optional) the gas fee level, `high`, `medium` or `low`, default is `high`. |
 
-
 ```typeScript
 const from = "sender address";
 const contractAddress = "the contract address";
@@ -514,6 +533,7 @@ const params: string[] = ["0x1"]; // this is the method params, each parameter r
 const abiJsonString = "";
 const transaction = await EvmService.writeContract(from, BigNumber(0), contractAddress, methodName, params, abiJsonString, GasFeeLevel.high);
 ```
+
 ---
 
 ### Read Contract
@@ -542,6 +562,7 @@ const abiJsonString = "";
 
 const result = await EvmService.readContract(from, BigNumber(0), contractAddress, methodName, params, abiJsonString);
 ```
+
 ---
 
 ### Create Transaction
@@ -563,6 +584,7 @@ const value = BigNumber(10000);
 const to = "the receiver address or contract address";
 const transaction = await EvmService.createTransaction(from, data, value, to, GasFeeLevel.high);
 ```
+
 ---
 
 ### Estimate Gas
@@ -578,6 +600,7 @@ const to = "the receiver address or contract address";
 const valueHex = '0x' + value.toString(16);
 const gasLimit = await EvmService.estimateGas(from, to, valueHex, data);
 ```
+
 ---
 
 ### Get Suggested Gas Fees
@@ -587,6 +610,7 @@ To retrieve categorized gas price suggestions (3 categories scaling from low to 
 ```typeScript
 const gasFeesResult = await EvmService.suggestedGasFees();
 ```
+
 ---
 
 ### Get Tokens and NFTs
@@ -603,6 +627,7 @@ const result = await EvmService.getTokensAndNFTs(publicAddress, []);
 const result = await EvmService.getTokens(publicAddress, []);
 const result = await EvmService.getNFTs(publicAddress, []);
 ```
+
 ---
 
 ### Get Transactions by Address
@@ -612,6 +637,7 @@ Similar to the former method, `EvmService.getTransactionsByAddress` enables the 
 ```typeScript
 const result = await EvmService.getTransactionsByAddress(publicAddress);
 ```
+
 ---
 
 ### Get Price
@@ -626,6 +652,7 @@ To retrieve token price based upon current network conditions, you can call `Evm
 ```typeScript
 const result = await EvmService.getPrice(tokenAddresses, currencies);
 ```
+
 ---
 
 ### Basic Rpc Method
@@ -637,10 +664,10 @@ Call any basic EVM rpc method through `EvmService.rpc`
 | `method` | `string` | The evm basic rpc method                        |
 | `params` | `any`    | The parameters required by evm basic rpc method |
 
-
 ```typeScript
 const result = await EvmService.rpc(method, params);
 ```
+
 ---
 
 ## `SolanaService` utilization examples
@@ -651,7 +678,6 @@ In addition to `particleAuthCore` for authentication and interaction with Partic
 
 `SolanaService` also extends to Data API methods such as `getTokensAndNFTs`, which returns a highly detailed JSON list of SPL tokens and NFTs belonging to a specified address. This is accessible through `SolanaService.getTokensAndNFTs`, passing in the public address to retrieve the tokens and NFTs of.
 
-
 | Field              | Type     | Description                 |
 | ------------------ | -------- | --------------------------- |
 | `address`          | `String` | The user's public address.  |
@@ -660,15 +686,16 @@ In addition to `particleAuthCore` for authentication and interaction with Partic
 ```typeScript
 final result = await SolanaService.getTokensAndNFTs(publicAddress, true);
 ```
+
 ---
 
 ### Serialize Transactions
 
-`SolanaService.serializeSolTransaction`  facilitates the construction of a SOL transaction object,
+`SolanaService.serializeSolTransaction` facilitates the construction of a SOL transaction object,
 
-`SolanaService.serializeSplTokenTransaction`  facilitates the construction of a Spl-token transaction object,
+`SolanaService.serializeSplTokenTransaction` facilitates the construction of a Spl-token transaction object,
 
-`SolanaService.serializeWSolTokenTransaction` facilitates the construction of a unwrap wsol transaction object. 
+`SolanaService.serializeWSolTokenTransaction` facilitates the construction of a unwrap wsol transaction object.
 
 These transactions, once constructed, can be passed for in-UI proposal with `Solana.signAndSendTransaction`.
 
@@ -700,7 +727,6 @@ const transaction = result.transaction.serialized;
 ```
 
 </CodeGroup>
----
 
 ### Get Price
 
@@ -711,10 +737,10 @@ To retrieve token price based upon current network conditions, you can call `Sol
 | `tokenAddresses` | `string[]` | The tokens's addresses, for native token, you can pass `"native"` |
 | `currencies`     | `string[]` | The price unity, such as `"usd"`                                  |
 
-
 ```typeScript
 const result = await SolanaService.getPrice(tokenAddresses, currencies);
 ```
+
 ---
 
 ### Get Transactions by address
@@ -724,6 +750,7 @@ To retrieve transactions from a address, you can call `SolanaService.getTransact
 ```typeScript
 const result = await SolanaService.getTransactionsByAddress(address);
 ```
+
 ---
 
 ### Get Token by Token Address
@@ -738,6 +765,7 @@ To obtain the balance of a specified token at a specified address, you can call 
 ```typeScript
 const result = await SolanaService.getTokenByTokenAddresses(address, tokenAddresses);
 ```
+
 ---
 
 ### Basic Rpc Method
@@ -749,9 +777,8 @@ Call any basic Solana rpc method through `SolanaService.rpc`
 | `method` | `string` | The solana basic rpc method                        |
 | `params` | `any`    | The parameters required by solana basic rpc method |
 
-
 ```typeScript
 const result = await SolanaService.rpc(method, params);
 ```
 
-***
+---
