@@ -14,14 +14,17 @@ Leveraging Particle Connect within your iOS application is relatively straightfo
 Before diving into the configuration and utilization process, if you'd like to look at our demo repository for an initial understanding of the underlying architecture and implementation flow, the official Particle Connect iOS SDK repository can be found [here](https://github.com/Particle-Network/particle-connect-ios).
 
 <div className="flex justify-center">
+
 <img
-  className="block h-64 dark:hidden"
-  src="/api-reference/connect/mobile/images/wallet.png"
+  style={{ width: '300px'}}
+  className="block dark:hidden"
+  src="/api-reference/connect/mobile/images/connectkit-mobile.svg"
   alt="Particle Connect Wallet."
 />
 <img
-  className="hidden h-64 dark:block"
-  src="/api-reference/connect/mobile/images/wallet.png"
+  style={{ width: '300px'}}
+  className="hidden dark:block"
+  src="/api-reference/connect/mobile/images/connectkit-mobile.svg"
   alt="Particle Connect Wallet."
 />
 </div>
@@ -147,12 +150,12 @@ Now that these are set, you'll need to initialize Particle Connect itself (withi
 
 Specifically, `ParticleConnect.initialize` takes the following parameters:
 
-| Field  | Type   | Description                                                                                              |
-|--------|--------|----------------------------------------------------------------------------------------------------------|
-| `env` | `DevEnvironment` | The specific environmennt to be used. This can be either `.debug`, `.staging`, `.production`, this should be set to `.production` when release |    
-| `chainInfo` | `ChainInfo` | The primary chain to be used within your application. This should be dictated by an overall blockchain, followed by a specific network (testnet). Within this example, it's `.ethereum`(alternatively it could be `.ethereumSepolia`, and so on.) |  
-| `dAppData` | `DAppMetadata` | Metadata outlining the description of your application, This should be an instance of `DAppMetadata` with the following parameters: `name`, the name of your project. `icon`, a URL linking to the icon of your project; this should be 512x512, ideally.  `url`, the URL of your project's website. `description`, the description of your project, `redirectUniversalLink`, optional, redirect universal link of you project, default is `DAppMetadata.standard`.|
-| `adapters` | `[ConnectAdapter]` | You'll need to pass in a list of adapters to be offered within the connection modal. This can be defined as a simple array containing various imported adapters (such as `AuthCoreAdapter`, `MetaMaskConnectAdapter`, etc.) |
+| Field       | Type               | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| ----------- | ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `env`       | `DevEnvironment`   | The specific environmennt to be used. This can be either `.debug`, `.staging`, `.production`, this should be set to `.production` when release                                                                                                                                                                                                                                                                                                                      |
+| `chainInfo` | `ChainInfo`        | The primary chain to be used within your application. This should be dictated by an overall blockchain, followed by a specific network (testnet). Within this example, it's `.ethereum`(alternatively it could be `.ethereumSepolia`, and so on.)                                                                                                                                                                                                                   |
+| `dAppData`  | `DAppMetadata`     | Metadata outlining the description of your application, This should be an instance of `DAppMetadata` with the following parameters: `name`, the name of your project. `icon`, a URL linking to the icon of your project; this should be 512x512, ideally.  `url`, the URL of your project's website. `description`, the description of your project, `redirectUniversalLink`, optional, redirect universal link of you project, default is `DAppMetadata.standard`. |
+| `adapters`  | `[ConnectAdapter]` | You'll need to pass in a list of adapters to be offered within the connection modal. This can be defined as a simple array containing various imported adapters (such as `AuthCoreAdapter`, `MetaMaskConnectAdapter`, etc.)                                                                                                                                                                                                                                         |
 
 An **example** of initialization can be found below.
 
@@ -276,13 +279,13 @@ let result = try await (adapter as! ParticleAdapter).switchChain(.ethereum).valu
 
 `ConnectKitConfig.init` have these parameters
 
-| Field  | Type   | Description                                                                                              |
-|--------|--------|----------------------------------------------------------------------------------------------------------|
-| `connectOptions` | `[ConnectOption]` |  Connect options, support `email`, `phone`, `social` and `wallet`, the sort order is used for connect kit login UI. |
-| `socialProviders` | `[EnableSocialProvider]` |  Social providers, support `google`, `apple` and other social options, the sort order is used for connect kit login UI. |
-| `walletProviders` | `[EnableWalletProvider]` |  Wallet providers, support `metamask`, `trust` and other wallet options, the sort order is used for connect kit login UI. |
-| `additionalLayoutOptions` | `AdditionalLayoutOptions` |  Layout options |
-| `designOptions` | `DesignOptions` | Design options |
+| Field                     | Type                      | Description                                                                                                              |
+| ------------------------- | ------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
+| `connectOptions`          | `[ConnectOption]`         | Connect options, support `email`, `phone`, `social` and `wallet`, the sort order is used for connect kit login UI.       |
+| `socialProviders`         | `[EnableSocialProvider]`  | Social providers, support `google`, `apple` and other social options, the sort order is used for connect kit login UI.   |
+| `walletProviders`         | `[EnableWalletProvider]`  | Wallet providers, support `metamask`, `trust` and other wallet options, the sort order is used for connect kit login UI. |
+| `additionalLayoutOptions` | `AdditionalLayoutOptions` | Layout options                                                                                                           |
+| `designOptions`           | `DesignOptions`           | Design options                                                                                                           |
 
 ```swift
 let config = ConnectKitConfig(connectOptions: connectOptions, socialProviders: socialProviders, walletProviders: walletProviders, additionalLayoutOptions: additionalLayoutOptions, designOptions: designOptions)
@@ -295,20 +298,20 @@ Likely one of the most important methods, specific adapters can initiate connect
 
 For `EVMConnectAdapter` and `SolanaConnectAdapter`, this will generate a fresh account (public and private key pair). Otherwise, the specific connection flow will be dependent upon the adapter in which `connect` is called. E.g.:
 
-| Field  | Type   | Description                                                                                              |
-|--------|--------|----------------------------------------------------------------------------------------------------------|
+| Field    | Type             | Description                                                                                                                                                                                                                                     |
+| -------- | ---------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `config` | `ConnectConifg?` | The `ConnectConfig` will only be effective when `adapter.walletType` is `.authCore`. You can construct a valid object using the subclass `ParticleAuthCoreConfig`. When `adapter.walletType` is other value, you can pass `ConnectConfig.none`. |
 
 `ParticleAuthCoreConfig` construct method `init` support the following parameters:
 
-| Field  | Type   | Description                                                                                              |
-|--------|--------|----------------------------------------------------------------------------------------------------------|
-| `loginType` | `LoginType` | The specific social login to be used. This can be either `.email`, `.phone`, `.google`, `.apple`, `.jwt`, `.facebook`, `.twitter`, `.discord`, `.github`, `.twitch`, `.microsoft` or `linkedin`. |
-| `supportAuthType` | `[SupportAuthType]` | The methods of authentication visible on the authentication popup UI. By default, this will be exclusive to the chosen social login method, although by passing in additional types, you can expand the UI to include the ability to login with those as an alternative to type. |
-| `account` | `String?` | (Optional) when `type` is set to either `.email`, `.phone`, or `.jwt`, you can use the `account` parameter to pass in an expected email, phone number, or JWT. This is optional for the former two, but required for `.jwt`. The phone number must be in E.164 format. |
-| `code` | `String?` | (Optional) when `type` is set to either `.email` pr `.phone`, you can use the code parameter to pass the verification code. |
-| `socialLoginPrompt` | `SocialLoginPrompt?` | (Optional) either `.none`, `.consent`, or `.select_account` |
-| `loginPageConfig` | `LoginPageConfig?`| (Optional) to customize the UI page, contains project name, icon and description. |
+| Field               | Type                 | Description                                                                                                                                                                                                                                                                      |
+| ------------------- | -------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `loginType`         | `LoginType`          | The specific social login to be used. This can be either `.email`, `.phone`, `.google`, `.apple`, `.jwt`, `.facebook`, `.twitter`, `.discord`, `.github`, `.twitch`, `.microsoft` or `linkedin`.                                                                                 |
+| `supportAuthType`   | `[SupportAuthType]`  | The methods of authentication visible on the authentication popup UI. By default, this will be exclusive to the chosen social login method, although by passing in additional types, you can expand the UI to include the ability to login with those as an alternative to type. |
+| `account`           | `String?`            | (Optional) when `type` is set to either `.email`, `.phone`, or `.jwt`, you can use the `account` parameter to pass in an expected email, phone number, or JWT. This is optional for the former two, but required for `.jwt`. The phone number must be in E.164 format.           |
+| `code`              | `String?`            | (Optional) when `type` is set to either `.email` pr `.phone`, you can use the code parameter to pass the verification code.                                                                                                                                                      |
+| `socialLoginPrompt` | `SocialLoginPrompt?` | (Optional) either `.none`, `.consent`, or `.select_account`                                                                                                                                                                                                                      |
+| `loginPageConfig`   | `LoginPageConfig?`   | (Optional) to customize the UI page, contains project name, icon and description.                                                                                                                                                                                                |
 
 ```swift
 
@@ -331,8 +334,8 @@ let userInfo = (adapter as! ParticleAdapter).getUserInfo
 
 Alternatively, if a user has already connected their wallet, you'll be able to use `disconnect` as the primary method to disconnect a user within an active session. This will be relatively universal across adapters. E.g.:
 
-| Field  | Type   | Description                                                                                              |
-|--------|--------|----------------------------------------------------------------------------------------------------------|
+| Field           | Type     | Description                                                                                                                                                          |
+| --------------- | -------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `publicAddress` | `String` | The connected public address, if `adapter.WalletType` is `.authCore`, you can pass an empty string, for other walletTypes, you need pass a connected public address. |
 
 
@@ -344,8 +347,8 @@ let result = try await adapter.disconnect(address).value
 
 Another quite important method is `isConnected`, returning a Boolean based on whether or not a given session (user) is currently connected to a wallet (through the specific adapter instance). `adapter.isConnected` takes a given public address and returns `true` or `false` depending on it's connection status. E.g.:
 
-| Field  | Type   | Description                                                                                              |
-|--------|--------|----------------------------------------------------------------------------------------------------------|
+| Field           | Type     | Description                                                                                                                                                          |
+| --------------- | -------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `publicAddress` | `String` | The connected public address, if `adapter.WalletType` is `.authCore`, you can pass an empty string, for other walletTypes, you need pass a connected public address. |
 
 ```swift
@@ -388,10 +391,10 @@ To initiate a transaction for signature and ultimately settlement on-chain, you'
 
 `adapter.signAndSendTransaction` takes the following parameters:
 
-| Field  | Type   | Description                                                                                              |
-|--------|--------|----------------------------------------------------------------------------------------------------------|
+| Field           | Type     | Description                                                                                                                                                          |
+| --------------- | -------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `publicAddress` | `String` | The connected public address, if `adapter.WalletType` is `.authCore`, you can pass an empty string, for other walletTypes, you need pass a connected public address. |
-| `transaction` | `String` | Evm transaction is expressed as a hexadecimal string, solana transaction is expressed as a base58 string. |
+| `transaction`   | `String` | Evm transaction is expressed as a hexadecimal string, solana transaction is expressed as a base58 string.                                                            |
 
 ```swift
 let txHash = try await adapter.signAndSendTransaction(publicAddress: address, transaction: transaction).value
@@ -404,10 +407,10 @@ You can create en EVM transaction with class `TxData` or `FeeMarketEIP1559TxData
 
 `adapter.signTransaction` is a **Solana-specific** method for signing a transaction without pushing it to the network. Specifically, this method requires the following parameters:
 
-| Field  | Type   | Description                                                                                              |
-|--------|--------|----------------------------------------------------------------------------------------------------------|
+| Field           | Type     | Description                                                                                                                                                          |
+| --------------- | -------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `publicAddress` | `String` | The connected public address, if `adapter.WalletType` is `.authCore`, you can pass an empty string, for other walletTypes, you need pass a connected public address. |
-| `transaction` | `String` | A base58 string representing a transaction object. |
+| `transaction`   | `String` | A base58 string representing a transaction object.                                                                                                                   |
 
 This will return a popup requesting confirmation to either `SolanaConnectAdapter` or `PhantomConnectAdapter` depending on which you've defined as `adapter` (or, alternatively, a custom adapter you've set up). E.g.:
 
@@ -422,10 +425,10 @@ let signeds = try await adapter.signAllTransactions(publicAddress: address, tran
 
 To sign a basic UTF-8 message (string), you can use `adapter.signMessage` to prompt the user for a signature, alongside the message in question. `adapter.signMessage` takes the following parameters:
 
-| Field  | Type   | Description                                                                                              |
-|--------|--------|----------------------------------------------------------------------------------------------------------|
-| `publicAddress` | `String` | The connected public address, if `adapter.WalletType` is `.authCore`, you can pass an empty string, for other walletTypes, you need pass a connected public address. |
-| `message` | `String` | The message you'd like the user to sign; for EVM, this should be a hex-encoded string (prefixed by '0x'), while for Solana, you can pass in a standard string (no encoding needed). |
+| Field           | Type     | Description                                                                                                                                                                         |
+| --------------- | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `publicAddress` | `String` | The connected public address, if `adapter.WalletType` is `.authCore`, you can pass an empty string, for other walletTypes, you need pass a connected public address.                |
+| `message`       | `String` | The message you'd like the user to sign; for EVM, this should be a hex-encoded string (prefixed by '0x'), while for Solana, you can pass in a standard string (no encoding needed). |
 
 
 ```swift
@@ -436,10 +439,10 @@ let signed = try await adapter.signMessage(publicAddress: address, message: mess
 
 As an alternative to `signMessage`, for **EVM chains**, you can request that a user signs typed (structured) data rather than purely a raw string. To do this, you can use `adapter.signTypedData` (equivalent to `eth_signTypedData` V4). This takes the following parameters:
 
-| Field  | Type   | Description                                                                                              |
-|--------|--------|----------------------------------------------------------------------------------------------------------|
+| Field           | Type     | Description                                                                                                                                                          |
+| --------------- | -------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `publicAddress` | `String` | The connected public address, if `adapter.WalletType` is `.authCore`, you can pass an empty string, for other walletTypes, you need pass a connected public address. |
-| `data` | `String` | The typed data to be signed; see the [Web (JavaScript/TypeScript)](/api-reference/auth/desktop-sdks/web) page for additional guidance. |
+| `data`          | `String` | The typed data to be signed; see the [Web (JavaScript/TypeScript)](/api-reference/auth/desktop-sdks/web) page for additional guidance.                               |
 
 
 ```swift
