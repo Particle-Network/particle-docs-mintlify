@@ -24,8 +24,6 @@ This document will outline how you can begin building with Particle Network's Sm
 
 Within this tutorial, we'll be using Particle Auth Core (`@particle-network/auth-core-modal`), which is Particle Network's flagship SDK facilitating implementation of its Smart Wallet-as-a-Service. Additionally, we'll also be leveraging Particle's AA SDK (`@particle-network/aa`). These two SDKs will be used in tandem to facilitate social logins and, in this example, the execution of a sample gasless transaction (a burn of 0.001 ZETA), sent through the Particle Bundler and Omnichain Paymaster.
 
-To learn more about Particle Auth Core, take a look at this [sample](https://particlenetwork.readme.io/recipes/using-particle-auth-core). To learn more about the Particle Network AA SDK, check out the [AA quickstart page](/guides/quickstart/aa/web-aa).
-
 To begin, you'll need to install a few different libraries, as mentioned above. Specifically, you'll need to install the following libraries:
 
 - `@particle-network/auth-core-modal`, for social logins and the associated embedded wallet modal.
@@ -336,7 +334,7 @@ Finally, the Particle AA SDK can also be used independently with any other walle
 
 By default, Particle's AA SDK uses the Particle Bundler and the Particle Omnichain Paymaster, although, through a fundamental focus on modularity, you can also either plug in a Biconomy Paymaster (through the `SmartAccount` configuration) or use any other Bundler/Paymaster pair independently, just leaving the account management and UserOperation construction to `@particle-network/aa`, handling sponsorship and execution externally.
 
-To learn more about using Particle Network's AA SDK, head over to the [AA quickstart guide](/guides/quickstart/aa/web-aa).
+To learn more about using Particle Network's AA SDK, head over to the [AA quickstart guide](/guides/aa/web-aa).
 
 ## Conclusion
 

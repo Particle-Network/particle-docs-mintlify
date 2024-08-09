@@ -153,7 +153,7 @@ if (balance.isLessThan(fee)) {
   return;
 }
 
-// check if gasless mode is available
+// check if gasless paymaster is available
 const verifyingPaymasterGasless = wholeFeeQuote.verifyingPaymasterGasless;
 if (verifyingPaymasterGasless == undefined) {
   console.log("Gasless mode is not available");
