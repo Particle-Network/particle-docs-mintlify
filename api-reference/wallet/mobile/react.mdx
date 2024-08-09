@@ -137,21 +137,27 @@ pn63bfa427-cf5f-4742-9ff1-e8f5a1b9828f
 
 Additionally, head over to your `Info.plist` file and include the following snippet.
 
-```xml XML
+```xml Info.plist
 <key>LSApplicationQueriesSchemes</key>
 <array>
-    <string>imtokenv2</string>
-    <string>metamask</string>
-    <string>phantom</string>
-    <string>bitkeep</string>
-    <string>trust</string>
-    <string>rainbow</string>
-    <string>zerion</string>
-    <string>mathwallet</string>
-    <string>1inch</string>
-    <string>awallet</string>
-    <string>okex</string>
+	<string>metamask</string>
+	<string>phantom</string>
+	<string>bitkeep</string>
+	<string>imtokenv2</string>
+	<string>rainbow</string>
+	<string>trust</string>
+	<string>zerion</string>
+  <string>mathwallet</string>
+  <string>oneinch</string>
+  <string>awallet</string>
+  <string>okex</string>
 </array>
+<key>NSPhotoLibraryUsageDescription</key>
+<string>We need access in order to open photos of barcodes</string>
+<key>NSCameraUsageDescription</key>
+<string>We use the camera to scan barcodes</string>
+<key>NSFaceIDUsageDescription</key>
+<string>We use Face ID for secure access to the app.</string>
 ```
 
 Finally, you'll need to edit your Podfile to ensure `particle_connect` (which, as mentioned, Particle Wallet depends on) is properly imported. Head over to the [linked guide](/api-reference/connect/mobile/react) to complete this if you have not already.

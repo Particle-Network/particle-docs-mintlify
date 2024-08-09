@@ -194,27 +194,27 @@ Follow the steps to configure your Xcode workspace.
 6.  Select `NativeCallProxy.h`, in the file inspector, check public in Target Membership.
 7.  If you want to use `ParticleConnect`, you should add `LSApplicationQueriesSchemes` to info.plist.
 
-```
+```xml Info.plist
 <key>LSApplicationQueriesSchemes</key>
 <array>
-  <string>imtokenv2</string>
-  <string>metamask</string>
-  <string>phantom</string>
-  <string>bitkeep</string>
-  <string>trust</string>
-  <string>rainbow</string>
-  <string>zerion</string>
+	<string>metamask</string>
+	<string>phantom</string>
+	<string>bitkeep</string>
+	<string>imtokenv2</string>
+	<string>rainbow</string>
+	<string>trust</string>
+	<string>zerion</string>
   <string>mathwallet</string>
-  <string>1inch</string>
+  <string>oneinch</string>
   <string>awallet</string>
   <string>okex</string>
 </array>
 <key>NSPhotoLibraryUsageDescription</key>
-  <string>We need access in order to open photos of barcodes</string>
+<string>We need access in order to open photos of barcodes</string>
 <key>NSCameraUsageDescription</key>
-  <string>We use the camera to scan barcodes</string>
+<string>We use the camera to scan barcodes</string>
 <key>NSFaceIDUsageDescription</key>
-  <string>We use Face ID for secure access to the app.</string>
+<string>We use Face ID for secure access to the app.</string>
 ```
 
 #### Android configuration
