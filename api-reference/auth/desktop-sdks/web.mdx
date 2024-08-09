@@ -311,6 +311,34 @@ For example, you can use it to display the user's `name` and `avatar`, or access
   - **chain_name**: Name of the blockchain associated with the wallet (e.g., "evm_chain", "solana").
 </Accordion>
 
+The following is an example of how you can render user information taken from `userInfo`:
+
+```tsx App.tsx
+  const { userInfo } = useAuthCore();
+
+  {userInfo && (
+  <div>
+    {/*
+      In this card we display info from Particle Auth
+      This area showcases how to fetch various kinds of data from Particle Auth directly.
+    */}
+    <h2>
+      Accounts info
+    </h2>
+    <div>
+      <h2>
+        Name: {userInfo.name}
+      </h2>
+      <img
+        src={userInfo.avatar}
+        alt="User Avatar"
+      />
+    </div>
+  </div>
+)}
+
+```
+
 ## Retrieving Public Address
 
 Retrieving the public address associated with a given user's account (assuming you're not pulling it from the login via `userInfo`) can be achieved through the following:
