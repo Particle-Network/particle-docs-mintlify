@@ -33,7 +33,14 @@ flutter pub add particle_wallet
 
 ### Android configuration
 
-If you're building an Android application, you must follow the following steps to configure Particle Wallet and prepare for utilization. 
+If you're building an Android application, you must follow the following steps to configure Particle Wallet and prepare for utilization.
+#### Prerequisites
+- minSdkVersion **23** or higher.
+- compileSdkVersion, targetSdkVersion **34** or higher.
+- JavaVersion **17**.
+- [Jetpack (AndroidX)](https://developer.android.com/jetpack/androidx/migrate?authuser=0).
+- Android Gradle Plugin Version : 8.5.1 or higher.
+- Gradle Version : 8.9 or higher.
 
 To begin, you'll need to open your `build.gradle` file, often found at the following file path: `${project name}/android/app/build.gradle`.
 
@@ -71,7 +78,7 @@ compileOptions {
 }
 
 kotlinOptions {
-  jvmTarget = JavaVersion.VERSION_11 
+  jvmTarget = JavaVersion.VERSION_11
 }
 
 dataBinding {
@@ -89,7 +96,7 @@ Before beginning to build an iOS application, ensure your project meets the foll
 
 - **iOS 14** or later.
 
-With these requirements set, you'll need to open an exported iOS project and find `ios/{project name}.xcworkspace`. 
+With these requirements set, you'll need to open an exported iOS project and find `ios/{project name}.xcworkspace`.
 
 At the root of your Xcode project, create a new file, `ParticleNetwork-Info.plist`. Ensure this is marked under "Target Membership."
 
@@ -114,7 +121,7 @@ You'll now need to fill in `PROJECT_UUID` (`projectId`), `PROJECT_CLIENT_KEY`, a
 
 Next, you'll need to go to your `AppDelegate.swift` file to add an import of `ParticleConnect` (which Particle Wallet is dependent on).
 
-Additionally, within your application's `application` method (as shown below), you'll need to include a handler condition derived from `ParticleConnect.handleUrl`. This should be as simple as a `true` return upon a truthy value of `ParticleConnect.handleUrl`, and a `super.application(app, open: url, options: options)` return upon a falsy value. 
+Additionally, within your application's `application` method (as shown below), you'll need to include a handler condition derived from `ParticleConnect.handleUrl`. This should be as simple as a `true` return upon a truthy value of `ParticleConnect.handleUrl`, and a `super.application(app, open: url, options: options)` return upon a falsy value.
 
 ```swift AppDelegate.swift
 
@@ -180,7 +187,7 @@ With `setWalletConnectV2ProjectId` set, you can also call `ParticleWallet.init`,
 | `icon` | `String` | The link to an icon/logo representing your project - ideally 512x512.  |
 | `url` | `String` | The URL for your project's website. |
 | `description` | `String` | A short description of your project.  |
-| `walletConnectProjectId`| `String` | Wallet connect project id, get it from [WalletConnect dashboard](https://cloud.walletconnect.com) | 
+| `walletConnectProjectId`| `String` | Wallet connect project id, get it from [WalletConnect dashboard](https://cloud.walletconnect.com) |
 
 E.g.:
 
@@ -241,9 +248,9 @@ ParticleWallet.navigatorTokenSend(tokenAddress: tokenAddress, toAddress: toAddre
 To open the transaction records (history) of a given connected wallet, you can programmatically force this page with `ParticleWallet.navigatorTokenTransactionRecords`, optionally taking one parameter, `tokenAddress`. If filled out, this will filter the transaction records to only display entries involving a specified `tokenAddress`. E.g.:
 
 ```dart
-ParticleWallet.navigatorTokenTransactionRecords(); 
+ParticleWallet.navigatorTokenTransactionRecords();
 
-ParticleWallet.navigatorTokenTransactionRecords(tokenAddress: tokenAddress); 
+ParticleWallet.navigatorTokenTransactionRecords(tokenAddress: tokenAddress);
 ```
 
 ---
@@ -444,7 +451,7 @@ ParticleWallet.setSupportAddToken(isShow);
 ParticleWallet.setShowSmartAccountSetting(false);
 
 List<String> tokenAddresses = <String>[
-  "0x303b35f48684bea50D0e7D1AcDdeaf78A7188798" 
+  "0x303b35f48684bea50D0e7D1AcDdeaf78A7188798"
 ];
 
 
@@ -455,9 +462,9 @@ List<String> tokenAddresses = <String>[
 ParticleWallet.setDisplayTokenAddresses(tokenAddresses);
 
 ParticleWallet.setPriorityTokenAddresses(tokenAddresses);
- 
+
 List<String> nftContractAddresses = <String>[
-  "0xD18e451c11A6852Fb92291Dc59bE35a59d143836" 
+  "0xD18e451c11A6852Fb92291Dc59bE35a59d143836"
 ];
 
 ParticleWallet.setDisplayNFTContractAddresses(nftContractAddresses);
@@ -474,7 +481,7 @@ ParticleWallet.setCustomWalletName("Your Wallet Name", "your wallet icon url");
 // in Android platform, call setWallet and set your wallet name.
 ParticleWallet.setWallet(walletType, pubAddress!, "Your wallet name");
 
-// you can replace localizable strings that appeared in 
+// you can replace localizable strings that appeared in
 // yourIOSBuild/Pods/ParticleWalletGUI/XCFrameworks/ParticleWalletGUI/ParticleWalletGUI.bundle/en.lproj/Locallizable.strings.
 if (Platform.isIOS) {
   Map<String, String> enLocalizables = <String, String>{

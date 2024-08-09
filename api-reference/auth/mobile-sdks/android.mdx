@@ -26,7 +26,7 @@ Utilizing the Particle Auth Android SDK is quite straightforward, although it re
 
 ### Configuration
 
-Before you begin using the Particle Auth Android SDK, you'll need a few required values that are universal across all Particle Auth SDKs. 
+Before you begin using the Particle Auth Android SDK, you'll need a few required values that are universal across all Particle Auth SDKs.
 
 These values are `projectId`, `clientKey`, and `appId`. All three can be retrieved by heading over to the [Particle dashboard](https://dashboard.particle.network).
 
@@ -144,9 +144,6 @@ AuthCore.switchChain(chainInfo, callback)
 
 // For switching chains synchronously, without checking login status
 ParticleNetwork.setChainInfo(chainInfo,callback)
-
-// Alternatively, to use AuthService (deprecated)
-ParticleNetwork.switchChain(chainInfo,callback)
 ```
 
 ### Login
@@ -155,20 +152,13 @@ ParticleNetwork.switchChain(chainInfo,callback)
 
 Specifically, `AuthCore.login` takes the following parameters:
 
-- `loginType`, the social login method preferred. This supports either 'jwt,' 'email,' 'phone,' 'google,' 'apple,' or 'facebook'.
-- `account`, if the above is either 'phone,' 'email,' or 'jwt,'`account` can optionally be set to a specified expected email or phone number. If you're using 'jwt,'`account` is required and must be set to the relevant JWT.
-- `supportLoginTypes`, the list of authentication types you'd like to be available through the resulting login popup interface. By default, this will only display the login type chosen through `loginType`, although you can add additional methods to the UI, such as 'google,' by passing them into `supportAuthType`.
-- `prompt`, the prompt to be displayed following social login, such as a request to set a master password, payment password, etc. This is `null` by default.
-- `loginPageConfig` Configure the login page's imagePath、projectName、description.
-- `loginCallback` Callback after successful login
-
-| **Field**         | **Type**                          | **Description**                                                                                                                                                                                                                          |
-| ----------------- | --------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| loginType         | LoginType                         | the social login method preferred. This supports either EMAIL, PHONE, TWITTER, GOOGLE, FACEBOOK, APPLE, DISCORD, GITHUB, TWITCH, MICROSOFT, LINKEDIN, JWT.                                                                               |
-| account           | String                            | Default is empty, you can use the `account` parameter to pass in an expected email, phone number, or JWT. This is optional for the former two, but required for `.jwt`. The phone number must be in E.164 format.                        |
-| supportLoginTypes | List`<SupportLoginType>`          | The default setting includes support for all SupportLoginTypes: EMAIL, PHONE, FACEBOOK, GOOGLE, APPLE, TWITTER, DISCORD, GITHUB, TWITCH, MICROSOFT, and LINKEDIN. You can also provide a specific subset of SupportLoginTypes if needed. |
-| prompt            | LoginPrompt?                      | the prompt to be displayed following social login, such as a request to set a master password, payment password, etc. This is `null` by default.                                                                                         |
-| loginPageConfig   | LoginPageConfig?                  | If you use a Google to log in, you can control the Google account login prompt with this parameter: None、Consent or SelectAccount.                                                                                                      |
+| **Field**         | **Type**                            | **Description**                                                                                                                                                                                                                          |
+| ----------------- | ----------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| loginType         | LoginType                           | the social login method preferred. This supports either EMAIL, PHONE, TWITTER, GOOGLE, FACEBOOK, APPLE, DISCORD, GITHUB, TWITCH, MICROSOFT, LINKEDIN, JWT.                                                                               |
+| account           | String                              | Default is empty String, you can use the `account` parameter to pass in an expected email, phone number, or JWT. This is optional for the former two, but required for `JWT`. The phone number must be in E.164 format.                  |
+| supportLoginTypes | List`<SupportLoginType>`            | The default setting includes support for all SupportLoginTypes: EMAIL, PHONE, FACEBOOK, GOOGLE, APPLE, TWITTER, DISCORD, GITHUB, TWITCH, MICROSOFT, and LINKEDIN. You can also provide a specific subset of SupportLoginTypes if needed. |
+| prompt            | LoginPrompt?                        | the prompt to be displayed following social either None,ConSent, or SelectAccount, only google, discord and microsoft support it.                                                                                                        |
+| loginPageConfig   | LoginPageConfig?                    | to customize the UI page, contains project name, icon and description.                                                                                                                                                                   |
 | loginCallback     | AuthCoreServiceCallback`<UserInfo>` | success : wiil return UserInfo. <br /><br />failure : will return a ErrorInfo                                                                                                                                                            |
 
 ```kotlin Kotlin
@@ -229,9 +219,9 @@ Once `ParticleNetwork` has been initialized and a user has successfully logged i
 
 To request an EIP191 signature from a user's embedded wallet, you can use either the `AuthCore.evm.personalSign` or `AuthCore.evm.personalSignUnique` method. If you need the same message to return a unique signature each time, use the `AuthCore.evm.personalSignUnique` method. Otherwise, the `AuthCore.evm.personalSign`method is generally recommended.
 
-| Field                 | Type                              | Description                                                                            |
-| :-------------------- | :-------------------------------- | :------------------------------------------------------------------------------------- |
-| `hexUnSignedMessage ` | `PrefixedHexString`               | either a hexadecimal string starting with '0x' or a human-readable string is required. |
+| Field                 | Type                                | Description                                                                            |
+| :-------------------- | :---------------------------------- | :------------------------------------------------------------------------------------- |
+| `hexUnSignedMessage ` | `PrefixedHexString`                 | either a hexadecimal string starting with '0x' or a human-readable string is required. |
 | `callback`            | AuthCoreSignCallback`<SignOutput>`) | Success->return signature , failed->return an ErrorInfo                                |
 
 ```kotlin signAndSendTransaction (Kotlin)
@@ -243,9 +233,9 @@ AuthCore.evm.personalSignUnique(hexUnSignedMessage: PrefixedHexString, callback)
 
 To request an EIP712 signature from a user's embedded wallet, you can use either the `AuthCore.evm.signTypedData` or `AuthCore.evm.signTypedDataUnique` method. If you need the same message to return a unique signature each time, use the `AuthCore.evm.signTypedDataUnique` method. Otherwise, the `AuthCore.evm.signTypedData` method is generally recommended.
 
-| Field      | Type                              | Description                                             |
-| :--------- | :-------------------------------- | :------------------------------------------------------ |
-| `data `    | `PrefixedHexString`               | a hexadecimal string starting with "0x"                 |
+| Field      | Type                               | Description                                             |
+| :--------- | :--------------------------------- | :------------------------------------------------------ |
+| `data `    | `PrefixedHexString`                | a hexadecimal string starting with "0x"                 |
 | `callback` | AuthCoreSignCallback`<SignOutput>` | Success->return signature , failed->return an ErrorInfo |
 
 ```kotlin signAndSendTransaction (Kotlin)
@@ -257,11 +247,11 @@ AuthCore.evm.signTypedDataUnique(data: PrefixedHexString, callback)
 
 To send a transaction from a user's embedded wallet, you can use `AuthCore.evm.sendTransaction`.
 
-| Field          | Type                              | Description                                             |
-| :------------- | :-------------------------------- | :------------------------------------------------------ |
-| `transaction ` | `PrefixedHexString`               | a hexadecimal string starting with "0x"                 |
+| Field          | Type                               | Description                                             |
+| :------------- | :--------------------------------- | :------------------------------------------------------ |
+| `transaction ` | `PrefixedHexString`                | a hexadecimal string starting with "0x"                 |
 | `callback`     | AuthCoreSignCallback`<SignOutput>` | Success->return signature , failed->return an ErrorInfo |
-| feeMode        | FeeMode                           | Default FeeModeNative(),only AA mode enabled use        |
+| feeMode        | FeeMode                            | Default FeeModeNative(),only AA mode enabled use        |
 
 ```
 AuthCore.evm.sendTransaction(transaction: PrefixedHexString, callback: AuthCoreSignCallback<SignOutput>, feeMode: FeeMode = FeeModeNative())
@@ -280,9 +270,9 @@ val hexTx = tx.serialize()
 
 To request a signature from a user's embedded wallet, you can use `AuthCore.solana.signMessage`.
 
-| Field     | Type                                | Description                                             |
-| :-------- | :---------------------------------- | :------------------------------------------------------ |
-| `message` | `String`                            | a base58 formatted string is required.                  |
+| Field     | Type                               | Description                                             |
+| :-------- | :--------------------------------- | :------------------------------------------------------ |
+| `message` | `String`                           | a base58 formatted string is required.                  |
 | callback  | `AuthCoreSignCallback<SignOutput>` | Success->return signature , failed->return an ErrorInfo |
 
 ```swift
@@ -296,9 +286,9 @@ AuthCore.solana.signMessage(message, chainInfo: nil)
 
 To send a transaction from a user's embedded wallet, you can use `AuthCore.solana.signAndSendTransaction`.
 
-| Field         | Type                                | Description                                             |
-| :------------ | :---------------------------------- | :------------------------------------------------------ |
-| `transaction` | `String`                            | a base58 formatted string is required.                  |
+| Field         | Type                               | Description                                             |
+| :------------ | :--------------------------------- | :------------------------------------------------------ |
+| `transaction` | `String`                           | a base58 formatted string is required.                  |
 | `callback`    | `AuthCoreSignCallback<SignOutput>` | Success->return signature , failed->return an ErrorInfo |
 
 ```kotlin
@@ -318,9 +308,9 @@ AuthCore.solana..signTransaction(transaction: Base58String, callback: AuthCoreSi
 
 To sign multi transactions from a user's embedded wallet, you can use `AuthCore.solana.signAllTransactions`.
 
-| Field                    | Type                                 | Description                                              |
-| :----------------------- | :----------------------------------- | :------------------------------------------------------- |
-| `serializedTransactions` | `List<Base58String>`                 | base58 formatted strings are required.                   |
+| Field                    | Type                                  | Description                                              |
+| :----------------------- | :------------------------------------ | :------------------------------------------------------- |
+| `serializedTransactions` | `List<Base58String>`                  | base58 formatted strings are required.                   |
 | `callback`               | AuthCoreSignCallback`<SignAllOutput>` | Success->return signatures , failed->return an ErrorInfo |
 
 ```swift
@@ -358,12 +348,12 @@ User can set master password and payment password to protect assets, call `auth.
 
 ```kotlin
 // check user has master password or not
-AuthCore.hasMasterPassword()
+val result = AuthCore.hasMasterPassword()
 // set or change master password
 AuthCore.changeMasterPassword()
 
 // check user has payment password or not
-AuthCore.hasPaymentPassword()
+val result = AuthCore.hasPaymentPassword()
 ```
 
 ### Language Setting

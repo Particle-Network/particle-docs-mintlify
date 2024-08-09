@@ -5,7 +5,7 @@ description: "Leveraging Particle Connect within mobile applications built on Un
 
 ## Particle Connect for Unity
 
-Particle Connect acts as a central wallet connection mechanism within games built on Unity. With it, you can onboard users into a completely functional account through either social logins (via Particle Auth) or typical Web3 wallets (via WalletConnect, Solana's `wallet-adapter`, or private key imports). This creates a Web2-adjacent login experience while retaining unified compatibility with existing popular Web3 wallets. 
+Particle Connect acts as a central wallet connection mechanism within games built on Unity. With it, you can onboard users into a completely functional account through either social logins (via Particle Auth) or typical Web3 wallets (via WalletConnect, Solana's `wallet-adapter`, or private key imports). This creates a Web2-adjacent login experience while retaining unified compatibility with existing popular Web3 wallets.
 
 Particle Connect has a dedicated Unity SDK for integration; the configuration process and examples of utilization **are outlined below.**
 
@@ -45,13 +45,16 @@ To start, your Unity project will need to meet several requirements to avoid any
   - **CocoaPods 1.14.3** or higher.
   - **iOS 14** or higher.
 - If you're using Android:
-  - **Minimum API level 23** or higher.
-  - **Targets API level 33** or higher.
-  - **Java SDK version 11**.
+  - minSdkVersion **23** or higher.
+  - compileSdkVersion, targetSdkVersion **34** or higher.
+  - JavaVersion **17**.
+  - [Jetpack (AndroidX)](https://developer.android.com/jetpack/androidx/migrate?authuser=0).
+  - Android Gradle Plugin Version : 8.5.1 or higher.
+  - Gradle Version : 8.9 or higher.
 
 ### Setting up the Particle dashboard
 
-Once you've ensured that your project meets the above prerequisites, you'll also need three key values from the [Particle dashboard](https://dashboard.particle.network): your `projectId`, `clientKey`, and `appId`. 
+Once you've ensured that your project meets the above prerequisites, you'll also need three key values from the [Particle dashboard](https://dashboard.particle.network): your `projectId`, `clientKey`, and `appId`.
 
 These directly connect your Unity project with the Particle dashboard, enabling customization, analytics, tracking, etc.
 
@@ -59,7 +62,7 @@ These directly connect your Unity project with the Particle dashboard, enabling 
 
 ### Configuration
 
-With these values retrieved, you can move on to initial configuration and dependency management. This will vary in complexity depending on the platform used. To begin, for both iOS and Android, you'll need to download and install the Particle Unity package; this will include the necessary files for both Particle Connect and Particle Auth. 
+With these values retrieved, you can move on to initial configuration and dependency management. This will vary in complexity depending on the platform used. To begin, for both iOS and Android, you'll need to download and install the Particle Unity package; this will include the necessary files for both Particle Connect and Particle Auth.
 
 Head over to the [GitHub repository](https://github.com/Particle-Network/particle-unity/releases), and download the latest release (`.unitypackage`), then import this into your project.
 
@@ -146,12 +149,12 @@ Specifically, you'll need the following dependencies at a minimum:
   - `network.particle:connect-phantom-adapter`, Wallet adapter for Phantom to be used within Particle Connect.
   - `network.particle:connect-evm-adapter`, EVM-specific custom wallet adapter to be used within Particle Connect.
   - `network.particle:connect-auth-adapter`, Particle Auth adapter for Particle Connect (social logins).
-  - `network.particle:connect-wallet-connect-adapter`, WalletConnect adapter for Particle Connect.  
+  - `network.particle:connect-wallet-connect-adapter`, WalletConnect adapter for Particle Connect.
     The full list of `network.particle` packages can be found [here](https://central.sonatype.com/search?q=g:network.particle&smo=true).
 
 ```groovy launcherTemplate.gradle
 dependencies {
-    implementation project(':unityLibrary') 
+    implementation project(':unityLibrary')
     implementation "network.particle:auth-service:${sdkVersion}"
     implementation "network.particle:unity-bridge:${sdkVersion}"
   	implementation "network.particle:connect:${sdkVersion}"
@@ -171,7 +174,7 @@ particle.network.app_id=Your App ID
 
 ## Initialization
 
-Now that you've managed the relevant dependencies and configured your Unity environment, you'll need to initialize `ParticleNetwork` and `ParticleConnectInteraction` (both derived from `Network.Particle.Scripts.Core`) before moving on. This is required for Particle Connect to function.  
+Now that you've managed the relevant dependencies and configured your Unity environment, you'll need to initialize `ParticleNetwork` and `ParticleConnectInteraction` (both derived from `Network.Particle.Scripts.Core`) before moving on. This is required for Particle Connect to function.
 
 `ParticleNetwork` can be initialized by simply calling `Init` and passing in a `chainInfo` object (\*). `ParticleConnectInteraction.Init` will require both a `chainInfo` object and a `DAppMetaData` parameter (in this example, represented as `metadata`) containing a WalletConnect project ID retrieved from the WalletConnect dashboard, alongside the name of your project, the icon (preferably 512x512), the website URL, and a project description.
 
@@ -361,7 +364,7 @@ Additionally, you can export one of these wallets with `ParticleConnect.Instance
 
 ```csharp
 await ParticleConnect.Instance.ImportWalletFromPrivateKey(this._walletType, privateKey);
-  
+
 await ParticleConnect.Instance.ImportWalletFromMnemonic(this._walletType, mnemonic);
 
 // Exportation

@@ -6,7 +6,7 @@ description: "Leveraging Particle Connect within applications built using React 
 
 ## Particle Connect for React Native
 
-Particle Connect fully supports React Native, facilitating unified Web2 and Web3 onboarding within mobile applications leveraging React Native. Particle Connect is a custom connection modal meant to act as an "SSO for Web3," aggregating both social logins and traditional Web3 wallets (even using imported accounts) within one interface, enabling universal accessibility for both Web3 natives and typical Web2 consumers. 
+Particle Connect fully supports React Native, facilitating unified Web2 and Web3 onboarding within mobile applications leveraging React Native. Particle Connect is a custom connection modal meant to act as an "SSO for Web3," aggregating both social logins and traditional Web3 wallets (even using imported accounts) within one interface, enabling universal accessibility for both Web3 natives and typical Web2 consumers.
 
 Details on installing, configuring, and utilizing the Particle Connect React Native SDK **are below**.
 
@@ -36,7 +36,7 @@ It is strongly discouraged to use a private key or the mnemonic import/generate 
 
 ## Getting Started
 
-The setup process for the Particle Connect React Native SDK is relatively straightforward but expectedly deviates depending on the platform in question. 
+The setup process for the Particle Connect React Native SDK is relatively straightforward but expectedly deviates depending on the platform in question.
 
 Before diving into platform-specific configuration, all Particle Connect (& Auth) SDKs require three standard values for initialization: `projectId`, `clientKey`, and `appId`, all of which can be retrieved from the [Particle dashboard](https://dashboard.particle.network).
 
@@ -55,13 +55,14 @@ yarn add @particle-network/rn-connect
 ```
 
 ### Android configuration
-
 If you're planning on using Android for your React Native application, ensure that you meet the following prerequisites (otherwise, expect issues or non-functionality):
 
-- Targets **API Level 23** (Marshmallow) or higher.
-- Uses **Android 6.0** or higher.
-- Uses **Jetpack** (Android X).
-- Uses **Java 11**.
+- minSdkVersion **23** or higher.
+- compileSdkVersion, targetSdkVersion **34** or higher.
+- JavaVersion **17**.
+- [Jetpack (AndroidX)](https://developer.android.com/jetpack/androidx/migrate?authuser=0).
+- Android Gradle Plugin Version : 8.5.1 or higher.
+- Gradle Version : 8.9 or higher.
 
 Once you've made sure your project meets these requirements, you'll need to move on and define the aforementioned configuration values (`projectId`, `clientKey`, and `appId`) within your `build.grade` file (generally found at `${project name}/android/app/build.gradle`). These directly link your application's instance of Particle Connect with the [dashboard](https://dashboard.particle.network).
 
@@ -81,7 +82,7 @@ android {
       manifestPlaceholders["PN_PROJECT_CLIENT_KEY"] = "your project client key"
       manifestPlaceholders["PN_APP_ID"] = "your app id"
   }
-  
+
   dataBinding {
       enabled = true
   }

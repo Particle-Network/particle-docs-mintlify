@@ -35,10 +35,13 @@ yarn add @particle-network/rn-base
 
 If you're planning on using Android for your React Native application, ensure you meet the following prerequisites (otherwise, expect issues or non-functionality):
 
-- Targets **API Level 23** (Marshmallow) or higher.
-- Uses **Android 6.0** or higher.
-- Uses **Jetpack** (Android X).
-- Uses **Java 11**.
+#### Prerequisites
+- minSdkVersion **23** or higher.
+- compileSdkVersion, targetSdkVersion **34** or higher.
+- JavaVersion **17**.
+- [Jetpack (AndroidX)](https://developer.android.com/jetpack/androidx/migrate?authuser=0).
+- Android Gradle Plugin Version : 8.5.1 or higher.
+- Gradle Version : 8.9 or higher.
 
 Once you've made sure your project meets these requirements, you'll need to move on and define the aforementioned configuration values (`projectId`, `clientKey`, and `appId`) within your `build.grade` file (generally found at `${project name}/android/app/build.gradle`). These directly link your application's instance of Particle Auth with the [dashboard](https://dashboard.particle.network).
 
@@ -58,7 +61,7 @@ android {
       manifestPlaceholders["PN_PROJECT_CLIENT_KEY"] = "your project client key"
       manifestPlaceholders["PN_APP_ID"] = "your app id"
   }
-  
+
   dataBinding {
       enabled = true
   }
@@ -142,7 +145,7 @@ installer.pods_project.targets.each do |target|
 ```ruby
 post_install do |installer|
   installer.pods_project.targets.each do |target|
-      if target.name == 'ParticleNetworkBase' or 
+      if target.name == 'ParticleNetworkBase' or
          target.name == 'ParticleWalletAPI' or
          target.name == 'ParticleWalletGUI' or
          target.name == 'ParticleWalletConnect' or
@@ -175,8 +178,8 @@ post_install do |installer|
          target.name == 'Thresh' or
          target.name == 'ParticleMPCCore' or
          target.name == 'ParticleAuthCore' or
-         target.name == 'AuthCoreAdapter' 
-         
+         target.name == 'AuthCoreAdapter'
+
          target.build_configurations.each do |config|
               config.build_settings['BUILD_LIBRARY_FOR_DISTRIBUTION'] = 'YES'
       end
@@ -249,7 +252,7 @@ const userInfo = await particleAuthCore.connect(LoginType.Email, null, supportAu
 
 ### Disconnect
 
-An active session (logged-in user) can be disconnected (logged out) by simply calling this method `particleAuthCore.disconnect` for logout, 
+An active session (logged-in user) can be disconnected (logged out) by simply calling this method `particleAuthCore.disconnect` for logout,
 
 ```typeScript
 const status = await particleAuthCore.disconnect();
@@ -258,7 +261,7 @@ const status = await particleAuthCore.disconnect();
 
 ### Is connected
 
-Another important method is `particleAuthCore.isConnected`. This method returns a Boolean indicating whether a user is logged in. 
+Another important method is `particleAuthCore.isConnected`. This method returns a Boolean indicating whether a user is logged in.
 
 ```typeScript
 const result = await particleAuthCore.isConnected()
@@ -267,7 +270,7 @@ const result = await particleAuthCore.isConnected()
 
 ### Get address
 
-To retrieve the address of a currently logged-in user (EVM address if connected to an EVM chain, otherwise their Solana address), `evm.getAddress` or `solana.getAddress`can be called. 
+To retrieve the address of a currently logged-in user (EVM address if connected to an EVM chain, otherwise their Solana address), `evm.getAddress` or `solana.getAddress`can be called.
 
 For first-time users, only the address of the current chain will be generated. For example, if the current chain is an EVM chain, the user will only get the EVM address upon first login. If the user also needs a Solana address, they will need to call await particleAuthCore.switchChain(Solana) to obtain it. After switching successfully, the current chain will be changed to Solana, and the user can use `solana.getAddress` to get the address.
 
@@ -307,7 +310,7 @@ const result = await solana.signMessage(message);
 
 ### Sign Transaction
 
-This is a **Solana-specific** method for signing a transaction without sending it. Similar to message signing, this will prompt a signature in-UI with details about the transaction. Programmatically, the proposed transaction should be formatted as a (converted to a) base58 string. Passing in an object directly will not work in this case. 
+This is a **Solana-specific** method for signing a transaction without sending it. Similar to message signing, this will prompt a signature in-UI with details about the transaction. Programmatically, the proposed transaction should be formatted as a (converted to a) base58 string. Passing in an object directly will not work in this case.
 
 | Field         | Type     | Description              |
 | ------------- | -------- | ------------------------ |
@@ -440,11 +443,11 @@ You can forcibly set a specific appearance to be used within the UI using `parti
 
 
 ```typeScript
-// this is the default setting  
+// this is the default setting
 particleBase.setAppearance(Appearance.System);
-// dark  
+// dark
 particleBase.setAppearance(Appearance.Dark);
-// light  
+// light
 particleBase.setAppearance(Appearance.Dark);
 ```
 ---
@@ -474,9 +477,9 @@ Silently sign messages/transactions, this switch will work if the following cond
 3. SecurityAccountConfig.promptSettingWhenSign is 0, you can call `particleBase.setSecurityAccountConfig` to update its value.
 
 ```typeScript
-// set blind sign enable  
+// set blind sign enable
 particleAuthCore.setBlindEnable(true);
-// get current blind sign enable state  
+// get current blind sign enable state
 const result = await particleAuthCore.getBlindEnable();
 ```
 
@@ -668,7 +671,7 @@ final result = await SolanaService.getTokensAndNFTs(publicAddress, true);
 
 `SolanaService.serializeSplTokenTransaction`  facilitates the construction of a Spl-token transaction object,
 
-`SolanaService.serializeWSolTokenTransaction` facilitates the construction of a unwrap wsol transaction object. 
+`SolanaService.serializeWSolTokenTransaction` facilitates the construction of a unwrap wsol transaction object.
 
 These transactions, once constructed, can be passed for in-UI proposal with `Solana.signAndSendTransaction`.
 

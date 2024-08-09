@@ -1,4 +1,4 @@
----
+ ---
 title: Android (Kotlin) - Connect
 description: Leveraging Particle Connect within Android applications.
 ---
@@ -16,17 +16,18 @@ Before diving into the configuration and utilization process, if you'd like to t
 <div className="flex justify-center">
 
 <img
-  style={{ width: '300px'}}
-  className="block dark:hidden"
-  src="/api-reference/connect/mobile/images/connectkit-mobile.svg"
-  alt="Particle Connect Wallet."
+style={{ width: '300px'}}
+className="block dark:hidden"
+src="/api-reference/connect/mobile/images/connectkit-mobile.svg"
+alt="Particle Connect Wallet."
 />
 <img
-  style={{ width: '300px'}}
-  className="hidden dark:block"
-  src="/api-reference/connect/mobile/images/connectkit-mobile.svg"
-  alt="Particle Connect Wallet."
+style={{ width: '300px'}}
+className="hidden dark:block"
+src="/api-reference/connect/mobile/images/connectkit-mobile.svg"
+alt="Particle Connect Wallet."
 />
+
 </div>
 
 <Warning>
@@ -43,19 +44,12 @@ It is strongly discouraged to use a private key or the mnemonic import/generate 
 - [Jetpack (AndroidX)](https://developer.android.com/jetpack/androidx/migrate?authuser=0).
 - Android Gradle Plugin Version : 8.5.1 or higher.
 - Gradle Version : 8.9 or higher.
+
 ### Dependencies
 
 Installing and initializing Particle Connect is quite simple. In this case, this can be summed up in three steps. The first of them involves dependency management within your `build.gradle` file. Particle Connect requires numerous dependencies, the extent of which depends on the functions you intend to use within your application.
 
 To configure these dependencies, open your `build.gradle` file, and either paste the below code or conditionally define dependencies based upon which types of wallets you'd like to support:
-
-1. Regardless of specific functions, you'll need `network.particle:auth-service:{latest-version}` (Particle Auth), `network.particle:connect:{latest-version}` (Particle Connect), alongside either of the following:
-   1. `network.particle:connect-auth-adapter:{latest-version}` - This is the standard Particle Auth adapter (very similar to the typical Particle Auth SDK).
-   2. `network.particle:connect-auth-core-adapter:{latest-version}` - Alternatively, you can use the Particle Auth Core adapter (very similar to the Particle Auth Core SDK).
-2. If you'd like to support importing (or generating fresh) wallets on EVM chains, you'll need `network.particle:connect-evm-adapter:{latest-version}`.
-   1. To do the same on Solana, you can use `network.particle:connect-solana-adapter:{latest-version}`.
-3. To support connection with Phantom (on Solana), you'll need to use `network.particle:connect-phantom-adapter:{latest-version}`.
-4. For a general WalletConnect-based connection, you can use `network.particle:connect-wallet-connect-adapter:{latest-version}`.
 
 ```groovy build.gradle
 dependencies {
@@ -126,13 +120,13 @@ Open `AndroidManifest.xml` and either paste the below code or add a configuratio
 
     <meta-data
         android:name="particle.network.project_id"
-        android:value="${pn_project_id}"/>
+        android:value="${PN_PROJECT_ID}" />
     <meta-data
         android:name="particle.network.project_client_key"
-        android:value="${pn_project_client_key}"/>
+        android:value="${PN_PROJECT_CLIENT_KEY}" />
     <meta-data
         android:name="particle.network.app_id"
-        android:value="${pn_app_id}"/>
+        android:value="${PN_APP_ID}" />
 </application>
 ```
 
@@ -141,17 +135,6 @@ Open `AndroidManifest.xml` and either paste the below code or add a configuratio
 Before jumping into utilization and implementation, you'll need to finish the setup process by initializing Particle Connect within `Application#Create()` (`onCreate()`). Until initialization happens, Particle Connect won't work. This acts as the primary means of configuration.
 
 Initialization can be started through the `init` method on `ParticleConnect` (from `com.particle.connect.ParticleConnect`). `init` takes the following parameters:
-
-- `this`, operational context (you can keep it set to `this`).
-- `Env`, the environment (production, development, etc.) Particle Connect will be initialized within. Imported from `com.particle.base.Env`.
-- `ChainInfo`, the primary chain to be used within your application. `ChainInfo` can be set as a `ChainInfo` object imported from `network.particle.chains.ChainInfo.Companion.{chain}`.
-- `dAppMetadata`, metadata outlining the description of your application. This should be set as an instance of `DAppMetadata` (imported from `com.particle.base.model.DAppMetadata`) with the following parameters set:
-  - `walletConnectProjectId`, your WalletConnect project ID retrieved from the [WalletConnect dashboard](https://cloud.walletconnect.com).
-  - `name`, the name of your project.
-  - `icon`, a link containing the logo (icon) of your project; this should be 512x512, ideally.
-  - `url`, the URL of your project's website.
-  - `description`, a short description to be used in representing your project.
-- Additionally, within the body of the`init`, you'll need to define a list (`listOf`) wallets (adapters) that you'd like to be provided as an option within your instance of Particle Connect (these can be imported from `com.wallet.connect.adapter.{Adapter name}`).
 
 | Field          | Type                             | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
 | :------------- | :------------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -164,7 +147,7 @@ Initialization can be started through the `init` method on `ParticleConnect` (fr
 
 ```kotlin Kotlin
 val dAppMetadata = DAppMetadata(
-            walletConnectProjectId = "f431aaea6e4dea6a669c0496f9c009c1",
+            walletConnectProjectId = "your walletConnectProjectId",
             name ="Particle Connect",
             icon= "https://connect.particle.network/icons/512.png",
             url = "https://particle.network",
@@ -223,11 +206,13 @@ val accounts = ParticleConnect.getAccounts(chainType)
 ### Connect Wallet V2
 
 #### Dependencies
+
 To include the Particle Connect Kit in your project, Ensure that the following dependency is present in your `build.gradle` file:
 
 ```gradle
 implementation("network.particle:connect-kit:{latest-version}")
 ```
+
 `ParticleConnectKit.connect` is one click login function, which can present a customizable login UI. The parameter config can be derived from `ConnectKitConfig`.
 
 `ConnectKitConfig` have these parameters

@@ -52,6 +52,13 @@ flutter pub add particle_connect
 ```
 
 ### Android configuration
+#### Prerequisites
+- minSdkVersion **23** or higher.
+- compileSdkVersion, targetSdkVersion **34** or higher.
+- JavaVersion **17**.
+- [Jetpack (AndroidX)](https://developer.android.com/jetpack/androidx/migrate?authuser=0).
+- Android Gradle Plugin Version : 8.5.1 or higher.
+- Gradle Version : 8.9 or higher.
 
 To configure Particle Connect and prepare for utilization, you can begin by going ahead and opening your `build.gradle` file, often found at the following file path: `${project name}/android/app/build.gradle`
 
@@ -88,7 +95,7 @@ compileOptions {
 }
 
 kotlinOptions {
-  jvmTarget = JavaVersion.VERSION_11 
+  jvmTarget = JavaVersion.VERSION_11
 }
 
 dataBinding {
@@ -106,7 +113,7 @@ Before beginning, ensure your project meets the following prerequisites:
 
 - **iOS 14** or later.
 
-With these requirements set, you'll need to open an exported iOS project and find `ios/{project name}.xcworkspace`. 
+With these requirements set, you'll need to open an exported iOS project and find `ios/{project name}.xcworkspace`.
 
 At the root of your Xcode project, create a new file, `ParticleNetwork-Info.plist` . Ensure this is marked under "Target Membership."
 
@@ -135,7 +142,7 @@ Next, you'll need to head over to your `AppDelegate.swift` file to add an import
 import ParticleConnect
 ```
 
-Within your application's `application` method (as shown below), you'll need to include a handler condition derived from `ParticleConnect.handleUrl`. This should be as simple as a `true` return upon a truthy value of `ParticleConnect.handleUrl`, and a `super.application(app, open: url, options: options)` return upon a falsy value. 
+Within your application's `application` method (as shown below), you'll need to include a handler condition derived from `ParticleConnect.handleUrl`. This should be as simple as a `true` return upon a truthy value of `ParticleConnect.handleUrl`, and a `super.application(app, open: url, options: options)` return upon a falsy value.
 
 ```swift
 override func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
@@ -210,7 +217,7 @@ ParticleAuthCore.init()
 
 Additionally, if you'd like to define multiple chains to be available through WalletConnect, you'll need to create an array of `ChainInfo` objects (`chainInfos` in this example) and use it within `ParticleConnect.setWalletConnectV2SupportChainInfos`. E.g.:
 
-```dart 
+```dart
 List<ChainInfo> chainInfos = <ChainInfo>[ChainInfo.Ethereum];
 ParticleConnect.setWalletConnectV2SupportChainInfos(chainInfos);
 ```
@@ -218,7 +225,7 @@ ParticleConnect.setWalletConnectV2SupportChainInfos(chainInfos);
 
 ### Connect
 
-Acting as the primary method of returning a connection menu for a specific `WalletType`, the `connect` method on `ParticleConnect` will be the main mechanism for wallet connection within the Particle Connect SDK. `ParticleConnect.connect` takes one parameter, the `WalletType` to be requested for connection. Upon calling, the wallet specified in this field will throw an interface initiating the connection. 
+Acting as the primary method of returning a connection menu for a specific `WalletType`, the `connect` method on `ParticleConnect` will be the main mechanism for wallet connection within the Particle Connect SDK. `ParticleConnect.connect` takes one parameter, the `WalletType` to be requested for connection. Upon calling, the wallet specified in this field will throw an interface initiating the connection.
 
 `WalletType` is an `enum` containing the following:
 
