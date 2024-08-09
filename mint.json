@@ -103,10 +103,11 @@
               "group": "Smart Wallet-as-a-Service",
               "pages": [
                 "landing/wallet-abstraction/waas/overview",
+                "landing/wallet-abstraction/waas/differentiators",
                 "landing/wallet-abstraction/waas/mpc-tss",
                 "landing/wallet-abstraction/waas/bundler",
-                "landing/wallet-abstraction/waas/omni-paymaster",
-                "landing/wallet-abstraction/waas/differentiators"
+                "landing/wallet-abstraction/waas/omni-paymaster"
+                
               ]
             },
             "landing/wallet-abstraction/btc-connect"
@@ -177,7 +178,7 @@
           ]
         },
         {
-          "group": "Product Overviews",
+          "group": "SDKs Overview",
           "pages": [
             "guides/integrations/waas/auth",
             "guides/integrations/waas/wallet",
