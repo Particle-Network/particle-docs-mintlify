@@ -62,36 +62,26 @@ window.Buffer = Buffer;
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
-    <AuthCoreContextProvider
-      options={{
-        projectId: process.env.REACT_APP_PROJECT_ID!,
-        clientKey: process.env.REACT_APP_CLIENT_KEY!,
-        appId: process.env.REACT_APP_APP_ID!,
-        
-        // Remove the authTypes array to enable all supported social logins 
-        authTypes: [AuthType.email, AuthType.google, AuthType.twitter],
-        themeType: 'dark', // Login modal theme
-        fiatCoin: 'USD',
-        language: 'en',
-        erc4337: {
-          name: 'SIMPLE',
-          version: '1.0.0',
-        },
-
-        // You can prompt the user to set up extra security measure upon login or other interactions
-        promptSettingConfig: {
-          promptPaymentPasswordSettingWhenSign: PromptSettingType.first,
-          promptMasterPasswordSettingWhenLogin: PromptSettingType.first,
-        },
-        wallet: {
-          themeType: 'dark', // Wallet modal theme
-          visible: true,
-          customStyle: {
-            supportChains: [mainnet],
-          }
-        },
-      }}
-    >
+        <AuthCoreContextProvider
+          options={{
+            projectId: process.env.REACT_APP_PROJECT_ID!,
+            clientKey: process.env.REACT_APP_CLIENT_KEY!,
+            appId: process.env.REACT_APP_APP_ID!,
+            chains: [mainnet],
+            authTypes: [AuthType.email, AuthType.google, AuthType.twitter],
+            themeType: "dark",
+            fiatCoin: "USD",
+            language: "en",
+            // optional, ERC4337
+            erc4337: {
+              name: "SIMPLE",
+              version: "2.0.0",
+            },
+            wallet: {
+              visible: true,
+            },
+          }}
+        >
     <App />
       </AuthCoreContextProvider>
   </React.StrictMode>
