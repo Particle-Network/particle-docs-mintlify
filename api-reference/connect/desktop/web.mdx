@@ -498,6 +498,28 @@ primaryWallet.getWalletClient<SolanaChain>().signTransaction({...})
 
 ```
 
+Example of sending an EVM transaction:
+
+```tsx App.tsx
+  const executeTxEthers = async () => {
+
+      // Prepare the transaction object
+      const tx = {
+        to: recipientAddress,
+        value: parseEther("0.01"), 
+        data: "0x", // No contract interaction, so data is empty
+        chainId: primaryWallet.chainId, 
+        account: primaryWallet.accounts[0], 
+      };
+
+      // Get the wallet client and send the transaction
+      const walletClient = primaryWallet.getWalletClient();
+      const transactionResponse = await walletClient.sendTransaction(tx);
+
+      console.log("Transaction sent:", transactionResponse);
+  };
+```
+
 ### Key React Hooks for Particle Connect
 
 Particle Connect provides several React Hooks for interacting with both Particle Connect and Particle Auth. These include:
