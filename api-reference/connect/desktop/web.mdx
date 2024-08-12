@@ -426,6 +426,42 @@ export const App = () => {
 }
 ```
 
+### Fetch User Information with Particle Auth
+
+To access user information in your application, use the `useParticleAuth()` hook to retrieve `userinfo` and other relevant details from **Particle Auth**.
+
+```tsx App.tsx
+import { useParticleAuth } from '@particle-network/connectkit';
+import { useState, useEffect } from 'react';
+
+export const App = () => {
+  const { getUserInfo, useAccount } = useParticleAuth();
+  const { isConnected } = useAccount();
+
+// Store userInfo in a useState to use it in your app
+  const [userInfo, setUserInfo] = useState<any>(null);
+
+  useEffect(() => {
+    const fetchUserInfo = async () => {
+
+    // Use isConnected as a condition to avoid account not initialized errors
+      if (isConnected) {
+        const userInfo = await getUserInfo();
+        setUserInfo(userInfo);
+      }
+    };
+
+    fetchUserInfo();
+  }, [isConnected, getUserInfo]);
+
+  return (
+    <h2 className="text-style">
+        Name: {userInfo.name || "N/A"}
+    </h2>
+  );
+};
+```
+
 ### Use Wallet Client
 
 Once a wallet is connected, you can use it to send transactions and sign messages.
