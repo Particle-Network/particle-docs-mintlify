@@ -41,17 +41,20 @@ Before jumping directly into configuration and implementation, you'll need to ma
 
 ### Configuration
 
-With Particle Connect installed, you'll need to open your `index` file and wrap your `App` component with `ConnectKitProvider`, imported from `@particle-network/connectkit`. Within `ConnectKitProvider`, you'll have a variety of configurations to set:
+It is recommended to wrap your app within a new component that will help you set up ConnectKit and its dependencies.
+Start by creating a new component called `ParticleConnectkit`. Here you will import the required providers and create a config using `@particle-network/connectkit`'s
+`createConfig` method. Within `createConfig`, you'll have a variety of configurations to set:
 
 -   `projectId`, `clientKey`, and `appId`, these are required values for configuring Particle Connect and can be retrieved from the [Particle dashboard](https://dashboard.particle.network/)
+-   `chains`, the chains which your DApp support.
+-   `walletConnectors`, Configure the connectors required by the DApp.
 
 In addition to the configurations within `config`, you can set:
 
 -   `theme`, the theme of the connection UI, either `light`, `dark`, or `auto` (dependent on system settings).
--   `language`, the language used by the connection UI (optional.)
--   `chains`, the chains which your DApp support.
+-   `language`, the language used by the connection UI (optional.).
 
-Below is a code snippet showcasing a structured configuration of `ConnectKitProvider`, leveraging the parameters listed above.
+Below is a code snippet showcasing a structured configuration of `ParticleConnectkit`, leveraging the parameters listed above.
 
 ```tsx connectkit.tsx
 'use client';
@@ -115,6 +118,11 @@ export const ParticleConnectkit = ({ children }: React.PropsWithChildren) => {
 ```
 
 You can save this code snippet to a file named `connectkit.tsx`, and use `ParticleConnectkit` wrap your `App`.
+
+<Info>
+    When using a framework that supports React Server Components, you will need to include the "use client" directive at
+    the beginning of this file.
+</Info>
 
 ### Adding the connection button
 
