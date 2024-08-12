@@ -41,20 +41,25 @@ Before jumping directly into configuration and implementation, you'll need to ma
 
 ### Configuration
 
-It is recommended to wrap your app within a new component that will help you set up ConnectKit and its dependencies.
-Start by creating a new component called `ParticleConnectkit`. Here you will import the required providers and create a config using `@particle-network/connectkit`'s
-`createConfig` method. Within `createConfig`, you'll have a variety of configurations to set:
+The configuration process involves wrapping your application within a component to set up `ConnectKit` and its dependencies.
 
--   `projectId`, `clientKey`, and `appId`, these are required values for configuring Particle Connect and can be retrieved from the [Particle dashboard](https://dashboard.particle.network/).
--   `chains`, the chains which your DApp support.
--   `walletConnectors`, Configure the connectors required by the DApp.
+The recommended approach is to create a new component named `ParticleConnectKit`. 
+In this component, you'll import the necessary providers and create a configuration file using the `createConfig` method from `@particle-network/connectkit` . 
 
-In addition to the configurations within `config`, you can set:
+Here, you'll configure:
 
--   `theme`, the theme of the connection UI, either `light`, `dark`, or `auto` (dependent on system settings).
--   `language`, the language used by the connection UI (optional.).
+-   `projectId`, `clientKey`, and `appId` — required values that can be obtained from the [Particle dashboard](https://dashboard.particle.network/).
+-   `chains` — the supported chains for your dApp.
+-   `walletConnectors` — the connectors needed by the dApp.
 
-Below is a code snippet showcasing a structured configuration of `ParticleConnectkit`, leveraging the parameters listed above.
+Additionally, you can configure:
+
+-   `theme` — the connection UI's theme (`light`, `dark`, or `auto` based on system settings).
+-   `language` — the language of the connection UI (optional).
+
+Below is a template for structuring your `ParticleConnectKit` configuration using these parameters. 
+
+Create a new component named `connectkit.tsx` and follow the template to set up your configuration.
 
 ```tsx connectkit.tsx
 'use client';
@@ -99,7 +104,15 @@ const config = createConfig({
             metadata: { name: 'My App', icon: '', description: '', url: '' }, // optional, your app metadata, use for WalletConnect and Coinbase.
             walletConnectProjectId: 'replace it with WalletConnect project id', // optional, WalletConnect project id.
         }), // optional, you need to configure it when using social or email/phone connect.
-        authWalletConnectors(), // optional, you need to configure it when using EVM chains.
+        authWalletConnectors({
+        // optional, supported login methods, and display sequence from Particle Auth
+        authTypes: ["email", "google", "apple", "twitter", "github"],
+        fiatCoin: "USD",
+        promptSettingConfig: {
+            promptMasterPasswordSettingWhenLogin: 1, // optional
+            promptPaymentPasswordSettingWhenSign: 1, // optional
+            },
+        }),
         solanaWalletConnectors(), // optional, you need to configure it when using solana.
     ],
     plugins: [
@@ -117,12 +130,42 @@ export const ParticleConnectkit = ({ children }: React.PropsWithChildren) => {
 };
 ```
 
-You can save this code snippet to a file named `connectkit.tsx`, and use `ParticleConnectkit` wrap your `App`.
-
 <Info>
     When using a framework that supports React Server Components, you will need to include the `"use client"` directive at
     the beginning of the file.
 </Info>
+
+Next, import the `ParticleConnectKit` component and wrap your app with it in your `index` or `layout` file. Here's an example for a `layout.tsx` file:
+
+```tsx layout.tsx
+import type { Metadata } from "next";
+import { Inter } from "next/font/google";
+import "./globals.css";
+
+// Import the Connectkit configuration
+import { ParticleConnectkit } from "./components/Connectkit";
+
+const inter = Inter({ subsets: ["latin"] });
+
+export const metadata: Metadata = {
+  title: "Particle Connect",
+  description: "Demo showcasing a quickstart for Particle Connect 2.0",
+};
+
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  return (
+    <html lang="en">
+      <body className={inter.className}>
+        <ParticleConnectkit>{children}</ParticleConnectkit>
+      </body>
+    </html>
+  );
+}
+```
 
 ### Adding the connection button
 
