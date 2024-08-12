@@ -404,6 +404,28 @@ if (isConnected) {
 }
 ```
 
+### Leverage publicClient for RPC Calls
+
+**Connectkit** integrates Viem, allowing you to make RPC calls directly—such as fetching balances or nonces—via the `usePublicClient()` hook, eliminating the need for a separate provider.
+
+```tsx App.tsx
+import { usePublicClient } from "@particle-network/connectkit";
+
+export const App = () => {
+
+    // Init public client
+    const publicClient = usePublicClient();
+
+    // Fetch the balance of an account
+    const fetchBalance = async () => {
+        const balanceResponse = await publicClient?.getBalance({
+            address
+        });
+    };
+
+}
+```
+
 ### Use Wallet Client
 
 Once a wallet is connected, you can use it to send transactions and sign messages.
