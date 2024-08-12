@@ -10,11 +10,16 @@ description: 'Interacting with Particle Auth within web applications using eithe
 
 Among all of the SDKs for Particle Auth, the Web SDK (`@particle-network/authkit`) is the most widely used and thus offers extensive support and flexibility in facilitating interaction with Particle's Wallet-as-a-Service.
 
+<Note>Particle Auth allows you to easily integrate social logins in your dApp.</Note>
+
 The Particle Auth SDK is one of the primary mechanisms of **configuring** and **using** Particle. **Whether you're starting from scratch** or **already have an onboarding or authentication flow set up within your application**, the Particle Auth Core Web SDK is a simple yet powerful integration.
+
 
 ---
 
 ## Getting Started
+
+<Tip>Check out the [Web Quickstart guide](/guides/wallet-as-a-service/waas/web-quickstart) and get a new project up and running in just 5 minutes.</Tip>
 
 To get started with the Particle Auth Web SDK, you can add `@particle-network/authkit` to your project using either of the two following mechanisms:
 
@@ -28,11 +33,14 @@ yarn add @particle-network/authkit viem@2
 
 ## Configuration
 
-Before interacting with Particle, you'll need to import and configure your master configuration object; this'll be used to not only customize the embedded wallet modal which is optionally shown after logging in, but also will allow you to define required keys and authenticate your project.
+Configuration is primarily handled by wrapping an application with Particle Auth's master configuration component; this is essential for authenticating your project and [customizing the optional embedded wallet modal](/guides/configuration/appearance/wallet).
 
-Although before we import and configure this object, you'll need to retrieve the aforementioned keys.
+No matter which Particle Auth SDK you're using, you'll need to define your `projectId`, `clientKey`, and `appId` within this configuration object to properly authenticate your Particle Auth instance. Additionally, [you can apply customizations to the wallet modal](/guides/configuration/appearance/wallet) for a tailored user experience.
 
-Regardless of the Particle Auth SDK you use, you'll have the opportunity to define your `projectId`, `clientKey`, and `appId` to authenticate your instance of Particle Auth. In addition to this, customizations can be applied to the resulting wallet modal.
+<Note>Follow the quickstart tutorial to set up a project and find the required keys: [Create a new project](/guides/wallet-as-a-service/waas/web-quickstart#configuring-particle-auth).</Note>
+
+Below is an example of an `index.tsx` file from a `create-react-app` project. In this example, the `AuthCoreContextProvider` component acts as the configuration wrapper for the entire application.
+
 
 <Note>
     Follow the quickstart tutorial to set up a project and find the required keys: [Create a new
@@ -53,38 +61,45 @@ window.Buffer = Buffer;
 });
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
-
   <React.StrictMode>
     <AuthCoreContextProvider
       options={{
-        projectId: process.env.REACT_APP_PROJECT_ID,
-        clientKey: process.env.REACT_APP_CLIENT_KEY,
-        appId: process.env.REACT_APP_APP_ID,
-        chains: [mainnet],
+        projectId: process.env.REACT_APP_PROJECT_ID!,
+        clientKey: process.env.REACT_APP_CLIENT_KEY!,
+        appId: process.env.REACT_APP_APP_ID!,
+        
+        // Remove the authTypes array to enable all supported social logins 
         authTypes: [AuthType.email, AuthType.google, AuthType.twitter],
-        themeType: 'dark',
+        themeType: 'dark', // Login modal theme
         fiatCoin: 'USD',
         language: 'en',
-        // optional, ERC4337
         erc4337: {
           name: 'SIMPLE',
           version: '1.0.0',
         },
+
+        // You can prompt the user to set up extra security measure upon login or other interactions
         promptSettingConfig: {
           promptPaymentPasswordSettingWhenSign: PromptSettingType.first,
           promptMasterPasswordSettingWhenLogin: PromptSettingType.first,
         },
         wallet: {
+          themeType: 'dark', // Wallet modal theme
           visible: true,
+          customStyle: {
+            supportChains: [EthereumSepolia],
+          }
         },
       }}
     >
-      <App />
-    </AuthCoreContextProvider>
+    <App />
+      </AuthCoreContextProvider>
   </React.StrictMode>
 )
 ```
 </CodeGroup>
+
+<Tip>Learn how to customize the aesthetics of the login and embedded wallet interface in the [Customizing Login Modal](/guides/configuration/appearance/auth) and [Customizing Wallet Modal](/guides/configuration/appearance/wallet) pages.</Tip>
 
 ---
 
@@ -92,17 +107,19 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
 
 Now that you've configured an instance of Particle Auth, it's time to leverage Particle to facilitate social logins and interactions with Web3.
 
-To begin, you'll need to choose between the three following interaction mechanisms:
+To begin, you'll need to choose between the following interaction mechanisms:
 
 1. **Ethers.js**.
 2. **Web3.js**.
 3. **viem**.
 4. **Particle native**.
 
-All three will achieve the same end goal of facilitating interaction with Web3, although they will result in a slightly different initialization process. If you've chosen **Particle native**, no initialization of this nature past configuring `AuthCoreContextProvider` or `ParticleNetwork` is needed.
+All of them achieve the same end goal of facilitating interaction with Web3, although they will result in a slightly different initialization process. 
+
+If you've chosen **Particle native**, no initialization of this nature past configuring `AuthCoreContextProvider` or `ParticleNetwork` is needed.
 
 <CodeGroup>
-```typescript Ethers.js
+```typescript Ethers.js V5
 import { ethers } from "ethers";
 
 import { useEthereum } from '@particle-network/authkit';
@@ -112,6 +129,18 @@ const { provider } = useEthereum();
 const ethersProvider = new ethers.providers.Web3Provider(provider, "any");
 
 ````
+```typescript Ethers.js V6
+import { ethers, Eip1193Provider } from "ethers";
+
+import { useEthereum } from '@particle-network/authkit';
+
+const { provider } = useEthereum();
+
+const ethersProvider = new ethers.BrowserProvider(
+  provider as Eip1193Provider,
+  "any"
+);
+```
 ```typescript Web3.js
 import { Web3 } from "web3";
 
@@ -135,6 +164,8 @@ const viemProvider = createWalletClient({
 ```
 
 </CodeGroup>
+
+You can now use the provider object to interact with Web3, enabling actions like fetching account balances or sending transactions.
 
 ---
 
