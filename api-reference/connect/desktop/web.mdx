@@ -6,13 +6,13 @@ description: 'Leveraging Particle Connect within web applications.'
 
 ## Particle Connect for Web
 
-Particle Connect acts as a simple method of aggregating connection with both Web2 accounts through Particle Auth and Web3 accounts through traditional wallets, creating an equally accessible experience for both Web3 natives and traditional consumers. Specifically, Particle Connect is a custom connection modal built around interaction with Particle.
+**Particle Connect** streamlines connecting with both **Web2** accounts via Particle Auth and **Web3** accounts through traditional wallets, providing a unified and accessible experience for all users. This custom connection modal is designed to facilitate seamless interactions within the Particle ecosystem.
 
 Leveraging Particle Connect as the primary connection mechanism (the **Connect** button within your application) only takes a few steps, **as outlined below**.
 
 ## Demo
 
-Before beginning, if you'd like to view a demo for Particle Connect, the official web demo contains a [page with a standard implementation](https://core-demo.particle.network).
+Before you begin, you might want to explore a demo of Particle Connect. You can view a [standard implementation](https://core-demo.particle.network) on the official web demo page.
 
 <div className="flex justify-center">
     <img className="block" src="https://static.particle.network/demo-preview.png" alt="Particle Connect." />
@@ -20,11 +20,11 @@ Before beginning, if you'd like to view a demo for Particle Connect, the officia
 
 ## Getting Started
 
+Implementing Particle Connect involves four key steps. Once completed, your application will feature a **Connect** button to easily onboards both **Web2** and **Web3** users, all powered by Particle Network.
+
 ### Installation
 
-Implementing Particle Connect can be achieved in four main steps. By the end of step four, your application will have a **Connect** button capable of onboarding both Web2 and Web3 users alike, powered directly by Particle Network.
-
-For step one, you'll need to install the Particle Connect Web SDK.
+The first step is to install the Particle Connect Web SDK.
 
 ```shell Terminal
 yarn add @particle-network/connectkit viem@^2
@@ -45,7 +45,7 @@ It is recommended to wrap your app within a new component that will help you set
 Start by creating a new component called `ParticleConnectkit`. Here you will import the required providers and create a config using `@particle-network/connectkit`'s
 `createConfig` method. Within `createConfig`, you'll have a variety of configurations to set:
 
--   `projectId`, `clientKey`, and `appId`, these are required values for configuring Particle Connect and can be retrieved from the [Particle dashboard](https://dashboard.particle.network/)
+-   `projectId`, `clientKey`, and `appId`, these are required values for configuring Particle Connect and can be retrieved from the [Particle dashboard](https://dashboard.particle.network/).
 -   `chains`, the chains which your DApp support.
 -   `walletConnectors`, Configure the connectors required by the DApp.
 
@@ -120,8 +120,8 @@ export const ParticleConnectkit = ({ children }: React.PropsWithChildren) => {
 You can save this code snippet to a file named `connectkit.tsx`, and use `ParticleConnectkit` wrap your `App`.
 
 <Info>
-    When using a framework that supports React Server Components, you will need to include the "use client" directive at
-    the beginning of this file.
+    When using a framework that supports React Server Components, you will need to include the `"use client"` directive at
+    the beginning of the file.
 </Info>
 
 ### Adding the connection button
