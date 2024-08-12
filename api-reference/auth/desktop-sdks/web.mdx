@@ -34,7 +34,7 @@ yarn add @particle-network/auth-core-modal
 
 Configuration is primarily handled by wrapping an application with Particle Auth's master configuration component; this is essential for authenticating your project and [customizing the optional embedded wallet modal](/guides/configuration/appearance/wallet).
 
-No matter which Particle Auth SDK you're using, you'll need to define your `projectId`, `clientKey`, and `appId` within this configuration object to properly authenticate your Particle Auth instance. Additionally, you can apply customizations to the wallet modal for a tailored user experience.
+No matter which Particle Auth SDK you're using, you'll need to define your `projectId`, `clientKey`, and `appId` within this configuration object to properly authenticate your Particle Auth instance. Additionally, [you can apply customizations to the wallet modal](/guides/configuration/appearance/wallet) for a tailored user experience.
 
 <Note>Follow the quickstart tutorial to set up a project and find the required keys: [Create a new project](/guides/wallet-as-a-service/waas/web-quickstart#configuring-particle-auth).</Note>
 
@@ -92,7 +92,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
 ```
 </CodeGroup>
 
-<Tip>Learn how to customize the estetics in the [Customizing Login Modal](/guides/configuration/appearance/auth) and [Customizing Wallet Modal](/guides/configuration/appearance/wallet) pages.</Tip>
+<Tip>Learn how to customize the aesthetics of the login and embedded wallet interface in the [Customizing Login Modal](/guides/configuration/appearance/auth) and [Customizing Wallet Modal](/guides/configuration/appearance/wallet) pages.</Tip>
 
 ***
 
@@ -272,11 +272,7 @@ const { connectionStatus } = useConnect();
 
 Once the user is logged in, the `userInfo` object from the `useAuthCore()` hook becomes available. 
 
-This object provides a wealth of information that can enhance the user experience (UX). 
-
 <Note>The result of `connect()` will return the same object.</Note>
-
-
 
 For example, you can use it to display the user's `name` and `avatar`, or access security details such as `has_set_master_password`. This allows you to implement logic that prompts the user to set a master password if they haven’t already, thereby improving security.
 
