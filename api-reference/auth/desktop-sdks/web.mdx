@@ -256,11 +256,27 @@ The `useConnect()` hook provides several functions to check the user's connectio
 
   You can use `connectionStatus` to manage login logic or to display relevant status information in the UI.
 
+```tsx page.tsx
+import { useConnect } from "@particle-network/auth-core-modal";
+
+const { connectionStatus } = useConnect();
+
+<h2 className="status-text">
+{/* Status changes are automatically handled*/}
+  Status: {connectionStatus}
+</h2>
+```
+
+
 ### Handling User Information
 
 Once the user is logged in, the `userInfo` object from the `useAuthCore()` hook becomes available. 
 
 This object provides a wealth of information that can enhance the user experience (UX). 
+
+<Note>The result of `connect()` will return the same object.</Note>
+
+
 
 For example, you can use it to display the user's `name` and `avatar`, or access security details such as `has_set_master_password`. This allows you to implement logic that prompts the user to set a master password if they haven’t already, thereby improving security.
 
@@ -315,6 +331,9 @@ The following is an example of how you can render user information taken from `u
 
 ```tsx App.tsx
   const { userInfo } = useAuthCore();
+  
+  // Or
+  // const userInfo = await connect();
 
   {userInfo && (
   <div>
