@@ -34,7 +34,7 @@ Before jumping directly into configuration and implementation, you'll need to ma
 
 <Note>
     Follow the quickstart tutorial to set up a project and find the required keys: [Create a new
-    project](/guides/wallet-as-a-service/waas/web-quickstart#configuring-particle-auth).
+    project](/guides/wallet-as-a-service/waas/auth/web-quickstart#configuring-particle-auth).
 </Note>
 
 ### Configuration
@@ -465,11 +465,43 @@ export const App = () => {
 };
 ```
 
+### Use EIP-1193 Provider (Ethers, Web3.js)
+
+If your dApp is already using a standard library such as Ethers or Web3.js, accounts can be managed through plugging in an EIP-1193 provider attached to the connected EOA.
+
+Upon constructing an instance of Ethers or Web3.js using this provider, transactions can be sent and messages can be signed using standard syntax from that library; these requests will be automatically routed to the EOA connected through **Particle Connect**.
+
+An example of this approach with Ethers has been included below.
+
+```ts App.tsx
+import { useWallets } from '@particle-network/connectkit';
+import { ethers } from 'ethers';
+
+const [primaryWallet] = useWallets();
+
+const EOAprovider = await primaryWallet.connector.getProvider();
+
+const customProvider = new ethers.providers.Web3Provider(EOAprovider, "any");
+```
+
+With this configured, both read and write calls can be made from the resulting provider object, for example:
+
+```ts TypeScript
+// Read (balance retrieval)
+const balance = await customProvider.getBalance(address);
+
+// Write (sending a transaction)
+const signer = customProvider.getSigner();
+const tx = {
+  to: "0x000000000000000000000000000000000000dEaD",
+  value: ethers.utils.parseEther("0.01"),
+};
+const txResponse = await signer.sendTransaction(tx);
+```
+
 ### Use Wallet Client
 
-Once a wallet is connected, you can use it to send transactions and sign messages.
-
-The Wallet Client interface allows you to interact with accounts, providing functionality to retrieve accounts, execute transactions, sign messages, and more.
+As an alternative to using an EIP-1193 provider with a standard Web3 library, the Wallet Client interface allows you to directly interact with accounts, providing functionality to execute transactions, sign messages, and more.
 
 For more details on `WalletClient`, refer to the [Viem documentation](https://viem.sh/docs/clients/wallet).
 
