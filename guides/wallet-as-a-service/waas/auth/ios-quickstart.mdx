@@ -1,0 +1,130 @@
+---
+title: iOS Quickstart
+---
+
+## Prerequisites
+
+- **Xcode 15.0** or higher
+- **CocoaPods 1.14.3** or higher
+- **iOS 14** or higher
+
+## Dependencies
+
+Add below SDKs to your Podfile, specify the latest version number, this lastest version number can be found [here](https://github.com/Particle-Network/particle-connect-ios).
+
+```ruby Podfile
+pod `ParticleConnectKit`
+pod 'AuthCoreAdapter'
+pod 'ParticleConnect'
+pod 'ConnectPhantomAdapter'
+pod 'ConnectWalletConnectAdapter'
+pod 'ConnectCommon'
+```
+
+Add a file named `ParticleNetwork-Info.plist` to your project, then replace these project info, that you've retrieved your `projectId`, `clientKey`, and `appId` from the Particle dashboard.
+
+```xml ParticleNetwork-Info.plist
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>PROJECT_UUID</key>
+	<string>YOUR_PROJECT_UUID</string>
+	<key>PROJECT_CLIENT_KEY</key>
+	<string>YOUR_PROJECT_CLIENT_KEY</string>
+	<key>PROJECT_APP_UUID</key>
+	<string>YOUR_PROJECT_APP_UUID</string>
+</dict>
+</plist>
+```
+
+Add below code into your `info.plist`.
+
+```xml Info.plist
+<key>LSApplicationQueriesSchemes</key>
+<array>
+	<string>metamask</string>
+	<string>phantom</string>
+	<string>bitkeep</string>
+	<string>imtokenv2</string>
+	<string>rainbow</string>
+	<string>trust</string>
+	<string>zerion</string>
+    <string>mathwallet</string>
+    <string>oneinch</string>
+    <string>awallet</string>
+    <string>okex</string>
+</array>
+<key>NSPhotoLibraryUsageDescription</key>
+<string>We need access in order to open photos of barcodes</string>
+<key>NSCameraUsageDescription</key>
+<string>We use the camera to scan barcodes</string>
+<key>NSFaceIDUsageDescription</key>
+<string>We use Face ID for secure access to the app.</string>
+```
+
+Add scheme url to your Xcode project.
+
+For example, if your `appId` is `63bfa427-cf5f-4742-9ff1-e8f5a1b9828f`, then the scheme URL would be `pn63bfa427-cf5f-4742-9ff1-e8f5a1b9828f` --simply adding `pn` to the beginning of the `appId`.
+
+
+## Initialize SDK
+
+```swift
+var adapters: [ConnectAdapter] = [
+    AuthCoreAdaper(),
+    WalletConnectAdapter(),
+    MetaMaskConnectAdapter(),
+    PhantomConnectAdapter(),
+    ImtokenConnectAdapter(),
+    BitkeepConnectAdapter(),
+    RainbowConnectAdapter(),
+    TrustConnectAdapter(),
+    ZerionConnectAdapter(),
+    MathConnectAdapter(),
+    Inch1ConnectAdapter(),
+    ZengoConnectAdapter(),
+    AlphaConnectAdapter(),
+    OKXConnectAdapter()
+    ]
+
+let walletConnectProjectId = "your wallet project id"
+ParticleConnect.setWalletConnectV2ProjectId(walletConnectProjectId)
+ParticleWalletConnect.initialize(
+        WalletMetaData(name: "Particle Wallet",
+                        icon: URL(string: "https://connect.particle.network/icons/512.png")!,
+                        url: URL(string: "https://particle.network")!,
+                        description: "Particle Connect is a decentralized wallet connection protocol that makes it easy for users to connect their wallets to your DApp.", redirectUniversalLink: nil)
+    )
+ParticleWalletConnect.setWalletConnectV2ProjectId(walletConnectProjectId)
+ParticleConnect.initialize(env: .debug, chainInfo: .ethereumSepolia, dAppData: .standard, adapters: adapters)
+ParticleWalletGUI.setAdapters(adapters)
+
+ParticleWalletGUI.setShowTestNetwork(true)
+```
+
+## Connect
+
+```swift
+let connectOptions: [ConnectOption] = [.email, .phone, .social, .wallet]
+let socialProviders: [EnableSocialProvider] = [.google, .apple]
+let walletProviders: [EnableWalletProvider] = [EnableWalletProvider(name: "metamask", state: .recommended), EnableWalletProvider(name: "okx", state: .popular), EnableWalletProvider(name: "walletConnect", state: .none)]
+let additionalLayoutOptions = AdditionalLayoutOptions(isCollapseWalletList: false, isSplitEmailAndSocial: false, isSplitEmailAndPhone: false, isHideContinueButton: false)
+// icon support local image, base64 string or url.
+let designOptions: DesignOptions = .init(icon: ImagePath.local(UIImage(named: "icon")!))
+let config = ConnectKitConfig(connectOptions: connectOptions, socialProviders: socialProviders, walletProviders: walletProviders, additionalLayoutOptions: additionalLayoutOptions, designOptions: designOptions)
+
+let account = try await ParticleConnectUI.connect(config: config).value 
+```
+
+# Open wallet
+
+After connect, you can open wallet at any time
+
+```swift
+PNRouter.navigatorWallet(hiddenBackButton: false)
+```
+
+<Tip>The complete demo project [Demo](https://github.com/Particle-Network/particle-connect-ios/tree/master/ConnectKitDemo).</Tip>
+
+<Tip>The complete mobile SDK reference is available at [SDKs (Mobile)](/api-reference/connect/mobile/ios).</Tip>
