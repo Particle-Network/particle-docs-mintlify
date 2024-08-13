@@ -172,8 +172,7 @@
         {
           "group": "Quickstarts (Connect)",
           "pages": [
-            "guides/wallet-as-a-service/waas/connect/mobile-quickstart",
-            "guides/wallet-as-a-service/waas/connect/android-quickstart"
+            "guides/wallet-as-a-service/waas/connect/mobile-quickstart"
           ]
         },
         {
