@@ -6,13 +6,13 @@ description: 'Leveraging Particle Connect within web applications.'
 
 ## Particle Connect for Web
 
-**Particle Connect** streamlines connecting with both **Web2** accounts via Particle Auth and **Web3** accounts through traditional wallets, providing a unified and accessible experience for all users. This custom connection modal is designed to facilitate seamless interactions within the Particle ecosystem.
+**Particle Connect** enables a unified modal driving connection with both social logins (through Particle Auth) and standard Web3 wallets, creating an equally accessible experience for Web3 natives and traditional consumers. Essentially, Particle Connect acts as an all-in-one SDK capable of handling end-to-end onboarding and wallet connection.
 
 Leveraging Particle Connect as the primary connection mechanism (the **Connect** button within your application) only takes a few steps, **as outlined below**.
 
 ## Demo
 
-Before you begin, you might want to explore a demo of Particle Connect. You can view a [standard implementation](https://core-demo.particle.network) on the official web demo page.
+Before you begin, feel free to explore and test the [Particle Connect demo](https://demo.particle.network) to contextualize the information covered below.
 
 <div className="flex justify-center">
     <img className="block" src="https://static.particle.network/demo-preview.png" alt="Particle Connect." />
@@ -20,11 +20,9 @@ Before you begin, you might want to explore a demo of Particle Connect. You can 
 
 ## Getting Started
 
-Implementing Particle Connect involves four key steps. Once completed, your application will feature a **Connect** button to easily onboards both **Web2** and **Web3** users, all powered by Particle Network.
-
 ### Installation
 
-The first step is to install the Particle Connect Web SDK.
+To begin, you'll need to install the Particle Connect Web SDK.
 
 ```shell Terminal
 yarn add @particle-network/connectkit viem@^2
@@ -41,23 +39,20 @@ Before jumping directly into configuration and implementation, you'll need to ma
 
 ### Configuration
 
-The configuration process involves wrapping your application within a component to set up `ConnectKit` and its dependencies.
-
-The recommended approach is to create a new component named `ParticleConnectKit`. 
-In this component, you'll import the necessary providers and create a configuration file using the `createConfig` method from `@particle-network/connectkit` . 
+With Particle Connect installed and your project keys retrieved, you're ready to condfigure the SDK; this process involves wrapping your application within a component, `ConnectKitProvider`, to establish various customizations and insert the aforementioned keys.
 
 Here, you'll configure:
 
 -   `projectId`, `clientKey`, and `appId` — required values that can be obtained from the [Particle dashboard](https://dashboard.particle.network/).
--   `chains` — the supported chains for your dApp.
--   `walletConnectors` — the connectors needed by the dApp.
+-   `chains` — the supported chains for your dApp; these are viem-originating objects imported from `@particle-network/connectkit/evm`.
+-   `walletConnectors` — an array of connectors representing the wallets you'd like to support within your dApp.
 
 Additionally, you can configure:
 
--   `theme` — the connection UI's theme (`light`, `dark`, or `auto` based on system settings).
+-   `theme` — the theme used within the connection modal (`light`, `dark`, or `auto` based on system settings).
 -   `language` — the language of the connection UI (optional).
 
-Below is a template for structuring your `ParticleConnectKit` configuration using these parameters. 
+Below is a code snippet showcasing a structured configuration of `ConnectKitProvider`, using the aforementioned parameters.
 
 Create a new component named `connectkit.tsx` and follow the template to set up your configuration.
 
@@ -73,58 +68,63 @@ import { wallet, EntryPosition } from '@particle-network/connectkit/wallet';
 import React from 'react';
 
 const config = createConfig({
-    projectId: 'replace it with particle project id', // replace this.
-    clientKey: 'replace it with particle client key', // replace this.
-    appId: 'replace it with particle app id', // replace this.
-    appearance: {
-        // optional, define wallet label and sort wallets.
+    projectId: 'Replace with your Particle Project ID', // --
+    clientKey: 'Replace with your Particle Client Key', // Retrived from https://dashboard.particle.network
+    appId: 'Replace with your Particle App ID', // --
+    appearance: { // Optional, collection of properties to alter the appearance of the connection modal
+        // Optional, label and sort wallets (to be shown in the connection modal)
         recommendedWallets: [
             { walletId: 'metaMask', label: 'Recommended' },
             { walletId: 'coinbaseWallet', label: 'popular' },
         ],
-        splitEmailAndPhone: false,
-        collapseWalletList: false,
-        hideContinueButton: false,
-        //  optional, sort wallet connectors
-        connectorsOrder: ['email', 'phone', 'social', 'wallet'],
-        language: 'en-US',
-        mode: 'light', // dark or auto.
+        splitEmailAndPhone: false, // Optional, displays Email and phone number entry separately
+        collapseWalletList: false, // Optional, hide wallet list behind a button
+        hideContinueButton: false, // Optional, remove "Continue" button underneath Email or phone number entry
+        connectorsOrder: ['email', 'phone', 'social', 'wallet'], //  Optional, sort connection methods (index 0 will be placed at the top)
+        language: 'en-US', // Optional, also supported ja-JP, zh-CN, zh-TW, and ko-KR
+        mode: 'light', // Optional, changes theme between light, dark, or auto (which will change it based on system settings)
         theme: {
             '--pcm-accent-color': '#ff4d4f',
             // ... other options
         },
         logo: 'https://...',
-        filterCountryCallingCode: (countrys) => {
-            // set only support USA, default support all country code.
-            return countrys.filter((item) => item === 'US');
+        filterCountryCallingCode: (countries) => {
+            // Optional, whitelist or blacklist phone numbers from specific countries
+            return countries.filter((item) => item === 'US');
         },
     },
     walletConnectors: [
         evmWalletConnectors({
-            metadata: { name: 'My App', icon: '', description: '', url: '' }, // optional, your app metadata, use for WalletConnect and Coinbase.
-            walletConnectProjectId: 'replace it with WalletConnect project id', // optional, WalletConnect project id.
-        }), // optional, you need to configure it when using social or email/phone connect.
+            metadata: { name: 'My App', icon: '', description: '', url: '' }, // Optional, this is Metadata used by WalletConnect and Coinbase
+            walletConnectProjectId: 'Replace with your WalletConnect Project ID', // optional, retrieved from https://cloud.walletconnect.com
+        }),
         authWalletConnectors({
-        // optional, supported login methods, and display sequence from Particle Auth
-        authTypes: ["email", "google", "apple", "twitter", "github"],
-        fiatCoin: "USD",
+        // Optional, configure this if you're using social logins
+        authTypes: ["email", "google", "apple", "twitter", "github"], // Optional, restricts the types of social logins supported
+        fiatCoin: "USD", // Optional, also supports CNY, JPY, HKD, INR, and KRW
         promptSettingConfig: {
-            promptMasterPasswordSettingWhenLogin: 1, // optional
-            promptPaymentPasswordSettingWhenSign: 1, // optional
+            // Optional, changes the frequency in which the user is asked to set a master or payment password
+            // 0 = Never ask
+            // 1 = Ask once
+            // 2 = Ask always, upon every entry
+            // 3 = Force the user to set this password
+            promptMasterPasswordSettingWhenLogin: 1,
+            promptPaymentPasswordSettingWhenSign: 1,
             },
         }),
-        solanaWalletConnectors(), // optional, you need to configure it when using solana.
+        solanaWalletConnectors(), // Optional, you need to configure it when using Solana
     ],
     plugins: [
         wallet({
-            entryPosition: EntryPosition.BR,
-            visible: true,
-        }), // optional, embedded wallet, support solana and evm chains.
+            // Optional configurations for the attached embedded wallet modal
+            entryPosition: EntryPosition.BR, // Alters the position in which the modal button appears upon login
+            visible: true, // Dictates whether or not the wallet modal is included/visible or not
+        }),
     ],
     chains: [mainnet, solana],
 });
 
-// Wrap your application with this component.
+// Export ConnectKitProvider to be used within your index or layout file (or use createConfig directly within those files).
 export const ParticleConnectkit = ({ children }: React.PropsWithChildren) => {
     return <ConnectKitProvider config={config}>{children}</ConnectKitProvider>;
 };
@@ -135,14 +135,14 @@ export const ParticleConnectkit = ({ children }: React.PropsWithChildren) => {
     the beginning of the file.
 </Info>
 
-Next, import the `ParticleConnectKit` component and wrap your app with it in your `index` or `layout` file. Here's an example for a `layout.tsx` file:
+Next, import the `ParticleConnectKit` component (representing `ConnectKitProvider`) and wrap your application with it in your `index` or `layout` file. Here's an example for a `layout.tsx` file:
 
 ```tsx layout.tsx
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 
-// Import the Connectkit configuration
+// Import the ConnectKitProvider configuration (exported as ParticleConnectKit)
 import { ParticleConnectkit } from "./components/Connectkit";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -171,8 +171,7 @@ export default function RootLayout({
 
 Moving out of your `index` file and into your main `App` component, you'll need to include the **Connect** button (`ConnectButton` from `@particle-network/connectkit`) to facilitate the utilization of Particle Connect.
 
-
-You can then use `isConnected` from `useAccount()` to handle what is rendered to the user.
+You can then use `isConnected` from `useAccount()` to handle what is shown to the user.
 
 ```tsx 
 import { ConnectButton, useAccount } from '@particle-network/connectkit';
@@ -200,11 +199,11 @@ export const App = () => {
 
 ## Wallet Connectors
 
-### Auth
+### Social Logins
 
-**ConnectKit** relies on [Particle Auth](/api-reference/auth/desktop-sdks/web) for authentication.
+**ConnectKit** relies on [Particle Auth](/api-reference/auth/desktop-sdks/web) for social authentication.
 
-With Particle Auth, you can implement `email`, `phone`, and various `social` logins in your dApp.
+With Particle Auth, you can onboard users through methods such as `email`, `phone`, and various `social` logins (Google, X, and so on).
 
 ```typescript
 import { createConfig } from '@particle-network/connectkit';
@@ -212,23 +211,27 @@ import { authWalletConnectors } from '@particle-network/connectkit/auth';
 
 const config = createConfig({
     walletConnectors: [
-        authWalletConnectors({
-            // optional, supported login methods, and display sequence.
-            authTypes: ['email', 'phone', 'google', 'apple', 'twitter'],
-            fiatCoin: 'USD',
-            promptSettingConfig: {
-                promptMasterPasswordSettingWhenLogin: 1, // optional
-                promptPaymentPasswordSettingWhenSign: 1, // optional
+         authWalletConnectors({
+        authTypes: ["email", "google", "apple", "twitter", "github"], // Optional, restricts the types of social logins supported
+        fiatCoin: "USD", // Optional, also supports CNY, JPY, HKD, INR, and KRW
+        promptSettingConfig: {
+            // Optional, changes the frequency in which the user is asked to set a master or payment password
+            // 0 = Never ask
+            // 1 = Ask once
+            // 2 = Ask always, upon every entry
+            // 3 = Force the user to set this password
+            promptMasterPasswordSettingWhenLogin: 1,
+            promptPaymentPasswordSettingWhenSign: 1,
             },
         }),
     ],
-    // other options...
+    // Other connectors..
 });
 ```
 
-### EVM Wallet
+### EVM Wallets
 
-**ConnectKit** supports all standard EVM wallets, and you can use the `injected` method to customize support for specific wallets.
+In addition to social logins, **Particle Connect** supports all standard EVM wallets, and you can use the `injected` method to support additional extension-based wallets that inject a provider.
 
 The following wallets are supported by default:
 
@@ -240,7 +243,7 @@ The following wallets are supported by default:
 -   Trust Wallet
 -   Bitget Wallet
 
-Simply add EVM wallet connectors to **ConnectKit** to enable these options.
+Simply add EVM wallet connectors to `walletConnectors` (within your `ConnectKitProvider` config) to enable these options.
 
 ```typescript
 import { createConfig } from '@particle-network/connectkit';
@@ -249,26 +252,21 @@ import { evmWalletConnectors, injected, walletConnect, coinbaseWallet } from '@p
 const config = createConfig({
     walletConnectors: [
         evmWalletConnectors({
-            metadata: {
-                // app metadata, use for WalletConnect and Coinbase.
-                name: 'My App',
-                icon: 'https://...',
-                description: 'Web3 Demo',
-                url: 'https://...',
+            metadata: { name: 'My App', icon: '', description: '', url: '' }, // Optional, this is Metadata used by WalletConnect and Coinbase
+            walletConnectProjectId: 'Replace with your WalletConnect Project ID', // optional, retrieved from https://cloud.walletconnect.com
             },
-            walletConnectProjectId: 'WalletConnect project id', // optional, required if you use WalletConnect.
-            // optional, define the supported connectors.
+            // Optional, defines specific wallet connectors to be supported
             connectorFns: [
                 injected({ target: 'metaMask' }),
                 injected({ target: 'trustWallet' }),
                 injected({ target: 'okxWallet' }),
                 coinbaseWallet(),
                 walletConnect({ projectId: 'WalletConnect project id', showQrModal: false }),
-                // customize support for a specific wallet.
+                // Optional, include support for a specific injected wallet (that isn't already supported)
                 injected({
                     target: {
                         icon: 'https://...',
-                        id: 'xxx', // wallet unique id
+                        id: 'xxx', // Wallet Unique ID
                         name: 'XXX Wallet',
                         provider: (window) => {
                             return window?.xxx.ethereum;
@@ -280,13 +278,13 @@ const config = createConfig({
             multiInjectedProviderDiscovery: true,
         }),
     ],
-    // other options...
+    // Other connectors...
 });
 ```
 
-### Solana Wallet
+### Solana Wallets
 
-**ConnectKit** supports all standard Solana wallets, and you can use the `injected` method to customize support for specific wallets.
+Finally, **Particle Connect** also supports all standard Solana wallets, and, similar to EVM wallets, you can use the `injected` method to customize support for specific wallets.
 
 The following wallets are supported by default:
 
@@ -296,7 +294,7 @@ The following wallets are supported by default:
 -   Trust Wallet
 -   Bitget Wallet
 
-Simply add Solana wallet connectors to **ConnectKit** to enable these options.
+Simply add Solana wallet connectors to `walletConnectors` (within your `ConnectKitProvider` config) to enable these options.
 
 ```typescript
 import { createConfig } from '@particle-network/connectkit';
@@ -305,14 +303,14 @@ import { solanaWalletConnectors, injected } from '@particle-network/connectkit/s
 const config = createConfig({
     walletConnectors: [
         solanaWalletConnectors({
-            // optional, define the supported connectors.
+            // Optional, defines specific wallet connectors to be supported
             connectorFns: [
                 injected({ target: 'phantom' }),
                 injected({ target: 'coinbaseWallet' }),
                 injected({ target: 'bitKeep' }),
                 injected({ target: 'trustWallet' }),
                 injected({ target: 'okxWallet' }),
-                // customize support for a specific wallet.
+                // Optional, include support for a specific injected wallet (that isn't already supported)
                 injected({
                     target: {
                         icon: 'https://...',
@@ -326,7 +324,7 @@ const config = createConfig({
             ],
         }),
     ],
-    // other options...
+    // Other connectors...
 });
 ```
 
@@ -334,11 +332,11 @@ const config = createConfig({
 
 ### Embedded Wallet
 
-The **ConnectKit** Embedded Wallet Plugin relies on [Particle Wallet](/api-reference/wallet/desktop/web).
+The Embedded Wallet Plugin relies on [Particle Wallet](/api-reference/wallet/desktop/web) to display a complete wallet interface upon login, displaying user balances, NFTs, allowing standard P2P transactions, swapping, and so on; this is particularly helpful when using social logins or account abstraction.
 
-Once a wallet (e.g., MetaMask, Phantom) is connected, you can access the embedded wallet service.
+Once a user is connected(through MetaMask, Phantom, socials, etc.) , you can access the embedded wallet service.
 
-Simply add the wallet plugin to **ConnectKit** to enable this feature.
+Simply add the wallet plugin to `plugins` (within your `ConnectKitProvider` config) to enable this feature.
 
 ```typescript
 import { createConfig } from '@particle-network/connectkit';
@@ -347,21 +345,22 @@ import { wallet, EntryPosition } from '@particle-network/connectkit/wallet';
 const config = createConfig({
     plugins: [
         wallet({
-            visible: true, // display float button
-            entryPosition: EntryPosition.BR, // float button position
+            // Optional configurations for the attached embedded wallet modal
+            entryPosition: EntryPosition.BR, // Alters the position in which the modal button appears upon login
+            visible: true, // Dictates whether or not the wallet modal is included/visible or not
             customStyle: {
-                // Override the connectkit configuration.
+                // Override the default configuration.
                 // Define the wallet-specific configurations.
             },
         }),
     ],
-    // other options...
+    // Other plugins...
 });
 ```
 
 ### Account Abstraction
 
-The **ConnectKit** AA Plugin relies on [Particle Account Abstraction](/api-reference/aa/sdks/desktop/web).
+The **Particle Connect** AA Plugin relies on [Particle's Account Abstraction SDK](/api-reference/aa/sdks/desktop/web) to enable rich, built-in utilization of ERC-4337.
 
 Particle supports the following smart account implementations:
 
@@ -371,7 +370,11 @@ Particle supports the following smart account implementations:
 -   Light
 -   Xterio
 
-To enable these features, simply add the AA plugin to ConnectKit.
+<Note>
+For a complete list of supported chains for each aforementioned account implementation, head over to the [Network Coverage](/guides/network-coverage) page.
+</Note>
+
+To enable these features, simply add the AA plugin to `plugins` (within your `ConnectKitProvider` config).
 
 ```typescript
 import { createConfig } from '@particle-network/connectkit';
@@ -384,15 +387,15 @@ const config = createConfig({
             version: '2.0.0',
         }),
     ],
-    // other options...
+    // Other plugins...
 });
 ```
 
-## Examples of utilization
+## Examples of Utilization
 
 ### Verify User Connection
 
-After setting up **Particle Connect** in your application, you can check if a user is connected via **Particle Connect**, using either **Particle Auth** or a traditional **Web3** wallet using the `useAccount` hook.
+After setting up **Particle Connect** in your application, you can check if a user is connected via **Particle Connect** using `isConnected` from the `useAccount` hook (`isConnected` will be truthy automatically upon connection).
 
 ```typescript TypeScript
 import { useAccount } from '@particle-network/connectkit';
@@ -428,7 +431,7 @@ export const App = () => {
 
 ### Fetch User Information with Particle Auth
 
-To access user information in your application, use the `useParticleAuth()` hook to retrieve `userinfo` and other relevant details from **Particle Auth**.
+When a user connects through socials, you can use the `useParticleAuth()` hook to retrieve `userinfo` (which includes details about the method they used to connect, when the account was created, etc.) and other relevant details from **Particle Auth**.
 
 ```tsx App.tsx
 import { useParticleAuth } from '@particle-network/connectkit';
@@ -474,26 +477,26 @@ For more details on `WalletClient`, refer to the [Viem documentation](https://vi
 import { SolanaChain, useWallets } from '@particle-network/connectkit';
 
 const [primaryWallet] = useWallets();
-// wallet accounts.
+// Accounts (addresses) tied to the connected wallet (or social login)
 const accounts = primaryWallet.accounts;
-// current chainId
+// Current chain ID being used
 const chainId = primaryWallet.chainId;
 
-// evm wallet
-// send transaction
+// EVM wallet methods
+// Send a transaction
 primaryWallet.getWalletClient().sendTransaction({...})
-// sign message
+// Sign a message
 primaryWallet.getWalletClient().signMessage({...})
-// sign typed data
+// Sign typed data
 primaryWallet.getWalletClient().signTypedData({...})
 
 
-// solana wallet
-// send transaction.
+// Solana wallet methods
+// Send a transaction
 primaryWallet.getWalletClient<SolanaChain>().sendTransaction({...})
-// sign message.
+// Sign a message
 primaryWallet.getWalletClient<SolanaChain>().signMessage({...})
-// sign transaction
+// Sign a transaction (without sending)
 primaryWallet.getWalletClient<SolanaChain>().signTransaction({...})
 
 ```
