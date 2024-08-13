@@ -1,0 +1,83 @@
+---
+title: 'Particle Auth FAQ'
+sidebarTitle: 'FAQ'
+description: 'Find Frequently Asked Questions about Particle Auth.'
+---
+
+## 1. What is the validity period of your token?
+
+*Answer:* The validity period of the token is currently under review. We will update this section with the correct information once it is confirmed.
+
+---
+
+## 2. How can I ensure the signature result is consistent each time?
+
+*Answer:* Due to the unique characteristics of Multi-Party Computation (MPC), the signature result for the same message can vary each time, unlike traditional private key wallets such as MetaMask. To address scenarios requiring a consistent signature result, we provide the `uniq` parameter. This parameter ensures that the signature remains consistent every time you sign the same message.
+
+---
+
+## 3. How can I silently log in and sign messages/transactions?
+
+*Answer:* Currently, silent login and signing are not directly supported. However, this functionality can be achieved using [session keys](/guides/integrations/aa/keys#implementing-session-keys) with Biconomy V2. We are exploring other options to support silent signing in the future.
+
+---
+
+## 4. How do I determine if an account is new? 
+
+*Answer:* When you retrieve `UserInfo`, either through the `connect` method or via the `userInfo` object from `useAuthCore`, several fields provide relevant information:
+
+- **Account Creation:** The `created_at` field indicates the timestamp when the account was created.
+
+<Note>Find more about Handling User Information in the [Particle Auth SDK](/api-reference/auth/desktop-sdks/web#handling-user-information) page.</Note>
+
+---
+
+## 5. How can I check the status of the main password and payment password settings?
+
+The `userInfo` object contains a `security_account` property, which includes two fields:
+  - `has_set_master_password`: Indicates if the master password is set.
+  - `has_set_payment_password`: Indicates if the payment password is set.
+
+---
+
+## 6. Why does Google login prompt me that I do not comply with the policy?
+
+*Answer:* This issue typically occurs when using Google login within a WebView environment.
+
+---
+
+<AccordionGroup>
+
+  <Accordion title="1. What is the validity period of your token?" icon="calendar-check">
+    **Answer:** The validity period of the token is currently under review. We will update this section with the correct information once it is confirmed.
+  </Accordion>
+
+  <Accordion title="2. How can I ensure the signature result is consistent each time?" icon="signature">
+    **Answer:** Due to the unique characteristics of Multi-Party Computation (MPC), the signature result for the same message can vary each time, unlike traditional private key wallets such as MetaMask. To address scenarios requiring a consistent signature result, we provide the `uniq` parameter. This parameter ensures that the signature remains consistent every time you sign the same message.
+  </Accordion>
+
+  <Accordion title="3. How can I silently log in and sign messages/transactions?" icon="key">
+    **Answer:** Currently, silent login and signing are not directly supported. However, this functionality can be achieved using [session keys](/guides/integrations/aa/keys#implementing-session-keys) with Biconomy V2. We are exploring other options to support silent signing in the future.
+  </Accordion>
+
+  <Accordion title="4. How do I determine if an account is new?" icon="user-plus">
+    **Answer:** When you retrieve `UserInfo`, either through the `connect` method or via the `userInfo` object from `useAuthCore`, several fields provide relevant information:
+
+    - **Account Creation:** The `created_at` field indicates the timestamp when the account was created.
+
+    <Note>Find more about Handling User Information in the [Particle Auth SDK](/api-reference/auth/desktop-sdks/web#handling-user-information) page.</Note>
+
+  </Accordion>
+
+  <Accordion title="5. How can I check the status of the main password and payment password settings?" icon="lock">
+    **Answer:** The `userInfo` object contains a `security_account` property, which includes two fields:
+    - `has_set_master_password`: Indicates if the master password is set.
+    - `has_set_payment_password`: Indicates if the payment password is set.
+  </Accordion>
+
+  <Accordion title="6. Why does Google login prompt me that I do not comply with the policy?" icon="shield">
+    **Answer:** This issue typically occurs when using Google login within a WebView environment.
+  </Accordion>
+
+</AccordionGroup>
+
