@@ -313,7 +313,8 @@
         {
           "group": "SDKs (Multi-platform)",
           "pages": ["api-reference/auth/multi/unreal"]
-        }
+        },
+        "api-reference/auth/faq"
       ]
     },
     {
