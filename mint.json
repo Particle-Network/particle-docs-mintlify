@@ -173,16 +173,16 @@
         "group": "Quickstarts (Connect)",
           "pages": [
             "guides/wallet-as-a-service/waas/connect/web-quickstart",
-            "guides/wallet-as-a-service/waas/connect/mobile-quickstart"
+            "guides/wallet-as-a-service/waas/connect/mobile-quickstart",
+            "guides/wallet-as-a-service/waas/connect/android-quickstart",
+            "guides/wallet-as-a-service/waas/connect/ios-quickstart"
           ]
         },
         {
           "group": "Quickstarts (Auth)",
           "pages": [
             "guides/wallet-as-a-service/waas/auth/web-quickstart",
-            "guides/wallet-as-a-service/waas/auth/tg-quickstart",
-            "guides/wallet-as-a-service/waas/auth/android-quickstart",
-            "guides/wallet-as-a-service/waas/auth/ios-quickstart"
+            "guides/wallet-as-a-service/waas/auth/tg-quickstart"
           ]
         },
         {
