@@ -67,6 +67,9 @@ dependencies {
       replacedBy("org.bouncycastle:bcprov-jdk15on")
     }
   }
+  // Find the latest version of the SDK:
+  // https://search.maven.org/search?q=g:network.particle
+  val sdkVersion = "x.x.x" 
   implementation 'network.particle:connect:{latest-version}'
   implementation 'network.particle:connect-auth-core-adapter:{latest-version}'
   implementation 'network.particle:connect-wallet-connect-adapter:{latest-version}'

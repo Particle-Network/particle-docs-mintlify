@@ -1,0 +1,238 @@
+---
+title: Android Quickstart
+---
+
+## Prerequisites
+
+- minSdkVersion **23** or higher.
+- compileSdkVersion, targetSdkVersion **34** or higher.
+- JavaVersion **17**.
+- [Jetpack (AndroidX)](https://developer.android.com/jetpack/androidx/migrate?authuser=0).
+- Android Gradle Plugin Version : 8.5.1 or higher.
+- Gradle Version : 8.9 or higher.
+
+## Download
+
+your `setting.gralde` file
+
+```gradle
+pluginManagement {
+    repositories {
+        gradlePluginPortal()
+        google()
+        mavenCentral()
+    }
+}
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        google()
+        mavenCentral()
+        maven { setUrl("https://jitpack.io") }
+    }
+}
+```
+
+your `build.gradle` file
+
+```gradle
+android {
+  //...
+    defaultConfig {
+      //...
+      minSdk = 23
+      targetSdk = 34
+      manifestPlaceholders["PN_PROJECT_ID"] = "your project id"
+      manifestPlaceholders["PN_PROJECT_CLIENT_KEY"] = "your project client id"
+      manifestPlaceholders["PN_APP_ID"] = "your app id "
+      //...
+    }
+
+    compileOptions {
+        sourceCompatibility(JavaVersion.VERSION_17)
+        targetCompatibility(JavaVersion.VERSION_17)
+    }
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_17.toString()
+    }
+    dataBinding {
+        isEnabled = true
+    }
+}
+
+dependencies {
+    //required
+    modules {
+        module("org.bouncycastle:bcprov-jdk15to18") {
+            replacedBy("org.bouncycastle:bcprov-jdk15on")
+        }
+        module("org.bouncycastle:bcprov-jdk18on") {
+            replacedBy("org.bouncycastle:bcprov-jdk15on")
+        }
+    }
+    // Find the latest version of the SDK:
+    // https://search.maven.org/search?q=g:network.particle
+    val sdkVersion = "x.x.x"
+    implementation("network.particle:connect:$sdkVersion")
+    implementation("network.particle:connect-kit:$sdkVersion")
+    implementation("network.particle:connect-evm-adapter:$sdkVersion")
+    implementation("network.particle:connect-solana-adapter:$sdkVersion")
+    implementation("network.particle:connect-phantom-adapter:$sdkVersion")
+    implementation("network.particle:connect-wallet-connect-adapter:$sdkVersion")
+    implementation("network.particle:connect-auth-core-adapter:$sdkVersion")
+    implementation("network.particle:api-service:$sdkVersion")
+
+    implementation("network.particle:wallet-service:$sdkVersion")
+    implementation("network.particle:aa-service:$sdkVersion")
+}
+```
+
+your `AndroidManifest.xml`
+
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <application
+        android:fullBackupContent="@xml/pn_backup_rules"
+        tools:replace="android:fullBackupContent"
+        >
+
+        <!-- Particle Connect Redirect Callback -->
+        <!-- Particle AuthCore Start -->
+        <activity
+            android:name="com.particle.auth.controller.AuthCoreWebActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:exported="true"
+            android:launchMode="singleTask"
+            android:theme="@style/ThemeAuthWeb">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="ac${PN_APP_ID}" />
+            </intent-filter>
+        </activity>
+        <!-- Particle AuthCore End -->
+
+        <!-- Particle Connect Redirect Callback -->
+        <activity
+            android:name="com.connect.common.controller.RedirectActivity"
+            android:exported="true"
+            android:launchMode="singleTask"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="connect${PN_APP_ID}" />
+            </intent-filter>
+        </activity>
+
+        <meta-data
+            android:name="particle.network.project_client_key"
+            android:value="${PN_PROJECT_CLIENT_KEY}" />
+
+        <meta-data
+            android:name="particle.network.app_id"
+            android:value="${PN_APP_ID}" />
+
+        <meta-data
+            android:name="particle.network.project_id"
+            android:value="${PN_PROJECT_ID}" />
+
+    </application>
+
+
+</manifest>
+```
+
+## Initialize SDK
+
+```kotlin
+val dAppMetadata = DAppMetadata(
+    "your wallet connect appiId",
+    "Particle Connect",
+    "https://connect.particle.network/icons/512.png",
+    "https://particle.network",
+    description = "Particle Connect is a decentralized wallet connection protocol that makes it easy for users to connect their wallets to your DApp.",
+)
+ParticleConnect.init(
+    app, Env.PRODUCTION, chainInfo, dAppMetadata
+) {
+    listOf(
+        AuthCoreAdapter(),
+        MetaMaskConnectAdapter(),
+        RainbowConnectAdapter(),
+        TrustConnectAdapter(),
+        PhantomConnectAdapter(),
+        WalletConnectAdapter(),
+        ImTokenConnectAdapter(),
+        BitGetConnectAdapter(),
+        EVMConnectAdapter(),
+        SolanaConnectAdapter(),
+    )
+}
+ParticleWallet.init(app)
+```
+
+## Open a wallet
+
+```kotlin
+val config = ConnectKitConfig(
+      logo = "",
+      connectOptions = listOf(
+          ConnectOption.EMAIL,
+          ConnectOption.PHONE,
+          ConnectOption.SOCIAL,
+          ConnectOption.WALLET),
+      socialProviders = listOf(
+          EnableSocialProvider.GOOGLE,
+          EnableSocialProvider.APPLE,
+          EnableSocialProvider.DISCORD,
+          EnableSocialProvider.TWITTER,
+          EnableSocialProvider.FACEBOOK,
+          EnableSocialProvider.GITHUB,
+          EnableSocialProvider.MICROSOFT,
+          EnableSocialProvider.TWITCH,
+          EnableSocialProvider.LINKEDIN),
+      walletProviders = listOf(
+          EnableWalletProvider(EnableWallet.MetaMask, EnableWalletLabel.RECOMMENDED),
+          EnableWalletProvider(EnableWallet.OKX),
+          EnableWalletProvider(EnableWallet.Phantom),
+          EnableWalletProvider(EnableWallet.Trust),
+          EnableWalletProvider(EnableWallet.Bitget),
+          EnableWalletProvider(EnableWallet.WalletConnect),
+      ),
+      additionalLayoutOptions = AdditionalLayoutOptions(
+          isCollapseWalletList = false,
+          isSplitEmailAndSocial = false,
+          isSplitEmailAndPhone = false,
+          isHideContinueButton = false
+      )
+            )
+ParticleConnectKit.connect(config,connectCallback = object : ConnectKitCallback {
+    override fun onConnected(walletName: String, account: Account) {
+        LogUtils.d("onConnected: $walletName, $account")
+        lifecycleScope.launch {
+            ParticleWallet.setWallet(account.publicAddress,walletName)
+            PNRouter.build(RouterPath.Wallet).navigation()
+        }
+    }
+
+    override fun onError(error: ConnectError) {
+    }
+
+});
+```
+
+<Tip>The complete demo project [Demo]("https://github.com/Particle-Network/particle-android").</Tip>
+
+<Tip>The complete mobile SDK reference is available at [SDKs (Mobile)](/api-reference/auth/mobile-sdks/android).</Tip>
