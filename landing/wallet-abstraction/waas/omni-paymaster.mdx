@@ -77,11 +77,11 @@ Developers can configure a whitelist of contract methods they want to sponsor in
 
 ## Sponsorship Policy
 
-The simplest way is to configure a whitelist of contract methods to sponsor. However, using Webhooks provides more flexibility, allowing for unlimited sponsorship strategies.
+The simplest way is to configure a whitelist of contract methods to sponsor. However, using Webhooks provides more flexibility, allowing for unlimited sponsorship strategies through any programmatic logic.
 
 Developers can use Webhooks to implement any sponsorship logic they wish in conjunction with the Paymaster.
 
-For the `before_paymaster_sign webhook`, we return all the data necessary:
+For the `before_paymaster_sign` webhook, we return all the data necessary:
 
 - projectUuid
 - chainId
@@ -103,15 +103,6 @@ This allows, for example, for the following business scenarios:
 
 In many cases, programmatic sponsorship policies can be used and adapted to create a friendly experience and simplify experiences where it matters most.
 
-## Config & Check Paymaster
-
-1. Check Balance & Deposit;
-2. Check UserOp sponsor records.
-
-<Frame caption="Config Paymaster on Dashbaord">
-![Config Paymaster on Dashbaord](/landing/wallet-abstraction/waas/images/paymaster-dashboard.png)
-</Frame>
-
-## More
-
-Click to learn more about [Particle’s AA Stack](/api-reference/aa/introduction).
+<Tip> 
+To learn more about Particle's Account Abstraction Stack, head over to the relevant [SDK reference pages](/api-reference/aa/introduction).
+</Tip>
