@@ -10,10 +10,85 @@ title: Android Quickstart
 - [Jetpack (AndroidX)](https://developer.android.com/jetpack/androidx/migrate?authuser=0).
 - Android Gradle Plugin Version : 8.5.1 or higher.
 - Gradle Version : 8.9 or higher.
+<Steps>
 
-## Download
+<Step title="Create and add an Android project.">
+    Particle Connect requires three key values to be initiated: `projectId`, `clientKey`, and `appId`. These values fundamentally link your application with the [Particle dashboard](https://dashboard.particle.network/).
 
-your `setting.gralde` file
+    To retrieve these values for configuration within your application, follow these steps:
+
+    <AccordionGroup>
+        <Accordion title="Access the Particle Dashboard">
+
+            Sign up or Log in into the [Particle dashboard](https://dashboard.particle.network/)
+
+            <div className="flex justify-center">
+                <img
+                    className="block h-64 dark:hidden"
+                    src="/guides/wallet-as-a-service/waas/images/login.png"
+                    alt="Login into Particle."
+                />
+                <img
+                    className="hidden h-64 dark:block"
+                    src="/guides/wallet-as-a-service/waas/images/login.png"
+                    alt="Login into Particle."
+                />
+            </div>
+        </Accordion>
+        <Accordion title="Create a new project or enter an existing project">
+            <div className="flex justify-center">
+                <img
+                    className="block h-64 dark:hidden"
+                    src="/guides/wallet-as-a-service/waas/images/project.png"
+                    alt="Create Particle project."
+                />
+                <img
+                    className="hidden h-64 dark:block"
+                    src="/guides/wallet-as-a-service/waas/images/project.png"
+                    alt="Create Particle project."
+                />
+            </div>
+        </Accordion>
+
+        <Accordion title="Create a new application, or skip this step if you already have one">
+            <div className="flex justify-center">
+                <img
+                    className="block h-64 dark:hidden"
+                    src="/guides/wallet-as-a-service/images/android-app.svg"
+                    alt="Create web app."
+                />
+                <img
+                    className="hidden h-64 dark:block"
+                    src="/guides/wallet-as-a-service/images/android-app.svg"
+                    alt="Create web app."
+                />
+            </div>
+        </Accordion>
+
+        <Accordion title="Retrieve the project ID (`projectId`), the client key (`clientKey`), and the application ID (`appId`)">
+            <div className="flex justify-center">
+                <img
+                    className="block h-64 dark:hidden"
+                    src="/guides/wallet-as-a-service/waas/images/credentials.png"
+                    alt="Find app's credentials."
+                />
+                <img
+                    className="hidden h-64 dark:block"
+                    src="/guides/wallet-as-a-service/waas/images/credentials.png"
+                    alt="Find app's credentials."
+                />
+            </div>
+        </Accordion>
+    </AccordionGroup>
+
+    For more information on the Particle dashboard, take a look at the [dashboard quickstart](/guides/dashboard).
+
+    With your `projectId`, `clientKey`, and `appId` retrieved,  then replace these project info, that you've retrieved your `projectId`, `clientKey`, and `appId` from the Particle dashboard.
+</Step>
+    <Step title="Installing & Configuring Particle Connect">
+
+        To install Particle Connect within your project, copy and execute the following command.
+        your `setting.gralde` file
 
 ```gradle
 pluginManagement {
@@ -22,9 +97,7 @@ pluginManagement {
         google()
         mavenCentral()
     }
-}
 dependencyResolutionManagement {
-    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
         google()
         mavenCentral()
@@ -32,8 +105,7 @@ dependencyResolutionManagement {
     }
 }
 ```
-
-your `build.gradle` file
+        your `build.gradle` file
 
 ```gradle
 android {
@@ -42,9 +114,9 @@ android {
       //...
       minSdk = 23
       targetSdk = 34
-      manifestPlaceholders["PN_PROJECT_ID"] = "your project id"
-      manifestPlaceholders["PN_PROJECT_CLIENT_KEY"] = "your project client id"
-      manifestPlaceholders["PN_APP_ID"] = "your app id "
+      manifestPlaceholders["PN_PROJECT_ID"] = "your projectId"
+      manifestPlaceholders["PN_PROJECT_CLIENT_KEY"] = "your clientKey"
+      manifestPlaceholders["PN_APP_ID"] = "your appId"
       //...
     }
 
@@ -153,9 +225,8 @@ your `AndroidManifest.xml`
 
 </manifest>
 ```
-
-## Initialize SDK
-
+    </Step>
+ <Step title="Initialize Particle Connect">
 ```kotlin
 val dAppMetadata = DAppMetadata(
     "your wallet connect appiId",
@@ -182,9 +253,9 @@ ParticleConnect.init(
 }
 ParticleWallet.init(app)
 ```
-
-## Open wallet
-
+</Step>
+<Step title="Facilitating logins">
+With the SDK configured, you can move on to initiating social logins within your application.
 ```kotlin
 val config = ConnectKitConfig(
       logo = "",
@@ -220,11 +291,9 @@ val config = ConnectKitConfig(
             )
 ParticleConnectKit.connect(config,connectCallback = object : ConnectKitCallback {
     override fun onConnected(walletName: String, account: Account) {
-        LogUtils.d("onConnected: $walletName, $account")
-        lifecycleScope.launch {
-            ParticleWallet.setWallet(account.publicAddress,walletName)
-            PNRouter.build(RouterPath.Wallet).navigation()
-        }
+        val publicAddress = account.publicAddress
+        val connectedWalletName = walletName
+      
     }
 
     override fun onError(error: ConnectError) {
@@ -232,6 +301,60 @@ ParticleConnectKit.connect(config,connectCallback = object : ConnectKitCallback 
 
 });
 ```
+</Step>
+<Step title="Use account">
+Now that you've obtained an account, how do you use it? 
+Based on the current chainInfo, `account.publicAddress` will return the user's current address. All EVM-compatible chains share the same address, but Solana has its own unique address. `walletName` will return the connection type of this account, indicating where it came from. If walletType is `AuthCore`, it means the account is a Particle account, and you can retrieve more information by using `AuthCore.getUserInfo`. Refer to the auth [documentation](/api-reference/auth/mobile-sdks/android) for more details. You should save all the account information for future use.
+```kotlin
+ParticleConnectKit.connect(config,connectCallback = object : ConnectKitCallback {
+    override fun onConnected(walletName: String, account: Account) {
+        //Save the account information properly; it will be needed when operating the account, such as for transfers and signing。
+        val publicAddress = account.publicAddress
+        val connectedWalletName = walletName
+    }
+
+    override fun onError(error: ConnectError) {
+    }
+});
+```
+</Step>
+<Step title="Optional, send a transaction">
+```kotlin
+val publicAddress = account.publicAddress
+val connectedWalletName = walletName
+val uiAmount = "0.0001"
+val value = "0x"+uiAmount.toBigDecimal().multiply(BigDecimal(1e18)).toBigInteger().toString(16)
+val trans =ParticleNetwork.evm.createTransaction(from ,to,value)!!.serialize()
+val adapter = ParticleConnect.getAdapters().first { it.name == connectedWalletName }
+adapter.signAndSendTransaction(publicAddress,trans,
+    object : TransactionCallback {
+        override fun onError(error: ConnectError) {
+            LogUtils.d("signAndSendTransaction onError")
+        }
+
+        override fun onTransaction(transactionId: String?) {
+            LogUtils.d("signAndSendTransaction onTransaction")
+        }
+    })
+``` 
+</Step>
+<Step title="Optional, Open wallet">
+```kotlin
+ParticleConnectKit.connect(config,connectCallback = object : ConnectKitCallback {
+    override fun onConnected(walletName: String, account: Account) {
+        lifecycleScope.launch {
+            ParticleWallet.setWallet(account.publicAddress,walletName)
+            openWallet()
+        }
+    }
+    override fun onError(error: ConnectError) {
+    }
+});
+```
+</Step>
+</Steps>
+<Tip> To get support for `Account Abstraction`, integrate the `ParticleAA` SDK and refer to this [documentation](/api-reference/aa/sdks/mobile/android).</Tip>
+
 
 <Tip>The complete demo project [Demo](https://github.com/Particle-Network/particle-android).</Tip>
 
