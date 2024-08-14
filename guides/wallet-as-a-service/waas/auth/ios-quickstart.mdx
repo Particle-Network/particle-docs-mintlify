@@ -2,8 +2,6 @@
 title: "iOS Quickstart"
 ---
 
-# Quickstart: Implementing Particle's Wallet-as-a-Service within iOS Applications
-
 Getting started and integrating Particle Network's Wallet-as-a-Service within your web application often takes **less than five minutes**.
 
 Below is a quick rundown on installing, configuring, and facilitating social logins within a typical iOS application. For a more in-depth explanation of each feature, go to [Introduction to API & SDK overview](/api-reference/introduction).
@@ -28,6 +26,9 @@ To install Particle Auth within your project, copy and execute the following com
 pod `ParticleAuthCore`
 pod 'ParticleMPCCore'
 pod 'Thresh'
+
+pod 'ParticleWalletAPI' #Optional, for create transaciton
+pod `ParticleWalletGUI` #Optional, for wallet
 ```
 </Step>
 
@@ -128,6 +129,8 @@ With your `projectId`, `clientKey`, and `appId` retrieved, you'll add a file nam
 <Step title="Initialize SDK">
 
 ```swift
+// You can retrieve chainInfo from ChainInfo, the initialize works for the first time open.
+// If you support more than one chain, you can use ParticleNetwork.setChainInfo to switch.
 ParticleNetwork.initialize(config: .init(chainInfo: .ethereum, devEnv: .debug))
 ```
 
@@ -143,7 +146,51 @@ let userInfo = try await auth.connect(type: .jwt, account: "the JWT")
 ```
 </Step>
 
-<Step title="Open wallet">
+<Step title="Use account">
+
+Now that you've obtained the particle userInfo, how do you use it? 
+
+You can have your server authenticate using the `userInfo.uuid` and `userInfo.token` at [SDKs (Server)](/api-reference/auth/server/getuserinfo).
+Got the publicAddress from `auth.evm.getAddress()` or `auth.solana.getAddress()`, 
+
+<Tip>When a user logs in for the first time, if there is no account, we will create one. Based on the current chainInfo, a new address will be generated. For example, if the current chain is EVM-compatible, only an EVM address will be generated; if it's the Solana chain, only a Solana address will be generated. If you want to obtain both addresses, you can use `auth.switchChain` to switch chains, and after waiting for 2 seconds, a new address for the selected chain will be generated for you.</Tip>
+
+```swift
+let evmAddress = auth.evm.getAddress()
+let solanaAddress = auth.solana.getAddress()
+
+let flag = try await self.auth.switchChain(chainInfo: .solana)
+if flag {
+    let userInfo = self.auth.getUserInfo()
+}
+
+
+// if you add ParticleAA (Account Abstraction) and enable aa service.
+let smartAccountAddress = self.auth.getUserInfo()?.smartAccountAddress
+
+if account.walletType == WalletType.authCore {
+    let auth = Auth()
+    let userInfo = auth.getUserInfo()
+}
+```
+</Step>
+
+<Step title="Optional, send a transaction">
+Now you can send a transaction, such as sending 0.000000001 ether to the zero address.
+Firstly, create a transaction with `ParticleWalletAPI.createTransaction`.
+Secondly, send it.
+
+```swift
+let receiverAddress = "0x0000000000000000000000000000000000000000"
+let value = BDouble(0.000000001 * pow(10, 18)).rounded().toHexString()
+let transaction = try await ParticleWalletAPI.evm().createTransaction(from: account.publicAddress, to: receiverAddress, value: value, data: "0x").value
+
+// Got this transaction hash                
+let txHash = try await self.auth.evm.sendTransaction(transaction, chainInfo: nil)
+```
+</Step>
+
+<Step title="Optional, open wallet">
 
 Particle Auth supports Wallet SDK, follow the wallet [documentation](/api-reference/wallet/mobile/ios.mdx), add more pods to your Podfile.
 
