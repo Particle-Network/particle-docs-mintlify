@@ -170,11 +170,17 @@
       "pages": [
         "guides/wallet-as-a-service/waas/understanding-waas",
         {
-          "group": "Quickstarts",
+        "group": "Quickstarts (Connect)",
           "pages": [
-            "guides/wallet-as-a-service/waas/web-quickstart",
-            "guides/wallet-as-a-service/waas/tg-quickstart",
-            "guides/wallet-as-a-service/waas/mobile-quickstart"
+            "guides/wallet-as-a-service/waas/connect/web-quickstart"
+          ]
+        },
+        {
+          "group": "Quickstarts (Auth)",
+          "pages": [
+            "guides/wallet-as-a-service/waas/auth/web-quickstart",
+            "guides/wallet-as-a-service/waas/auth/tg-quickstart",
+            "guides/wallet-as-a-service/waas/auth/mobile-quickstart"
           ]
         },
         {
@@ -188,11 +194,9 @@
         {
           "group": "Connection Kits",
           "pages": [
-            "guides/wallet-as-a-service/connection-kits/particle-connect",
             "guides/wallet-as-a-service/connection-kits/rainbow",
             "guides/wallet-as-a-service/connection-kits/web3modal",
-            "guides/wallet-as-a-service/connection-kits/web3-onboard",
-            "guides/wallet-as-a-service/connection-kits/solana"
+            "guides/wallet-as-a-service/connection-kits/web3-onboard"
           ]
         },
         {
@@ -307,7 +311,8 @@
         {
           "group": "SDKs (Multi-platform)",
           "pages": ["api-reference/auth/multi/unreal"]
-        }
+        },
+        "api-reference/auth/faq"
       ]
     },
     {
@@ -546,7 +551,7 @@
     },
     {
       "source": "/docs/web-desktop-quickstart",
-      "destination": "/guides/wallet-as-a-service/waas/web-quickstart"
+      "destination": "/guides/wallet-as-a-service/waas/auth/web-quickstart"
     },
     {
       "source": "/docs/mobile-androidios-quickstart",

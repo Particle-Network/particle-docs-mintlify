@@ -47,8 +47,8 @@ Before diving into the configuration and utilization process, if you'd like to t
 - compileSdkVersion, targetSdkVersion **34** or higher.
 - JavaVersion **17**.
 - [Jetpack (AndroidX)](https://developer.android.com/jetpack/androidx/migrate?authuser=0).
-- Android Gradle Plugin Version : 8.5.1 or higher.
-- Gradle Version : 8.9 or higher.
+- Android Gradle Plugin Version **8.5.1** or higher.
+- Gradle Version **8.9** or higher.
 
 ### Dependencies
 
@@ -58,7 +58,7 @@ To configure these dependencies, open your `build.gradle` file, and either paste
 
 ```groovy build.gradle
 dependencies {
-  //required
+  // Required
   modules {
     module("org.bouncycastle:bcprov-jdk15to18") {
       replacedBy("org.bouncycastle:bcprov-jdk15on")
@@ -87,14 +87,14 @@ All implementations of Particle Connect (and Particle Auth) require three univer
 <Note>
   Follow the quickstart tutorial to set up a project and find the required keys:
   [Create a new
-  project](/guides/wallet-as-a-service/waas/mobile-quickstart#configuring-particle-auth).
+  project](/guides/wallet-as-a-service/waas/connect/android-quickstart).
 </Note>
 
 ### Configuration
 
 Now that you've set your dependencies and retrieved your `projectId` (`pn_project_id`), `clientKey` (`pn_project_client_key`), and `appId` (`pn_app_id`), from the [Particle dashboard](https://dashboard.particle.network), you'll need to move on to configuring `AndroidManifest.xml` using the previously retrieved values to authenticate your implementation of Particle Connect.
 
-Open `AndroidManifest.xml` and either paste the below code or add a configuration that looks as the following:
+Open `AndroidManifest.xml` and either paste the below code or add a configuration that looks similar to the following:
 
 ```xml XML
 <application>
@@ -151,10 +151,10 @@ Initialization can be started through the `init` method on `ParticleConnect` (fr
 | Field          | Type                             | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
 | :------------- | :------------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | application    | Application                      | Android applicaiton                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
-| env            | Env                              | DEV, STAGING, PRODUCTION,Different levels display different log information                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
-| chain          | ChainInfo                        | the primary chain to be used within your application. `ChainInfo` can be set as a `ChainInfo` object imported from `network.particle.chains.ChainInfo.Companion.{chain}`. such as ChainInfo.Ethereum、ChainInfo.Solana                                                                                                                                                                                                                                                                                                                                                                                                               |
-| dAppData       | DAppMetadata                     | metadata outlining the description of your application. This should be set as an instance of `DAppMetadata` (imported from `com.particle.base.model.DAppMetadata`) with the following parameters set:<br /><br /> `walletConnectProjectId`, your WalletConnect project ID retrieved from the [WalletConnect dashboard](https://cloud.walletconnect.com).<br /> `name`, the name of your project. <br />`icon`, a link containing the logo (icon) of your project; this should be 512x512, ideally.<br /> `url`, the URL of your project's website. <br />`description`, a short description to be used in representing your project. |
-| createAdapters | (() -> List`<IConnectAdapter>`)? | you'll need to define a list (`listOf`) wallets (adapters) that you'd like to be provided as an option within your instance of Particle Connect (these can be imported from `com.wallet.connect.adapter.{Adapter name}`).                                                                                                                                                                                                                                                                                                                                                                                                            |
+| env            | Env                              | DEV, STAGING, PRODUCTION. Different levels display log different information                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
+| chain          | ChainInfo                        | The primary chain to be used within your application. `ChainInfo` can be set as a `ChainInfo` object imported from `network.particle.chains.ChainInfo.Companion.{chain}`. For example, ChainInfo.Ethereum or ChainInfo.Solana are valid objects.                                                                                                                                                                                                                                                                                                                                                                                                              |
+| dAppData       | DAppMetadata                     | Metadata outlining the description of your application, used for WalletConnect. This should be set as an instance of `DAppMetadata` (imported from `com.particle.base.model.DAppMetadata`) with the following parameters set:<br /><br /> `walletConnectProjectId`, your WalletConnect project ID retrieved from the [WalletConnect dashboard](https://cloud.walletconnect.com).<br /> `name`, the name of your project. <br />`icon`, a link containing the logo (icon) of your project; this should be 512x512, ideally.<br /> `url`, the URL of your project's website. <br />`description`, a short description to be used in representing your project. |
+| createAdapters | (() -> List`<IConnectAdapter>`)? | You'll need to define a list (`listOf`) wallets (adapters) that you'd like to be provided as an option within your instance of Particle Connect (these can be imported from `com.wallet.connect.adapter.{Adapter name}`).                                                                                                                                                                                                                                                                                                                                                                                                            |
 |                |                                  |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 
 ```kotlin Kotlin

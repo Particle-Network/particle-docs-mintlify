@@ -16,7 +16,7 @@ The Particle Auth SDK is the primary mechanism for **configuring** and **using**
 
 ## Getting Started
 
-<Tip>Check out the [Web Quickstart guide](/guides/wallet-as-a-service/waas/web-quickstart) and get a new project up and running in just 5 minutes.</Tip>
+<Tip>Check out the [Web Quickstart guide](/guides/wallet-as-a-service/waas/auth/web-quickstart) and get a new project up and running in just 5 minutes.</Tip>
 
 To get started with the Particle Auth Web SDK, you can add `@particle-network/authkit` to your project using either of the two following mechanisms:
 
@@ -34,7 +34,7 @@ Configuration is primarily handled by wrapping an application with Particle Auth
 
 No matter which Particle Auth SDK you're using, you'll need to define your `projectId`, `clientKey`, and `appId` within this configuration object to properly authenticate your Particle Auth instance. Additionally, [you can apply customizations to the wallet modal](/guides/configuration/appearance/wallet) for a tailored user experience.
 
-<Note>Follow the quickstart tutorial to set up a project and find the required keys: [Create a new project](/guides/wallet-as-a-service/waas/web-quickstart#configuring-particle-auth).</Note>
+<Note>Follow the quickstart tutorial to set up a project and find the required keys: [Create a new project](/guides/wallet-as-a-service/waas/auth/web-quickstart#configuring-particle-auth).</Note>
 
 Below is an example of an `index.tsx` file from a `create-react-app` project. In this example, the `AuthCoreContextProvider` component acts as the configuration wrapper for the entire application.
 
@@ -184,18 +184,6 @@ const handleLogout = async () => {
 ```
 
 In this example, the `handleLogin` function initiates the login process by displaying the login modal if the `connected` status is `false`, indicating that the user is not currently logged in.
-
-<Tip>
-    <p>Give it a try yourself (embedded demo)</p>
-    <Frame>
-        <iframe
-            width="500"
-            height="800"
-            src="https://particle-docs-demo.replit.app"
-            href="https://particle-docs-demo.replit.app"
-        ></iframe>
-    </Frame>
-</Tip>
 
 ### Customize the login expereince
 
@@ -675,7 +663,7 @@ yarn create @particle-network/authkit
 ```
 
 <Tip>
-    Alternatively, take a look at our [Particle Auth quickstart](/guides/wallet-as-a-service/waas/web-quickstart).
+    Alternatively, take a look at our [Particle Auth quickstart](/guides/wallet-as-a-service/waas/auth/web-quickstart).
 </Tip>
 
 ### useConnect

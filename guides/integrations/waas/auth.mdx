@@ -5,21 +5,16 @@ description: "An SDK facilitating wallet generation and interactions via social 
 
 ## Understanding Particle Auth
 
-Particle Auth exists at the **center of Particle Network's Smart Wallet-as-a-Service tech stack**. Specifically, Particle Auth is the **core infrastructure component powering social logins** and facilitating programmatic interaction with accounts generated through them. This makes it the **all-in-one service for onboarding users and leveraging Wallet-as-a-Service within your application**.
+Particle Auth is the **core infrastructure component powering social logins** within Particle's Wallet Abstraction stack.
 
-While Particle Auth is a standalone service, meaning it can be used solely as an isolated product for implementing Wallet-as-a-Service. It's also used as **an infrastructural component driving social login within other Particle Network products** such as Particle Connect, the Particle [RainbowKit](/guides/wallet-as-a-service/connection-kits/rainbow) extension, etc.
+While Particle Auth is a standalone service, meaning it can be used solely as an isolated product for implementing social logins. It's also commonly used as **an infrastructural component driving social login within other Particle Network products** such as [Particle Connect](/guides/integrations/waas/connect), Particle's [RainbowKit](/guides/wallet-as-a-service/connection-kits/rainbow) integration, etc.
 
 Particle Auth uses **MPC-TSS** (Multi-Party Computation with Threshold-Signature-Schemes) to generate non-custodial wallets derived from social accounts. Upon logging in with a given social login mechanism, a key pair is generated and secured through MPC-TSS, splitting it into multiple shares to be used for distributed signature generation. Upon using the key pair for a signature, each share (for most implementations, these will be two, one accessible locally/through a backup system, the second within a TEE) participates in the generation of a signature, thus resulting in the ability to authenticate signatures without the unification of a whole private key. For more information on MPC-TSS, look at [Security (MPC-TSS)](/landing/wallet-abstraction/waas/mpc-tss).
 
 Particle Auth enables a **natural** (and customizable) flow from social login to account generation and, ultimately, authentication (signature generation), allowing for a **Web2-adjacent user experience**, abstracting away the typical seed-phrase management convention.
 
-<Frame caption="Demo showcasing an implementation of Particle Auth.">
-<iframe
-  width="100%"
-  height="950"
-  src="https://particle-docs-demo.replit.app/"
-  href="https://particle-docs-demo.replit.app/"
-></iframe>
+<Frame>
+<img src="images/01.gif" style={{ width: '100%', maxWidth: '600px' }} />
 </Frame>
 
 ---
@@ -28,9 +23,13 @@ Particle Auth enables a **natural** (and customizable) flow from social login to
 
 Adding Particle Auth to an application can happen through various mechanisms, largely dependent on your specific platform. Particle Auth has SDKs spanning **three desktop and seven mobile platforms**. This means that, regardless of where or how your application is built, you're likely using a stack compatible with Particle Auth.
 
-To begin diving into the specifics of integrating Particle Auth within your platform of choice, choose the corresponding SDK reference from the cards below, or take a look at [Web (Desktop) Quickstart](/guides/wallet-as-a-service/waas/web-quickstart) and [Mobile (Android/iOS) Quickstart](/guides/wallet-as-a-service/waas/mobile-quickstart) for technical overviews of the integration process.
+To begin diving into the specifics of integrating Particle Auth within your platform of choice, choose the corresponding SDK reference from the cards below, or take a look at [Web (Desktop) Quickstart](/guides/wallet-as-a-service/waas/auth/web-quickstart) and [Mobile (Android/iOS) Quickstart](/guides/wallet-as-a-service/waas/mobile-quickstart) for technical overviews of the integration process.
 
 To learn more about the degree to which you can customize Particle Auth, go to [Particle Auth](/guides/configuration/appearance/auth).
+
+<Note> 
+Most commonly, Particle Auth will be used through the means of Particle Connect and its all-in-one onboarding modal (aggregating both social logins through Particle Auth and standard wallet connection); you can learn more about this approach [here](/guides/integrations/waas/connect).
+</Note>
 
 ---
 

@@ -3,122 +3,87 @@ title: "Introduction to On-Ramp"
 description: D2C fiat-crypto exchanges on your platform
 ---
 
-Particle has integrated multiple On-Ramp vendors, supporting dozens of fiat and various chains and cryptocurrencies.
+Particle Network offers integration with multiple on-ramp vendors, supporting a wide range of fiat currencies, chains, and cryptocurrencies.
 
-This lets our partners purchase cryptocurrency directly through various local and global fiat payment methods. This may be particularly useful for novice users who do not yet have any cryptocurrency holdings.
+## On-Ramp Overview
 
-By allowing users to purchase cryptocurrency directly with fiat currency, exchanges, DeFi protocols, wallets, and Web3 services can more easily onboard new users into the crypto market and begin investing in digital assets.
+By integrating Particle's on-ramp solutions, you can:
+- Enable users to purchase cryptocurrencies directly with fiat currency.
+- Support a wide array of fiat currencies and cryptocurrencies.
+- Provide a seamless onboarding process for new users, increasing engagement and retention.
 
-### [Supported fiat currencies](https://ramp.particle.network/supported_fiat.html)
+## Supported Currencies
+Particle supports a diverse range of fiat currencies and cryptocurrencies, ensuring broad compatibility with various payment methods.
 
-### [Supported cryptocurrencies](https://ramp.particle.network/supported_cryptocurrencies.html)
+- **[Supported Fiat Currencies](https://ramp.particle.network/supported_fiat.html)**
+- **[Supported Cryptocurrencies](https://ramp.particle.network/supported_cryptocurrencies.html)**
 
-### Live Demo
+### Live Demos
+Explore live demos to see how Particle's On-Ramp solutions work in real-time:
 
-👉 [https://ramp.particle.network/](https://ramp.particle.network/)
+- **[On-Ramp Demo](https://ramp.particle.network/)**
+- **[Wallet Demo](https://wallet.particle.network/)**
 
-👉 [https://wallet.particle.network/](https://wallet.particle.network/)
-
-👉 You can also enter the On-Ramp page by clicking the Buy button in the wallet.
+<Note>Alternatively, access the On-Ramp page directly via the 'Buy' button in the wallet interface.</Note>
 
 ## SDK Integration
+Integrating the on-ramp feature into your platform allows for extensive customization of the buy/sell experience. Below are the parameters you can use to tailor the user experience:
 
-You can customize the open buy page by setting `options` parameters.
+| Name           | Description                                                                 | Type    |
+|----------------|-----------------------------------------------------------------------------|---------|
+| `network`      | Blockchain network to be used (e.g., Solana, Ethereum, Binance Smart Chain).| string  |
+| `fiatCoin`     | The fiat currency the user wishes to use.                                   | string  |
+| `cryptoCoin`   | The cryptocurrency the user wishes to buy or sell.                          | string  |
+| `fiatAmt`      | The amount of fiat currency the user wants to spend (for buying crypto).    | number  |
+| `cryptAmt`     | The amount of cryptocurrency the user wants to sell.                        | number  |
+| `fixFiatCoin`  | Prevent the user from changing the fiat currency.                           | boolean |
+| `fixCryptoCoin`| Prevent the user from changing the cryptocurrency.                          | boolean |
+| `fixFiatAmt`   | Lock the fiat amount, preventing the user from changing it.                 | boolean |
+| `walletAddress`| Wallet address where the purchased cryptocurrency should be sent.           | string  |
+| `theme`        | Interface theme: `light` or `dark`.                                         | string  |
+| `language`     | Language selection: `en`, `zh-CN`, `zh-TW`, `ja`, `ko`.                     | string  |
 
-<table>
-  <thead>
-    <tr>
-      <th width="180" align="center">
-        name
-      </th>
-      <th width="382" align="center">
-        description
-      </th>
-      <th width="91" align="center">
-        type
-      </th>
-      <th width="98" align="center">
-        required
-      </th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td align="center">network</td>
-      <td align="center">
-        [Solana, Ethereum, Binance Smart Chain, Polygon, Tron, Optimism,
-        Arbitrum One, Avalanche, zkSync Era, Celo]
-      </td>
-      <td align="center">string</td>
-      <td align="center">False</td>
-    </tr>
-    <tr>
-      <td align="center">fiatCoin</td>
-      <td align="center">Fiat currency</td>
-      <td align="center">string</td>
-      <td align="center">False</td>
-    </tr>
-    <tr>
-      <td align="center">cryptoCoin</td>
-      <td align="center">crypto currency</td>
-      <td align="center">string</td>
-      <td align="center">False</td>
-    </tr>
-    <tr>
-      <td align="center">fiatAmt</td>
-      <td align="center">
-        The amount of fiat currency that the user wants to spend.It's just for
-        Buy Crypto
-      </td>
-      <td align="center">number</td>
-      <td align="center">False</td>
-    </tr>
-    <tr>
-      <td align="center">cryptAmt</td>
-      <td align="center">
-        The amount of crypto currency that the user wants to sell.It's just for
-        Sell Crypto
-      </td>
-      <td align="center">number</td>
-      <td align="center">False</td>
-    </tr>
-    <tr>
-      <td align="center">fixFiatCoin</td>
-      <td align="center">Prevent user from changing fiat currency</td>
-      <td align="center">bool</td>
-      <td align="center">False</td>
-    </tr>
-    <tr>
-      <td align="center">fixCryptoCoin</td>
-      <td align="center">Prevent user from changing fiat cryptocurrency</td>
-      <td align="center">bool</td>
-      <td align="center">False</td>
-    </tr>
-    <tr>
-      <td align="center">fixFiatAmt</td>
-      <td align="center">Prevent user from changing amount of fiat currency</td>
-      <td align="center">bool</td>
-      <td align="center">False</td>
-    </tr>
-    <tr>
-      <td align="center">walletAddress</td>
-      <td align="center">Wallet address for the predefined cryptocurrency</td>
-      <td align="center">string</td>
-      <td align="center">False</td>
-    </tr>
-    <tr>
-      <td align="center">theme</td>
-      <td align="center">light,dark</td>
-      <td align="center">string</td>
-      <td align="center">False</td>
-    </tr>
-    <tr>
-      <td align="center">language</td>
-      <td align="center">en,zh-CN,zh-TW,ja,ko</td>
-      <td align="center">string</td>
-      <td align="center">False</td>
-    </tr>
-  </tbody>
-</table>
+## Example usage
 
-Integration can be achieved by using the API provided by different SDKs, or by splicing parameters according to your needs to obtain the corresponding link.
+To integrate, simply pass the desired options into the SDKs API, or construct a URL with the corresponding parameters.
+
+Below is an example of using the `openBuy` method from the `useAuthCore` hook (from [Particle Auth](/api-reference/auth/desktop-sdks/web)).
+
+```tsx App.tsx
+  const { address } = useEthereum();
+  const { openBuy } = useAuthCore();
+
+  const handleOpenBuy = () => {
+    // Example parameters for the buy page
+    const options = {
+      fiatCoin: "USD",
+      fiatAmt: "29.99",
+      cryptoCoin: "ETH",
+      network: "Ethereum",
+      theme: "dark",
+      language: "en",
+      walletAddress: address, // You can use any address, or leave blank to allow the user to choose
+    };
+
+    openBuy(options);
+  };
+```
+
+### Build an On-Ramp URL
+
+Alternatively, you can manually build a URL with the desired parameters to redirect users directly to the On-Ramp buy page.
+
+```tsx App.tsx
+  // Parameters
+  const fiatCoin = 'USD';
+  const cryptoCoin = 'ETH';
+  const network = 'Ethereum';
+  const theme = 'dark';
+  const language = 'en';
+
+  // Function to handle the button click
+  const handleOnRamp = () => {
+    const onRampUrl = `https://ramp.particle.network/?fiatCoin=${fiatCoin}&cryptoCoin=${cryptoCoin}&network=${network}&theme=${theme}&language=${language}`;
+    window.open(onRampUrl, '_blank');
+  };
+```
