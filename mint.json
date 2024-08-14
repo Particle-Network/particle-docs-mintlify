@@ -107,7 +107,7 @@
                 "landing/wallet-abstraction/waas/mpc-tss",
                 "landing/wallet-abstraction/waas/bundler",
                 "landing/wallet-abstraction/waas/omni-paymaster"
-                
+
               ]
             },
             "landing/wallet-abstraction/btc-connect"
@@ -184,7 +184,9 @@
             "guides/wallet-as-a-service/waas/auth/web-quickstart",
             "guides/wallet-as-a-service/waas/auth/tg-quickstart",
             "guides/wallet-as-a-service/waas/auth/android-quickstart",
-            "guides/wallet-as-a-service/waas/auth/ios-quickstart"
+            "guides/wallet-as-a-service/waas/auth/ios-quickstart",
+            "guides/wallet-as-a-service/waas/auth/tg-quickstart",
+            "guides/wallet-as-a-service/waas/auth/mobile-quickstart"
           ]
         },
         {
@@ -198,11 +200,9 @@
         {
           "group": "Connection Kits",
           "pages": [
-            "guides/wallet-as-a-service/connection-kits/particle-connect",
             "guides/wallet-as-a-service/connection-kits/rainbow",
             "guides/wallet-as-a-service/connection-kits/web3modal",
-            "guides/wallet-as-a-service/connection-kits/web3-onboard",
-            "guides/wallet-as-a-service/connection-kits/solana"
+            "guides/wallet-as-a-service/connection-kits/web3-onboard"
           ]
         },
         {

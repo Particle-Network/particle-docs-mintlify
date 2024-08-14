@@ -7,26 +7,19 @@ Integrating **Particle Connect** into your web application can be done in **unde
 
 This guide provides a concise overview of how to install, configure, and enable social logins in a Next.js application using `create @particle-network/connectkit` as your starting point. 
 
-For a detailed explanation of each feature and more advanced configurations, refer to the [API & SDK Introduction](/api-reference/introduction).
-
----
-
-<video
-  autoPlay
-  muted
-  loop
-  playsInline
-  className="w-full aspect-video"
-  src="https://static.particle.network/mintlify/images/npm-connectkit.mp4"
-></video>
+<Note>
+For a detailed explanation of each feature and more advanced configurations, refer to the [Particle Connect SDK reference](/api-reference/connect/desktop/web).
+</Note>
 
 ---
 
 <Steps>
 
-<Step title="Setting Up a Connect Project">
+<Step title="Boilerplate: Initializing Particle Connect">
 
-Start by creating a boilerplate project with all the necessary dependencies:
+The easiest way to get started with Particle Connect is through its built-in starter/boilerplate; this includes the core file setup and code structure needed to configure Particle Connect. 
+
+To initialize this boilerplate, copy and execute one of the following commands.
 
 ```sh Terminal
 npm init @particle-network/connectkit@latest
@@ -36,8 +29,7 @@ pnpm create @particle-network/connectkit@latest
 yarn create @particle-network/connectkit
 ```
 
-The CLI will prompt you to enter a project name and select the framework you wish to use. 
-
+After running one of the aforementioned commands, the CLI will prompt you to enter a project name and select the framework (Next.js or React) you wish to use. 
 
 ```shell Terminal
 🤩 Welcome to Particle Network!
@@ -49,13 +41,17 @@ The CLI will prompt you to enter a project name and select the framework you wis
     ...
 ```
 
-<Note>This guide will proceed with a Next.js project setup.</Note>
+<Note>This guide will proceed with a Next.js project setup, although React (create-react-app) is also available.</Note>
 
 </Step>
 
 <Step title="Configuring Particle Connect">
 
-**Particle Connect** requires three key values to be initiated: `projectId`, `clientKey`, and `appId`. These values fundamentally link your application with the [Particle dashboard](https://dashboard.particle.network/).
+With a starter project initialized, you're ready to configure Particle Connect through its core component, `ConnectKitProvider`. 
+
+Although before diving in too deep here, you'll need some keys from the [Particle dashboard](https://dashboard.particle.network).
+
+**Particle Connect** requires three key values from the dashboard to be initiated: `projectId`, `clientKey`, and `appId`.
 
 To retrieve these values for configuration within your application, follow these steps:
 
@@ -125,39 +121,36 @@ Sign up or Log in into the [Particle dashboard](https://dashboard.particle.netwo
 
 <Note>For a quick overview of the Particle dashboard, watch [this video](https://www.youtube.com/watch?v=d7DYCMNDmjo&ab_channel=ParticleNetwork) or check out the [Dashboard Quickstart Guide](/guides/dashboard).</Note>
 
-After obtaining your `projectId`, `clientKey`, and `appId`, configure **Particle Connect** in your app using the `ConnectKitProvider` component from `@particle-network/connectkit`. 
+After obtaining your `projectId`, `clientKey`, and `appId`, you'll need to use these to configure the aforementioned `ConnectKitProvider` component from `@particle-network/connectkit`. 
 
-The boilerplate already includes the basic setup—just add your API keys to the `.env.sample` file and rename it to `.env`.
+The boilerplate already includes the basic variable setup —just add your API keys to the `.env.sample` file and rename it to `.env`.
 
-Then, move into your project directory and start the development server:
+<Tip>
+At this point, you're ready to move onto either running and testing the application or beginning development through `app/page.tsx`.
 
-```sh Terminal
-cd particle-connectkit-app && yarn dev
-```
-
-Start editing the `app/page.tsx` file to begin development.
-
-<Tip>Continue with the following steps to learn how **Particle Connect** works and how to build your application.</Tip>
+Although, below we'll continue and go over some of the granular controls given to you through `ConnectKitProvider`.
+</Tip>
 
 
 </Step>
-<Step title="Configuring `ConnectKitProvider`">
+<Step title="Configuring ConnectKitProvider">
 
-It's recommended to create a `Connectkit.tsx` file in the `src` directory where you can configure and export the `ConnectKitProvider`. Then, use this provider to wrap your main App component.
+When working with `ConnectKitProvider`, it's recommended to use a dedicated `Connectkit.tsx` file in the `src` directory where you can configure and export the component. Then, you'll use this export to wrap your main App component (the location of your Particle Connect implementation through `ConnectButton`).
 
-Here’s how you can configure the `ConnectKitProvider`:
+Here’s how you can configure `ConnectKitProvider`:
 
 **Required Configurations:**
-- `projectId`, `clientKey`, and `appId` — Get these from the [Particle dashboard](https://www.particle.network/dashboard).
-- `chains` — Specify the supported chains for your dApp.
+- `projectId`, `clientKey`, and `appId` — Get these from the [Particle dashboard](https://www.particle.network/dashboard), as covered prior.
+- `chains` — Specify the supported chains for your dApp (this is an array of Viem-originating chain objects imported from `@particle-network/connectkit/chains`).
 - `walletConnectors` — Define the wallets you want to support.
 
 **Optional Configurations:**
-- `theme` and `language` for the connection modal UI.
+- `theme` and `language` for basic customization of the connection modal UI.
 - Additional appearance customizations.
 
-<Note>In the boilerplate application, you'll find a pre-configured `connectkit.tsx` file located in the `src` directory.</Note>
+<Note>In the boilerplate application, you'll find a pre-configured `Connectkit.tsx` file located in the `src` directory.</Note>
 
+Below is an example of a configured instance of `ConnectKitProvider`. For more details around each available property, head over to the [Particle Connect Web SDK reference](/api-reference/connect/desktop/web).
 
 ```tsx Connectkit.tsx
 'use client';
@@ -170,19 +163,10 @@ import { solanaWalletConnectors } from '@particle-network/connectkit/solana';
 import { EntryPosition, wallet } from '@particle-network/connectkit/wallet';
 import React from 'react';
 
-const projectId = process.env.NEXT_PUBLIC_PROJECT_ID as string;
-const clientKey = process.env.NEXT_PUBLIC_CLIENT_KEY as string;
-const appId = process.env.NEXT_PUBLIC_APP_ID as string;
-const walletConnectProjectId = process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID as string;
-
-if (!projectId || !clientKey || !appId) {
-  throw new Error('Please configure the Particle project in .env first!');
-}
-
 const config = createConfig({
-  projectId,
-  clientKey,
-  appId,
+  projectId: process.env.NEXT_PUBLIC_PROJECT_ID as string,
+  clientKey: process.env.NEXT_PUBLIC_CLIENT_KEY as string,
+  appId: process.env.NEXT_PUBLIC_APP_ID as string,
   appearance: {
     recommendedWallets: [
       { walletId: 'metaMask', label: 'Recommended' },
@@ -192,14 +176,14 @@ const config = createConfig({
   },
   walletConnectors: [
     evmWalletConnectors({
-      // TODO: replace it with your app metadata.
+      // Replace this with your app metadata.
       metadata: {
         name: 'Connectkit Demo',
         icon: typeof window !== 'undefined' ? `${window.location.origin}/favicon.ico` : '',
         description: 'Particle Connectkit Next.js Scaffold.',
         url: typeof window !== 'undefined' ? window.location.origin : '',
       },
-      walletConnectProjectId: walletConnectProjectId,
+      walletConnectProjectId: process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID as string,
     }),
     authWalletConnectors({
       authTypes: ["email", "google", "apple", "twitter", "github"], // Optional, restricts the types of social logins supported
@@ -209,13 +193,13 @@ const config = createConfig({
   plugins: [
     wallet({
       visible: true,
-      entryPosition: EntryPosition.BR, // Use BR, BL, TR, TL to move the wallet entry position
+      entryPosition: EntryPosition.BR, // Use BR (bottom right), BL (bottom left), TR (top right), TL (top left) to move the wallet entry position
     }),
   ],
   chains: [mainnet, base, arbitrum, polygon, solana],
 });
 
-// Wrap your application with this component.
+// Wrap your application with this exported component, or ConnectKitProvider directly.
 export const ParticleConnectkit = ({ children }: React.PropsWithChildren) => {
   return <ConnectKitProvider config={config}>{children}</ConnectKitProvider>;
 };
@@ -226,14 +210,14 @@ export const ParticleConnectkit = ({ children }: React.PropsWithChildren) => {
 
 </Step>
 
-<Step title="Wrap Your Application with ConnectKitProvider">
+<Step title="Wrap your application with ConnectKitProvider">
 
-Wrap your application with the `ParticleConnectKit` component (exported from `ConnectKitProvider`) in your index or layout file.
+Wrap your primary application component (wherever you place and use `ConnectButton` alongside the various hooks from Particle Connect) with the `ParticleConnectKit` component (exported from `ConnectKitProvider`).
 
-Here’s an example for a `layout.tsx` file:
+Here’s an example of what this looks like for a `layout.tsx` file:
 
 ```tsx layout.tsx
-import { ParticleConnectkit } from '@/connectkit';
+import { ParticleConnectkit } from '@/connectkit'; // Export of a configured ConnectKitProvider instance
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
@@ -267,23 +251,15 @@ export default function RootLayout({
 
 <Step title="Facilitating logins and chain interactions">
 
-With **Particle Connect** now configured, you can proceed to enable social logins within your application.
+With **Particle Connect** now configured, you can proceed to enable social logins within your application through the aforementioned `ConnectButton` component.
 
-<Note>The **Connect** button can be directly imported from `@particle-network/connectkit`.</Note>
+Additionally, for driving application-level interaction (after initial onboarding), `@particle-network/connectkit` provides a variety of hooks. You can explore all available hooks in the [Particle Connect SDK documentation](/api-reference/connect/desktop/web#key-react-hooks-for-particle-connect).
 
-`@particle-network/connectkit` also provides a variety of hooks. You can explore all available hooks in the [Particle Connect SDK documentation](/api-reference/connect/desktop/web#key-react-hooks-for-particle-connect).
+The boilerplate application includes a basic example featuring only a **Connect** button (`ConnectButton`).
 
-The boilerplate application includes a basic example featuring only a **Connect** button.
+After logging in (connecting), users can access the embedded wallet modal provided by Particle Connect via the button in the bottom right corner, unless customized through the `wallet` configuration within `ConnectKitProvider`.
 
-After logging in, users can access the embedded wallet modal provided by Particle Connect via the button in the bottom right corner, unless customized through the `wallet` configuration within `ConnectKitProvider`.
-
-To explore additional features like fetching and displaying user information, balances, on-ramp services, and sending transactions using the native Particle Provider and ethers.js, paste the following code into `app/page.tsx`.
-
-Install `ethers.js`:
-
-```sh Terminal
-yarn add ethers
-```
+To explore additional features like fetching and displaying user information, balances, on-ramp services, and sending transactions using either the native Particle Provider (Viem-based WalletClient) or ethers.js through an EIP-1193 provider, paste the following code into `app/page.tsx`.
 
 ```tsx page.tsx
 "use client";
@@ -303,7 +279,7 @@ import {
 // Connectkit uses Viem, so Viem's features can be utilized
 import { formatEther, parseEther } from "viem";
 
-// Import ethers provider for EIP-1193 compatibility
+// Optional: Import ethers provider for EIP-1193 compatibility
 import { ethers, type Eip1193Provider } from "ethers";
 
 export default function Home() {
@@ -313,7 +289,7 @@ export default function Home() {
   const { disconnect, disconnectAsync } = useDisconnect();
   const { getUserInfo } = useParticleAuth();
 
-  // Initialize public client for RPC calls using Viem
+  // Optional: Initialize public client for RPC calls using Viem
   const publicClient = usePublicClient();
 
   // Retrieve the primary wallet from the Particle Wallets
@@ -398,7 +374,7 @@ export default function Home() {
     }
   };
 
-  // Send transaction using ethers.js with a custom EIP-1193 provider
+  // Option 1: Send transaction using ethers.js with a custom EIP-1193 provider
   const executeTxEthers = async () => {
     const tx = {
       to: recipientAddress,
@@ -431,7 +407,7 @@ export default function Home() {
     }
   };
 
-  // Send transaction using the native Particle provider
+  // Option 2: Send transaction using the native Particle provider
   const executeTxNative = async () => {
     try {
       const tx = {
@@ -612,10 +588,8 @@ export default function Home() {
 ```
 
 <Tip>
-    The complete Particle Connect SDK reference is available at [Particle Connect SDK (Web)](/api-reference/connect/desktop/web).
-    Additionally, a demo repository for Next.js can be found at [particle-connectkit2.0-quickstart](https://github.com/Particle-Network/particle-connectkit2.0-quickstart).
+    A Next.js demo repository containing the above code can be found [here](https://github.com/Particle-Network/particle-connectkit2.0-quickstart).
 </Tip>
 
 </Step>
 </Steps>
-
