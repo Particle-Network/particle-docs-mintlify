@@ -107,7 +107,6 @@
                 "landing/wallet-abstraction/waas/mpc-tss",
                 "landing/wallet-abstraction/waas/bundler",
                 "landing/wallet-abstraction/waas/omni-paymaster"
-
               ]
             },
             "landing/wallet-abstraction/btc-connect"
@@ -170,10 +169,9 @@
       "pages": [
         "guides/wallet-as-a-service/waas/understanding-waas",
         {
-        "group": "Quickstarts (Connect)",
+          "group": "Quickstarts (Connect)",
           "pages": [
             "guides/wallet-as-a-service/waas/connect/web-quickstart",
-            "guides/wallet-as-a-service/waas/connect/mobile-quickstart",
             "guides/wallet-as-a-service/waas/connect/android-quickstart",
             "guides/wallet-as-a-service/waas/connect/ios-quickstart"
           ]
@@ -182,11 +180,9 @@
           "group": "Quickstarts (Auth)",
           "pages": [
             "guides/wallet-as-a-service/waas/auth/web-quickstart",
-            "guides/wallet-as-a-service/waas/auth/tg-quickstart",
             "guides/wallet-as-a-service/waas/auth/android-quickstart",
             "guides/wallet-as-a-service/waas/auth/ios-quickstart",
-            "guides/wallet-as-a-service/waas/auth/tg-quickstart",
-            "guides/wallet-as-a-service/waas/auth/mobile-quickstart"
+            "guides/wallet-as-a-service/waas/auth/tg-quickstart"
           ]
         },
         {
