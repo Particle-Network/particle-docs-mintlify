@@ -33,12 +33,23 @@ Important details before initialization.
 
 ## Initialize the SDK
 
-Before using the SDK, you have to call init(Required)
+The Particle Network AA SDK will fail to function correctly until it has been initialized. Initialization allows you to specify a smart account implementation and version, alongside the Paymaster you'd like to use. This can be initiated through `particleAA.init`, which takes the following parameters:
+
+- `accountName`, the smart account implementation to be used (any of these choices):
+  - `AccountName.BICONOMY_V1`, a [Biconomy smart account](https://www.biconomy.io/smart-accounts).
+  - `AccountName.BICONOMY_V2`, a [Biconomy smart account](https://www.biconomy.io/smart-accounts).
+  - `AccountName.CYBERCONNECT`, a [CyberConnect smart account](https://wallet.cyber.co/).
+  - `AccountName.SIMPLE_V1`, a [SimpleAccount implementation](https://github.com/eth-infinitism/account-abstraction/blob/develop/contracts/samples/SimpleAccount.sol).
+  - `AccountName.SIMPLE_V2`, a [SimpleAccount implementation](https://github.com/eth-infinitism/account-abstraction/blob/develop/contracts/samples/SimpleAccount.sol).
+  - `AccountName.LIGHT`, a [Light Account](https://accountkit.alchemy.com/packages/aa-accounts/light-account/).
+
+Once `init` has been called, you can close off initialization by enabling AA mode with `ParticleAA.enableAAMode`.
 
 ```typeScript
 import * as particleAA from '@particle-network/rn-aa';
 import { AAVersion } from '@particle-network/rn-base';
 
+// Support BICONOMY_V1 | BICONOMY_V2 | CYBERCONNECT | SIMPLE_V1 | SIMPLE_V2 | LIGHT
 particleAA.init(AccountName.BICONOMY_V2());
 particleAA.enableAAMode();
 ```
