@@ -1,6 +1,6 @@
 ---
-title: "Web (Desktop) Quickstart"
-mode: "wide"
+title: 'Web (Desktop) Quickstart'
+mode: 'wide'
 ---
 
 # Quickstart: Implementing Particle's Wallet-as-a-Service within Web Applications
@@ -9,7 +9,7 @@ Getting started and integrating Particle Network's Wallet-as-a-Service within yo
 
 Below is a quick rundown on installing, configuring, and facilitating social logins within a typical Next.js application. For a more in-depth explanation of each feature, go to [Introduction to API & SDK overview](/api-reference/introduction).
 
-***
+---
 
 <Steps>
 
@@ -20,8 +20,9 @@ Particle Auth is the primary mechanism of implementing Particle Network's Wallet
 To install Particle Auth within your project, copy and execute the following command.
 
 ```sh Terminal
-npm install @particle-network/auth-core-modal @particle-network/auth-core @particle-network/chains ethers
+npm install @particle-network/authkit @particle-network/wallet viem@2
 ```
+
 </Step>
 
 <Step title="Configuring Particle Auth">
@@ -66,18 +67,18 @@ Sign up or Log in into the [Particle dashboard](https://dashboard.particle.netwo
 </Accordion>
 
 <Accordion title="Create a new web application, or skip this step if you already have one">
-<div className="flex justify-center">
-<img
-  className="block h-64 dark:hidden"
-  src="/guides/wallet-as-a-service/waas/images/web-app.png"
-  alt="Create web app."
-/>
-<img
-  className="hidden h-64 dark:block"
-  src="/guides/wallet-as-a-service/waas/images/web-app.png"
-  alt="Create web app."
-/>
-</div>
+    <div className="flex justify-center">
+        <img
+            className="block h-64 dark:hidden"
+            src="/guides/wallet-as-a-service/waas/images/web-app.png"
+            alt="Create web app."
+        />
+        <img
+            className="hidden h-64 dark:block"
+            src="/guides/wallet-as-a-service/waas/images/web-app.png"
+            alt="Create web app."
+        />
+    </div>
 </Accordion>
 
 <Accordion title="Retrieve the project ID (`projectId`), the client key (`clientKey`), and the application ID (`appId`)">
@@ -98,58 +99,34 @@ Sign up or Log in into the [Particle dashboard](https://dashboard.particle.netwo
 
 For more information on the Particle dashboard, take a look at [this video](https://www.youtube.com/watch?v=d7DYCMNDmjo&ab_channel=ParticleNetwork) or visit the [dashboard quickstart](/guides/dashboard).
 
-With your `projectId`, `clientKey`, and `appId` retrieved, you'll need to configure Particle Auth within your application through `AuthCoreContextProvider` from `@particle-network/auth-core-modal`, the primary React component responsible for initializing Particle Auth.
+With your `projectId`, `clientKey`, and `appId` retrieved, you'll need to configure Particle Auth within your application through `AuthCoreContextProvider` from `@particle-network/authkit`, the primary React component responsible for initializing Particle Auth.
 
 </Step>
 <Step title="Configuring `AuthCoreContextProvider`">
-Within your `src/app/layout.tsx` file, or in an equivalent location, wrap `{children}` (your application component) with `AuthCoreContextProvider`.
+It is recommended to create a `connectkit.tsx` file in the `src` directory and export `ParticleAuthkit`, then use `ParticleAuthkit` wrap your App.
 
 Below is an example of how `AuthCoreContextProvider` can be configured.
 
-```ts layout.tsx
+```ts authkit.tsx
+'use client';
 
-    "use client";
-    import { Inter } from "next/font/google";
-    import "./globals.css";
+import { AuthCoreContextProvider } from '@particle-network/authkit';
+import { mainnet, polygon } from '@particle-network/authkit/chains';
 
-    // Particle imports
-    import { Ethereum, BNBChain, BerachainbArtio } from "@particle-network/chains"; // Chains are imported here
-    import { AuthType } from "@particle-network/auth-core";
-    import { AuthCoreContextProvider } from "@particle-network/auth-core-modal";
-
-    const inter = Inter({ subsets: ["latin"] });
-
-    export default function RootLayout({
-      children,
-    }: Readonly<{
-      children: React.ReactNode;
-    }>) {
-      return (
-        <html lang="en">
-          <body className={inter.className}>
-            <AuthCoreContextProvider
-              options={{
-                projectId: process.env.NEXT_PUBLIC_PROJECT_ID!,
-                clientKey: process.env.NEXT_PUBLIC_CLIENT_KEY!,
-                appId: process.env.NEXT_PUBLIC_APP_ID!,
-                // Remove authTypes if you want to allow for all the options
-                authTypes: [AuthType.email, AuthType.google, AuthType.twitter, AuthType.github],
-                themeType: "dark",
-                wallet: {
-                  visible: true,
-                  customStyle: {
-                  // List the chains you want to include
-                    supportChains: [Ethereum, BNBChain, BerachainbArtio], 
-                  },
-                },
-              }}
-            >
-              {children}
-            </AuthCoreContextProvider>
-          </body>
-        </html>
-      );
-    }
+export const ParticleAuthkit = ({ children }: React.PropsWithChildren) => {
+    return (
+        <AuthCoreContextProvider
+            options={{
+                projectId: process.env.NEXT_PUBLIC_PROJECT_ID as string,
+                clientKey: process.env.NEXT_PUBLIC_CLIENT_KEY as string,
+                appId: process.env.NEXT_PUBLIC_APP_ID as string,
+                chains: [mainnet, polygon],
+            }}
+        >
+            {children}
+        </AuthCoreContextProvider>
+    );
+};
 ```
 
 </Step>
@@ -161,17 +138,20 @@ With the SDK configured, you can move on to initiating social logins within your
 Upon logging in, the embedded wallet modal included with Particle Auth will be accessible through the button in the bottom right, unless otherwise specified through `wallet` within `AuthCoreContextProvider`.
 
 ```javascript JavaScript
-import { useConnect } from '@particle-network/auth-core-modal';
-import { Base } from '@particle-network/chains';
+import { useConnect } from '@particle-network/authkit';
 
 const { connect } = useConnect();
 
-await connect({
-	chain: Base
-});
+await connect();
 ```
 
-<Tip>The complete Web SDK reference is available at [Web (JavaScript/TypeScript)](/api-reference/auth/desktop-sdks/web). Additionally, a demo repository for Next.js can be found [here](https://github.com/Particle-Network/particle-auth-ethers-demo/tree/main/particle-next-starter), alongside a demo for create-react-app [here](https://github.com/Particle-Network/particle-auth-ethers-demo/tree/main/particle-auth-cra).</Tip>
+<Tip>
+    The complete Web SDK reference is available at [Web (JavaScript/TypeScript)](/api-reference/auth/desktop-sdks/web).
+    Additionally, a demo repository for Next.js can be found
+    [here](https://github.com/Particle-Network/particle-auth-ethers-demo/tree/main/particle-next-starter), alongside a
+    demo for create-react-app
+    [here](https://github.com/Particle-Network/particle-auth-ethers-demo/tree/main/particle-auth-cra).
+</Tip>
 
 </Step>
 </Steps>
@@ -179,13 +159,13 @@ await connect({
 ### Related Resources
 
 <CardGroup cols={3}>
-  <Card title="Customization" href="/guides/configuration/appearance/auth">
-    Customizing Particle Auth.
-  </Card>
-  <Card title="Supported Blockchains" href="/guides/network-coverage">
-    List of blockchains supported by Particle Auth.
-  </Card>
-  <Card title="Account Abstraction" href="/guides/wallet-as-a-service/aa/web-aa">
-    Using Particle Auth to create smart accounts.
-  </Card>
+    <Card title="Customization" href="/guides/configuration/appearance/auth">
+        Customizing Particle Auth.
+    </Card>
+    <Card title="Supported Blockchains" href="/guides/network-coverage">
+        List of blockchains supported by Particle Auth.
+    </Card>
+    <Card title="Account Abstraction" href="/guides/wallet-as-a-service/aa/web-aa">
+        Using Particle Auth to create smart accounts.
+    </Card>
 </CardGroup>
