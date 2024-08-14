@@ -100,45 +100,8 @@ Particle Network takes a unique and innovative approach to its foundational arch
 Particle Network leverages three primary modules to solve Web3's fragmentation of users and accounts across chains:
 
 - **Master Keystore Hub**: Particle Network’s Master Keystore Hub acts as the central component and source of truth used for coordinating smart contract deployments and updates across all networks. It automatically synchronizes settings, such as modules and signers, between each Universal Account instance, ensuring state parity across networks. Account settings are stored on Particle Network to be used as a central source of truth across every instance. Our L1 then facilitates cross-chain messages to either deploy new instances abiding by these settings or update existing instances as they change.
-- **Decentralized Messaging Network (DMN)**: On Particle Network, Relayer Nodes use a Messaging Protocol (powered by Hyperlane) to monitor whether UserOperations on external chains have been executed successfully, and then settle the execution status on our L1. This network of decentralized Relayer Nodes, tasked with monitoring external chain events and the settlement of state events, is called the Decentralized Messaging Network.
+- **Decentralized Messaging Network (DMN)**: On Particle Network, Relayer Nodes use a native Messaging Protocol to monitor whether UserOperations on external chains have been executed successfully, and then settle the execution status on our L1. This network of decentralized Relayer Nodes, tasked with monitoring external chain events and the settlement of state events, is called the Decentralized Messaging Network.
 - **Decentralized Bundler**: While current implementations of ERC-4337 account abstraction Bundlers are centralized (and as such censorable), Particle Network has designed and implemented a **fully decentralized** Bundler network for high-volume, cross-chain UserOperation processing. Within this implementation, node operators running Bundler nodes,  initiate and execute UserOperations on external chains.
-
-## Modular Nodes
-
-Modular Nodes validate and compute most key functionalities of Particle Network. They can be run by anyone that wants to support the Particle ecosystem’s decentralization.
-
-These functionalities, as well as the different kinds of nodes performing them, are:
-
-### Cross-chain execution: Bundler Nodes
-
-A foundational function enabling Universal Liquidity is the Bundling and execution of transactions on external chains. 
-
-UserOperations initiated by Universal Accounts and thereby processed by Particle Network are executed by Bundler nodes, taking advantage of Particle Network’s Decentralized Bundler network.
-
-### Messaging: Relayer Nodes
-
-Powered by Particle Network’s Decentralized Messaging Network, Relayer Nodes exist as a message hub responsible for monitoring and synchronizing the execution status on external chains, following the work done by Bundler Nodes.
-
-In addition to this, Relayer Nodes work alongside Particle Network’s Master Keystore Hub module to facilitate the automatic maintenance and parity of changes in smart account state across chains, updating account modules, owners, etc.
-
-### Node monitoring: Watchtower Nodes
-
-Given the various interconnected nodes simultaneously working alongside one another to power Universal Liquidity and Universal Accounts, a mechanism to monitor and ensure liveness among them is needed. Watchtower Nodes fulfill this need by acting as liveness assurance, monitoring the work of all other nodes in the network.
-
-Furthermore, Watchtower Nodes provide execution proofs, and in some cases, fraud proofs, for each block generated per epoch.
-
-<Frame caption="Architecture of the Particle Network Modular L1.">
-<img
-  className="block dark:hidden"
-  src="/landing/modular-l1/images/particle-architecture.png"
-  alt="Architecture of Particle Networks' L1"
-/>
-<img
-  className="hidden dark:block"
-  src="/landing/modular-l1/images/particle-architecture.png"
-  alt="Architecture of Particle Networks' L1"
-/>
-</Frame>
 
 ***
 
@@ -185,4 +148,3 @@ A model of this nature significantly reduces pressure and security dependence on
   src="/landing/modular-l1/images/dual-staking.jpeg"
   alt="Dual staking on Particle"
 />
-
