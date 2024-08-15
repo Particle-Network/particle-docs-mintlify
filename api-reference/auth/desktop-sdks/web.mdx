@@ -273,14 +273,14 @@ const userInfo = await connect({
 
 Learn more about [Custom Authentication](/guides/configuration/auth/jwt).
 
-#### Login in Telegram Miniapp
+Implementation within a Telegram Miniapp
 
 <Tip>
     Check out the [Telegram Mini-App Quickstart guide](/guides/wallet-as-a-service/waas/auth/tg-quickstart) and get a new project up
     and running in just 5 minutes.
 </Tip>
 
-Before you start, make sure you have already created a Telegram Bot. Here is a [comprehensive guide](https://docs.telegram-mini-apps.com/platform/creating-new-app) on how to do it.
+Before you start, make sure that you've already created a Telegram Bot. Here is a [comprehensive guide](https://docs.telegram-mini-apps.com/platform/creating-new-app) on how to do it.
 
 Then you need create a Particle-Telegram app on [Dashboard](https://dashboard.particle.network), and get the config from project information.
 
@@ -298,11 +298,10 @@ const userInfo = await connect({
 ```
 
 Learn more about this:
-
 -   [Live Demo](https://t.me/ParticleAuth_bot/MiniappDemo)
 -   [Source Code](https://github.com/Particle-Network/auth-tg-miniapp)
 
-### Verify the User's Login Status
+### Verify User Login Status
 
 The `useConnect()` hook provides several functions to check the user's connection status:
 
