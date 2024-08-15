@@ -143,11 +143,12 @@ export const ParticleAuthkit = ({ children }: React.PropsWithChildren) => {
         fiatCoin: "USD",
         language: "en",
 
-        // optional, ERC4337
-        erc4337: {
-          name: "SIMPLE",
-          version: "2.0.0",
-        },
+        // optional, ERC4337 wallet modal UI
+        //erc4337: {
+        //name: "SIMPLE",
+        //version: "2.0.0",
+        //},
+
         // You can prompt the user to set up extra security measure upon login or other interactions
         promptSettingConfig: {
           promptPaymentPasswordSettingWhenSign: PromptSettingType.first,
@@ -220,10 +221,13 @@ With the SDK configured, you can move on to initiating social logins within your
 Upon logging in, the embedded wallet modal included with Particle Auth will be accessible through the button in the bottom right, unless otherwise specified through `wallet` within `AuthCoreContextProvider`.
 
 ```tsx page.tsx
-import { useConnect } from "@particle-network/authkit";
+"use client";
+
+import { useConnect, useEthereum } from "@particle-network/authkit";
 
 export default function Home() {
-  const { connect, connected, connectionStatus } = useConnect();
+  const { connect, disconnect, connected, connectionStatus } = useConnect();
+  const { address } = useEthereum();
 
   // Handle user login
   const handleLogin = async () => {
@@ -232,19 +236,42 @@ export default function Home() {
     }
   };
 
+  // Handle user logout
+  const handleDisconnect = async () => {
+    if (connected) {
+      await disconnect();
+    }
+  };
+
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
+    <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 p-24">
+      <h1 className="text-4xl font-extrabold text-white mb-8">
+        Build with Particle Auth
+      </h1>
+      <h2 className="mb-4 text-lg font-bold text-white">
+        Account status: {connectionStatus}
+      </h2>
       {!connected ? (
         <div className="login-section">
           <button
-            className="bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out transform hover:scale-105 shadow-lg"
+            className="bg-purple-600 hover:bg-purple-500 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out transform hover:scale-105 shadow-lg"
             onClick={handleLogin}
           >
             Sign in with Particle
           </button>
         </div>
       ) : (
-        <h2>Account status: {connectionStatus}</h2>
+        <div className="text-center">
+          <h2 className="mb-4 text-lg font-bold text-white">
+            Address: {address}
+          </h2>
+          <button
+            className="bg-purple-600 hover:bg-purple-500 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out transform hover:scale-105 shadow-lg"
+            onClick={handleDisconnect}
+          >
+            Logout
+          </button>
+        </div>
       )}
     </main>
   );
