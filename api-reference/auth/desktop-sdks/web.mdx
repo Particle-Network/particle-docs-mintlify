@@ -251,7 +251,7 @@ const handleLogin = async () => {
 
 You can use your existing user base or authentication method with Particle Auth through JWT. This way, your users can still log in with their current accounts.
 
-We only support RS256 now: [Example](https://dev-qr6-59ee.us.auth0.com/.well-known/jwks.json).\_createMdxContent
+We only support RS256 now, [Example](https://dev-qr6-59ee.us.auth0.com/.well-known/jwks.json).
 
 Before connecting, you need to set your custom JWT configuration on the [Dashboard](https://dashboard.particle.network).
 
@@ -271,7 +271,14 @@ const userInfo = await connect({
 });
 ```
 
+Learn more about [Custom Authentication](/guides/configuration/auth/jwt).
+
 #### Login in Telegram Miniapp
+
+<Tip>
+    Check out the [Telegram Mini-App Quickstart guide](/guides/wallet-as-a-service/waas/auth/tg-quickstart) and get a new project up
+    and running in just 5 minutes.
+</Tip>
 
 Before you start, make sure you have already created a Telegram Bot. Here is a [comprehensive guide](https://docs.telegram-mini-apps.com/platform/creating-new-app) on how to do it.
 
