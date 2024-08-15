@@ -283,6 +283,14 @@ ParticleWalletConnect.setWalletConnectV2ProjectId("WalletConnect project ID")
 
 ### Custom Wallet UI
 
+<Note> `ParticleWalletGUI` is drived by adapters, `ParticleConnect.initialize` set a lot adapters, not you can get them and set to `ParticleWalletGUI`</Note>
+
+Set adapters to driver
+```swift
+let adapters = ParticleConnect.getAdaptrs()
+ParticleWalletGUI.setAdapters(adapters)
+```
+
 With `ParticleWalletGUI`, one of the primary functions is configuring the wallet interface for your specific application. This is managed through numerous methods, all of which toggle different interface components, enabling deep customization. These methods include:
 
 - `setSwapDisabled`, whether or not the "Swap" functionality is displayed within the interface. This takes one parameter, either `true` or `false`, with the default being `false`.

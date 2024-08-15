@@ -88,12 +88,12 @@ Sign up or Log in into the [Particle dashboard](https://dashboard.particle.netwo
 <div className="flex justify-center">
 <img
   className="block h-64 dark:hidden"
-  src="/guides/wallet-as-a-service/waas/images/ios.png"
+  src="/guides/wallet-as-a-service/waas/images/ios-app.svg"
   alt="Create iOS app."
 />
 <img
   className="hidden h-64 dark:block"
-  src="/guides/wallet-as-a-service/waas/images/ios.png"
+  src="/guides/wallet-as-a-service/waas/images/ios-app.svg"
   alt="Create iOS app."
 />
 </div>
@@ -192,7 +192,6 @@ if flag {
     let userInfo = self.auth.getUserInfo()
 }
 
-
 // If you're using account abstraction through ParticleAA, you'll need to retrieve their address through the following:
 let smartAccountAddress = self.auth.getUserInfo()?.smartAccountAddress
 
@@ -216,6 +215,19 @@ let value = BDouble(0.000000001 * pow(10, 18)).rounded().toHexString()
 let transaction = try await ParticleWalletAPI.evm().createTransaction(from: account.publicAddress, to: receiverAddress, value: value, data: "0x").value
               
 let txHash = try await self.auth.evm.sendTransaction(transaction, chainInfo: nil)
+```
+
+### Open Wallet
+
+Particle Auth supports Wallet SDK, follow the wallet [documentation](/api-reference/wallet/mobile/ios.mdx), add required pods to your Podfile.
+
+<Note> `ParticleWalletGUI` is drived by adapters, `ParticleConnect.initialize` set a lot adapters, not you can get them and set to `ParticleWalletGUI`</Note>
+
+After login, you can open the wallet at any time, use `ParticleWalletGUI.setSupportChain` to set supported chains.
+
+```swift
+ParticleWalletGUI.setSupportChain(Set<[ChainInfo.ethereum, ChainInfo.bnbChain]>)
+PNRouter.navigatorWallet(hiddenBackButton: false)
 ```
 
 <Tip>Take a look at the complete demo project [here](https://github.com/Particle-Network/particle-mpc-core-ios).</Tip>
