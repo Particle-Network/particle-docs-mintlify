@@ -12,8 +12,8 @@ title: Android Quickstart
 - Gradle Version : 8.9 or higher.
 <Steps>
 
-<Step title="Create and add an Android project.">
-    Particle Connect requires three key values to be initiated: `projectId`, `clientKey`, and `appId`. These values fundamentally link your application with the [Particle dashboard](https://dashboard.particle.network/).
+<Step title="Create a Particle project and add an Android project within it">
+    Particle Auth requires three key values to be initiated: `projectId`, `clientKey`, and `appId`. These values fundamentally link your application with the [Particle dashboard](https://dashboard.particle.network/).
 
     To retrieve these values for configuration within your application, follow these steps:
 
@@ -85,9 +85,9 @@ title: Android Quickstart
 
     With your `projectId`, `clientKey`, and `appId` retrieved,  then replace these project info, that you've retrieved your `projectId`, `clientKey`, and `appId` from the Particle dashboard.
 </Step>
-    <Step title="Installing & Configuring Particle Connect">
+    <Step title="Installing & Configuring Particle Auth">
 
-        To install Particle Connect within your project, copy and execute the following command.
+        To install Particle Auth within your project, copy and execute the following command.
         your `setting.gralde` file
 
 ```gradle
@@ -146,16 +146,8 @@ dependencies {
     // https://search.maven.org/search?q=g:network.particle
     val sdkVersion = "x.x.x"
     implementation("network.particle:connect:$sdkVersion")
-    implementation("network.particle:connect-kit:$sdkVersion")
-    implementation("network.particle:connect-evm-adapter:$sdkVersion")
-    implementation("network.particle:connect-solana-adapter:$sdkVersion")
-    implementation("network.particle:connect-phantom-adapter:$sdkVersion")
-    implementation("network.particle:connect-wallet-connect-adapter:$sdkVersion")
     implementation("network.particle:connect-auth-core-adapter:$sdkVersion")
-    implementation("network.particle:api-service:$sdkVersion")
-
     implementation("network.particle:wallet-service:$sdkVersion")
-    implementation("network.particle:aa-service:$sdkVersion")
 }
 ```
 
@@ -171,7 +163,6 @@ your `AndroidManifest.xml`
         tools:replace="android:fullBackupContent"
         >
 
-        <!-- Particle Connect Redirect Callback -->
         <!-- Particle AuthCore Start -->
         <activity
             android:name="com.particle.auth.controller.AuthCoreWebActivity"
@@ -226,130 +217,89 @@ your `AndroidManifest.xml`
 </manifest>
 ```
     </Step>
- <Step title="Initialize Particle Connect">
+ <Step title="Initialize Particle Auth">
+Particle Auth
 ```kotlin
-val dAppMetadata = DAppMetadata(
-    "your wallet connect appiId",
-    "Particle Connect",
-    "https://connect.particle.network/icons/512.png",
-    "https://particle.network",
-    description = "Particle Connect is a decentralized wallet connection protocol that makes it easy for users to connect their wallets to your DApp.",
-)
-ParticleConnect.init(
-    app, Env.PRODUCTION, chainInfo, dAppMetadata
-) {
-    listOf(
-        AuthCoreAdapter(),
-        MetaMaskConnectAdapter(),
-        RainbowConnectAdapter(),
-        TrustConnectAdapter(),
-        PhantomConnectAdapter(),
-        WalletConnectAdapter(),
-        ImTokenConnectAdapter(),
-        BitGetConnectAdapter(),
-        EVMConnectAdapter(),
-        SolanaConnectAdapter(),
-    )
-}
-ParticleWallet.init(app)
+ParticleNetwork.init(this, Env.DEV, ChainInfo.Ethereum)
 ```
 </Step>
 <Step title="Facilitating logins">
 With the SDK configured, you can move on to initiating social logins within your application.
 ```kotlin
-val config = ConnectKitConfig(
-      logo = "",
-      connectOptions = listOf(
-          ConnectOption.EMAIL,
-          ConnectOption.PHONE,
-          ConnectOption.SOCIAL,
-          ConnectOption.WALLET),
-      socialProviders = listOf(
-          EnableSocialProvider.GOOGLE,
-          EnableSocialProvider.APPLE,
-          EnableSocialProvider.DISCORD,
-          EnableSocialProvider.TWITTER,
-          EnableSocialProvider.FACEBOOK,
-          EnableSocialProvider.GITHUB,
-          EnableSocialProvider.MICROSOFT,
-          EnableSocialProvider.TWITCH,
-          EnableSocialProvider.LINKEDIN),
-      walletProviders = listOf(
-          EnableWalletProvider(EnableWallet.MetaMask, EnableWalletLabel.RECOMMENDED),
-          EnableWalletProvider(EnableWallet.OKX),
-          EnableWalletProvider(EnableWallet.Phantom),
-          EnableWalletProvider(EnableWallet.Trust),
-          EnableWalletProvider(EnableWallet.Bitget),
-          EnableWalletProvider(EnableWallet.WalletConnect),
-      ),
-      additionalLayoutOptions = AdditionalLayoutOptions(
-          isCollapseWalletList = false,
-          isSplitEmailAndSocial = false,
-          isSplitEmailAndPhone = false,
-          isHideContinueButton = false
-      )
-            )
-ParticleConnectKit.connect(config,connectCallback = object : ConnectKitCallback {
-    override fun onConnected(walletName: String, account: Account) {
-        val publicAddress = account.publicAddress
-        val connectedWalletName = walletName
-      
-    }
-
-    override fun onError(error: ConnectError) {
-    }
-
-});
+AuthCore.connect(SocialLoginType.GOOGLE, connectCallback =
+    object : AuthCoreServiceCallback<UserInfo> {
+        override fun success(output: UserInfo) {
+            //login success
+        }
+        override fun failure(errMsg: ErrorInfo) {
+        }
+    })
 ```
 </Step>
 <Step title="Use account">
-Now that you've obtained an account, how do you use it? 
-Based on the current chainInfo, `account.publicAddress` will return the user's current address. All EVM-compatible chains share the same address, but Solana has its own unique address. `walletName` will return the connection type of this account, indicating where it came from. If walletType is `AuthCore`, it means the account is a Particle account, and you can retrieve more information by using `AuthCore.getUserInfo`. Refer to the auth [documentation](/api-reference/auth/mobile-sdks/android) for more details. You should save all the account information for future use.
-```kotlin
-ParticleConnectKit.connect(config,connectCallback = object : ConnectKitCallback {
-    override fun onConnected(walletName: String, account: Account) {
-        //Save the account information properly; it will be needed when operating the account, such as for transfers and signing。
-        val publicAddress = account.publicAddress
-        val connectedWalletName = walletName
-    }
+Now that you've obtained the particle userInfo, how do you use it? 
 
-    override fun onError(error: ConnectError) {
+You can have your server authenticate using the `userInfo.uuid` and `userInfo.token` at [SDKs (Server)](/api-reference/auth/server/getuserinfo).
+Got the publicAddress from `AuthCore.evm.getAddress()` or `AuthCore.solana.getAddress()`, 
+
+<Tip>When a user logs in for the first time, if there is no account, we will create one. Based on the current chainInfo, a new address will be generated. For example, if the current chain is EVM-compatible, only an EVM address will be generated; if it's the Solana chain, only a Solana address will be generated. If you want to obtain both addresses, you can use `AuthCore.switchChain` to switch chains, and after waiting for 2 seconds, a new address for the selected chain will be generated for you.</Tip>
+
+```kotlin
+val userInfo = AuthCore.getUserInfo()
+val googleEmail = userInfo?.googleEmail // if user login with google account, you can get googleEmail
+val publicAddress =  
+    if (ParticleNetwork.chainInfo.isEvmChain()) {
+        AuthCore.evm.getAddress()
+    } else {
+        AuthCore.solana.getAddress()
     }
-});
+})
+  
+AuthCore.switchChain(ChainInfo.Solana, callback = 
+    object : ResultCallback{
+        override fun success() {
+            val userInfo = AuthCore.getUserInfo()
+        }
+
+        override fun failure() {
+        }
+})  
+
+// if you add ParticleAA (Account Abstraction) and enable aa service.
+val smartAccountInfo = ParticleNetwork.getAAService().getSmartAccount(publicAddress)
+
 ```
 </Step>
 <Step title="Optional, send a transaction">
 ```kotlin
-val publicAddress = account.publicAddress
-val connectedWalletName = walletName
+val publicAddress =  AuthCore.evm.getAddress()
 val uiAmount = "0.0001"
 val value = "0x"+uiAmount.toBigDecimal().multiply(BigDecimal(1e18)).toBigInteger().toString(16)
 val trans =ParticleNetwork.evm.createTransaction(from ,to,value)!!.serialize()
-val adapter = ParticleConnect.getAdapters().first { it.name == connectedWalletName }
-adapter.signAndSendTransaction(publicAddress,trans,
-    object : TransactionCallback {
-        override fun onError(error: ConnectError) {
-            LogUtils.d("signAndSendTransaction onError")
+AuthCore.evm.sendTransaction(trans, callback = 
+    object : AuthCoreSignCallback<SignOutput> {
+        override fun success(output: SignOutput) {
+            val signature = output.signature
         }
 
-        override fun onTransaction(transactionId: String?) {
-            LogUtils.d("signAndSendTransaction onTransaction")
+        override fun failure(errMsg: ErrorInfo) {
         }
+
     })
 ``` 
 </Step>
 <Step title="Optional, Open wallet">
 ```kotlin
-ParticleConnectKit.connect(config,connectCallback = object : ConnectKitCallback {
-    override fun onConnected(walletName: String, account: Account) {
-        lifecycleScope.launch {
-            ParticleWallet.setWallet(account.publicAddress,walletName)
+AuthCore.connect(SocialLoginType.GOOGLE, connectCallback =
+    object : AuthCoreServiceCallback<UserInfo> {
+        override fun success(output: UserInfo) {
+          lifecycleScope.launch {
+            ParticleWallet.setWallet( AuthCore.evm.getAddress(),MobileWCWalletName.AuthCore.name)
             openWallet()
         }
-    }
-    override fun onError(error: ConnectError) {
-    }
-});
+        override fun failure(errMsg: ErrorInfo) {
+        }
+    })
 ```
 </Step>
 </Steps>

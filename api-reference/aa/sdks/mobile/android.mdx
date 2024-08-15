@@ -58,12 +58,6 @@ dependencies {
     the network on which you're requesting (and qualifying for) sponsorship.
   </p>
   <p>
-    - Alternatively, if you'd like to instead use Biconomy's Verifying
-    Paymaster, you can head over to the{" "}
-    <a href="https://dashboard.biconomy.io/">Biconomy dashboard</a>, create a
-    new Paymaster, and fill in `apiKey` within `initAAMode`.
-  </p>
-  <p>
     - The Particle Network AA SDK automatically uses Biconomy's Token Paymaster;
     transactions that request it will be able to leverage it without additional
     configuration.
@@ -81,18 +75,14 @@ With your project configured, you can move onto initializing the AA SDK. This is
   - `BiconomyV1AAService`, a [Biconomy smart account](https://www.biconomy.io/smart-accounts)
   - `BiconomyV2AAService`, a [Biconomy smart account](https://www.biconomy.io/smart-accounts)
   - `CyberConnectAAService`, a [CyberConnect smart account](https://wallet.cyber.co/).
-  - `SimpleAAService`, a [SimpleAccount implementation](https://github.com/eth-infinitism/account-abstraction/blob/develop/contracts/samples/SimpleAccount.sol).
+  - `SimpleV1AAService`, a [SimpleAccount implementation](https://github.com/eth-infinitism/account-abstraction/blob/develop/contracts/samples/SimpleAccount.sol).
+  - `SimpleV2AAService`, a [SimpleAccount implementation](https://github.com/eth-infinitism/account-abstraction/blob/develop/contracts/samples/SimpleAccount.sol).
   - `LightAAService`a [LightAccount implementation](https://accountkit.alchemy.com/packages/aa-accounts/light-account/).
 
 E.g.:
 
 ```kotlin Kotlin
-val apiKey = mapOf(
-            Ethereum.id to "YOUR_BICONOMY_API_KEY",
-            Polygon.id to "YOUR_BICONOMY_API_KEY"
-        ) // Optional
-
-ParticleNetwork.initAAMode(apiKey, aaService = BiconomyAAService)
+ParticleNetwork.initAAMode(emptyMap(), aaService = BiconomyAAService)
 ```
 
 ## Enable AA Mode

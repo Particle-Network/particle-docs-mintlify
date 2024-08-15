@@ -107,7 +107,6 @@
                 "landing/wallet-abstraction/waas/mpc-tss",
                 "landing/wallet-abstraction/waas/bundler",
                 "landing/wallet-abstraction/waas/omni-paymaster"
-                
               ]
             },
             "landing/wallet-abstraction/btc-connect"
@@ -126,7 +125,10 @@
     },
     {
       "group": "MISCELLANEOUS",
-      "pages": ["landing/more/audits", "landing/more/assets"]
+      "pages": [
+        "landing/more/audits",
+        "landing/more/assets"
+      ]
     },
     {
       "group": "TUTORIALS & DEMOS",
@@ -170,17 +172,20 @@
       "pages": [
         "guides/wallet-as-a-service/waas/understanding-waas",
         {
-        "group": "Quickstarts (Connect)",
+          "group": "Quickstarts (Connect)",
           "pages": [
-            "guides/wallet-as-a-service/waas/connect/web-quickstart"
+            "guides/wallet-as-a-service/waas/connect/web-quickstart",
+            "guides/wallet-as-a-service/waas/connect/android-quickstart",
+            "guides/wallet-as-a-service/waas/connect/ios-quickstart"
           ]
         },
         {
           "group": "Quickstarts (Auth)",
           "pages": [
             "guides/wallet-as-a-service/waas/auth/web-quickstart",
-            "guides/wallet-as-a-service/waas/auth/tg-quickstart",
-            "guides/wallet-as-a-service/waas/auth/mobile-quickstart"
+            "guides/wallet-as-a-service/waas/auth/android-quickstart",
+            "guides/wallet-as-a-service/waas/auth/ios-quickstart",
+            "guides/wallet-as-a-service/waas/auth/tg-quickstart"
           ]
         },
         {
@@ -256,7 +261,9 @@
     },
     {
       "group": "APIs & SDKs",
-      "pages": ["api-reference/introduction"]
+      "pages": [
+        "api-reference/introduction"
+      ]
     },
     {
       "group": "PARTICLE CONNECT",
@@ -264,7 +271,9 @@
         "api-reference/connect/introduction",
         {
           "group": "SDKs (Desktop)",
-          "pages": ["api-reference/connect/desktop/web"]
+          "pages": [
+            "api-reference/connect/desktop/web"
+          ]
         },
         {
           "group": "SDKs (Mobile)",
@@ -275,7 +284,8 @@
             "api-reference/connect/mobile/flutter",
             "api-reference/connect/mobile/react"
           ]
-        }
+        },
+        "api-reference/connect/faq"
       ]
     },
     {
@@ -310,7 +320,9 @@
         },
         {
           "group": "SDKs (Multi-platform)",
-          "pages": ["api-reference/auth/multi/unreal"]
+          "pages": [
+            "api-reference/auth/multi/unreal"
+          ]
         },
         "api-reference/auth/faq"
       ]
@@ -322,7 +334,9 @@
         "api-reference/wallet/on-ramp",
         {
           "group": "SDKs (Desktop)",
-          "pages": ["api-reference/wallet/desktop/web"]
+          "pages": [
+            "api-reference/wallet/desktop/web"
+          ]
         },
         {
           "group": "SDKs (Mobile)",
@@ -333,7 +347,8 @@
             "api-reference/wallet/mobile/flutter",
             "api-reference/wallet/mobile/react"
           ]
-        }
+        },
+        "api-reference/wallet/faq"
       ]
     },
     {
@@ -342,7 +357,9 @@
         "api-reference/aa/introduction",
         {
           "group": "SDKs (Desktop)",
-          "pages": ["api-reference/aa/sdks/desktop/web"]
+          "pages": [
+            "api-reference/aa/sdks/desktop/web"
+          ]
         },
         {
           "group": "SDKs (Mobile)",
@@ -381,7 +398,8 @@
             "api-reference/aa/paymaster/paymasterbalance",
             "api-reference/aa/paymaster/sponsoruseroperation"
           ]
-        }
+        },
+        "api-reference/aa/faq"
       ]
     },
     {
@@ -390,7 +408,9 @@
         "api-reference/btc/introduction",
         {
           "group": "SDKs (Desktop)",
-          "pages": ["api-reference/btc/desktop/web"]
+          "pages": [
+            "api-reference/btc/desktop/web"
+          ]
         },
         {
           "group": "BTC Connect RPC",
@@ -444,11 +464,16 @@
     },
     {
       "group": "DEBUGGING",
-      "pages": ["api-reference/debug/sdk", "api-reference/debug/api"]
+      "pages": [
+        "api-reference/debug/sdk",
+        "api-reference/debug/api"
+      ]
     },
     {
       "group": "CHANGELOG",
-      "pages": ["changelog/logs"]
+      "pages": [
+        "changelog/logs"
+      ]
     }
   ],
   "footerSocials": {

@@ -53,7 +53,7 @@ Additionally, before diving in, you'll need to retrieve three universally requir
 <Note>
   Follow the quickstart tutorial to set up a project and find the required keys:
   [Create a new
-  project](/guides/wallet-as-a-service/waas/mobile-quickstart#configuring-particle-auth).
+  project](/guides/wallet-as-a-service/waas/connect/ios-quickstart).
 </Note>
 
 ### Dependencies
@@ -70,7 +70,7 @@ Then, within your Podfile, you'll need to throw in a few different dependencies,
 
 ## Connect V2
 
-<Note>We recommend trying our web demo to easily customize and design your connect page. After customizing, you can copy the generated code from the Code Snippets section and paste it into the ConnectKitDemo to experience it directly in your app.</Note>
+<Note>We recommend trying our [Particle Connect Demo](https://demo.particle.network) to easily customize and design your connect page. After customizing, you can copy the generated code from the Code Snippets section and paste it into the [ConnectKitDemo](https://github.com/Particle-Network/particle-connect-ios/tree/master/ConnectKitDemo) to experience it directly in your app.</Note>
 
 Starting from version 2.0.0, you can quickly integrate the `ParticleConnectKit` SDK, which includes features such as social login, SNS login, third-party wallet login, and customizable login UI.
 
@@ -128,7 +128,7 @@ Since it's ikely not already present, head to the root of your project and make 
 
 Within this file, you must enter the authentication credentials retrieved from the Particle dashboard. You can do this through the structure below:
 
-```xml XML
+```xml ParticleNetwork-Info.plist
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
@@ -409,7 +409,7 @@ To initiate a transaction for signature and ultimately settlement on-chain, you'
 let txHash = try await adapter.signAndSendTransaction(publicAddress: address, transaction: transaction).value
 ```
 
-You can create en EVM transaction with class `TxData` or `FeeMarketEIP1559TxData`, also you can use another SDK `ParticleWalletAPI` to create transaction, you can reference the examples from [Wallet SDK reference](/api-reference/wallet/mobile/ios.mdx#create-transaction)
+You can create en EVM transaction with class `TxData` or `FeeMarketEIP1559TxData`, also you can use another SDK `ParticleWalletAPI` to create transaction, you can reference the examples from [Wallet SDK reference](/api-reference/wallet/mobile/ios)
 
 ### Sign Transaction
 
