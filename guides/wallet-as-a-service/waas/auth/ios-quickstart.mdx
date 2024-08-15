@@ -140,6 +140,9 @@ ParticleNetwork.initialize(config: .init(chainInfo: .ethereum, devEnv: .debug))
 
 With the SDK configured, you can move on to initiating social logins within your application. 
 
+<Tip>You can use your existing user base or authentication method with Particle Auth through JWT. This way, your users can still log in with their current accounts. Click [here](/guides/configuration/auth/jwt) to learn hwo to configure jwt. </Tip>
+
+
 ```swift
 let userInfo = try await auth.connect(type: .google, socialLoginPrompt: .selectAccount)
 let userInfo = try await auth.connect(type: .jwt, account: "the JWT")
