@@ -104,13 +104,13 @@ Sign up or Log in into the [Particle dashboard](https://dashboard.particle.netwo
 <div className="flex justify-center">
 <img
   className="block h-64 dark:hidden"
-  src="/guides/wallet-as-a-service/waas/images/ios.png"
-  alt="Create web app."
+  src="/guides/wallet-as-a-service/waas/images/ios-app.svg"
+  alt="Create iOS app."
 />
 <img
   className="hidden h-64 dark:block"
-  src="/guides/wallet-as-a-service/waas/images/ios.png"
-  alt="Create web app."
+  src="/guides/wallet-as-a-service/waas/images/ios-app.svg"
+  alt="Create iOS app."
 />
 </div>
 </Accordion>
@@ -321,7 +321,6 @@ To execute the resulting transaction, you'll need to initialize an instance of t
 Finally, using this instance, the transaction can be executed through `{adapter}.signAndSendTransaction`, taking the sender's address alongside the previously constructed transaction object.
 
 ```swift
-
 let adapter = ParticleConnect.getAllAdapters().first {
       $0.walletType == account.walletType
 }
@@ -334,6 +333,14 @@ let transaction = try await ParticleWalletAPI.evm().createTransaction(from: acco
 let txHash = try await adapter!.signAndSendTransaction(publicAddress: account.publicAddress, transaction: transaction).value
 ```
 
+### Open Wallet
+
+After connecting, you can open the wallet at any time, use `ParticleWalletGUI.setSupportChain` to set supported chains.
+
+```swift
+ParticleWalletGUI.setSupportChain(Set<[ChainInfo.ethereum, ChainInfo.bnbChain]>)
+PNRouter.navigatorWallet(hiddenBackButton: false)
+```
 
 
 <Tip> To implement account abstraction within your iOS project, integrate the `ParticleAA` SDK and refer to this [documentation](/api-reference/aa/sdks/mobile/ios).</Tip>
