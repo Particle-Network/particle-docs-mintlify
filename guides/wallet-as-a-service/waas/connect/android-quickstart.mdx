@@ -138,8 +138,8 @@ Specifically, you'll need the following libraries:
 - `network.particle:connect-kit`
 - `network.particle:connect-auth-core-adapter`
 - `network.particle:api-service`
-- `network.particle:connect-evm-adapter`, if using EVM private key login.(not recommended)
-- `network.particle:connect-solana-adapter`, if using Solana private key login.(not recommended)
+- `network.particle:connect-evm-adapter`, for onboarding via EVM private key. (not recommended)
+- `network.particle:connect-solana-adapter`, for onboarding via Solana private key. (not recommended)
 - `network.particle:connect-phantom-adapter`, if using Phantom.
 - `network.particle:connect-wallet-connect-adapter`,
 - `network.particle:wallet-service`, if you'd like to use Particle's embedded wallet interface.
@@ -367,6 +367,7 @@ ParticleConnectKit.connect(config,connectCallback = object : ConnectKitCallback 
         lifecycleScope.launch {
             ParticleWallet.setWallet(account.publicAddress,walletName)
             PNRouter.build(RouterPath.Wallet).navigation()
+            openWallet() // To open the embedded wallet interface upon connection
         }
     }
 
@@ -377,13 +378,23 @@ ParticleConnectKit.connect(config,connectCallback = object : ConnectKitCallback 
 ```
 
 </Step>
-    <Step title="Use account">
-        Now that you've obtained an account, how do you use it?
-        Based on the current chainInfo, `account.publicAddress` will return the user's current address. All EVM-compatible chains share the same address, but Solana has its own unique address. `walletName` will return the connection type of this account, indicating where it came from. If walletType is `AuthCore`, it means the account is a Particle account, and you can retrieve more information by using `AuthCore.getUserInfo`. Refer to the auth [documentation](/api-reference/auth/mobile-sdks/android) for more details. You should save all the account information for future use.
+
+</Steps>
+
+## Examples of Utilization
+
+### Retrieve User Information
+
+Upon a successful connection, you'll be able to retrieve information about the resulting account through two mechanisms. The first involves reading properties on the object originally assigned to the `ParticleConnectKit.connect` call, which will contain core properties such as `publicAddress` after an account is loaded.
+
+Additionally, to explicitly retrieve detailed information, you can call `AuthCore.getUserInfo`, which will return a `userInfo` object with various properties detailing the connection method used, addresses, and so on (to learn more about the structure of this object, head over to its [API reference](/api-reference/auth/server/getuserinfo)).
+
+<Tip> Ensure you save basic account details, such as the address, because you'll need this later as a parameter within transaction execution functions. </Tip>
+
 ```kotlin
 ParticleConnectKit.connect(config,connectCallback = object : ConnectKitCallback {
     override fun onConnected(walletName: String, account: Account) {
-        //Save the account information properly; it will be needed when operating the account, such as for transfers and signing。
+        // Save the account information properly; it will be needed when operating the account, such as for transfers and signing。
         val publicAddress = account.publicAddress
         val connectedWalletName = walletName
     }
@@ -392,8 +403,15 @@ ParticleConnectKit.connect(config,connectCallback = object : ConnectKitCallback 
     }
 });
 ```
-    </Step>
-    <Step title="Optional, send a transaction">
+
+### Send a Transaction
+
+Transactions can be constructed and sent directly through the SDK; below is an example of the standard flow here.
+
+In essense, you'll need to generate a transaction object with `ParticleNetwork.evm.createTransaction` (or the `solana` equivalent), passing in standard parameters such as `from`, `to`, `value`, and (if you're interacting with a contract) `data`. Using these, an object will be returned which can be used directly for execution.
+
+Execution needs to be initiated through an instance of the active connector, or adapter (the method in which a user connected); this can be retrieved and loaded using `ParticleConnect.getAdapters`, as demonstrated below. Upon loading the adapter, you can simply call `{adapter}.signAndSendTransaction`, passing in the previously generated transaction object. Upon doing so, the user will be prompted to confirm the transaction.
+
  ```kotlin
 val publicAddress = account.publicAddress
 val connectedWalletName = walletName
@@ -412,23 +430,5 @@ adapter.signAndSendTransaction(publicAddress,trans,
         }
 })
 ```
-    </Step>
-    <Step title="Optional, Open wallet">
-```kotlin
-ParticleConnectKit.connect(config,connectCallback = object : ConnectKitCallback {
-    override fun onConnected(walletName: String, account: Account) {
-        lifecycleScope.launch {
-            ParticleWallet.setWallet(account.publicAddress,walletName)
-            openWallet()
-         }
-    }
-    override fun onError(error: ConnectError) {
-    }
-});
- ```
-    </Step>
 
-</Steps>
-<Tip> To get support for `Account Abstraction`, integrate the `ParticleAA` SDK and refer to this [documentation](/api-reference/aa/sdks/mobile/android).</Tip>
-<Tip>The complete demo project [Demo](https://github.com/Particle-Network/particle-android).</Tip>
 <Tip>The complete demo project, which includes the code snippets covered above, can be found [here](https://github.com/Particle-Network/particle-android).</Tip>

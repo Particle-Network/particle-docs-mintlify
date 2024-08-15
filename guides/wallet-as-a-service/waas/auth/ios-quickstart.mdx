@@ -164,11 +164,11 @@ As shown below, you'll need to call `auth.connect` to initiate social login, pas
 
 <Tip>When a user logs in for the first time, if there is no account, we will create one. Based on the current chainInfo, a new address will be generated. For example, if the current chain is EVM-compatible, only an EVM address will be generated; if it's the Solana chain, only a Solana address will be generated. If you want to obtain both addresses, you can use `auth.switchChain` to switch chains, and after waiting for 2 seconds, a new address for the selected chain will be generated for you.</Tip>
 
-<Tip>You can use your existing user base or authentication method with Particle Auth through JWT. This way, your users can still log in with their current accounts. Click [here](/guides/configuration/auth/jwt) to learn how to configure jwt. </Tip>
-
-
 ```swift
 let userInfo = try await auth.connect(type: .google, socialLoginPrompt: .selectAccount)
+
+// Additionally, you can implement custom authentication through JWT.
+// Learn more: https://developers.particle.network/guides/configuration/auth/jwt
 let userInfo = try await auth.connect(type: .jwt, account: "the JWT")
 ```
 </Step>
@@ -219,11 +219,7 @@ let txHash = try await self.auth.evm.sendTransaction(transaction, chainInfo: nil
 
 ### Open Wallet
 
-Particle Auth supports Wallet SDK, follow the wallet [documentation](/api-reference/wallet/mobile/ios.mdx), add required pods to your Podfile.
-
-<Note> `ParticleWalletGUI` is drived by adapters, `ParticleConnect.initialize` set a lot adapters, not you can get them and set to `ParticleWalletGUI`</Note>
-
-After login, you can open the wallet at any time, use `ParticleWalletGUI.setSupportChain` to set supported chains.
+If you included `ParticleWalletGUI` within your Podfile, you can open the (optional) embedded wallet interface at any time after a user connects, use `ParticleWalletGUI.setSupportChain` to set supported chains, then `PNRouter` to open the interface.
 
 ```swift
 ParticleWalletGUI.setSupportChain(Set<[ChainInfo.ethereum, ChainInfo.bnbChain]>)
