@@ -553,6 +553,20 @@ You can use `useAddress` imported from `particle-network/connectkit`.
 
 ## Examples of Utilization
 
+### Verify User Connection
+
+After setting up **Particle Connect** in your application, you can check if a user is connected via **Particle Connect** using `isConnected` from the `useAccount` hook (`isConnected` will be truthy automatically upon connection).
+
+```typescript TypeScript
+import { useAccount } from '@particle-network/connectkit';
+
+const { isConnected, isConnecting, isDisconnected, isReconnecting } = useAccount();
+
+if (isConnected) {
+    // Truthy indicates a successful login, active session
+}
+```
+
 ### Get Wallet Address
 
 After a successful connection, you can use `useAccount` to get the address and status, or `useAddress` to get the address.
@@ -596,41 +610,7 @@ await switchChainAsync({ chainId: 1 });
 switchChain({ chainId: 1 });
 ```
 
-### Use EIP-1193 Provider (Ethers, Web3.js)
-
-If your dApp is already using a standard library such as Ethers or Web3.js, accounts can be managed through plugging in an EIP-1193 provider attached to the connected EOA.
-
-Upon constructing an instance of Ethers or Web3.js using this provider, transactions can be sent and messages can be signed using standard syntax from that library; these requests will be automatically routed to the EOA connected through **Particle Connect**.
-
-An example of this approach with Ethers has been included below.
-
-```ts App.tsx
-import { useWallets } from '@particle-network/connectkit';
-import { ethers } from 'ethers';
-
-const [primaryWallet] = useWallets();
-
-const EOAprovider = await primaryWallet.connector.getProvider();
-
-const customProvider = new ethers.providers.Web3Provider(EOAprovider, 'any');
-```
-
-With this configured, both read and write calls can be made from the resulting provider object, for example:
-
-```ts TypeScript
-// Read (balance retrieval)
-const balance = await customProvider.getBalance(address);
-
-// Write (sending a transaction)
-const signer = customProvider.getSigner();
-const tx = {
-    to: '0x000000000000000000000000000000000000dEaD',
-    value: ethers.utils.parseEther('0.01'),
-};
-const txResponse = await signer.sendTransaction(tx);
-```
-
-### Use Wallet Client (Manage Account)
+### Use Wallet Client (Provider)
 
 As an alternative to using an EIP-1193 provider with a standard Web3 library, the Wallet Client interface allows you to directly interact with accounts, providing functionality to execute transactions, sign messages, and more.
 
@@ -669,7 +649,7 @@ solanaWallet.signTransaction({...})
 
 Example of sending an EVM transaction:
 
-```tsx App.tsx
+```tsx TypeScript
 import { useWallets, useAccount } from '@particle-network/connectkit';
 import { parseEther, type Address } from 'viem';
 
@@ -696,7 +676,7 @@ const executeTx = async () => {
 
 Example of sending an Solana transaction:
 
-```tsx App.tsx
+```tsx TypeScript
 import { useWallets, useAccount, usePublicClient, type SolanaChain } from '@particle-network/connectkit';
 import { PublicKey, SystemProgram, Transaction } from '@solana/web3.js';
 
@@ -728,11 +708,11 @@ const executeTx = async () => {
 };
 ```
 
-### Leverage publicClient for RPC Calls
+### Leverage PublicClient for RPC Calls
 
 **Connectkit** integrates Viem, allowing you to make RPC calls directly—such as fetching balances or nonces—via the `usePublicClient()` hook, eliminating the need for a separate provider.
 
-```tsx App.tsx
+```tsx TypeScript
 import { usePublicClient } from '@particle-network/connectkit';
 
 export const App = () => {
@@ -747,6 +727,27 @@ export const App = () => {
     };
 };
 ```
+
+For Solana, `usePublicClient` returns a `Connection` type (imported from `@solana/web3.js`). Example Usage.
+
+
+
+```typescript TypeScript
+import { usePublicClient, SolanaChain } from '@particle-network/connectkit';
+
+export const App = () => {
+    // Init public client
+    const publicClient = usePublicClient<SolanaChain>();
+    const [primaryWallet] = useWallets<SolanaChain>();
+
+    // Fetch the balance of an account
+    const fetchBalance = async () => {
+        const balanceResponse = await publicClient?.getBalance(primaryWallet.publicKey);
+    };
+};
+
+```
+
 
 ### Fetch User Information with Particle Auth
 
@@ -777,6 +778,40 @@ export const App = () => {
 
     return <h2 className="text-style">Name: {userInfo.name || 'N/A'}</h2>;
 };
+```
+
+### Use EIP-1193 Provider (Ethers, Web3.js)
+
+If your dApp is already using a standard library such as Ethers or Web3.js, accounts can be managed through plugging in an EIP-1193 provider attached to the connected EOA.
+
+Upon constructing an instance of Ethers or Web3.js using this provider, transactions can be sent and messages can be signed using standard syntax from that library; these requests will be automatically routed to the EOA connected through **Particle Connect**.
+
+An example of this approach with Ethers has been included below.
+
+```ts App.tsx
+import { useWallets } from '@particle-network/connectkit';
+import { ethers } from 'ethers';
+
+const [primaryWallet] = useWallets();
+
+const EOAprovider = await primaryWallet.connector.getProvider();
+
+const customProvider = new ethers.providers.Web3Provider(EOAprovider, 'any');
+```
+
+With this configured, both read and write calls can be made from the resulting provider object, for example:
+
+```ts TypeScript
+// Read (balance retrieval)
+const balance = await customProvider.getBalance(address);
+
+// Write (sending a transaction)
+const signer = customProvider.getSigner();
+const tx = {
+    to: '0x000000000000000000000000000000000000dEaD',
+    value: ethers.utils.parseEther('0.01'),
+};
+const txResponse = await signer.sendTransaction(tx);
 ```
 
 ### Key React Hooks for Particle Connect
