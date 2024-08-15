@@ -168,8 +168,28 @@ Specifically, `AuthCore.login` takes the following parameters:
 | loginPageConfig   | LoginPageConfig?                    | to customize the UI page, contains project name, icon and description.                                                                                                                                                                   |
 | loginCallback     | AuthCoreServiceCallback`<UserInfo>` | success : wiil return UserInfo. <br /><br />failure : will return a ErrorInfo                                                                                                                                                            |
 
+<Tip>You can use your existing user base or authentication method with Particle Auth through JWT. This way, your users can still log in with their current accounts. Click [here](/guides/configuration/auth/jwt) to learn how to configure JWT. </Tip>
+
 ```kotlin Kotlin
-AuthCore.connect(loginType,account,supportLoginTypes,prompt,loginPageConfig,loginCallback)
+// connect with Email or Phone
+AuthCore.connect(LoginType.EMAIL, loginCallback = connectCallback)
+AuthCore.connect(LoginType.PHONE, loginCallback = connectCallback)
+// connect with Google
+AuthCore.connect(SocialLoginType.GOOGLE, prompt = LoginPrompt.SelectAccount,connectCallback)
+// connect with jwt
+AuthCore.connect("jwt web token",connectCallback =connectCallback)
+
+// send verification code to email or phone number, the phone number must be in E.164 format.
+AuthCore.sendCode(CodeReq(email = "xxx@xx.com"), callback)
+AuthCore.sendCode(CodeReq(phone = "+11234567890"), callback)
+//After sending the verification code, you can use the user-entered code to log in. With this approach, you can customize the UI and simply call our API for the login process.
+AuthCore.connect(LoginReq(email = "xxx@xx.com", code = "Verification code received by the user"),connectCallback)
+AuthCore.connect(LoginReq(phone = "+11234567890", code = "Verification code received by the user"),connectCallback)
+
+val connectCallback = object :AuthCoreServiceCallback<UserInfo>{
+    override fun success(output: UserInfo) {}
+    override fun failure(errMsg: ErrorInfo) {}
+}
 ```
 
 ### UserInfo and Address Retrieval (post-login)

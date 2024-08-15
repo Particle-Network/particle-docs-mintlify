@@ -44,7 +44,6 @@ Important details before initialization.
 <p></p>
 <p>- All Testnets automatically have the Verifying Particle Network Omnichain Verifying Paymaster enabled, transactions (that request it) will automatically be sponsored and thus gasless.</p>
 <p>- On the occasion that you'd like to use the Particle Network Omnichain Verifying Paymaster for Mainnets, you'll need to deposit USDT on either Ethereum or BNB Chain within the <a href="https://dashboard.particle.network">Particle dashboard</a>. This USDT will then automatically be converted as needed into the native token of the network you're requesting (and qualifying for) sponsorship on.</p>
-<p>- Alternatively, if you'd like to instead use Biconomy's Verifying Paymaster, you can head over to the <a href="https://dashboard.biconomy.io/">Biconomy dashboard</a>, create a new Paymaster, and fill in `apiKey` within `Init`.</p>
 <p>- The Particle Network AA SDK automatically uses Biconomy's Token Paymaster. Transactions that request it will be able to leverage it without additional configuration.</p>
 </Note>
 
@@ -60,9 +59,9 @@ Before you can use the full extent of the SDK, you'll need to initialize it thro
   - `BICONOMY_V1`, a [Biconomy smart account](https://www.biconomy.io/smart-accounts).
   - `BICONOMY_V2`, a [Biconomy smart account](https://www.biconomy.io/smart-accounts).
   - `CYBERCONNECT`, a [CyberConnect smart account](https://wallet.cyber.co).
-  - `SIMPLE`, a [SimpleAccount implementation](https://github.com/eth-infinitism/account-abstraction/blob/develop/contracts/samples/SimpleAccount.sol).
+  - `SIMPLE_V1`, a [SimpleAccount implementation](https://github.com/eth-infinitism/account-abstraction/blob/develop/contracts/samples/SimpleAccount.sol).
+  - `SIMPLE_V2`, a [SimpleAccount implementation](https://github.com/eth-infinitism/account-abstraction/blob/develop/contracts/samples/SimpleAccount.sol).
   - `LIGHT`, a [Light Account](https://accountkit.alchemy.com/packages/aa-accounts/light-account/).
-- Optionally, `biconomyApiKeys`, if you'd like to use a Biconomy Paymaster rather than the default (enabled without extra configuration) Particle Network Paymaster. If you would, then you'll need a dictionary with chain IDs tied to corresponding Paymaster keys on the [Biconomy dashboard](https://dashboard.biconomy.io/).
 
 Once the Particle AA SDK has been initialized through `ParticleAAInteraction`, you'll need to go ahead and enable AA mode through `ParticleAAInteraction.EnableAAMode`. From there, you can directly interact with the SDK (sending UserOperations, retrieving fee quotes, etc.)
 
@@ -70,7 +69,7 @@ E.g.:
 
 ```csharp
 
-// BICONOMY_V1 || BICONOMY_V2 | SIMPLE | CYBERCONNECT | LIGHT
+// BICONOMY_V1 || BICONOMY_V2 | SIMPLE_V1 | SIMPLE_V2 | CYBERCONNECT | LIGHT
 ParticleAAInteraction.Init(AAAccountName.BICONOMY_V1);
 
 ParticleAAInteraction.EnableAAMode();

@@ -29,7 +29,7 @@ These will control specific customizations, statistics, and more for your instan
 <Note>
   Follow the quickstart tutorial to set up a project and find the required keys:
   [Create a new
-  project](/guides/wallet-as-a-service/waas/mobile-quickstart#configuring-particle-auth).
+  project](/guides/wallet-as-a-service/waas/auth/ios-quickstart).
 </Note>
 
 ### Installation
@@ -150,6 +150,8 @@ ParticleNetwork.setChainInfo(.ethereum)
 | `account`           | `String?`            | (Optional) when `type` is set to either `.email`, `.phone`, or `.jwt`, you can use the `account` parameter to pass in an expected email, phone number, or JWT. This is optional for the former two, but required for `.jwt`. The phone number must be in E.164 format. |
 | `code`              | `String?`            | (Optional) when `type` is set to either `.email` pr `.phone`, you can use the code parameter to pass the verification code.                                                                                                                                            |
 | `socialLoginPrompt` | `SocialLoginPrompt?` | (Optional) either `.none`, `.consent`, or `.select_account`, only google, discord and microsoft support it.                                                                                                                                                            |
+
+<Tip>You can use your existing user base or authentication method with Particle Auth through JWT. This way, your users can still log in with their current accounts. Click [here](/guides/configuration/auth/jwt) to learn how to configure jwt. </Tip>
 
 ```swift
 // connect with Google

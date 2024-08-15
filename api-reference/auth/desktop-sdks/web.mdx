@@ -10,13 +10,14 @@ Among all of the SDKs for Particle Auth, the Web SDK (`@particle-network/authkit
 
 The Particle Auth SDK is the primary mechanism for **configuring** and **using** social logins. **Whether you're starting from scratch** or **already have an onboarding or authentication flow set up within your application**, the Particle Auth Core Web SDK is a simple yet powerful integration.
 
-
-
 ---
 
 ## Getting Started
 
-<Tip>Check out the [Web Quickstart guide](/guides/wallet-as-a-service/waas/auth/web-quickstart) and get a new project up and running in just 5 minutes.</Tip>
+<Tip>
+    Check out the [Web Quickstart guide](/guides/wallet-as-a-service/waas/auth/web-quickstart) and get a new project up
+    and running in just 5 minutes.
+</Tip>
 
 To get started with the Particle Auth Web SDK, you can add `@particle-network/authkit` to your project using either of the two following mechanisms:
 
@@ -34,7 +35,10 @@ Configuration is primarily handled by wrapping an application with Particle Auth
 
 No matter which Particle Auth SDK you're using, you'll need to define your `projectId`, `clientKey`, and `appId` within this configuration object to properly authenticate your Particle Auth instance. Additionally, [you can apply customizations to the wallet modal](/guides/configuration/appearance/wallet) for a tailored user experience.
 
-<Note>Follow the quickstart tutorial to set up a project and find the required keys: [Create a new project](/guides/wallet-as-a-service/waas/auth/web-quickstart#configuring-particle-auth).</Note>
+<Note>
+    Follow the quickstart tutorial to set up a project and find the required keys: [Create a new
+    project](/guides/wallet-as-a-service/waas/auth/web-quickstart#configuring-particle-auth).
+</Note>
 
 Below is an example of an `index.tsx` file from a `create-react-app` project. In this example, the `AuthCoreContextProvider` component acts as the configuration wrapper for the entire application.
 
@@ -52,6 +56,7 @@ window.Buffer = Buffer;
 });
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
+
   <React.StrictMode>
         <AuthCoreContextProvider
           options={{
@@ -86,7 +91,16 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
 ```
 </CodeGroup>
 
-<Tip>Learn how to customize the aesthetics of the login and embedded wallet interface in the [Customizing Login Modal](/guides/configuration/appearance/auth) and [Customizing Wallet Modal](/guides/configuration/appearance/wallet) pages.</Tip>
+<Tip>
+    Learn how to customize the aesthetics of the login and embedded wallet interface in the [Customizing Login
+    Modal](/guides/configuration/appearance/auth) and [Customizing Wallet
+    Modal](/guides/configuration/appearance/wallet) pages.
+</Tip>
+
+<Warning>
+    When using a framework that supports React Server Components, you will need to include the `"use client"` directive
+    at the beginning of the file.
+</Warning>
 
 ---
 
@@ -101,7 +115,7 @@ To begin, you'll need to choose between the following interaction mechanisms:
 3. **viem**.
 4. **Particle native**.
 
-All of them achieve the same end goal of facilitating interaction with Web3, although they will result in a slightly different initialization process. 
+All of them achieve the same end goal of facilitating interaction with Web3, although they will result in a slightly different initialization process.
 
 If you've chosen **Particle native**, no initialization of this nature past configuring `AuthCoreContextProvider` or `ParticleNetwork` is needed.
 
@@ -158,10 +172,9 @@ You can now use the provider object to interact with Web3, enabling actions like
 
 ## Initiating Social Login
 
-To interact with a user's account (wallet), they must first log in using Particle Auth or [Particle Connect](/api-reference/connect/desktop/web), similar to how one would enter a password and unlock MetaMask. 
+To interact with a user's account (wallet), they must first log in using Particle Auth or [Particle Connect](/api-reference/connect/desktop/web), similar to how one would enter a password and unlock MetaMask.
 
 The application must either recognize that the user is already logged in or prompt them to complete the login process before any interactions can occur.
-
 
 You can use the `connect` and `connected` functions from the `useConnect()` hook to handle the connection logic:
 
@@ -172,9 +185,9 @@ const { connect, disconnect, connected } = useConnect();
 
 // Handle user login
 const handleLogin = async () => {
-  if (!connected) {
-    await connect({});
-  }
+    if (!connected) {
+        await connect({});
+    }
 };
 
 // Logout user
@@ -192,7 +205,11 @@ Additionally, specific configurations can be set within `connect()` to customize
 The following snippet demonstrates all the available configuration options within `connect()`:
 
 ```typescript TypeScript
-const userInfo = connect({
+'use client';
+
+import { connect } from '@particle-network/authkit';
+
+const useInfo = await connect({
     // socialType, if set, will skip the auth modal shown above and will instead automatically redirect to a chosen social login
     // 'email' | 'phone' | 'google' | 'apple' | 'twitter' | 'facebook' | 'microsoft' | 'linkedin' | 'github' | 'twitch' | 'discord'
     socialType: 'google',
@@ -203,17 +220,8 @@ const userInfo = connect({
         message: 'base58 string', // Signature message in hex or base58 for Solana
     },
 });
-
-// connect with JWT
-const userInfo = connect({
-    provider: 'jwt',
-    thirdpartyCode: 'xxxxxxxxxx', // If applicable, JWT value
-    authorization: {
-        uniq: true, // Optional: Defaults to false
-        message: 'base58 string', // Signature message in hex or base58 for Solana
-    },
-});
 ```
+
 <Note>`web3.eth.getAccounts` will also initiate login automatically if user isn't already logged in.</Note>
 
 ---
@@ -225,97 +233,132 @@ You can configure the login flow to bypass the login modal entirely, prompting t
 The following example demonstrates how to prompt the user to log in with their Google account, skipping the login modal.
 
 ```tsx App.tsx
-  // Handle user login
-  const handleLogin = async () => {
+'use client';
+
+import { connect } from '@particle-network/authkit';
+
+// Handle user login
+const handleLogin = async () => {
     if (!connected) {
-      await connect({
-        socialType: "google",
-      });
+        await connect({
+            socialType: 'google',
+        });
     }
-  };
+};
 ```
 
-***
+#### Login with JWT
 
-### Verify the User's Login Status
+You can use your existing user base or authentication method with Particle Auth through JWT. This way, your users can still log in with their current accounts.
+
+We only support RS256 now, [Example](https://dev-qr6-59ee.us.auth0.com/.well-known/jwks.json).
+
+Before connecting, you need to set your custom JWT configuration on the [Dashboard](https://dashboard.particle.network).
+
+<img width="100%" noZoom src="/api-reference/auth/desktop-sdks/images/jwt.png" />
+
+Then you can refer to the code below to log in using JWT.
+
+```typescript TypeScript
+'use client';
+
+import { connect } from '@particle-network/authkit';
+
+// connect with JWT
+const userInfo = await connect({
+    provider: 'jwt',
+    thirdpartyCode: 'xxxxxxxxxx', // If applicable, JWT value
+});
+```
+
+Learn more about [Custom Authentication](/guides/configuration/auth/jwt).
+
+Implementation within a Telegram Miniapp
+
+<Tip>
+    Check out the [Telegram Mini-App Quickstart guide](/guides/wallet-as-a-service/waas/auth/tg-quickstart) and get a new project up
+    and running in just 5 minutes.
+</Tip>
+
+Before you start, make sure that you've already created a Telegram Bot. Here is a [comprehensive guide](https://docs.telegram-mini-apps.com/platform/creating-new-app) on how to do it.
+
+Then you need create a Particle-Telegram app on [Dashboard](https://dashboard.particle.network), and get the config from project information.
+
+The following is an example of how you can connect with Telegram Miniapp.
+
+```typescript TypeScript
+'use client';
+
+import { connect } from '@particle-network/authkit';
+
+const userInfo = await connect({
+    provider: 'telegram',
+    thirdpartyCode: 'xxxxxxxxxx', // If applicable, Telegram Miniapp initData raw value
+});
+```
+
+Learn more about this:
+-   [Live Demo](https://t.me/ParticleAuth_bot/MiniappDemo)
+-   [Source Code](https://github.com/Particle-Network/auth-tg-miniapp)
+
+### Verify User Login Status
 
 The `useConnect()` hook provides several functions to check the user's connection status:
 
-- `connected` — Returns a boolean value indicating whether the user is logged in (`true`) or not (`false`). This is useful for managing login logic.
+-   `connected` — Returns a boolean value indicating whether the user is logged in (`true`) or not (`false`). This is useful for managing login logic.
 
-- `connectionStatus` — Returns a string representing the current stage of the user's flow:
-  - `loading`
-  - `connecting`
-  - `connected`
-  - `disconnected`
+-   `connectionStatus` — Returns a string representing the current stage of the user's flow:
 
-  You can use `connectionStatus` to manage login logic or to display relevant status information in the UI.
+    -   `loading`
+    -   `connecting`
+    -   `connected`
+    -   `disconnected`
+
+    You can use `connectionStatus` to manage login logic or to display relevant status information in the UI.
 
 ```tsx page.tsx
-import { useConnect } from "@particle-network/authkit";
+import { useConnect } from '@particle-network/authkit';
 
 const { connectionStatus } = useConnect();
 
 <h2 className="status-text">
-{/* Status changes are automatically handled*/}
-  Status: {connectionStatus}
-</h2>
+    {/* Status changes are automatically handled*/}
+    Status: {connectionStatus}
+</h2>;
 ```
-
 
 ### Handling User Information
 
-Once the user is logged in, the `userInfo` object from the `useAuthCore()` hook becomes available. 
+Once the user is logged in, the `userInfo` object from the `useAuthCore()` hook becomes available.
 
 <Note>The result of `connect()` will return the same object.</Note>
 
 For example, you can use it to display the user's `name` and `avatar`, or access security details such as `has_set_master_password`. This allows you to implement logic that prompts the user to set a master password if they haven’t already, thereby improving security.
 
 <Accordion title="Available Fields in `userInfo`">
-- **uuid**: Unique identifier for the user.
-- **created_at**: Timestamp of when the user account was created.
-- **updated_at**: Timestamp of the last update to the user account.
-- **phone**: User's phone number (if available).
-- **email**: User's email address (if available).
-- **apple_email**: Email associated with Apple ID (if available).
-- **apple_id**: Apple ID (if available).
-- **avatar**: URL to the user’s avatar image.
-- **discord_email**: Email associated with Discord (if available).
-- **discord_id**: Discord ID (if available).
-- **facebook_email**: Email associated with Facebook (if available).
-- **facebook_id**: Facebook ID (if available).
-- **github_email**: Email associated with GitHub (if available).
-- **github_id**: GitHub ID (if available).
-- **google_email**: Email associated with Google.
-- **google_id**: Google ID.
-- **jwt_id**: JSON Web Token ID (if available).
-- **linkedin_email**: Email associated with LinkedIn (if available).
-- **linkedin_id**: LinkedIn ID (if available).
-- **microsoft_email**: Email associated with Microsoft (if available).
-- **microsoft_id**: Microsoft ID (if available).
-- **name**: Full name of the user.
-- **passkeys_id**: Passkeys ID (if available).
-- **security_account**: Object containing security-related fields:
-  - **has_set_master_password**: Boolean indicating if a master password is set.
-  - **has_set_payment_password**: Boolean indicating if a payment password is set.
-  - **payment_password_updated_at**: Timestamp of the last update to the payment password.
-- **telegram_id**: Telegram ID (if available).
-- **telegram_phone**: Phone number associated with Telegram (if available).
-- **thirdparty_user_info**: Object containing third-party authentication info:
-  - **provider**: Name of the third-party provider (e.g., "Google").
-  - **user_info**: Object with detailed user information:
-    - **email**: Email used with the third-party provider.
-    - **id**: User ID associated with the third-party provider.
-    - **name**: Name associated with the third-party provider.
-    - **picture**: URL to the user’s profile picture from the third-party provider.
-- **token**: Token used for authentication.
-- **twitch_email**: Email associated with Twitch (if available).
-- **twitch_id**: Twitch ID (if available).
-- **twitter_email**: Email associated with Twitter (if available).
-- **twitter_id**: Twitter ID (if available).
-- **wallets**: Array of wallet objects:
-  - **uuid**: Unique identifier for the wallet.
-  - **chain_name**: Name of the blockchain associated with the wallet (e.g., "evm_chain", "solana").
+    - **uuid**: Unique identifier for the user. - **created_at**: Timestamp of when the user account was created. -
+    **updated_at**: Timestamp of the last update to the user account. - **phone**: User's phone number (if available). -
+    **email**: User's email address (if available). - **apple_email**: Email associated with Apple ID (if available). -
+    **apple_id**: Apple ID (if available). - **avatar**: URL to the user’s avatar image. - **discord_email**: Email
+    associated with Discord (if available). - **discord_id**: Discord ID (if available). - **facebook_email**: Email
+    associated with Facebook (if available). - **facebook_id**: Facebook ID (if available). - **github_email**: Email
+    associated with GitHub (if available). - **github_id**: GitHub ID (if available). - **google_email**: Email
+    associated with Google. - **google_id**: Google ID. - **jwt_id**: JSON Web Token ID (if available). -
+    **linkedin_email**: Email associated with LinkedIn (if available). - **linkedin_id**: LinkedIn ID (if available). -
+    **microsoft_email**: Email associated with Microsoft (if available). - **microsoft_id**: Microsoft ID (if
+    available). - **name**: Full name of the user. - **passkeys_id**: Passkeys ID (if available). -
+    **security_account**: Object containing security-related fields: - **has_set_master_password**: Boolean indicating
+    if a master password is set. - **has_set_payment_password**: Boolean indicating if a payment password is set. -
+    **payment_password_updated_at**: Timestamp of the last update to the payment password. - **telegram_id**: Telegram
+    ID (if available). - **telegram_phone**: Phone number associated with Telegram (if available). -
+    **thirdparty_user_info**: Object containing third-party authentication info: - **provider**: Name of the third-party
+    provider (e.g., "Google"). - **user_info**: Object with detailed user information: - **email**: Email used with the
+    third-party provider. - **id**: User ID associated with the third-party provider. - **name**: Name associated with
+    the third-party provider. - **picture**: URL to the user’s profile picture from the third-party provider. -
+    **token**: Token used for authentication. - **twitch_email**: Email associated with Twitch (if available). -
+    **twitch_id**: Twitch ID (if available). - **twitter_email**: Email associated with Twitter (if available). -
+    **twitter_id**: Twitter ID (if available). - **wallets**: Array of wallet objects: - **uuid**: Unique identifier for
+    the wallet. - **chain_name**: Name of the blockchain associated with the wallet (e.g., "evm_chain", "solana").
 </Accordion>
 
 The following is an example of how you can render user information taken from `userInfo`:
@@ -326,23 +369,23 @@ const { userInfo } = useAuthCore();
 // Or
 // const userInfo = await connect();
 
-{userInfo && (
-  <div>
-    {/* 
+{
+    userInfo && (
+        <div>
+            {/* 
       In this card, we display info from Particle Auth 
     */}
-    <h2>Accounts info</h2>
-    <div>
-      <h2>Name: {userInfo.name}</h2>
-      <img src={userInfo.avatar} alt="User Avatar" />
-    </div>
-  </div>
-)}
-
-
+            <h2>Accounts info</h2>
+            <div>
+                <h2>Name: {userInfo.name}</h2>
+                <img src={userInfo.avatar} alt="User Avatar" />
+            </div>
+        </div>
+    );
+}
 ```
 
-***
+---
 
 ## Retrieving Public Address
 
@@ -357,8 +400,8 @@ const { provider } = useEthereum();
 
 // Assuming Ethers is not already initialized
 const ethersProvider = new ethers.BrowserProvider(
-  provider as Eip1193Provider,
-  "any"
+provider as Eip1193Provider,
+"any"
 );
 
 const accounts = await ethersProvider.listAccounts();
@@ -368,7 +411,8 @@ const address = accounts[0].address;
 
 const signer = await ethersProvider.getSigner();
 const address = await signer.getAddress();
-```
+
+````
 ```typescript Ethers.js V5
 import { ethers } from "ethers";
 
@@ -380,7 +424,8 @@ const ethersProvider = new ethers.providers.Web3Provider(provider, "any");
 
 const accounts = await ethersProvider.listAccounts();
 const address = accounts[0].address;
-```
+````
+
 ```typescript Web3.js
 import Web3 from 'web3';
 
@@ -391,8 +436,8 @@ const web3 = new Web3(provider);
 // Assuming Web3 is not already initialized
 
 const accounts = await web3.eth.getAccounts();
+```
 
-````
 ```typescript Particle (EVM)
 import { useEthereum } from '@particle-network/authkit';
 
@@ -426,35 +471,36 @@ When a given transaction is sent and a signature is needed for authentication, a
 const signer = ethersProvider.getSigner();
 
 const executeTx = async () => {
-  const signer = await ethersProvider.getSigner();
+const signer = await ethersProvider.getSigner();
 
-  const tx = {
-    to: recipientAddress,
-    value: ethers.parseEther("0.01"),
-    data: "0x",
-  };
-
-  const txResponse = await signer.sendTransaction(tx);
-  const txReceipt = await txResponse.wait();
-
-  // You can log or handle the receipt here
-  console.log(txReceipt);
+const tx = {
+to: recipientAddress,
+value: ethers.parseEther("0.01"),
+data: "0x",
 };
 
-```
+const txResponse = await signer.sendTransaction(tx);
+const txReceipt = await txResponse.wait();
+
+// You can log or handle the receipt here
+console.log(txReceipt);
+};
+
+````
 ```typescript Web3.js
 window.web3.eth.sendTransaction(txnParams, (error, txnHash) => {
     if (error) throw error;
     console.log(txnHash);
 });
-```
+````
+
 ```typescript Particle (EVM)
 // After configuring AuthCoreContextProvider and logging in
 import { useEthereum } from '@particle-network/authkit';
 const { sendTransaction } = useEthereum();
 
 const txnHash = await sendTransaction(txnParams);
-````
+```
 
 ```typescript Particle (Solana)
 import { useSolana } from '@particle-network/authkit';
@@ -497,35 +543,6 @@ Similar to sending transactions, signatures will be formatted and displayed to y
 ### Personal Signatures
 
 <CodeGroup>
-```typescript Ethers.js
-const msg = "GM, Particle!";
-const signer = ethersProvider.getSigner();
-const accounts = await signer.getAddress();
-
-signer.signMessage(msg)
-  .then((result) => {
-    console.log("personal_sign", result);
-  })
-  .catch((error) => {
-    console.error("personal_sign", error);
-  });
-
-````
-```typescript Web3.js
-const msg = "GM, Particle!";
-const accounts = await window.web3.eth.getAccounts();
-
-window.web3.eth.personal
-.sign(msg, accounts[0])
-.then((result) => {
-console.log("personal_sign", result);
-})
-.catch((error) => {
-console.error("personal_sign", error);
-});
-
-````
-
 
 ```typescript Particle (EVM)
 const msg = 'GM, Particle!';
@@ -545,101 +562,69 @@ const { signMessage } = useSolana();
 const result = await signMessage('base58 string');
 ```
 
+```typescript Ethers.js
+const msg = 'GM, Particle!';
+const signer = ethersProvider.getSigner();
+const accounts = await signer.getAddress();
+
+signer
+    .signMessage(msg)
+    .then((result) => {
+        console.log('personal_sign', result);
+    })
+    .catch((error) => {
+        console.error('personal_sign', error);
+    });
+```
+
+```typescript Web3.js
+const msg = 'GM, Particle!';
+const accounts = await window.web3.eth.getAccounts();
+
+window.web3.eth.personal
+    .sign(msg, accounts[0])
+    .then((result) => {
+        console.log('personal_sign', result);
+    })
+    .catch((error) => {
+        console.error('personal_sign', error);
+    });
+```
+
 </CodeGroup>
 
-### Sign Typed Data (V1)
+### Sign Typed Data
 
 <CodeGroup>
+
+```typescript Particle (EVM)
+// Placeholder data
+const msg = { ... };
+
+// After configuring AuthCoreContextProvider and logging in
+const { signTypedData } = useEthereum();
+
+const result = await signTypedData({ data: msg, version: 'V4' });
+```
+
 ```typescript Web3.js
 const accounts = await window.web3.eth.getAccounts();
 const from = accounts[0];
 
 // Placeholder data
-const msg = [
-{
-type: "string",
-name: "fullName",
-value: "John Doe",
-},
-{
-type: "uint32",
-name: "userId",
-value: "1234",
-},
-];
+const msg = { ... };
 
-const params = [msg, from];
-const method = "eth_signTypedData_v1";
+const params = [from, msg];
+const method = "eth_signTypedData_v4";
 
-window.web3.currentProvider
-.request({
-method,
-params,
-})
-.then((result) => {
-console.log("signTypedData result", result);
-})
-.catch((err) => {
-console.log("signTypedData error", err);
-});
+window.web3.currentProvider.request({ method, params })
+  .then((result) => {
+    console.log("signTypedData result", result);
+  })
+  .catch((err) => {
+    console.log("signTypedData error", err);
+  });
 
-````
-```typescript Ethers.js
-const signer = provider.getSigner();
-
-// Placeholder data
-const msg = [
-  {
-    name: 'fullName',
-    type: 'string',
-    value: 'John Doe',
-  },
-  {
-    name: 'userId',
-    type: 'uint32',
-    value: '1234',
-  },
-];
-
-(async () => {
-  try {
-    const accounts = await provider.listAccounts();
-    const from = accounts[0];
-
-    const types = msg.map(entry => entry.type);
-    const values = msg.map(entry => entry.value);
-
-    const hash = utils.keccak256(utils.defaultAbiCoder.encode(types, values));
-
-    const signingKey = new utils.SigningKey(await signer.privateKey);
-    const signature = signingKey.signDigest(hash);
-
-    console.log('Signed hash:', signature);
-  } catch (err) {
-    console.log('Error:', err);
-  }
-})();
-````
-
-```typescript Particle (EVM)
-// Placeholder data
-const msg = [
-    {
-        type: 'string',
-        name: 'fullName',
-        value: 'John Doe',
-    },
-    {
-        type: 'uint32',
-        name: 'userId',
-        value: '1234',
-    },
-];
-
-// After configuring AuthCoreContextProvider and logging in
-const { signTypedData } = useEthereum();
-
-const result = await signTypedData({ data: JSON.parse(msg), version: 'V1' });
 ```
 
 </CodeGroup>
@@ -649,22 +634,6 @@ const result = await signTypedData({ data: JSON.parse(msg), version: 'V1' });
 ## Particle Native (Hooks)
 
 Below is a collection of examples relating to the different hooks available with Particle Auth, facilitating both social login and native application-level interaction (such as message signing, sending transactions, etc.) directly through Particle Auth.
-
-### Boilerplate
-
-If you'd like to begin exploring Particle Auth, we have a React boilerplate available for usage through any of the following commands:
-
-```shell
-npm init @particle-network/authkit@latest
-
-pnpm create @particle-network/authkit@latest
-
-yarn create @particle-network/authkit
-```
-
-<Tip>
-    Alternatively, take a look at our [Particle Auth quickstart](/guides/wallet-as-a-service/waas/auth/web-quickstart).
-</Tip>
 
 ### useConnect
 

@@ -1,5 +1,5 @@
 ---
-title: 'Web (Desktop) Quickstart'
+title: 'Web Quickstart'
 mode: 'wide'
 ---
 
@@ -103,55 +103,156 @@ With your `projectId`, `clientKey`, and `appId` retrieved, you'll need to config
 
 </Step>
 <Step title="Configuring `AuthCoreContextProvider`">
-It is recommended to create a `connectkit.tsx` file in the `src` directory and export `ParticleAuthkit`, then use `ParticleAuthkit` wrap your App.
 
-Below is an example of how `AuthCoreContextProvider` can be configured.
+The `AuthCoreContextProvider` component handles the configuration for Particle Auth. It's best practice to place this configuration in a dedicated `AuthKit.tsx` file within the `src` directory, where you can set up and export the component.
 
-```ts authkit.tsx
-'use client';
+Once configured, you can use this export to wrap your main `App` component, ensuring authentication is available throughout your application.
 
-import { AuthCoreContextProvider } from '@particle-network/authkit';
-import { mainnet, polygon } from '@particle-network/authkit/chains';
+Here’s an example of how to configure `AuthCoreContextProvider`:
+
+```ts AuthKit.tsx
+"use client";
+
+import {
+  AuthCoreContextProvider,
+  PromptSettingType,
+} from "@particle-network/authkit";
+import { AuthType } from "@particle-network/auth-core";
+import { mainnet, polygon } from "@particle-network/authkit/chains";
 
 export const ParticleAuthkit = ({ children }: React.PropsWithChildren) => {
-    return (
-        <AuthCoreContextProvider
-            options={{
-                projectId: process.env.NEXT_PUBLIC_PROJECT_ID as string,
-                clientKey: process.env.NEXT_PUBLIC_CLIENT_KEY as string,
-                appId: process.env.NEXT_PUBLIC_APP_ID as string,
-                chains: [mainnet, polygon],
-            }}
-        >
-            {children}
-        </AuthCoreContextProvider>
-    );
+  return (
+    <AuthCoreContextProvider
+      options={{
+        projectId: process.env.NEXT_PUBLIC_PROJECT_ID as string,
+        clientKey: process.env.NEXT_PUBLIC_CLIENT_KEY as string,
+        appId: process.env.NEXT_PUBLIC_APP_ID as string,
+        // This is how you limit the options available.
+        // Remove the authTypes array to display all options available
+        authTypes: [
+          AuthType.email,
+          AuthType.google,
+          AuthType.twitter,
+          AuthType.github,
+          AuthType.discord,
+        ],
+
+        // Locks the chain selector to Ethereum and Polygon
+        chains: [mainnet, polygon],
+        themeType: "dark", // Login modal theme
+        fiatCoin: "USD",
+        language: "en",
+
+        // optional, ERC4337
+        erc4337: {
+          name: "SIMPLE",
+          version: "2.0.0",
+        },
+        // You can prompt the user to set up extra security measure upon login or other interactions
+        promptSettingConfig: {
+          promptPaymentPasswordSettingWhenSign: PromptSettingType.first,
+          promptMasterPasswordSettingWhenLogin: PromptSettingType.first,
+        },
+        wallet: {
+          themeType: "dark", // Wallet modal theme
+          
+          // Set to false to remove the embedded wallet modal
+          visible: true,
+          customStyle: {
+            supportUIModeSwitch: true,
+            supportLanguageSwitch: false,
+          },
+        },
+      }}
+    >
+      {children}
+    </AuthCoreContextProvider>
+  );
 };
+
 ```
+
+<Tip>Learn more about the Particle Auth configuration options in the [Particle Auth SDK page](/api-reference/auth/desktop-sdks/web).</Tip>
 
 </Step>
 
+<Step title="Wrap your application with ParticleAuthkit">
+
+Wrap your main application component (where you use the Particle Auth hooks) with the `ParticleAuthKit` component, which is exported from `AuthKit`.
+
+Here’s an example of how this might look in a `layout.tsx` file:
+
+```tsx layout.tsx
+import type { Metadata } from "next";
+import { Inter } from "next/font/google";
+import "./globals.css";
+
+const inter = Inter({ subsets: ["latin"] });
+
+import { ParticleAuthkit } from "./components/AuthKit";
+
+export const metadata: Metadata = {
+  title: "Particle Auth app",
+  description: "App leveraging Particle Auth for social logins.",
+};
+
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  return (
+    <html lang="en">
+      <body className={inter.className}>
+        <ParticleAuthkit>{children}</ParticleAuthkit>
+      </body>
+    </html>
+  );
+}
+
+```
+
+</Step>
 <Step title="Facilitating logins">
 
 With the SDK configured, you can move on to initiating social logins within your application. Particle Auth contains [numerous relevant hooks](https://github.com/Particle-Network/particle-auth-ethers-demo/blob/7cf947b6c8a05731f285821b03134a6317e0e53f/particle-next-starter/src/app/page.tsx#L23), although we'll specifically be focusing on `useConnect`, which contains a function, `connect`, that directly facilitates [wallet creation]() through social login.
 
 Upon logging in, the embedded wallet modal included with Particle Auth will be accessible through the button in the bottom right, unless otherwise specified through `wallet` within `AuthCoreContextProvider`.
 
-```javascript JavaScript
-import { useConnect } from '@particle-network/authkit';
+```tsx page.tsx
+import { useConnect } from "@particle-network/authkit";
 
-const { connect } = useConnect();
+export default function Home() {
+  const { connect, connected, connectionStatus } = useConnect();
 
-await connect();
+  // Handle user login
+  const handleLogin = async () => {
+    if (!connected) {
+      await connect({});
+    }
+  };
+
+  return (
+    <main className="flex min-h-screen flex-col items-center justify-between p-24">
+      {!connected ? (
+        <div className="login-section">
+          <button
+            className="bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out transform hover:scale-105 shadow-lg"
+            onClick={handleLogin}
+          >
+            Sign in with Particle
+          </button>
+        </div>
+      ) : (
+        <h2>Account status: {connectionStatus}</h2>
+      )}
+    </main>
+  );
+}
+
 ```
 
-<Tip>
-    The complete Web SDK reference is available at [Web (JavaScript/TypeScript)](/api-reference/auth/desktop-sdks/web).
-    Additionally, a demo repository for Next.js can be found
-    [here](https://github.com/Particle-Network/particle-auth-ethers-demo/tree/main/particle-next-starter), alongside a
-    demo for create-react-app
-    [here](https://github.com/Particle-Network/particle-auth-ethers-demo/tree/main/particle-auth-cra).
-</Tip>
+
 
 </Step>
 </Steps>
