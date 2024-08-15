@@ -2,25 +2,39 @@
 title: Android Quickstart
 ---
 
-## Prerequisites
+# Quickstart: Implementing Particle Auth within Android Applications
+
+Particle Auth, responsible for driving standalone social logins leading to MPC-secured accounts, has rich support for Android (Kotlin). Introducing Web2-like onboarding into your mobile application with Particle Auth only takes a few minutes.
+
+Below, you'll find everything you need to get started, from beginning to end.
+
+<Note> 
+For complete documentation covering the implementation of Particle Auth on Android in more depth, head over to the [Android SDK reference](/api-reference/connect/mobile/android).
+</Note>
+
+---
+
+Before we begin installing and configuring the SDK, you'll need a project that meets the prerequisites listed below (otherwise you may face compatability issues).
+
+### Prerequisites
 
 - minSdkVersion **23** or higher.
 - compileSdkVersion, targetSdkVersion **34** or higher.
 - JavaVersion **17**.
 - [Jetpack (AndroidX)](https://developer.android.com/jetpack/androidx/migrate?authuser=0).
-- Android Gradle Plugin Version : 8.5.1 or higher.
-- Gradle Version : 8.9 or higher.
+- Android Gradle Plugin Version **8.5.1** or higher.
+- Gradle Version **8.9** or higher.
 <Steps>
 
-<Step title="Create a Particle project and add an Android project within it">
-    Particle Auth requires three key values to be initiated: `projectId`, `clientKey`, and `appId`. These values fundamentally link your application with the [Particle dashboard](https://dashboard.particle.network/).
+<Step title="Configuring the Particle dashboard">
+    Finally, before jumping into the SDKs themselves, you'll need to prepare three key values from the [Particle dashboard](https://dashboard.particle.network): your project ID, client key, and app ID. These keys will authenticate your instance of Particle Auth.
 
-    To retrieve these values for configuration within your application, follow these steps:
+    To retrieve them, follow the instructions below.
 
     <AccordionGroup>
         <Accordion title="Access the Particle Dashboard">
 
-            Sign up or Log in into the [Particle dashboard](https://dashboard.particle.network/)
+            Sign up or Log in into the [Particle dashboard](https://dashboard.particle.network)
 
             <div className="flex justify-center">
                 <img
@@ -65,7 +79,7 @@ title: Android Quickstart
             </div>
         </Accordion>
 
-        <Accordion title="Retrieve the project ID (`projectId`), the client key (`clientKey`), and the application ID (`appId`)">
+        <Accordion title="Retrieve the project ID, the client key, and the application ID">
             <div className="flex justify-center">
                 <img
                     className="block h-64 dark:hidden"
@@ -81,16 +95,17 @@ title: Android Quickstart
         </Accordion>
     </AccordionGroup>
 
-    For more information on the Particle dashboard, take a look at the [dashboard quickstart](/guides/dashboard).
-
-    With your `projectId`, `clientKey`, and `appId` retrieved,  then replace these project info, that you've retrieved your `projectId`, `clientKey`, and `appId` from the Particle dashboard.
+    For more information on the Particle dashboard, take a look at [this video](https://www.youtube.com/watch?v=d7DYCMNDmjo&ab_channel=ParticleNetwork) or visit the [dashboard quickstart](/guides/dashboard).
+    
 </Step>
-    <Step title="Installing & Configuring Particle Auth">
 
-        To install Particle Auth within your project, copy and execute the following command.
-        your `setting.gralde` file
+<Step title="Configuring settings.gradle">
 
+        We'll be using Maven to install Particle Auth; as such, ensure your `settings.gradle` file looks similar to the example shown below.
+        
 ```gradle
+// Source: https://github.com/Particle-Network/particle-android/blob/master/settings.gradle.kts
+
 pluginManagement {
     repositories {
         gradlePluginPortal()
@@ -105,18 +120,32 @@ dependencyResolutionManagement {
     }
 }
 ```
-        your `build.gradle` file
+
+</Step>
+
+<Step title="Configuring build.gradle">
+
+You're now ready to establish your dependencies and insert the previously retrieved keys to authenticate the SDK, this will be handled through your `build.gradle` file. The areas in which you'll need to place these keys have been noted in the snippet below.
+
+Additionally, within `dependencies`, you'll need to (at a minimum) install the following:
+- `network.particle:connect`
+- `network.particle:connect-auth-core-adapter`
+- `network.particle:wallet-service`
+
+As a result, your `build.gradle` file should look similar to the following:
 
 ```gradle
+// Source: https://github.com/Particle-Network/particle-android/blob/master/app/build.gradle.kts
+
 android {
   //...
     defaultConfig {
       //...
       minSdk = 23
       targetSdk = 34
-      manifestPlaceholders["PN_PROJECT_ID"] = "your projectId"
-      manifestPlaceholders["PN_PROJECT_CLIENT_KEY"] = "your clientKey"
-      manifestPlaceholders["PN_APP_ID"] = "your appId"
+      manifestPlaceholders["PN_PROJECT_ID"] = "Replace this with your Project ID" // !
+      manifestPlaceholders["PN_PROJECT_CLIENT_KEY"] = "Replace this with your Client Key" // !
+      manifestPlaceholders["PN_APP_ID"] = "Replace this with your App ID" // !
       //...
     }
 
@@ -133,7 +162,7 @@ android {
 }
 
 dependencies {
-    //required
+    // Required
     modules {
         module("org.bouncycastle:bcprov-jdk15to18") {
             replacedBy("org.bouncycastle:bcprov-jdk15on")
@@ -144,14 +173,20 @@ dependencies {
     }
     // Find the latest version of the SDK:
     // https://search.maven.org/search?q=g:network.particle
-    val sdkVersion = "x.x.x"
+    val sdkVersion = "x.x.x" // Replace this with the version you intend to install
     implementation("network.particle:connect:$sdkVersion")
     implementation("network.particle:connect-auth-core-adapter:$sdkVersion")
     implementation("network.particle:wallet-service:$sdkVersion")
 }
 ```
 
-your `AndroidManifest.xml`
+</Step>
+
+<Step title="Configuring AndroidManifest.xml">
+
+Finally, before initializing and utilizing Particle Auth directly, you'll additionally need to place your project keys within your `AndroidManifest.xml` (both this and `build.gradle` need to contain these keys).
+
+An example of this file has been included below, and the areas in which project keys are needed have been marked.
 
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
@@ -177,7 +212,7 @@ your `AndroidManifest.xml`
 
                 <category android:name="android.intent.category.BROWSABLE" />
 
-                <data android:scheme="ac${PN_APP_ID}" />
+                <data android:scheme="ac${PN_APP_ID}" /> <!-- Replace this with your App ID -->
             </intent-filter>
         </activity>
         <!-- Particle AuthCore End -->
@@ -195,54 +230,75 @@ your `AndroidManifest.xml`
 
                 <category android:name="android.intent.category.BROWSABLE" />
 
-                <data android:scheme="connect${PN_APP_ID}" />
+                <data android:scheme="connect${PN_APP_ID}" /> <!-- Replace this with your App ID -->
             </intent-filter>
         </activity>
 
         <meta-data
             android:name="particle.network.project_client_key"
-            android:value="${PN_PROJECT_CLIENT_KEY}" />
+            android:value="${PN_PROJECT_CLIENT_KEY}" /> <!-- Replace this with your Client Key -->
 
         <meta-data
             android:name="particle.network.app_id"
-            android:value="${PN_APP_ID}" />
+            android:value="${PN_APP_ID}" /> <!-- Replace this with your App ID -->
 
         <meta-data
             android:name="particle.network.project_id"
-            android:value="${PN_PROJECT_ID}" />
+            android:value="${PN_PROJECT_ID}" /> <!-- replace this with your Project ID -->
 
     </application>
 
 
 </manifest>
 ```
-    </Step>
- <Step title="Initialize Particle Auth">
-Particle Auth
+
+</Step>
+
+<Step title="Initialize Particle Auth">
+
+You're now ready to initialize and begin using Particle Auth. Initialization can be done in one line, simply by calling `init` on `ParticleNetwork`. `init` takes the following parameters:
+- `application` (`this`), which represents the underlying Android application.
+- `env`, either `Env.DEV`, `Env.PRODUCTION`, or `Env.STAGING`; this alters the information logged when using Particle Auth.
+- `chain`, a `ChainInfo` object representing the primary chain you intend to use (such as `ChainInfo.Ethereum`, `ChainInfo.Polygon`).
+
+The following snippet is an example of this.
+    
 ```kotlin
 ParticleNetwork.init(this, Env.DEV, ChainInfo.Ethereum)
 ```
 </Step>
-<Step title="Facilitating logins">
-With the SDK configured, you can move on to initiating social logins within your application.
+<Step title="Facilitating social login">
+
+With Particle Auth initialized, you can now facilitate social logins (creation or entry into a corresponding MPC-secured account) through `AuthCore.connect`. Simply, this method requires:
+- `socialType`, the specific social login you're facilitating (this should be a `SocialLoginType` object, such as `SocialLoginType.GOOGLE`).
+- Additionally, you'll need a callback function to handle a successful or failed login.
+
+Upon calling, the user will undergo authentication through the service specified through `SocialLoginType`; upon returning from this process, their account will be loaded and your application can handle next steps accordingly (through the callback function).
+    
 ```kotlin
 AuthCore.connect(SocialLoginType.GOOGLE, connectCallback =
     object : AuthCoreServiceCallback<UserInfo> {
         override fun success(output: UserInfo) {
-            //login success
+            // Handle a successful login
         }
         override fun failure(errMsg: ErrorInfo) {
+            // Handle a failed login
         }
     })
 ```
 </Step>
-<Step title="Use account">
-Now that you've obtained the particle userInfo, how do you use it? 
 
-You can have your server authenticate using the `userInfo.uuid` and `userInfo.token` at [SDKs (Server)](/api-reference/auth/server/getuserinfo).
-Got the publicAddress from `AuthCore.evm.getAddress()` or `AuthCore.solana.getAddress()`, 
+</Steps>
 
-<Tip>When a user logs in for the first time, if there is no account, we will create one. Based on the current chainInfo, a new address will be generated. For example, if the current chain is EVM-compatible, only an EVM address will be generated; if it's the Solana chain, only a Solana address will be generated. If you want to obtain both addresses, you can use `AuthCore.switchChain` to switch chains, and after waiting for 2 seconds, a new address for the selected chain will be generated for you.</Tip>
+## Examples of Utilization
+
+### Retrieve Account Information
+
+With a user logged in, you can retrieve information about their account (such as their address or the details relating to the chosen method; for example, the email attached to their Google account).
+
+To retrieve an object containing a large amount of general information, call `AuthCore.getUserInfo`. This method will return numerous attributes based upon the login method they chose; for a full list of included properties, head over to the [`getUserInfo` API reference](/api-reference/auth/server/getuserinfo).
+
+`AuthCore.getUserInfo` will include a `wallets` object with their address present; although an address can also be retrieved through `AuthCore.evm.getAddress`, or if Solana is being used, `AuthCore.solana.getAddress`.
 
 ```kotlin
 val userInfo = AuthCore.getUserInfo()
@@ -265,14 +321,18 @@ AuthCore.switchChain(ChainInfo.Solana, callback =
         }
 })  
 
-// if you add ParticleAA (Account Abstraction) and enable aa service.
+// If you add ParticleAA (Account Abstraction) and enable AA, you can retrieve the address like this:
 val smartAccountInfo = ParticleNetwork.getAAService().getSmartAccount(publicAddress)
-
 ```
-</Step>
-<Step title="Optional, send a transaction">
+
+### Sending a Transaction
+
+Additionally, sending a transaction is relatively straightforward; `ParticleNetwork` has a built-in transaction construction method, `createTransaction`, which simply takes a `from`, `to`, and `value` field (optionally, `data` can be used for contract interaction) and returns a transaction object to be used with `AuthCore.evm.sendTransaction`.
+
+Below is an example of this flow.
+
 ```kotlin
-val publicAddress =  AuthCore.evm.getAddress()
+val publicAddress = AuthCore.evm.getAddress()
 val uiAmount = "0.0001"
 val value = "0x"+uiAmount.toBigDecimal().multiply(BigDecimal(1e18)).toBigInteger().toString(16)
 val trans =ParticleNetwork.evm.createTransaction(from ,to,value)!!.serialize()
@@ -287,25 +347,3 @@ AuthCore.evm.sendTransaction(trans, callback =
 
     })
 ``` 
-</Step>
-<Step title="Optional, Open wallet">
-```kotlin
-AuthCore.connect(SocialLoginType.GOOGLE, connectCallback =
-    object : AuthCoreServiceCallback<UserInfo> {
-        override fun success(output: UserInfo) {
-          lifecycleScope.launch {
-            ParticleWallet.setWallet( AuthCore.evm.getAddress(),MobileWCWalletName.AuthCore.name)
-            openWallet()
-        }
-        override fun failure(errMsg: ErrorInfo) {
-        }
-    })
-```
-</Step>
-</Steps>
-<Tip> To get support for `Account Abstraction`, integrate the `ParticleAA` SDK and refer to this [documentation](/api-reference/aa/sdks/mobile/android).</Tip>
-
-
-<Tip>The complete demo project [Demo](https://github.com/Particle-Network/particle-android).</Tip>
-
-<Tip>The complete mobile SDK reference is available at [SDKs (Mobile)](/api-reference/connect/mobile/android).</Tip>

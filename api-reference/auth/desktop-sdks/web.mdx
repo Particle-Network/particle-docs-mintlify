@@ -205,7 +205,11 @@ Additionally, specific configurations can be set within `connect()` to customize
 The following snippet demonstrates all the available configuration options within `connect()`:
 
 ```typescript TypeScript
-const userInfo = connect({
+'use client';
+
+import { connect } from '@particle-network/authkit';
+
+const useInfo = await connect({
     // socialType, if set, will skip the auth modal shown above and will instead automatically redirect to a chosen social login
     // 'email' | 'phone' | 'google' | 'apple' | 'twitter' | 'facebook' | 'microsoft' | 'linkedin' | 'github' | 'twitch' | 'discord'
     socialType: 'google',
@@ -216,23 +220,6 @@ const userInfo = connect({
         message: 'base58 string', // Signature message in hex or base58 for Solana
     },
 });
-
-// connect with JWT
-const userInfo = connect({
-    provider: 'jwt',
-    thirdpartyCode: 'xxxxxxxxxx', // If applicable, JWT value
-    authorization: {
-        uniq: true, // Optional: Defaults to false
-        message: 'base58 string', // Signature message in hex or base58 for Solana
-    },
-});
-
-// connect with Telegram mini app
-const userInfo = connect({
-    provider: 'telegram',
-    thirdpartyCode: 'xxxxxxxxxx', // If applicable, initData raw value
-});
-
 ```
 
 <Note>`web3.eth.getAccounts` will also initiate login automatically if user isn't already logged in.</Note>
@@ -246,6 +233,10 @@ You can configure the login flow to bypass the login modal entirely, prompting t
 The following example demonstrates how to prompt the user to log in with their Google account, skipping the login modal.
 
 ```tsx App.tsx
+'use client';
+
+import { connect } from '@particle-network/authkit';
+
 // Handle user login
 const handleLogin = async () => {
     if (!connected) {
@@ -256,9 +247,62 @@ const handleLogin = async () => {
 };
 ```
 
----
+#### Login with JWT
 
-### Verify the User's Login Status
+You can use your existing user base or authentication method with Particle Auth through JWT. This way, your users can still log in with their current accounts.
+
+We only support RS256 now, [Example](https://dev-qr6-59ee.us.auth0.com/.well-known/jwks.json).
+
+Before connecting, you need to set your custom JWT configuration on the [Dashboard](https://dashboard.particle.network).
+
+<img width="100%" noZoom src="/api-reference/auth/desktop-sdks/images/jwt.png" />
+
+Then you can refer to the code below to log in using JWT.
+
+```typescript TypeScript
+'use client';
+
+import { connect } from '@particle-network/authkit';
+
+// connect with JWT
+const userInfo = await connect({
+    provider: 'jwt',
+    thirdpartyCode: 'xxxxxxxxxx', // If applicable, JWT value
+});
+```
+
+Learn more about [Custom Authentication](/guides/configuration/auth/jwt).
+
+#### Login within a Telegram Miniapp
+
+<Tip>
+    Check out the [Telegram Mini-App Quickstart guide](/guides/wallet-as-a-service/waas/auth/tg-quickstart) and get a new project up
+    and running in just 5 minutes.
+</Tip>
+
+Before you start, make sure that you've already created a Telegram Bot. Here is a [comprehensive guide](https://docs.telegram-mini-apps.com/platform/creating-new-app) on how to do it.
+
+Then you need create a Particle-Telegram app on [Dashboard](https://dashboard.particle.network), and get the config from project information.
+
+The following is an example of how you can connect with Telegram Miniapp.
+
+```typescript TypeScript
+'use client';
+
+import { connect } from '@particle-network/authkit';
+
+const userInfo = await connect({
+    provider: 'telegram',
+    thirdpartyCode: 'xxxxxxxxxx', // If applicable, Telegram Miniapp initData raw value
+});
+```
+
+Learn more about this:
+
+-   [Live Demo](https://t.me/ParticleAuth_bot/MiniappDemo)
+-   [Source Code](https://github.com/Particle-Network/auth-tg-miniapp)
+
+### Verify User Login Status
 
 The `useConnect()` hook provides several functions to check the user's connection status:
 
@@ -520,32 +564,34 @@ const result = await signMessage('base58 string');
 ```
 
 ```typescript Ethers.js
-const msg = "GM, Particle!";
+const msg = 'GM, Particle!';
 const signer = ethersProvider.getSigner();
 const accounts = await signer.getAddress();
 
-signer.signMessage(msg)
-  .then((result) => {
-    console.log("personal_sign", result);
-  }).catch((error) => {
-    console.error("personal_sign", error);
-  });
-
+signer
+    .signMessage(msg)
+    .then((result) => {
+        console.log('personal_sign', result);
+    })
+    .catch((error) => {
+        console.error('personal_sign', error);
+    });
 ```
 
 ```typescript Web3.js
-const msg = "GM, Particle!";
+const msg = 'GM, Particle!';
 const accounts = await window.web3.eth.getAccounts();
 
-window.web3.eth.personal.sign(msg, accounts[0])
-  .then((result) => {
-    console.log("personal_sign", result);
-  })
-  .catch((error) => {
-    console.error("personal_sign", error);
-  });
-
+window.web3.eth.personal
+    .sign(msg, accounts[0])
+    .then((result) => {
+        console.log('personal_sign', result);
+    })
+    .catch((error) => {
+        console.error('personal_sign', error);
+    });
 ```
+
 </CodeGroup>
 
 ### Sign Typed Data

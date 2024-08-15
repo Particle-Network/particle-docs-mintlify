@@ -124,18 +124,18 @@
       ]
     },
     {
-      "group": "MISCELLANEOUS",
-      "pages": [
-        "landing/more/audits",
-        "landing/more/assets"
-      ]
-    },
-    {
       "group": "TUTORIALS & DEMOS",
       "pages": [
         "landing/tutorials-and-demos/list",
         "landing/tutorials-and-demos/repositories",
         "landing/tutorials-and-demos/videos"
+      ]
+    },
+    {
+      "group": "MISCELLANEOUS",
+      "pages": [
+        "landing/more/audits",
+        "landing/more/assets"
       ]
     },
     {
@@ -174,17 +174,13 @@
         {
           "group": "Quickstarts (Connect)",
           "pages": [
-            "guides/wallet-as-a-service/waas/connect/web-quickstart",
-            "guides/wallet-as-a-service/waas/connect/android-quickstart",
-            "guides/wallet-as-a-service/waas/connect/ios-quickstart"
+            "guides/wallet-as-a-service/waas/connect/web-quickstart"
           ]
         },
         {
           "group": "Quickstarts (Auth)",
           "pages": [
             "guides/wallet-as-a-service/waas/auth/web-quickstart",
-            "guides/wallet-as-a-service/waas/auth/android-quickstart",
-            "guides/wallet-as-a-service/waas/auth/ios-quickstart",
             "guides/wallet-as-a-service/waas/auth/tg-quickstart"
           ]
         },
