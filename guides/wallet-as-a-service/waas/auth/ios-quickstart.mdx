@@ -164,6 +164,9 @@ As shown below, you'll need to call `auth.connect` to initiate social login, pas
 
 <Tip>When a user logs in for the first time, if there is no account, we will create one. Based on the current chainInfo, a new address will be generated. For example, if the current chain is EVM-compatible, only an EVM address will be generated; if it's the Solana chain, only a Solana address will be generated. If you want to obtain both addresses, you can use `auth.switchChain` to switch chains, and after waiting for 2 seconds, a new address for the selected chain will be generated for you.</Tip>
 
+<Tip>You can use your existing user base or authentication method with Particle Auth through JWT. This way, your users can still log in with their current accounts. Click [here](/guides/configuration/auth/jwt) to learn how to configure jwt. </Tip>
+
+
 ```swift
 let userInfo = try await auth.connect(type: .google, socialLoginPrompt: .selectAccount)
 let userInfo = try await auth.connect(type: .jwt, account: "the JWT")
