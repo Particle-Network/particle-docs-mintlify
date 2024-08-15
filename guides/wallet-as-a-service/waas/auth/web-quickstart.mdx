@@ -143,11 +143,11 @@ export const ParticleAuthkit = ({ children }: React.PropsWithChildren) => {
         fiatCoin: "USD",
         language: "en",
 
-        // optional, ERC4337 wallet modal UI
-        //erc4337: {
-        //name: "SIMPLE",
-        //version: "2.0.0",
-        //},
+        // Optionally, switches the embedded wallet modal to reflect a smart account
+        // erc4337: {
+        //   name: "SIMPLE",
+        //   version: "2.0.0",
+        // },
 
         // You can prompt the user to set up extra security measure upon login or other interactions
         promptSettingConfig: {
@@ -280,9 +280,9 @@ export default function Home() {
 ```
 
 <Tip>
-  You can find the complete Web SDK reference at our 
+  For the complete Particle Auth SDK reference, head over to the  
   <a href="/api-reference/auth/desktop-sdks/web">Web (JavaScript/TypeScript) documentation</a>. 
-  For practical examples, check out the demo repositories:
+  For practical examples, check out the following demo repositories:
   <ul>
     <li>
       Next.js: <a href="https://github.com/Particle-Network/particle-auth-ethers-demo/tree/main/particle-next-starter">Particle Auth Next Starter</a>
