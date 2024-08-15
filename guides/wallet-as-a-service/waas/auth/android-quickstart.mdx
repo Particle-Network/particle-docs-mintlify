@@ -8,7 +8,7 @@ Particle Auth, responsible for driving standalone social logins leading to MPC-s
 
 Below, you'll find everything you need to get started, from beginning to end.
 
-<Note> 
+<Note>
 For complete documentation covering the implementation of Particle Auth on Android in more depth, head over to the [Android SDK reference](/api-reference/connect/mobile/android).
 </Note>
 
@@ -96,13 +96,13 @@ Before we begin installing and configuring the SDK, you'll need a project that m
     </AccordionGroup>
 
     For more information on the Particle dashboard, take a look at [this video](https://www.youtube.com/watch?v=d7DYCMNDmjo&ab_channel=ParticleNetwork) or visit the [dashboard quickstart](/guides/dashboard).
-    
+
 </Step>
 
 <Step title="Configuring settings.gradle">
 
         We'll be using Maven to install Particle Auth; as such, ensure your `settings.gradle` file looks similar to the example shown below.
-        
+
 ```gradle
 // Source: https://github.com/Particle-Network/particle-android/blob/master/settings.gradle.kts
 
@@ -212,7 +212,7 @@ An example of this file has been included below, and the areas in which project 
 
                 <category android:name="android.intent.category.BROWSABLE" />
 
-                <data android:scheme="ac${PN_APP_ID}" /> <!-- Replace this with your App ID -->
+                <data android:scheme="ac${PN_APP_ID}" />
             </intent-filter>
         </activity>
         <!-- Particle AuthCore End -->
@@ -230,21 +230,21 @@ An example of this file has been included below, and the areas in which project 
 
                 <category android:name="android.intent.category.BROWSABLE" />
 
-                <data android:scheme="connect${PN_APP_ID}" /> <!-- Replace this with your App ID -->
+                <data android:scheme="connect${PN_APP_ID}" />
             </intent-filter>
         </activity>
 
         <meta-data
             android:name="particle.network.project_client_key"
-            android:value="${PN_PROJECT_CLIENT_KEY}" /> <!-- Replace this with your Client Key -->
+            android:value="${PN_PROJECT_CLIENT_KEY}" />
 
         <meta-data
             android:name="particle.network.app_id"
-            android:value="${PN_APP_ID}" /> <!-- Replace this with your App ID -->
+            android:value="${PN_APP_ID}" />
 
         <meta-data
             android:name="particle.network.project_id"
-            android:value="${PN_PROJECT_ID}" /> <!-- replace this with your Project ID -->
+            android:value="${PN_PROJECT_ID}" />
 
     </application>
 
@@ -262,7 +262,7 @@ You're now ready to initialize and begin using Particle Auth. Initialization can
 - `chain`, a `ChainInfo` object representing the primary chain you intend to use (such as `ChainInfo.Ethereum`, `ChainInfo.Polygon`).
 
 The following snippet is an example of this.
-    
+
 ```kotlin
 ParticleNetwork.init(this, Env.DEV, ChainInfo.Ethereum)
 ```
@@ -274,7 +274,7 @@ With Particle Auth initialized, you can now facilitate social logins (creation o
 - Additionally, you'll need a callback function to handle a successful or failed login.
 
 Upon calling, the user will undergo authentication through the service specified through `SocialLoginType`; upon returning from this process, their account will be loaded and your application can handle next steps accordingly (through the callback function).
-    
+
 ```kotlin
 AuthCore.connect(SocialLoginType.GOOGLE, connectCallback =
     object : AuthCoreServiceCallback<UserInfo> {
@@ -303,15 +303,15 @@ To retrieve an object containing a large amount of general information, call `Au
 ```kotlin
 val userInfo = AuthCore.getUserInfo()
 val googleEmail = userInfo?.googleEmail // if user login with google account, you can get googleEmail
-val publicAddress =  
+val publicAddress =
     if (ParticleNetwork.chainInfo.isEvmChain()) {
         AuthCore.evm.getAddress()
     } else {
         AuthCore.solana.getAddress()
     }
 })
-  
-AuthCore.switchChain(ChainInfo.Solana, callback = 
+
+AuthCore.switchChain(ChainInfo.Solana, callback =
     object : ResultCallback{
         override fun success() {
             val userInfo = AuthCore.getUserInfo()
@@ -319,7 +319,7 @@ AuthCore.switchChain(ChainInfo.Solana, callback =
 
         override fun failure() {
         }
-})  
+})
 
 // If you add ParticleAA (Account Abstraction) and enable AA, you can retrieve the address like this:
 val smartAccountInfo = ParticleNetwork.getAAService().getSmartAccount(publicAddress)
@@ -336,7 +336,7 @@ val publicAddress = AuthCore.evm.getAddress()
 val uiAmount = "0.0001"
 val value = "0x"+uiAmount.toBigDecimal().multiply(BigDecimal(1e18)).toBigInteger().toString(16)
 val trans =ParticleNetwork.evm.createTransaction(from ,to,value)!!.serialize()
-AuthCore.evm.sendTransaction(trans, callback = 
+AuthCore.evm.sendTransaction(trans, callback =
     object : AuthCoreSignCallback<SignOutput> {
         override fun success(output: SignOutput) {
             val signature = output.signature
@@ -346,4 +346,4 @@ AuthCore.evm.sendTransaction(trans, callback =
         }
 
     })
-``` 
+```
