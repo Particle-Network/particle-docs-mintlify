@@ -42,4 +42,24 @@ const config = createConfig({
 ```
 </Accordion>
 
+<Accordion title="Do I need to use Particle Auth if I'm using Particle Connect?" icon="block-question">
+  **Answer:** No, Particle Connect already integrates Particle Auth for social logins under the hood. If you're using Particle Connect, there's no need to install or configure any additional SDKs.
+
+  <Tip>Get started with Particle Connect, following the [Connect Quickstart Guide](/guides/wallet-as-a-service/waas/connect/web-quickstart) for a step-by-step tutorial.</Tip>
+</Accordion>
+
+<Accordion title="Does Particle Connect include support for Bitcoin wallets through BTC Connect?" icon="bitcoin">
+  **Answer:** No, Particle Connect does not natively support Bitcoin wallets. To integrate Bitcoin wallets, you'll need to use BTC Connect. Currently, it's not possible to include Bitcoin wallets within the Particle Connect modal, so this functionality must be handled separately.
+
+  <Tip>For detailed instructions on integrating BTC Connect, visit the [BTC Connect SDK documentation](/api-reference/btc/desktop/web) or explore the [React app demo repository](https://github.com/Particle-Network/btc-connect-B2-react-app) to see a demo application.</Tip>
+</Accordion>
+
+<Accordion title="How do I use account abstraction with Particle Connect?" icon="file-user">
+  **Answer:** To enable account abstraction with Particle Connect, start by configuring the `aa` plugin through the `ConnectKitProvider`. 
+
+  Once configured, you can use the `useSmartAccount` hook within your application. This hook gives you access to an object to manage the smart account, streamlining tasks like sending transactions and signing messages.
+
+  <Tip>For detailed setup instructions, visit the [Particle Connect SDK documentation](/api-reference/connect/desktop/web#account-abstraction).</Tip>
+</Accordion>
+
 </AccordionGroup>
