@@ -47,7 +47,7 @@ description: 'Find Frequently Asked Questions about Particle Account Abstraction
 </Accordion>
 
 <Accordion title="How do I use a custom Paymaster?" icon="money-bill">
-  **Answer:** The AA SDK currently only supports Particle's native Paymaster, accessible via the [Particle Network Dashboard](https://dashboard.particle.network), and Biconomy's Paymaster. If you wish to use a custom Paymaster, you'll need to integrate it through a custom API in your application. 
+  **Answer:** The AA SDK currently only supports Particle's native Paymaster, accessible via the [Particle Network Dashboard](https://dashboard.particle.network), and Biconomy's Paymaster. If you wish to use a custom Paymaster, you'll need to integrate it through a custom API in your application, sponsoring a `UserOperation` constructed by the AA SDK/API. 
   
  After that, using our SDK, you can execute the resulting `UserOperation` (including `paymasterAndData` from your Paymaster).
 
