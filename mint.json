@@ -418,7 +418,8 @@
             "api-reference/btc/rpc/getbtcaccount",
             "api-reference/btc/rpc/getbtcaccountsbyaddress"
           ]
-        }
+        },
+        "api-reference/btc/faq"
       ]
     },
     {
