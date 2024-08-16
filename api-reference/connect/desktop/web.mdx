@@ -546,9 +546,9 @@ const txHash = await smartAccount.sendUserOperation(userOp);
 
 #### Retrieve the Smart Account Address
 
-After initializing `smartAccount` using the `useSmartAccount` hook, you can easily obtain the account's address with the `getAddress` method. 
+After initializing an instance of the `useSmartAccount` hook, you can easily obtain the account's address with the `getAddress` method. 
 
-This is particularly useful for fetching and displaying balances or showing the address within your application's UI.
+This is particularly useful for fetching and displaying balances or showing the address within your application's UI. Importantly, the typical hooks used for retrieving user addresses will not reflect the correct address in this case, they'll return the EOA; the only way to retrieve the user's smart account address is through `{instance of useSmartAccount}.getAddress`.
 
 Below is an example using `useEffect` to achieve this:
 
