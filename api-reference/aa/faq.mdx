@@ -22,5 +22,36 @@ description: 'Find Frequently Asked Questions about Particle Account Abstraction
   <Note>No USDT deposit is needed for testnet sponsorship.</Note>
 </Accordion>
 
+<Accordion title="Can I use a custom smart account?" icon="file-user">
+  **Answer:** The AA SDK currently doesn't offer native support for custom smart accounts. We support a select range of smart accounts:
+
+  - **SimpleAccount**: `SIMPLE`
+  - **Biconomy**: `BICONOMY`
+  - **CyberConnect**: `CYBERCONNECT`
+  - **Light**: `LIGHT`
+  - **Xterio**: `XTERIO`
+
+  <Tip>For more information on supported smart accounts and how to initialize them, visit the [AA SDK documentation](/api-reference/aa/sdks/desktop/web#initialization).</Tip>
+</Accordion>
+
+<Accordion title="Can I automate transactions and/or remove confirmation pop-ups?" icon="robot">
+  **Answer:** Yes, with Biconomy V2, you can use **session keys** to grant users the ability to conditionally delegate signing authority. This allows for the automation of transactions and the elimination of confirmation pop-ups, providing a smoother user experience.
+
+  <Note>Learn more about implementing [Session Keys](/guides/integrations/aa/keys) in your application.</Note>
+</Accordion>
+
+<Accordion title="How do I use a custom Bundler?" icon="box">
+  **Answer:** Although our SDK doesn't natively support custom Bundlers, you can still create a `UserOperation` object using the SDK. Once constructed, this object can be executed via a standard API call to your own Bundler endpoint.
+
+  <Tip>For detailed guidance on creating and using `UserOperation` objects, check out our [API reference](/api-reference/aa/rpc/createuserop).</Tip>
+</Accordion>
+
+<Accordion title="How do I use a custom Paymaster?" icon="money-bill">
+  **Answer:** The AA SDK currently only supports Particle's native Paymaster, accessible via the [Particle Network Dashboard](https://dashboard.particle.network), and Biconomy's Paymaster. If you wish to use a custom Paymaster, you'll need to integrate it through a custom API in your application. 
+  
+ After that, using our SDK, you can execute the resulting `UserOperation` (including `paymasterAndData` from your Paymaster).
+
+  <Tip>For more details on the available endpoints, visit the [AA APIs documentation](/api-reference/aa/introduction).</Tip>
+</Accordion>
 
 </AccordionGroup>
