@@ -544,12 +544,29 @@ const userOp = await smartAccount.buildUserOperation({
 const txHash = await smartAccount.sendUserOperation(userOp);
 ```
 
-<Warning>
-How to get a smart account's address?
+#### Retrieve the Smart Account Address
 
-You can use `useAddress` imported from `particle-network/connectkit`.
+After initializing an instance of the `useSmartAccount` hook, you can easily obtain the account's address with the `getAddress` method. 
 
-</Warning>
+This is particularly useful for fetching and displaying balances or showing the address within your application's UI. Importantly, the typical hooks used for retrieving user addresses will not reflect the correct address in this case, they'll return the EOA; the only way to retrieve the user's smart account address is through `{instance of useSmartAccount}.getAddress`.
+
+Below is an example using `useEffect` to achieve this:
+
+```tsx 
+import { useSmartAccount } from '@particle-network/connectkit';
+
+const smartAccount = useSmartAccount();
+
+  useEffect(() => {
+    if (smartAccount) {
+      smartAccount
+        .getAddress()
+        .then((address) => console.log("SmartAccount Address:", address))
+        .catch((error) => console.error("Error getting address:", error));
+    }
+  }, [smartAccount]);
+
+```
 
 ## Examples of Utilization
 
