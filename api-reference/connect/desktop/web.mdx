@@ -184,9 +184,9 @@ export default function RootLayout({
 }
 ```
 
-#### Enabling Chains
+#### Selecting Chains
 
-Particle Auth supports numerous EVM chains alongside Solana. For a detailed list, please refer to [Network Coverage](/guides/network-coverage).
+Particle Connect supports numerous EVM chains alongside Solana. For a detailed list, please refer to [Network Coverage](/guides/network-coverage).
 
 Import predefined chains, or when using standard wallet connection (not using the embedded wallet or social login features), you can also support other EVM-compatible chains by building your own chain object that inherits the `Chain` type.
 
@@ -644,7 +644,7 @@ const { chainId, address } = useAccount();
 
 
 const walletClient = primaryWallet.getWalletClient();
-// EVM wallet methods
+// Examples of EVM wallet methods
 // Send a transaction
 walletClient.sendTransaction({...})
 // Sign a message
@@ -654,7 +654,7 @@ walletClient.signTypedData({...})
 
 
 const solanaWallet = primaryWallet.getWalletClient<SolanaChain>();
-// Solana wallet methods
+// Examples of Solana wallet methods
 // Send a transaction
 solanaWallet.sendTransaction({...})
 // Sign a message
@@ -691,7 +691,7 @@ const executeTx = async () => {
 };
 ```
 
-Example of sending an Solana transaction:
+Example of sending a Solana transaction:
 
 ```tsx TypeScript
 import { useWallets, useAccount, usePublicClient, type SolanaChain } from '@particle-network/connectkit';
@@ -833,7 +833,7 @@ const txResponse = await signer.sendTransaction(tx);
 
 ### Key React Hooks for Particle Connect
 
-Particle Connect provides several React Hooks for interacting with both Particle Connect and Particle Auth. These include:
+`@particle-network/connectkit` provides several React Hooks for interacting with both Particle Connect and Particle Auth. These include:
 
 -   `useWallets` - Returns all connected wallets.
 -   `useAccount` - Retrieves the currently active account (address) and its status.
