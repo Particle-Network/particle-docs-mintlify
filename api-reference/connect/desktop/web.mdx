@@ -596,6 +596,42 @@ await switchChainAsync({ chainId: 1 });
 switchChain({ chainId: 1 });
 ```
 
+### Fetch and Use Chain Information
+
+Particle Connect provides native support for handling and displaying blockchain information. You can easily access the details of the wallet's current active chain using the `chain` object, available through the `useAccount()` hook.
+
+```tsx
+import { useAccount } from "@particle-network/connectkit";
+
+// Access the wallet’s current active chain
+const { chain } = useAccount();
+
+<h2 className="text-classes">
+  Chain: {chain?.name}
+</h2>
+```
+
+In this example, the chain's name is displayed using `chain?.name`. You can access various other properties of the `chain` object to retrieve more detailed information about the active chain.
+
+<Accordion title="Available Fields in `chain`">
+
+- `id`
+- `name`
+- `nativeCurrency`
+- `rpcUrls`
+- `blockExplorers`
+- `contracts`
+- `sourceId`
+- `testnet`
+- `custom`
+- `fees`
+- `formatters`
+- `serializers`
+
+</Accordion>
+
+This structure enables you to dynamically access a wide range of blockchain details, offering flexibility in how you display and use this information within your application, thereby eliminating the need to hardcode blockchain-specific data.
+
 ### Use EIP-1193 Provider (Ethers, Web3.js)
 
 If your dApp is already using a standard library such as Ethers or Web3.js, accounts can be managed through plugging in an EIP-1193 provider attached to the connected EOA.
