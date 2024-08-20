@@ -184,9 +184,9 @@ export default function RootLayout({
 }
 ```
 
-#### Enabling Chains
+#### Selecting Chains
 
-Particle Auth supports numerous EVM chains alongside Solana. For a detailed list, please refer to [Network Coverage](/guides/network-coverage).
+Particle Connect supports numerous EVM chains alongside Solana. For a detailed list, please refer to [Network Coverage](/guides/network-coverage).
 
 Import predefined chains, or when using standard wallet connection (not using the embedded wallet or social login features), you can also support other EVM-compatible chains by building your own chain object that inherits the `Chain` type.
 
@@ -544,14 +544,45 @@ const userOp = await smartAccount.buildUserOperation({
 const txHash = await smartAccount.sendUserOperation(userOp);
 ```
 
-<Warning>
-How to get a smart account's address?
+#### Retrieve the Smart Account Address
 
-You can use `useAddress` imported from `particle-network/connectkit`.
+After initializing an instance of the `useSmartAccount` hook, you can easily obtain the account's address with the `getAddress` method. 
 
-</Warning>
+This is particularly useful for fetching and displaying balances or showing the address within your application's UI. Importantly, the typical hooks used for retrieving user addresses will not reflect the correct address in this case, they'll return the EOA; the only way to retrieve the user's smart account address is through `{instance of useSmartAccount}.getAddress`.
+
+Below is an example using `useEffect` to achieve this:
+
+```tsx 
+import { useSmartAccount } from '@particle-network/connectkit';
+
+const smartAccount = useSmartAccount();
+
+  useEffect(() => {
+    if (smartAccount) {
+      smartAccount
+        .getAddress()
+        .then((address) => console.log("SmartAccount Address:", address))
+        .catch((error) => console.error("Error getting address:", error));
+    }
+  }, [smartAccount]);
+
+```
 
 ## Examples of Utilization
+
+### Verify User Connection
+
+After setting up **Particle Connect** in your application, you can check if a user is connected via **Particle Connect** using `isConnected` from the `useAccount` hook (`isConnected` will be truthy automatically upon connection).
+
+```typescript TypeScript
+import { useAccount } from '@particle-network/connectkit';
+
+const { isConnected, isConnecting, isDisconnected, isReconnecting } = useAccount();
+
+if (isConnected) {
+    // Truthy indicates a successful login, active session
+}
+```
 
 ### Get Wallet Address
 
@@ -683,7 +714,7 @@ const { chainId, address } = useAccount();
 
 
 const walletClient = primaryWallet.getWalletClient();
-// EVM wallet methods
+// Examples of EVM wallet methods
 // Send a transaction
 walletClient.sendTransaction({...})
 // Sign a message
@@ -693,7 +724,7 @@ walletClient.signTypedData({...})
 
 
 const solanaWallet = primaryWallet.getWalletClient<SolanaChain>();
-// Solana wallet methods
+// Examples of Solana wallet methods
 // Send a transaction
 solanaWallet.sendTransaction({...})
 // Sign a message
@@ -705,7 +736,7 @@ solanaWallet.signTransaction({...})
 
 Example of sending an EVM transaction:
 
-```tsx App.tsx
+```tsx TypeScript
 import { useWallets, useAccount } from '@particle-network/connectkit';
 import { parseEther, type Address } from 'viem';
 
@@ -730,9 +761,9 @@ const executeTx = async () => {
 };
 ```
 
-Example of sending an Solana transaction:
+Example of sending a Solana transaction:
 
-```tsx App.tsx
+```tsx TypeScript
 import { useWallets, useAccount, usePublicClient, type SolanaChain } from '@particle-network/connectkit';
 import { PublicKey, SystemProgram, Transaction } from '@solana/web3.js';
 
@@ -764,11 +795,11 @@ const executeTx = async () => {
 };
 ```
 
-### Leverage publicClient for RPC Calls
+### Leverage PublicClient for RPC Calls
 
 **Connectkit** integrates Viem, allowing you to make RPC calls directly—such as fetching balances or nonces—via the `usePublicClient()` hook, eliminating the need for a separate provider.
 
-```tsx App.tsx
+```tsx TypeScript
 import { usePublicClient } from '@particle-network/connectkit';
 
 export const App = () => {
@@ -783,6 +814,27 @@ export const App = () => {
     };
 };
 ```
+
+For Solana, `usePublicClient` returns a `Connection` type (imported from `@solana/web3.js`). Example Usage.
+
+
+
+```typescript TypeScript
+import { usePublicClient, SolanaChain } from '@particle-network/connectkit';
+
+export const App = () => {
+    // Init public client
+    const publicClient = usePublicClient<SolanaChain>();
+    const [primaryWallet] = useWallets<SolanaChain>();
+
+    // Fetch the balance of an account
+    const fetchBalance = async () => {
+        const balanceResponse = await publicClient?.getBalance(primaryWallet.publicKey);
+    };
+};
+
+```
+
 
 ### Fetch User Information with Particle Auth
 
@@ -815,9 +867,43 @@ export const App = () => {
 };
 ```
 
+### Use EIP-1193 Provider (Ethers, Web3.js)
+
+If your dApp is already using a standard library such as Ethers or Web3.js, accounts can be managed through plugging in an EIP-1193 provider attached to the connected EOA.
+
+Upon constructing an instance of Ethers or Web3.js using this provider, transactions can be sent and messages can be signed using standard syntax from that library; these requests will be automatically routed to the EOA connected through **Particle Connect**.
+
+An example of this approach with Ethers has been included below.
+
+```ts App.tsx
+import { useWallets } from '@particle-network/connectkit';
+import { ethers } from 'ethers';
+
+const [primaryWallet] = useWallets();
+
+const EOAprovider = await primaryWallet.connector.getProvider();
+
+const customProvider = new ethers.providers.Web3Provider(EOAprovider, 'any');
+```
+
+With this configured, both read and write calls can be made from the resulting provider object, for example:
+
+```ts TypeScript
+// Read (balance retrieval)
+const balance = await customProvider.getBalance(address);
+
+// Write (sending a transaction)
+const signer = customProvider.getSigner();
+const tx = {
+    to: '0x000000000000000000000000000000000000dEaD',
+    value: ethers.utils.parseEther('0.01'),
+};
+const txResponse = await signer.sendTransaction(tx);
+```
+
 ### Key React Hooks for Particle Connect
 
-Particle Connect provides several React Hooks for interacting with both Particle Connect and Particle Auth. These include:
+`@particle-network/connectkit` provides several React Hooks for interacting with both Particle Connect and Particle Auth. These include:
 
 -   `useWallets` - Returns all connected wallets.
 -   `useAccount` - Retrieves the currently active account (address) and its status.

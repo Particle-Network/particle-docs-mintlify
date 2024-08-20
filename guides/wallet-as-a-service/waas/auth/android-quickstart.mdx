@@ -184,9 +184,9 @@ dependencies {
 
 <Step title="Configuring AndroidManifest.xml">
 
-Finally, before initializing and utilizing Particle Auth directly, you'll additionally need to place your project keys within your `AndroidManifest.xml` (both this and `build.gradle` need to contain these keys).
+Finally, before initializing and utilizing Particle Auth directly, you'll additionally need configure your `AndroidManifest.xml` file, ensuring your project keys are placed accordingly (handled through the previously established environment variables through `build.gradle`).
 
-An example of this file has been included below, and the areas in which project keys are needed have been marked.
+Below is an example of what your `AndroidManifest.xml` should resemble.
 
 ```xml
 <?xml version="1.0" encoding="utf-8"?>

@@ -39,6 +39,10 @@
     {
       "name": "GitHub",
       "url": "https://github.com/Particle-Network"
+    },
+    {
+      "name": "Support",
+      "url": "https://t.me/particle_developer_bot"
     }
   ],
   "primaryTab": {
@@ -174,14 +178,18 @@
         {
           "group": "Quickstarts (Connect)",
           "pages": [
-            "guides/wallet-as-a-service/waas/connect/web-quickstart"
+            "guides/wallet-as-a-service/waas/connect/web-quickstart",
+            "guides/wallet-as-a-service/waas/connect/ios-quickstart",
+            "guides/wallet-as-a-service/waas/connect/android-quickstart"
           ]
         },
         {
           "group": "Quickstarts (Auth)",
           "pages": [
             "guides/wallet-as-a-service/waas/auth/web-quickstart",
-            "guides/wallet-as-a-service/waas/auth/tg-quickstart"
+            "guides/wallet-as-a-service/waas/auth/tg-quickstart",
+            "guides/wallet-as-a-service/waas/auth/ios-quickstart",
+            "guides/wallet-as-a-service/waas/auth/android-quickstart"
           ]
         },
         {
@@ -414,7 +422,8 @@
             "api-reference/btc/rpc/getbtcaccount",
             "api-reference/btc/rpc/getbtcaccountsbyaddress"
           ]
-        }
+        },
+        "api-reference/btc/faq"
       ]
     },
     {

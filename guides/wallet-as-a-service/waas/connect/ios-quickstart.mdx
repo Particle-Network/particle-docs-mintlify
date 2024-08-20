@@ -335,7 +335,7 @@ let txHash = try await adapter!.signAndSendTransaction(publicAddress: account.pu
 
 ### Open Wallet
 
-After connecting, you can open the wallet at any time, use `ParticleWalletGUI.setSupportChain` to set supported chains.
+If you included `ParticleWalletGUI` within your Podfile, you can open the (optional) embedded wallet interface at any time after a user connects, use `ParticleWalletGUI.setSupportChain` to set supported chains, then `PNRouter` to open the interface.
 
 ```swift
 ParticleWalletGUI.setSupportChain(Set<[ChainInfo.ethereum, ChainInfo.bnbChain]>)
@@ -343,6 +343,4 @@ PNRouter.navigatorWallet(hiddenBackButton: false)
 ```
 
 
-<Tip> To implement account abstraction within your iOS project, integrate the `ParticleAA` SDK and refer to this [documentation](/api-reference/aa/sdks/mobile/ios).</Tip>
-
-<Tip>Additionally, a demo repository can be found [here](https://github.com/Particle-Network/particle-connect-ios/tree/master/ConnectKitDemo).</Tip>
+<Tip> To implement account abstraction within your iOS project, integrate the `ParticleAA` SDK and refer to this [documentation](/api-reference/aa/sdks/mobile/ios). Additionally, a demo repository can be found [here](https://github.com/Particle-Network/particle-connect-ios/tree/master/ConnectKitDemo). </Tip>

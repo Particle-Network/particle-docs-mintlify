@@ -283,11 +283,10 @@ ParticleWalletConnect.setWalletConnectV2ProjectId("WalletConnect project ID")
 
 ### Custom Wallet UI
 
-<Note> `ParticleWalletGUI` is drived by adapters, `ParticleConnect.initialize` set a lot adapters, not you can get them and set to `ParticleWalletGUI`</Note>
+`ParticleWalletGUI` is drived by wallet adapters; after initializing the SDK, you'll be able to retrieve all relevant adapters through `ParticleConnect.getAdapters`, which can be plugged into `ParticleWalletGUI.setAdapters` to initiate the custom wallet interface, as is shown below.
 
-Set adapters to driver
 ```swift
-let adapters = ParticleConnect.getAdaptrs()
+let adapters = ParticleConnect.getAdapters()
 ParticleWalletGUI.setAdapters(adapters)
 ```
 

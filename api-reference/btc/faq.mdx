@@ -1,0 +1,40 @@
+---
+title: 'BTC Connect FAQ'
+sidebarTitle: 'FAQ'
+description: 'Find Frequently Asked Questions about BTC Connect.'
+---
+
+<AccordionGroup>
+
+  <Accordion title="How do I support additional wallets?" icon="wallet">
+    **Answer:** Currently, BTC Connect is compatible with a select group of wallets, including **UniSat**, **OKX**, **Bitget**, **TokenPocket**, **Bybit**, **Wizz**, and **Xverse**. Unfortunately, adding support for custom wallets isn't available at this time.
+  </Accordion>
+
+  <Accordion title="How do I integrate BTC Connect into my custom connection interface?" icon="bitcoin">
+    **Answer:** You can integrate BTC Connect directly into your own connection interface, bypassing the native connection modal. 
+    
+    To achieve this, use the `connect` method from `useConnector`, passing in a string representing the specific wallet you want to connect with, such as `unisat`. This approach enables you to create custom buttons or UI elements that trigger these connections seamlessly.
+
+    Here is an example of how to implement this:
+
+    ```tsx App.tsx
+    import { useConnector } from '@particle-network/btc-connectkit';
+
+    const { connect } = useConnector();
+    
+        // Handler to initiate login via Unisat
+        const handleLogin = () => {
+        if (!accounts.length) {
+            connect('unisat')
+        }
+    };
+    ```
+  </Accordion>
+
+</AccordionGroup>
+
+<Note>
+**Still need help?**
+
+[Open a ticket](https://t.me/particle_developer_bot) with Particle's Developer Relations team through the dedicated Telegram support bot.
+</Note>
