@@ -54,6 +54,23 @@ description: 'Find Frequently Asked Questions about Particle Account Abstraction
   <Tip>For more details on the available endpoints, visit the [AA APIs documentation](/api-reference/aa/introduction).</Tip>
 </Accordion>
 
+<Accordion title="What are the differences between the natively supported smart accounts?" icon="user">
+  **Answer:** Each natively-supported smart account differs in feature-set (such as session keys, multi-chain signatures, and so on).
+
+  Below is a table detailing the core differences between account types as it relates to the features they support.
+  
+| Account Type  | Session Keys | Transferable Signer | Multichain Signatures | Gasless Transactions |
+| ------------- | ------------ | ------------------- | --------------------- | -------------------- |
+| [Biconomy (V2)](https://github.com/bcnmy/scw-contracts/blob/main/contracts/smart-account/SmartAccount.sol) |     ✓         |   ✓                  |   ✓                    |                 ✓     |
+| Biconomy (V1) |      ✗        |  ✗                  |   ✗                    |                  ✓    |
+| [Light](https://github.com/alchemyplatform/light-account)         |     ✗        |   ✓                  |  ✗                     |             ✓         |
+| [Xterio](https://github.com/XterioTech/xterio-scw/tree/main)              |    ✗          |   ✗                  |  ✗                     |        ✓              |
+| CyberConnect  |      ✗        |    ✗                 |  ✗                     |              ✓        |
+| [SimpleAccount](https://github.com/eth-infinitism/account-abstraction/blob/develop/contracts/samples/SimpleAccount.sol) |      ✗        |    ✗                 |  ✗                     |            ✓          |
+
+<Tip>For more information on the chains supported by each account type, head over to the [Network Coverage page](/guides/network-coverage).</Tip>
+</Accordion>
+
 </AccordionGroup>
 
 <Note>
