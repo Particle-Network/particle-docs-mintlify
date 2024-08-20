@@ -598,7 +598,7 @@ switchChain({ chainId: 1 });
 
 ### Fetch and Use Chain Information
 
-Particle Connect provides native support for handling and displaying blockchain information. You can easily access the details of the wallet's current active chain using the `chain` object, available through the `useAccount()` hook.
+Particle Connect provides native support for handling and displaying information about the current chain being used. You can easily access these details by using the `chain` object, available through the `useAccount()` hook.
 
 ```tsx
 import { useAccount } from "@particle-network/connectkit";
@@ -630,7 +630,7 @@ In this example, the chain's name is displayed using `chain?.name`. You can acce
 
 </Accordion>
 
-This structure enables you to dynamically access a wide range of blockchain details, offering flexibility in how you display and use this information within your application, thereby eliminating the need to hardcode blockchain-specific data.
+This structure enables you to dynamically access a wide range of information, offering flexibility in how you display and use this information within your application, thereby eliminating the need to hardcode blockchain-specific data.
 
 ### Use EIP-1193 Provider (Ethers, Web3.js)
 
