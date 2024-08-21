@@ -1,5 +1,6 @@
 ---
 title: "Login Session"
+description: "Understanding login sessions on Particle Auth."
 ---
 
 Generally, the local user state generated after a user logs in (via [Particle Auth](guides/integrations/waas/auth)) does not expire; however, if a user logs into the same app configuration (determined by the application configured through the Particle [Dashboard](guides/dashboard)) in two different places (e.g., logging in successively in two browsers), only the latter login state will be valid. For this situation, there are the following solutions:
