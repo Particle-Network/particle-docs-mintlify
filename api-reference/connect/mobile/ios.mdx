@@ -232,11 +232,9 @@ With the scheme URL configured, you'll also need to head into `info.plist` and a
 
 ### Utilization of WalletConnect V2
 
-If you're planning on using WalletConnect V2 as your primary method of connection for traditional Web3 wallets, you'll need to use the `setWalletConnectV2ProjectId` method on `ParticleConnect`, passing in your WalletConnect project ID retrieved from the [WalletConnect dashboard](https://cloud.walletconnect.com). Additionally, you can set specific chains to be used within WalletConnect (`chainInfo` structures) with `setWalletConnectV2SupportChainInfos`. An example of this can be found below.
+You can set specific chains to be used within WalletConnect (`chainInfo` structures) with `setWalletConnectV2SupportChainInfos`. An example of this can be found below.
 
 ```swift
-ParticleConnect.setWalletConnectV2ProjectId("WalletConnect V2 Project ID")
-
 ParticleConnect.setWalletConnectV2SupportChainInfos([.ethereum, .polygon])
 ```
 
@@ -456,6 +454,12 @@ As an alternative to `signMessage`, for **EVM chains**, you can request that a u
 
 ```swift
 let signed = try await adapter.signTypedData(publicAddress: publicAddress, data: message).value
+```
+
+### (Optional) Custom WalletConnect Projcet ID
+
+```swift
+ParticleConnect.setWalletConnectV2ProjectId("WalletConnect V2 Project ID")
 ```
 
 ### Custom WalletConnect Adapter

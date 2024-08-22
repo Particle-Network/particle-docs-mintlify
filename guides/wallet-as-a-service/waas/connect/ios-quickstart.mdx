@@ -130,22 +130,6 @@ Sign up or Log in into the [Particle dashboard](https://dashboard.particle.netwo
 </div>
 </Accordion>
 
-<Accordion title="Retrieve a project ID from the WalletConnect">
-You can retrieve a project ID from the [WalletConnect dashboard](https://cloud.walletconnect.com); it's used when connecting with traditional Web3 wallets.
-<div className="flex justify-center">
-<img
-  className="block h-24 dark:hidden"
-  src="/guides/wallet-as-a-service/waas/images/walletconnect-project.svg"
-  alt="Find app's credentials."
-/>
-<img
-  className="hidden h-24 dark:block"
-  src="/guides/wallet-as-a-service/waas/images/walletconnect-project.svg"
-  alt="Find app's credentials."
-/>
-</div>
-</Accordion>
-
 </AccordionGroup>
 
 For more information on the Particle dashboard, take a look at the [dashboard quickstart](/guides/dashboard).
@@ -210,8 +194,6 @@ Before using Particle Connect, you'll need to initialize the SDK through the `in
 - `dAppData`, the metadata used for WalletConnect.
 - `adapters`, an array of adapters representing the wallets you'd like to support within your application.
 
-If you're planning on using WalletConnect as your primary method of connection for traditional Web3 wallets, you'll need to use the `setWalletConnectV2ProjectId` method on `ParticleConnect`, passing in your WalletConnect project ID retrieved from .
-
 Additionally, you can set specific chains to be used within WalletConnect (`chainInfo` structures) with `setWalletConnectV2SupportChainInfos`. An example of this can be found below.
 
 ```swift
@@ -233,16 +215,11 @@ var adapters: [ConnectAdapter] = [
     OKXConnectAdapter()
     ]
 
-// Retrieve from WalletConnect dashboard
-let walletConnectProjectId = "Replace this with your WalletConnect project ID"
-ParticleConnect.setWalletConnectV2ProjectId(walletConnectProjectId)
-
 // You can retrieve chainInfo from ChainInfo, the initialize works for the first time open.
 // If you support more than one chain, you can use ParticleNetwork.setChainInfo to switch.
 ParticleConnect.initialize(env: .debug, chainInfo: ChainInfo.ethereumSepolia, dAppData: .standard, adapters: adapters)
 
 // Optional, for usage of Particle Wallet
-ParticleWalletConnect.setWalletConnectV2ProjectId(walletConnectProjectId)
 ParticleWalletConnect.initialize(
         WalletMetaData(name: "Particle Wallet",
                         icon: URL(string: "https://connect.particle.network/icons/512.png")!,

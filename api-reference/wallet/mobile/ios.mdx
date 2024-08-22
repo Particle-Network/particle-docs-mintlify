@@ -275,10 +275,15 @@ let result = try await ParticleWalletAPI.getEvmService().writeContract(contractP
 
 ## Examples of Utilization, Wallet
 
-In addition to `ParticleWalletAPI`, you can also use `ParticleWalletGUI` as the primary means of programmatically configuring and interacting with Particle Wallet. To begin, `ParticleWalletGUI` relies on WalletConnect through Particle Connect to enable usage of external Web3 wallet (such as Metamask or Phantom) within Particle Wallet. To ensure this works properly, you'll need to call `setWalletConnectV2ProjectId` on `ParticleWalletConnect`, passing in your WalletConnect project ID retrieved from the [WalletConnect dashboard](https://cloud.walletconnect.com), as is shown below.
+In addition to `ParticleWalletAPI`, you can also use `ParticleWalletGUI` as the primary means of programmatically configuring and interacting with Particle Wallet. To begin, `ParticleWalletGUI` relies on WalletConnect through Particle Connect to enable usage of external Web3 wallet (such as Metamask or Phantom) within Particle Wallet.
 
 ```swift
-ParticleWalletConnect.setWalletConnectV2ProjectId("WalletConnect project ID")
+ParticleWalletConnect.initialize(
+            WalletMetaData(name: "Particle Wallet",
+                           icon: URL(string: "https://connect.particle.network/icons/512.png")!,
+                           url: URL(string: "https://connect.particle.network/")!,
+                           description: "Particle Connect is a decentralized wallet connection protocol that makes it easy for users to connect their wallets to your DApp.", redirectUniversalLink: nil)
+        )
 ```
 
 ### Custom Wallet UI
@@ -540,4 +545,10 @@ Finally, Particle Wallet also includes a dApp Browser, allowing users to open di
 if let url = URL(string: "app.uniswap.org") {
   PNRouter.navigatorDappBrowser(url: url)
 }
+```
+
+### (Optional) Custom WalletConnect Projcet ID
+
+```swift
+ParticleWalletConnect.setWalletConnectV2ProjectId("WalletConnect project ID")
 ```
