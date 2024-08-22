@@ -94,17 +94,17 @@ defaultConfig {
 }
 ```
 
-Additionally, staying within your `build.gradle` file, you'll need to ensure that you're using version 11 of Java in both `compileOptions` and `kotlinOptions`, alongside enabling `dataBinding`.
+Additionally, staying within your `build.gradle` file, you'll need to ensure that you're using version 17 of Java in both `compileOptions` and `kotlinOptions`, alongside enabling `dataBinding`.
 
 ```groovy build.gradle
 // Example
 compileOptions {
-  sourceCompatibility JavaVersion.VERSION_11
-  targetCompatibility JavaVersion.VERSION_11
+  sourceCompatibility JavaVersion.VERSION_17
+  targetCompatibility JavaVersion.VERSION_17
 }
 
 kotlinOptions {
-  jvmTarget = JavaVersion.VERSION_11
+  jvmTarget = JavaVersion.VERSION_17.toString()
 }
 
 dataBinding {
