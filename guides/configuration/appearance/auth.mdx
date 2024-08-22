@@ -3,13 +3,17 @@ title: "Customizing Login Modal"
 description: "Customizing the appearance of Particle's login modal."
 ---
 
-**Particle Network** places a strong emphasis on **deep customization and application-specificity**. Whether it’s logos, colors, or border sharpness, virtually every aspect can be tailored programmatically using **Particle ConnectKit** or **Particle AuthKit**. This guide will explore the various methods available for customizing these tools to meet your specific needs.
+**Particle Network** places a strong emphasis on **deep customization and application-specificity**. Whether it’s logos, colors, or border sharpness, virtually every aspect of Particle's native login interface can be tailored programmatically using **Particle ConnectKit** or **Particle AuthKit**. This guide will explore the various methods available for customizing these modals to meet your specific needs.
 
 ***
 
 ## Particle Connect Customization
 
-**Particle Connect** is the suggested SDK for integrating social logins and enabling Account Abstraction, and it allows deep programmatic customization when initializing the SDK with `createConfig` in the `ConnectKitProvider` component.
+[**Particle Connect**](/guides/wallet-as-a-service/waas/connect/web-quickstart) is the suggested SDK for driving generalized onboarding, supporting both social logins and standard wallet connection through a single interface. Importantly, it allows deep programmatic visual customization when initializing the SDK with `createConfig` in the `ConnectKitProvider` component.
+
+<Frame>
+<img src="https://static.particle.network/mintlify/images/06.gif" style={{ width: '100%', maxWidth: '600px' }} />
+</Frame>
 
 Customization at a higher level is straightforward, with options such as setting **light** or **dark** mode via the `mode` parameter within `createConfig`, selecting the interface language using `language`, or specifying a custom logo through `logo`, among others.
 
@@ -72,7 +76,7 @@ The `theme` object accepts the following options:
 '--pcm-wallet-label-color'?: HexColor;
 ```
 
-<Note>Each of these options allows you to customize the appearance of the **authentication modal**, **wallet modal**, and **transaction popups**.</Note>
+Each of these options allows you to customize the appearance of the **authentication modal**, **wallet modal**, and **transaction popups**.
 
 The following example demonstrates how to apply a green hacker theme to **Particle Connect**:
 
@@ -132,9 +136,22 @@ const config = createConfig({
     // The rest of the component
 ```
 
+<Frame caption="Materialization of the above parameters for Particle Connect.">
+<img
+  className="block dark:hidden"
+  src="/guides/configuration/images/connectkit.png"
+/>
+<img
+  className="hidden dark:block"
+  src="/guides/configuration/images/connectkit.png"
+/>
+</Frame>
+
+<Tip>For a full guide on configuring Particle Connect, head over to the [quickstart guide](/guides/wallet-as-a-service/waas/connect/web-quickstart).</Tip>
+
 ## Particle AuthKit Customization
 
-The most common way to customize the Particle AuthKit interface is through programmatic style definitions, which can be applied during SDK initialization.
+As an alternative to Particle Connect, Particle Auth (`@particle-network/authkit`) offers a dedicated modal containing exclusively social logins. The most common way to customize this interface is through programmatic style definitions, which can be applied during SDK initialization through the `AuthCoreContextProvider` component, as will be demonstrated below.
 
 You can achieve high-level customization by adjusting parameters such as `themeType` for light or dark mode within `AuthCoreContextProvider`, `language` to set the language of the modal, and `fiatCoin` to choose the fiat currency display.
 
@@ -157,7 +174,7 @@ theme?: {
 };
 ```
 
-The `ThemeStyle` object allows you to customize the appearance of the **authentication menu** and **transaction popups**. It provides options for defining various visual elements, including colors, backgrounds, borders, and more.
+The `ThemeStyle` object allows you to customize the appearance of the **authentication modal** and **transaction popups**. It provides options for defining various visual elements, including colors, backgrounds, borders, and more.
 
 The `ThemeStyle` object accepts the following properties:
 
@@ -183,7 +200,7 @@ modalBackgroundColor?: string;
 tipsBackgroundColor?: string;
 ```
 
-The following example demonstrates how to implement a green hacker theme for the **Particle AuthKit** login modal:
+The following example demonstrates how to implement a green hacker theme for the **Particle Auth** login modal:
 
 ```tsx
     <AuthCoreContextProvider
@@ -220,3 +237,16 @@ The following example demonstrates how to implement a green hacker theme for the
 
         // Rest of the component 
 ```
+
+<Frame caption="Materialization of the above parameters for Particle Auth.">
+<img
+  className="block dark:hidden"
+  src="/guides/configuration/images/authkit.png"
+/>
+<img
+  className="hidden dark:block"
+  src="/guides/configuration/images/authkit.png"
+/>
+</Frame>
+
+<Tip>For a full guide on configuring Particle Auth, head over to the [quickstart guide](/guides/wallet-as-a-service/waas/auth/web-quickstart).</Tip>
