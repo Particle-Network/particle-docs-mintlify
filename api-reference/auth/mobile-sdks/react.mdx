@@ -114,30 +114,21 @@ Add Privacy - Face ID Usage Description to your info.plist file, head over to yo
   <string>We use Face ID for secure access to the app.</string>
 ```
 
-Finally, you'll need to edit your Podfile to align with the snippet below; this is required for all iOS projects that leverage Particle Auth Core.
+Finally, you'll need to edit your Podfile to ensure `particle_auth_core` is properly imported. Head over to the [linked guide](https://github.com/Particle-Network/particle-react-native/blob/master/particle-auth-core/example/ios/Podfile) to complete this, if you haven't already.
+
+<Note>
+<p>Another important note before continuing.</p>
+<p>Our SDK is a static library (XCFramework). When using the Particle Auth React Native SDK, you'll need to specify that you're using a static framework through the following:</p>
+<p>
 
 ```ruby
-
-// add ParticleAuthCore pods to your target
-pod "Thresh", '1.4.11'
-pod "ParticleMPCCore", '1.4.11'
-pod "ParticleAuthCore", '1.4.11'
-pod "AuthCoreAdapter", '1.4.11'
-
-pod 'ParticleNetworkBase', '1.4.10'
-pod 'ConnectCommon',  '0.2.24'
-
-pod 'SwiftyUserDefaults', :git ='https://github.com/SunZhiC/SwiftyUserDefaults.git', :branch ='master'
-pod 'SkeletonView', :git ='https://github.com/SunZhiC/SkeletonView.git', :branch ='main'
-
-
 post_install do |installer|
-installer.pods_project.targets.each do |target|
-  target.build_configurations.each do |config|
-  config.build_settings['BUILD_LIBRARY_FOR_DISTRIBUTION'] = 'YES'
+  installer.pods_project.targets.each do |target|
+    target.build_configurations.each do |config|
+      config.build_settings['BUILD_LIBRARY_FOR_DISTRIBUTION'] = 'YES'
     end
   end
- end
+end
 ```
 
 <Note>
@@ -151,10 +142,12 @@ installer.pods_project.targets.each do |target|
 post_install do |installer|
   installer.pods_project.targets.each do |target|
       if target.name == 'ParticleNetworkBase' or
+         target.name == 'ParticleNetworkChains' or
          target.name == 'ParticleWalletAPI' or
          target.name == 'ParticleWalletGUI' or
          target.name == 'ParticleWalletConnect' or
          target.name == 'ParticleAA' or
+         target.name == 'ParticleConnectKit' or
          target.name == 'ParticleConnect' or
          target.name == 'ConnectWalletConnectAdapter' or
          target.name == 'ConnectSolanaAdapter' or
@@ -242,17 +235,33 @@ Onboarding a user with Particle's Wallet-as-a-Service (Particle Auth) happens th
 | `prompt`          | `SocialLoginPrompt?` | (Optional) either `.none`, `.consent`, or `.select_account`, only google, discord and microsoft support it.                                                                                                                                                                      |
 | `loginPageConfig` | `LoginPageConfig?`   | (Optional) to customize the UI page, contains project name, icon and description.                                                                                                                                                                                                |
 
+<Tip>You can use your existing user base or authentication method with Particle Connect through JWT. This way, your users can still log in with their current accounts. Click [here](/guides/configuration/auth/jwt) to learn how to configure jwt. </Tip>
+
 ```typeScript
 import type { LoginType, SupportAuthType } from '@particle-network/rn-base'
 import * as particleAuthCore from '@particle-network/rn-auth-core';
 
-const supportAuthType = [SupportAuthType.All];
+// Google or other social login
+const userInfo = await particleAuthCore.connect(LoginType.Google, null, [], SocialLoginPrompt.SelectAccount);
 
-const userInfo = await particleAuthCore.connect(LoginType.Email, null, supportAuthType, SocialLoginPrompt.SelectAccount, {
-      projectName: "React Native Example",
-      description: "Welcome to login",
-      imagePath: "https://connect.particle.network/icons/512.png"
-    });
+// Email or phone login, through a presentation page.
+const userInfo = await particleAuthCore.connect(LoginType.Email, null, supportAuthTypes, SocialLoginPrompt.SelectAccount, {
+        projectName: "React Native Example",
+        description: "Welcome to login",
+        imagePath: base64Img
+      });
+
+// JWT login
+const userInfo = await particleAuthCore.connect(LoginType.JWT, jwt);
+
+// Here's how to log in to a custom page
+// Send verification code to email or phone number, the phone number must be in E.164 format.
+const isSuccess = await particleAuthCore.sendEmailCode("user@example.com");
+const isSuccess = await particleAuthCore.sendPhoneCode("+11234567890");
+
+// login with email or phone, the phone number must be in E.164 format.
+final userInfo = await ParticleAuthCore.connectWithCode(null, "user@example.com", code);
+final userInfo = await ParticleAuthCore.connectWithCode("+11234567890", null, this.state.code);
 ```
 
 ---
@@ -780,5 +789,3 @@ Call any basic Solana rpc method through `SolanaService.rpc`
 ```typeScript
 const result = await SolanaService.rpc(method, params);
 ```
-
----
