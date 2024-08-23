@@ -235,7 +235,48 @@ particleConnect.setWalletConnectV2SupportChainInfos(chainInfos);
 
 ---
 
-### Connect
+### Connect Wallet V2
+
+`particleConnect.connectWithConnectKitConfig` is one click login function, which can present a customizable login UI. The parameter config can be derived from `ConnectKitConfig`.
+
+`ConnectKitConfig.init` have these parameters
+
+| Field                     | Type                       | Description                                                                                                              |
+| ------------------------- | -------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
+| `connectOptions`          | `ConnectOption[]`          | Connect options, support `Email`, `Phone`, `Social` and `Wallet`, the sort order is used for connect kit login UI.       |
+| `socialProviders`         | `EnableSocialProvider[]?`  | Social providers, support `Google`, `Apple` and other social options, the sort order is used for connect kit login UI.   |
+| `walletProviders`         | `EnableWalletProvider[]?`  | Wallet providers, support `MetaMask`, `Trust` and other wallet options, the sort order is used for connect kit login UI. |
+| `additionalLayoutOptions` | `AdditionalLayoutOptions?` | Layout options                                                                                                           |
+| `logo`                    | `string?`                  | logo url or base64 image                                                                                                 |
+
+```typeScript
+const config = {
+      //  You can control the array elements and adjust the UI order
+      connectOptions: [ConnectOption.Email, ConnectOption.Phone, ConnectOption.Social, ConnectOption.Wallet],
+      //  You can control the array elements and adjust the UI order
+      socialProviders: [EnableSocialProvider.Google, EnableSocialProvider.Apple, EnableSocialProvider.Twitter, EnableSocialProvider.Discord, EnableSocialProvider.Github],
+      //  You can control the array elements and adjust the UI order
+      walletProviders: [{ enableWallet: EnableWallet.MetaMask, label: EnableWalletLabel.Recommended },
+      { enableWallet: EnableWallet.OKX, label: EnableWalletLabel.Popular },
+      { enableWallet: EnableWallet.Trust, label: EnableWalletLabel.None },
+      { enableWallet: EnableWallet.Bitget, label: EnableWalletLabel.None }
+      ],
+
+      additionalLayoutOptions: {
+        isCollapseWalletList: false,
+        isSplitEmailAndSocial: true,
+        isSplitEmailAndPhone: false,
+        isHideContinueButton: false,
+      },
+      logo: base64Icon // base64 string or url
+    };
+
+const accountInfo = await particleConnect.connectWithConnectKitConfig(config);
+```
+
+---
+
+### Connect Wallet V1 (Legacy)
 
 To directly connect a user with a given wallet type (throwing a connection menu within the current instance), you'll need to use `connect`. Within `connect`, you'll need to pass in a given `walletType`, which should be an item selected from `WalletType`, imported from `@particle-network/rn-connect`. `WalletType` can be set to any of the following:
 
