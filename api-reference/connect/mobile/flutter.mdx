@@ -11,7 +11,7 @@ Instructions and examples for implementing Particle Connect within Flutter appli
 
 ## Repository
 
-The Particle Connect Flutter SDK is also largely open-source through the [GitHub repository](https://github.com/Particle-Network/particle-flutter). Before diving into the setup process below, it may help to build some context by diving into the underlying architecture and demos provided within [this repository](https://github.com/Particle-Network/particle-flutter).
+The Particle Connect Flutter SDK is also largely open-source through the [GitHub repository](https://github.com/Particle-Network/particle-flutter). Before diving into the setup process below, it may help to build some context by diving into the underlying architecture and demos provided within [this repository](https://github.com/Particle-Network/particle-flutter/tree/master/particle-connect).
 
 <div className="flex justify-center">
 
@@ -47,7 +47,7 @@ These values tie a given implementation to the [Particle dashboard](https://dash
 <Note>
   Follow the quickstart tutorial to set up a project and find the required keys:
   [Create a new
-  project](/guides/wallet-as-a-service/waas/mobile-quickstart#configuring-particle-auth).
+  project](/guides/wallet-as-a-service/waas/connect/flutter-quickstart).
 </Note>
 
 ### Adding the Particle Connect Flutter SDK to your application
@@ -165,28 +165,24 @@ override func application(_ app: UIApplication, open url: URL, options: [UIAppli
 
 Wrapping up, you'll need to configure your application's scheme URL. To configure this, select your application from "TARGETS" under the "Info" section, then click "+" to add a URL type.
 
-This should simply be set to "pn" + your `projectId` (retrieved and configured prior), resulting in a scheme URL that looks like the following:
-
-```text
-pn63bfa427-cf5f-4742-9ff1-e8f5a1b9828f
-```
+For example, if your `appId` is `63bfa427-cf5f-4742-9ff1-e8f5a1b9828f`, then the scheme URL would be `pn63bfa427-cf5f-4742-9ff1-e8f5a1b9828f` --simply adding `pn` to the beginning of the `appId`.
 
 Additionally, head over to your `Info.plist` file and include the following snippet:
 
 ```xml Info.plist
 <key>LSApplicationQueriesSchemes</key>
 <array>
-	<string>metamask</string>
-	<string>phantom</string>
-	<string>bitkeep</string>
-	<string>imtokenv2</string>
-	<string>rainbow</string>
-	<string>trust</string>
-	<string>zerion</string>
-  <string>mathwallet</string>
-  <string>oneinch</string>
-  <string>awallet</string>
-  <string>okex</string>
+<string>metamask</string>
+<string>phantom</string>
+<string>bitkeep</string>
+<string>imtokenv2</string>
+<string>rainbow</string>
+<string>trust</string>
+<string>zerion</string>
+<string>mathwallet</string>
+<string>oneinch</string>
+<string>awallet</string>
+<string>okex</string>
 </array>
 <key>NSPhotoLibraryUsageDescription</key>
 <string>We need access in order to open photos of barcodes</string>
@@ -198,18 +194,36 @@ Additionally, head over to your `Info.plist` file and include the following snip
 
 Finally, you'll need to edit your Podfile to ensure `particle_connect` is properly imported. Head over to the [linked guide](https://github.com/Particle-Network/particle-flutter/blob/master/particle-connect/example/ios/Podfile) to complete this if you haven't already.
 
+<Note>
+<p>Another important note before continuing.</p>
+<p>Our SDK is a static library (XCFramework). When using the Particle Auth Flutter SDK, you'll need to specify that you're using a static framework through the following:</p>
+<p>
+
+```ruby
+post_install do |installer|
+  installer.pods_project.targets.each do |target|
+    target.build_configurations.each do |config|
+      config.build_settings['BUILD_LIBRARY_FOR_DISTRIBUTION'] = 'YES'
+    end
+  end
+end
+```
+
+</p>
+</Note>
+
 ## Examples of Utilization
 
 ### Initialization
 
-Now that you've spun up a project on the [Particle dashboard]() and configured your application, you're ready to move on to the initialization of the SDK itself. This must happen before the other methods become functional. To begin, you'll need to call `ParticleInfo.set`, passing in your `projectId` and client key (`clientK`). Next, initialization can happen through the `init` function on `ParticleConnect`, which can be imported from `package:particle_connect/particle_connect.dart`. `init` takes the following parameters:
+Now that you've spun up a project on the [Particle dashboard]() and configured your application, you're ready to move on to the initialization of the SDK itself. This must happen before the other methods become functional. To begin, you'll need to call `ParticleInfo.set`, passing in your `projectId` and client key (`clientKey`). Next, initialization can happen through the `init` function on `ParticleConnect`, which can be imported from `package:particle_connect/particle_connect.dart`. `init` takes the following parameters:
 
-| Field          | Type            | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
-| -------------- | --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `chainInfo`    | `ChainInfo`     | The primary chain to be used within your application. This should be dictated by an overall blockchain, followed by a specific network (testnet). Within this example, it's `.Ethereum`(alternatively it could be `.EthereumSepolia`, and so on.)                                                                                                                                                                                                                                                                                                                              |
+| Field          | Type            | Description                                                                                                                                                                                                                                                                                                                                                                                                                             |
+| -------------- | --------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `chainInfo`    | `ChainInfo`     | The primary chain to be used within your application. This should be dictated by an overall blockchain, followed by a specific network (testnet). Within this example, it's `.Ethereum`(alternatively it could be `.EthereumSepolia`, and so on.)                                                                                                                                                                                       |
 | `dAppData`     | `DAppMetadata`  | Metadata outlining the description of your application, This should be an instance of `DAppMetadata` with the following parameters: `name`, the name of your project. `icon`, a URL linking to the icon of your project; this should be 512x512, ideally. `url`, the URL of your project's website. `description`, the description of your project, `redirect`, optional, redirect universal link of you project, `verifyUrl`, optional |
-| `env`          | `Env`           | The specific environmennt to be used. This can be either `.dev`, `.staging`, `.production`, this should be set to `.production` when release                                                                                                                                                                                                                                                                                                                                                                                                                                   |
-| `rpcUrlConfig` | `RpcUrlConfig?` | Customize rpc url                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
+| `env`          | `Env`           | The specific environmennt to be used. This can be either `.dev`, `.staging`, `.production`, this should be set to `.production` when release                                                                                                                                                                                                                                                                                            |
+| `rpcUrlConfig` | `RpcUrlConfig?` | Customize rpc url                                                                                                                                                                                                                                                                                                                                                                                                                       |
 
 ```dart
 ParticleInfo.set(projectId, clientKey);
@@ -232,7 +246,63 @@ ParticleConnect.setWalletConnectV2SupportChainInfos(chainInfos);
 
 ---
 
-### Connect
+### Connect Wallet V2
+
+`ParticleConnect.connectWithConnectKitConfig` is one click login function, which can present a customizable login UI. The parameter config can be derived from `ConnectKitConfig`.
+
+`ConnectKitConfig.init` have these parameters
+
+| Field                     | Type                          | Description                                                                                                              |
+| ------------------------- | ----------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
+| `connectOptions`          | `List<ConnectOption>`         | Connect options, support `EMAIL`, `PHONE`, `SOCIAL` and `WALLET`, the sort order is used for connect kit login UI.       |
+| `socialProviders`         | `List<EnableSocialProvider>?` | Social providers, support `GOOGLE`, `APPLE` and other social options, the sort order is used for connect kit login UI.   |
+| `walletProviders`         | `List<EnableWalletProvider>?` | Wallet providers, support `MetaMask`, `Trust` and other wallet options, the sort order is used for connect kit login UI. |
+| `additionalLayoutOptions` | `AdditionalLayoutOptions`     | Layout options                                                                                                           |
+| `logo`                    | `String`                      | logo url or base64 image                                                                                                 |
+
+```dart
+final config = ConnectKitConfig(
+  logo: "", //base64 or https
+  connectOptions: [
+    ConnectOption.EMAIL,
+    ConnectOption.PHONE,
+    ConnectOption.SOCIAL,
+    ConnectOption.WALLET,
+  ], // Changing the order can affect the interface
+  socialProviders: [
+    EnableSocialProvider.GOOGLE,
+    EnableSocialProvider.TWITCH,
+    EnableSocialProvider.APPLE,
+    EnableSocialProvider.DISCORD,
+    EnableSocialProvider.TWITTER,
+    EnableSocialProvider.FACEBOOK,
+    EnableSocialProvider.GITHUB,
+    EnableSocialProvider.MICROSOFT,
+    EnableSocialProvider.LINKEDIN,
+  ], // Changing the order can affect the interface
+  walletProviders: [
+    EnableWalletProvider(EnableWallet.MetaMask,
+        label: EnableWalletLabel.RECOMMENDED),
+    EnableWalletProvider(EnableWallet.OKX),
+    EnableWalletProvider(EnableWallet.Trust,
+        label: EnableWalletLabel.POPULAR),
+    EnableWalletProvider(EnableWallet.Bitget),
+    EnableWalletProvider(EnableWallet.WalletConnect),
+  ], //Changing the order can affect the interface
+  additionalLayoutOptions: AdditionalLayoutOptions(
+    isCollapseWalletList: false,
+    isSplitEmailAndSocial: true,
+    isSplitEmailAndPhone: false,
+    isHideContinueButton: false,
+  ),
+);
+
+final account = await ParticleConnect.connectWithConnectKitConfig(config);
+```
+
+---
+
+### Connect Wallet V1 (Legacy)
 
 Acting as the primary method of returning a connection menu for a specific `WalletType`, the `connect` method on `ParticleConnect` will be the main mechanism for wallet connection within the Particle Connect SDK. `ParticleConnect.connect` takes one parameter, the `WalletType` to be requested for connection. Upon calling, the wallet specified in this field will throw an interface initiating the connection.
 
@@ -245,7 +315,7 @@ Acting as the primary method of returning a connection menu for a specific `Wall
 - `rainbow`.
 - `trust`.
 - `imToken`.
-- `bitKeep`.
+- `bitget`.
 - `walletConnect`.
 - `zerion`.
 - `math`.
@@ -373,12 +443,32 @@ final account = await ParticleConnect.importMnemonic(WalletType.evmPrivateKey, m
 // Exportation
 String privateKey = await ParticleConnect.exportPrivateKey(WalletType.evmPrivateKey, publicAddress);
 ```
+
+---
+
 ### (Optional) Custom WalletConnect Projcet ID
 ```dart
 //call before ParticleConnect.init
 ParticleConnect.setWalletConnectProjectId("Your WalletConnect Project ID, from https://cloud.walletconnect.com")
 ```
 
+---
+
+### Filter unsupported countries
+
+Set unsupported countries, used with phone login UI.
+
+| Field         | Type           | Description                                                                                                    |
+| ------------- | -------------- | -------------------------------------------------------------------------------------------------------------- |
+| `isoCodeList` | `List<String>` | [ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) code list, such as the US, the UK, etc. |
+
+
+
+
+```dart
+List<String> isoCodeList = ['US', 'CA', 'GB'];
+ParticleBase.setUnsupportCountries(isoCodeList);
+```
 ---
 
 ## Dive Deeper

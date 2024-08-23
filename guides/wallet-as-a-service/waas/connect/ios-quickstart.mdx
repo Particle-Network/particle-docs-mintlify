@@ -7,7 +7,7 @@ Getting started with Particle Connect on iOS only takes a few minutes.
 Below is a quick, step-by-step rundown on installing, configuring, and utilizing Particle Connect on iOS.
 
 <Note>
-  For complete documentation covering the implementation of Particle Auth on Android in more depth, head over to the [iOS SDK reference](/api-reference/connect/mobile-sdks/ios).
+  For complete documentation covering the implementation of Particle Connect on iOS in more depth, head over to the [iOS SDK reference](/api-reference/connect/mobile-sdks/ios).
 </Note>
 
 ---
@@ -160,17 +160,17 @@ Finally, before initializing and using the SDK, you'll need to configure your `I
 ```xml Info.plist
 <key>LSApplicationQueriesSchemes</key>
 <array>
-	<string>metamask</string>
-	<string>phantom</string>
-	<string>bitkeep</string>
-	<string>imtokenv2</string>
-	<string>rainbow</string>
-	<string>trust</string>
-	<string>zerion</string>
-    <string>mathwallet</string>
-    <string>oneinch</string>
-    <string>awallet</string>
-    <string>okex</string>
+<string>metamask</string>
+<string>phantom</string>
+<string>bitkeep</string>
+<string>imtokenv2</string>
+<string>rainbow</string>
+<string>trust</string>
+<string>zerion</string>
+<string>mathwallet</string>
+<string>oneinch</string>
+<string>awallet</string>
+<string>okex</string>
 </array>
 <key>NSPhotoLibraryUsageDescription</key>
 <string>We need access in order to open photos of barcodes</string>
@@ -204,7 +204,7 @@ var adapters: [ConnectAdapter] = [
     MetaMaskConnectAdapter(),
     PhantomConnectAdapter(),
     ImtokenConnectAdapter(),
-    BitkeepConnectAdapter(),
+    BitgetConnectAdapter(),
     RainbowConnectAdapter(),
     TrustConnectAdapter(),
     ZerionConnectAdapter(),
