@@ -68,9 +68,9 @@ defaultConfig {
   versionCode flutterVersionCode.toInteger()
   versionName flutterVersionName
 
-  manifestPlaceholders["PN_PROJECT_ID"] = "EXAMPLE"
-  manifestPlaceholders["PN_PROJECT_CLIENT_KEY"] = "EXAMPLE"
-  manifestPlaceholders["PN_APP_ID"] = "EXAMPLE"
+  manifestPlaceholders["PN_PROJECT_ID"] = "YOUR PROJECT ID"
+  manifestPlaceholders["PN_PROJECT_CLIENT_KEY"] = "YOUR CLIENT KEY"
+  manifestPlaceholders["PN_APP_ID"] = "YOUR APP ID"
 }
 ```
 
@@ -308,17 +308,17 @@ The specific parameters that can be used within `ParticleWallet.navigatorBuyCryp
 
 | Field           | Type                    | Description                                                                                   |
 | --------------- | ----------------------- | --------------------------------------------------------------------------------------------- |
-| `walletAddress` | `String?`               | (Optional) the wallet address to receive the cryptocurrency, default is current user address. |
-| `cryptoCoin`    | `String?`               | (Optional) cryptocurrency denomination. default is current chain native token symbol.         |
-| `fiatCoin`      | `String?`               | (Optional) fiat currency denomination. defualt is current fiat coin.                          |
-| `fiatAmt`       | `int?`                  | (Optional) the amount of fiat to be automatically filled in as the purchase volume.           |
-| `chainInfo`     | `ChainInfo?`            | (Optional) the chainInfo, default is current chainInfo.                                       |
-| `fixFiatCoin`   | `bool`                  | (Optional) lock selection of fiat coin in the buy menu, default is false.                     |
-| `fixFiatAmt`    | `bool`                  | (Optional) lock selection of fiat amount in the buy menu, default is false.                   |
-| `fixCryptoCoin` | `bool`                  | (Optional) lock selection of crypto coin in the buy menu, default is false.                   |
-| `theme`         | `Theme`                 | (Optional) the buy page theme, `dark` or `light`, default is curreny appearance.              |
-| `language`      | `Language?`             | (Optional) the buy page lanuage, default is current language.                                 |
-| `modalStyle`    | `IOSModalPresentStyle?` | (Optional) control iOS presentation style, default is `pageSheet`.                            |
+| `walletAddress` | `String?`               | (Optional) The wallet address to receive the cryptocurrency, default is current user address. |
+| `cryptoCoin`    | `String?`               | (Optional) Cryptocurrency denomination. Default is current chain native token symbol.         |
+| `fiatCoin`      | `String?`               | (Optional) Fiat currency denomination. Default is current fiat coin.                          |
+| `fiatAmt`       | `int?`                  | (Optional) The amount of fiat to be automatically filled in as the purchase volume.           |
+| `chainInfo`     | `ChainInfo?`            | (Optional) The chainInfo, default is current chainInfo.                                       |
+| `fixFiatCoin`   | `bool`                  | (Optional) Lock selection of fiat coin in the buy menu, default is false.                     |
+| `fixFiatAmt`    | `bool`                  | (Optional) Lock selection of fiat amount in the buy menu, default is false.                   |
+| `fixCryptoCoin` | `bool`                  | (Optional) Lock selection of crypto coin in the buy menu, default is false.                   |
+| `theme`         | `Theme`                 | (Optional) The buy page theme, `dark` or `light`, default is curreny appearance.              |
+| `language`      | `Language?`             | (Optional) The buy page lanuage, default is current language.                                 |
+| `modalStyle`    | `IOSModalPresentStyle?` | (Optional) Control iOS presentation style, default is `pageSheet`.                            |
 
 ```dart
 final config = BuyCryptoConfig(walletAddress:"Wallet Address", cryptoCoin:"USDT", fiatCoin:"USD", fiatAmt:1000,  chainInfo: ChainInfo.Ethereum);
@@ -333,9 +333,9 @@ Particle Wallet has a native swap page (retrieves multiple quotes from different
 
 | Field              | Type      | Description                                                                                                                                            |
 | ------------------ | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `fromTokenAddress` | `String?` | (Optional) the swap pair from token address                                                                                                            |
-| `toTokenAddress`   | `String?` | (Optional) the swap pair to token address                                                                                                              |
-| `amount`           | `String?` | (Optional) the swap from token amount, should pass the minimal unit string, for example 0.01 ETH, it's decimals is 18, should pass "10000000000000000" |
+| `fromTokenAddress` | `String?` | (Optional) The swap pair from token address.                                                                                                            |
+| `toTokenAddress`   | `String?` | (Optional) The swap pair to token address.                                                                                                              |
+| `amount`           | `String?` | (Optional) The swap from token amount, should pass the minimal unit string, for example 0.01 ETH, it's decimals is 18, should pass "10000000000000000". |
 
 E.g.:
 
