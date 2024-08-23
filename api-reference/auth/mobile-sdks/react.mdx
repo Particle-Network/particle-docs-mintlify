@@ -515,6 +515,21 @@ const result = await particleAuthCore.getBlindEnable();
 
 ---
 
+### Filter unsupported countries
+
+Set unsupported countries, used with phone login UI.
+
+| Field         | Type           | Description                                                                                                    |
+| ------------- | -------------- | -------------------------------------------------------------------------------------------------------------- |
+| `isoCodeList` | `string[]` | [ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) code list, such as the US, the UK, etc. |
+
+```typeScript
+const isoCodeList = ['US', 'CA', 'GB'];
+particleBase.setUnsupportCountries(isoCodeList);
+```
+
+---
+
 ## `EvmService` utilization examples
 
 Also present within `@particle-network/rn-base` is `EvmService`, an object for facilitating additional on-chain interaction, leveraging standard and enhanced RPC endpoints. `EvmService` can either be accessed through a complete (`*`) import (such as is shown above) by using `particleBase.EvmService.{method}` or individually importing it from `@particle-network/rn-base`.
