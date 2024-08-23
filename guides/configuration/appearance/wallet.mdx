@@ -29,7 +29,11 @@ supportLanguageSwitch?: boolean;
 light?: ModeStyle; // Profile 1, light mode
 dark?: ModeStyle; // Profile 2, dark mode
 
-// ModeStyle
+```
+
+The `ModeStyle` object provides a flexible way to customize the look and feel of the wallet modal and transaction popups. You can tailor the interface to match your brand by adjusting the following properties:
+
+```ts
 colorAccent?: string;
 colorPrimary?: string;
 colorOnPrimary?: string;
@@ -111,7 +115,7 @@ This specific custom style above translates into a highly customized version of 
 
 ## Customizing the Wallet Entry Point
 
-Additionaly, you can tailor the location in which the embedded wallet interface will open; in doing so, you can create a custom "Open Wallet" button or merely alter the position of the default Particle Network button.
+Additionaly, you can tailor the location in which the embedded wallet interface will open; in doing so, you can create a custom **Open Wallet** button or merely alter the position of the default Particle Network button.
 
 <Note>Find a full Next.js demo in the [Customizing Wallet Position repository](https://github.com/Particle-Network/custom-wallet-entry).</Note>
 
@@ -124,36 +128,38 @@ To do this, you'll need to alter the `wallet` property of `AuthCoreContextProvid
 You have the choice between opening the wallet in the bottom right (`EntryPosition.BR`), bottom left (`EntryPosition.BL`), top right (`EntryPosition.TR`), or top left (`EntryPosition.TL`).
 
 ```javascript
-<AuthCoreContextProvider
+import { AuthCoreContextProvider } from "@particle-network/authkit";
+import { EntryPosition } from "@particle-network/wallet";
+
+export const ParticleAuthkit = ({ children }: React.PropsWithChildren) => {
+  return (
+    <AuthCoreContextProvider
       options={{
-        projectId: process.env.REACT_APP_PROJECT_ID,
-        clientKey: process.env.REACT_APP_CLIENT_KEY,
-        appId: process.env.REACT_APP_APP_ID,
-        auth
-        erc4337: {
-          name: "SIMPLE",
-          version: "1.0.0"
-        },
-        themeType: 'dark',
+        projectId: process.env.NEXT_PUBLIC_PROJECT_ID as string,
+        clientKey: process.env.NEXT_PUBLIC_CLIENT_KEY as string,
+        appId: process.env.NEXT_PUBLIC_APP_ID as string,
+
         wallet: {
           visible: true,
-          themeType: 'dark',
-          entryPosition: EntryPosition.TL, // This property affects the location of the button; imported from @particle-network/wallet
-          customStyle: {
-            supportChains: [Ethereum]
-          }
-        }
+          entryPosition: EntryPosition.TL,
+          
+        },
       }}
-  >
-    <App />
-</AuthCoreContextProvider>
+    >
+      {children}
+    </AuthCoreContextProvider>
+  );
+};
+
 ```
 
 ### Option 2: Custom Wallet Entry Point with openWallet()
 
 The `openWallet()` method imported from `useAuthCore()` triggers the opening of the wallet modal, independent from the default button referenced above. 
 
-To open the wallet through this method, you'll keep `visible: true`, but create your own wallet entry, such as a custom button labeled **Open Wallet**, and use the `openWallet()` method to trigger the modal.
+You can create your own custom wallet entry, such as a button labeled **Open Wallet**. When clicked, this button will trigger the modal using the `openWallet()` method.
+
+<Note>Set the `visible` property to `false` in `AuthCoreContextProvider` if you want to hide the default **Particle Button**.</Note>
 
 ```jsx
 const { openWallet } = useAuthCore();
@@ -166,28 +172,6 @@ const toggleParticleWallet = async () => {
     });
 };
 ```
-
-To remove the default Particle button, which will still be visible by default even if using `openWallet`, add the following CSS to your `global.css`:
-
-```css
-.particle-pwe-btn {
-    display: none;
-}
-```
-
-Use the `particle-pwe-iframe-content` class to position the wallet modal on the screen upon calling `openWallet`:
-
-```css
-.particle-pwe-iframe-content {
-    top: 50% !important;
-    left: 50% !important;
-    transform: translate(-50%, -50%) !important;
-}
-```
-
-This method allows limited customization of the modal's display location by modifying the CSS class in your `global.css`.
-
-
 
 ### Option 3: Custom Opening with buildWalletUrl()
 
