@@ -485,8 +485,9 @@ connectAdapter.signTypedData(address, data, callback)
 ```
 ### (Optional) Custom WalletConnect Projcet ID
 ```kotlin Kotlin
-ParticleNetwork.setWalletConnectProjectId("Your WalletConnect Project ID from https://cloud.walletconnect.com")    
-```    
+//call before ParticleConnect.init
+ParticleNetwork.setWalletConnectProjectId("Your WalletConnect Project ID, from https://cloud.walletconnect.com")
+```
 ## Custom WalletConnect Adapter
 
 There may be cases where the existing selection of adapters doesn't include a wallet you'd like to be featured within Particle Connect. In this situation, creating a custom adapter (using WalletConnect) is quite simple. Doing so will require a structure** similar to the example below**, in which a custom Coin98 adapter is made.

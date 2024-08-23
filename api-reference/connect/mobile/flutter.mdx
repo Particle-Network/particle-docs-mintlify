@@ -207,7 +207,7 @@ Now that you've spun up a project on the [Particle dashboard]() and configured y
 | Field          | Type            | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
 | -------------- | --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `chainInfo`    | `ChainInfo`     | The primary chain to be used within your application. This should be dictated by an overall blockchain, followed by a specific network (testnet). Within this example, it's `.Ethereum`(alternatively it could be `.EthereumSepolia`, and so on.)                                                                                                                                                                                                                                                                                                                              |
-| `dAppData`     | `DAppMetadata`  | Metadata outlining the description of your application, This should be an instance of `DAppMetadata` with the following parameters: `walletConnectProjectId`, the wallet connect project id retrieved from the [WalletConnect dashboard](https://cloud.walletconnect.com), `name`, the name of your project. `icon`, a URL linking to the icon of your project; this should be 512x512, ideally. `url`, the URL of your project's website. `description`, the description of your project, `redirect`, optional, redirect universal link of you project, `verifyUrl`, optional |
+| `dAppData`     | `DAppMetadata`  | Metadata outlining the description of your application, This should be an instance of `DAppMetadata` with the following parameters: `name`, the name of your project. `icon`, a URL linking to the icon of your project; this should be 512x512, ideally. `url`, the URL of your project's website. `description`, the description of your project, `redirect`, optional, redirect universal link of you project, `verifyUrl`, optional |
 | `env`          | `Env`           | The specific environmennt to be used. This can be either `.dev`, `.staging`, `.production`, this should be set to `.production` when release                                                                                                                                                                                                                                                                                                                                                                                                                                   |
 | `rpcUrlConfig` | `RpcUrlConfig?` | Customize rpc url                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
 
@@ -215,7 +215,6 @@ Now that you've spun up a project on the [Particle dashboard]() and configured y
 ParticleInfo.set(projectId, clientKey);
 
 final dappInfo = DappMetaData(
-    "WalletConnect project id",
     "Particle Connect",
     "https://connect.particle.network/icons/512.png",
     "https://connect.particle.network",
@@ -374,9 +373,15 @@ final account = await ParticleConnect.importMnemonic(WalletType.evmPrivateKey, m
 // Exportation
 String privateKey = await ParticleConnect.exportPrivateKey(WalletType.evmPrivateKey, publicAddress);
 ```
+### (Optional) Custom WalletConnect Projcet ID
+```dart
+//call before ParticleConnect.init
+ParticleConnect.setWalletConnectProjectId("Your WalletConnect Project ID, from https://cloud.walletconnect.com")
+```
 
 ---
 
 ## Dive Deeper
 
 `particle_connect` includes `particle_auth_core`. If you log in with a Particle account, you can access additional function such as `getUserInfo`, `openAccountAndSecurity`, `hasMasterPassword` and `hasPaymentPassword` and `changeMasterPassword`, you can reference the docs from [Auth SDK reference](/api-reference/auth/mobile-sdks/flutter)
+

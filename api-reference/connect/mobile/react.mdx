@@ -219,7 +219,7 @@ Additionally, extra chains can be configured for WalletConnect through `setWalle
 const chainInfo: ChainInfo = Ethereum;
     const env = Env.Dev;
     const metadata = {
-      walletConnectProjectId: 'your wallet connect project id, get it from wallet connect',
+      walletConnectProjectId: 'Your WalletConnect Project ID',
       url: 'https://connect.particle.network',
       icon: 'https://connect.particle.network/icons/512.png',
       name: 'Particle Connect',
@@ -378,6 +378,12 @@ Within an active session, you can retrieve the accounts (addresses) that belong 
 
 ```typeScript
 const accounts = await particleConnect.getAccounts(walletType);
+```
+
+### (Optional) Custom WalletConnect Projcet ID
+```typeScript
+//call before particleConnect.init
+particleConnect.setWalletConnectProjectId("Your WalletConnect Project ID")
 ```
 
 ---
