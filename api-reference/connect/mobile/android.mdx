@@ -299,12 +299,12 @@ For `EVMConnectAdapter` and `SolanaConnectAdapter`, this will generate a fresh a
 
 | **Field**         | **Type**                            | **Description**                                                                                                                                                                                                                          |
 | ----------------- | ----------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| loginType         | LoginType                           | the social login method preferred. This supports either EMAIL, PHONE, TWITTER, GOOGLE, FACEBOOK, APPLE, DISCORD, GITHUB, TWITCH, MICROSOFT, LINKEDIN, JWT.                                                                               |
-| account           | String                              | Default is empty, you can use the `account` parameter to pass in an expected email, phone number, or JWT. This is optional for the former two, but required for `.jwt`. The phone number must be in E.164 format.                        |
-| supportLoginTypes | List`<SupportLoginType>`            | The default setting includes support for all SupportLoginTypes: EMAIL, PHONE, FACEBOOK, GOOGLE, APPLE, TWITTER, DISCORD, GITHUB, TWITCH, MICROSOFT, and LINKEDIN. You can also provide a specific subset of SupportLoginTypes if needed. |
-| prompt            | LoginPrompt?                        | the prompt to be displayed following social login, such as a request to set a master password, payment password, etc. This is `null` by default.                                                                                         |
-| loginPageConfig   | LoginPageConfig?                    | If you use a Google to log in, you can control the Google account login prompt with this parameter: None、Consent or SelectAccount.                                                                                                      |
-| loginCallback     | AuthCoreServiceCallback`<UserInfo>` | success : wiil return UserInfo. <br /><br />failure : will return a ErrorInfo                                                                                                                                                            |
+| loginType         | LoginType                           | The social login method in which users will be onboarded with by default. This supports either EMAIL, PHONE, TWITTER, GOOGLE, FACEBOOK, APPLE, DISCORD, GITHUB, TWITCH, MICROSOFT, LINKEDIN, JWT.                                                                               |
+| account           | String                              | Default is empty, you can use the `account` parameter to pass in an expected email, phone number, or JWT. This is optional for the former two, but required for `.jwt`. If passing a phone number, it must be in E.164 format.                        |
+| supportLoginTypes | List`<SupportLoginType>`            | Limits the login methods supported by the modal. The default setting includes support for all login types: EMAIL, PHONE, FACEBOOK, GOOGLE, APPLE, TWITTER, DISCORD, GITHUB, TWITCH, MICROSOFT, and LINKEDIN. You can also provide a specific subset of SupportLoginTypes if needed. |
+| prompt            | LoginPrompt?                        | The prompt to be displayed following social login, such as a request to set a master password, payment password, etc. This is `null` by default.                                                                                         |
+| loginPageConfig   | LoginPageConfig?                    | If you use a Google to log in, you can control the Google account login prompt with this parameter: None, Consent or SelectAccount.                                                                                                      |
+| loginCallback     | AuthCoreServiceCallback`<UserInfo>` | Callback handling the success or failure of the login process.                                                                    |
 
 ```kotlin Kotlin
 
@@ -333,26 +333,26 @@ data class ConnectConfigSocialLogin(
     @SerializedName("prompt") val prompt: LoginPrompt? = null,
 ) : ConnectConfig
 
-//jwt connect
+// Connect using JWT
 val adapter = ParticleConnect.getAdapters().first { it is AuthCoreAdapter }
-val connectConfigJWT = ConnectConfigJWT(jwt = "your jwt")
+val connectConfigJWT = ConnectConfigJWT(jwt = "Your JWT")
 adapter.connect(connectConfigJWT, object : ConnectCallback {
   override fun onConnected(account: Account) {
       val publicAddress =  account.publicAddress
   }
   override fun onError(error: ConnectError) {
-     //handle error
+     // Handle error
   }
 })
-//social connect
+// Connect using socials
 val connectConfigSocialLogin =  ConnectConfigSocialLogin(loginType = SocialLoginType.GOOGLE, prompt = LoginPrompt.SelectAccount)
 adapter.connect(connectConfigSocialLogin,callback)
 
-//email connect
+// Connect using Email
 val connectConfigEmail = ConnectConfigEmail()
 adapter.connect(connectConfigEmail, callback)
 
-//phone connect
+// Connect using Phone
 val connectConfigPhone =ConnectConfigPhone()
 adapter.connect(connectConfigPhone, callback)
 ```
@@ -409,8 +409,8 @@ To initiate a transaction for signature and ultimately settlement on-chain, you'
 
 | Field           | Type                | Description                                                                                                                                                     |
 | :-------------- | :------------------ | :-------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `publicAddress` | `String`            | the connected public address, if `adapter` is `AuthCoreAdapter`, you can pass an empty string, for other walletTypes, you need pass a connected public address. |
-| `transaction`   | `String`            | evm transaction is expressed as a hexadecimal string, solana transaction is expressed as a base58 string.                                                       |
+| `publicAddress` | `String`            | The connected public address, if `adapter` is `AuthCoreAdapter`, you can pass an empty string, for other walletTypes, you need pass a connected public address. |
+| `transaction`   | `String`            | EVM transaction, expressed as a hexadecimal string, or a Solana transaction, expressed as a base58 string.                                                       |
 | callback        | TransactionCallback | Callback function, callback different methods according to success or failure                                                                                   |
 
 E.g.:
@@ -420,11 +420,11 @@ connectAdapter.signAndSendTransaction(address, transaction, callback)
  adapter.signAndSendTransaction(publicAddress = "", transaction = "tx",
             object : TransactionCallback {
                 override fun onTransaction(transactionId: String?) {
-                  	//success
+                  	// Handle success
                 }
 
                 override fun onError(error: ConnectError) {
-                  //handle error
+                  // Handle error
                 }
             })
 ```

@@ -103,13 +103,13 @@ ParticleWallet.init(
     context,
     supportChains,
 ).apply {
-  setShowTestNetworkSetting(true) //default is false
-  setShowManageWalletSetting(true) // default is true
-  hideMainBackIcon() // hide the back icon in the main page
-  setShowAppearanceSetting(true) //default is true
-  setShowLanguageSetting(true) //default is true
-  setSupportDappBrowser(true) //default is true
-  setWalletIcon("https://xxx.xxx/xxx.png") //set the wallet icon
+  setShowTestNetworkSetting(true) // Default is false
+  setShowManageWalletSetting(true) // Default is true
+  hideMainBackIcon() // Hide the back icon in the main page
+  setShowAppearanceSetting(true) // Default is true
+  setShowLanguageSetting(true) // Default is true
+  setSupportDappBrowser(true) // Default is true
+  setWalletIcon("https://xxx.xxx/xxx.png") // Set the wallet icon
 }
 ```
 
@@ -123,11 +123,11 @@ Additionally, if you'd like to use a custom wallet within the Particle Wallet in
 
 | Field       | Type   | Description                                                                                         |
 | :---------- | :----- | :-------------------------------------------------------------------------------------------------- |
-| address     | String | the user's public address belonging to the current active session (connected via Particle Connect). |
-| chainName   | String | the name of the chain to be used within Particle Wallet.                                            |
-| chainId     | Long   | the ID of the chain to be used within Particle Wallet                                               |
-| walletName  | String | he name of your wallet/project to be shown in UI.                                                   |
-| adapterName | String | the name of the adapter you're using for this wallet (such as `MobileWCWalletName.AuthCore.name`).  |
+| address     | String | The user's public address belonging to the current active session (connected via Particle Connect). |
+| chainName   | String | The name of the chain to be used within Particle Wallet.                                            |
+| chainId     | Long   | The ID of the chain to be used within Particle Wallet                                               |
+| walletName  | String | The name of your wallet/project to be shown in UI.                                                   |
+| adapterName | String | The name of the wallet adapter you're using (such as `MobileWCWalletName.AuthCore.name`).  |
 
 Saving this as an object, you can pass it into `ParticleWallet.setWallet`, changing the active interface/wallet according to the parameters outlined within `WalletInfo.createWallet`. E.g.:
 
