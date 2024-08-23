@@ -9,9 +9,7 @@ In addition to complete customization of Particle Auth (specifically the authent
 
 ## Programmatic Customization
 
-Particle Wallet can only currently be customized through strictly set parameters, either within the path of [https://wallet.particle.network](https://wallet.particle.network), or within the configuration of Particle Auth or Particle Auth Core (which would translate to the in-UI modal rather than a redirect such as is the case with https://wallet.particle.network).
-
-Customizing Particle Wallet through configuration within Particle Auth can be done within the initialization of `AuthCoreContextProvider` from `@particle-network/auth-core-modal`. Within this component, you'll need to head into the `customStyle` object within the `wallet` parameter on `options`.
+Particle Wallet can only currently be customized through strictly set parameters, either within the path of [https://wallet.particle.network](https://wallet.particle.network), or within the configuration of Particle Authkit or Particle Auth Core (which would translate to the in-UI modal rather than a redirect such as is the case with https://wallet.particle.network).
 
 `customStyle` takes the following parameters, all of which impact the appearance of the wallet modal:
 
@@ -47,6 +45,48 @@ borderGlowColors?: string[];
 modalMaskBackgroundColor?: string;
 cardBorderRadius?: number;
 ```
+
+### Particle Connect
+
+To customize the wallet modal in Particle Connect, you need to include the `customStyle` object within the `plugins` array in the `ConnectKitProvider` configuration.
+
+```tsx ConnectKit.tsx
+plugins: [
+    wallet({
+      entryPosition: EntryPosition.TR,
+      visible: true,
+      themeType: "dark",
+      customStyle: {
+        themeType: {
+          dark: {
+            colorAccent: "#7DD5F9",
+            colorPrimary: "#21213a",
+            colorOnPrimary: "#171728",
+            primaryButtonBackgroundColors: ["#5ED7FF", "#E89DE7"],
+            primaryIconButtonBackgroundColors: ["#5ED7FF", "#E89DE7"],
+            primaryIconTextColor: "#FFFFFF",
+            primaryButtonTextColor: "#0A1161",
+            cancelButtonBackgroundColor: "#666666",
+            backgroundColors: [
+              "#14152e",
+              [
+                ["#e6b1f766", "#e6b1f700"],
+                ["#7dd5f94d", "#7dd5f900"],
+              ],
+            ],
+            messageColors: ["#7DD5F9", "#ed5d51"],
+            borderGlowColors: ["#7bd5f940", "#323233"],
+            modalMaskBackgroundColor: "#141430b3",
+          },
+        },
+      },
+    })
+  ],
+```
+
+### Particle Authkit
+
+Customizing Particle Wallet through configuration within Particle Autkit can be done within the initialization of `AuthCoreContextProvider` from `@particle-network/authkit`. Within this component, you'll need to head into the `customStyle` object within the `wallet` parameter on `options`.
 
 With this in mind, take a look at the below example for further insight into what a complete utilization of most of the above parameters looks like (example of a configuration for `customStyle`):
 
