@@ -149,11 +149,13 @@ installer.pods_project.targets.each do |target|
 post_install do |installer|
   installer.pods_project.targets.each do |target|
       if target.name == 'ParticleNetworkBase' or
+         target.name == 'ParticleNetworkChains' or
          target.name == 'ParticleWalletAPI' or
          target.name == 'ParticleWalletGUI' or
          target.name == 'ParticleWalletConnect' or
          target.name == 'ParticleAA' or
          target.name == 'ParticleConnect' or
+         target.name == 'ParticleConnectKit' or
          target.name == 'ConnectWalletConnectAdapter' or
          target.name == 'ConnectSolanaAdapter' or
          target.name == 'ConnectEVMAdapter' or
@@ -232,25 +234,38 @@ particleAuthCore.init();
 
 Onboarding a user with Particle's Wallet-as-a-Service (Particle Auth) happens through social login. This mechanism is controlled by `particleAuthCore.connect`. Upon calling this method, depending on specific parameters, a popup will be displayed, prompting a user to sign in with a social account, thus leading to the generation and assignment of a wallet. `particleAuthCore.connect` takes the following parameters:
 
-| Field             | Type                 | Description                                                                                                                                                                                                                                                                      |
-| ----------------- | -------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `type`            | `LoginType`          | The specific social login to be used. This can be either `.email`, `.phone`, `.google`, `.apple`, `.jwt`, `.facebook`, `.twitter`, `.discord`, `.github`, `.twitch`, `.microsoft` or `linkedin`.                                                                                 |
-| `account`         | `string?`            | (Optional) When `type` is set to either `.email`, `.phone`, or `.jwt`, you can use the `account` parameter to pass in an expected email, phone number, or JWT. This is optional for the former two, but required for `.jwt`. If passing a phone number, it must be in E.164 format.           |
-| `supportAuthType` | `SupportAuthType[]`  | The methods of authentication visible on the authentication popup UI. By default, this will be exclusive to the chosen social login method, although by passing in additional types, you can expand the UI to include the ability to login with those as an alternative to type. |
-| `prompt`          | `SocialLoginPrompt?` | (Optional) Changes what the OAuth provider prompts a user to do; either `.none`, `.consent`, or `.select_account`. Only Google, Discord and Microsoft support it.                                                                                                                                       |
-| `loginPageConfig` | `LoginPageConfig?`   | (Optional) to customize the UI page, contains project name, icon and description.                                                                                                                                                                                                |
+| Field             | Type                 | Description                                                                                                                                                                                                                                                                         |
+| ----------------- | -------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `type`            | `LoginType`          | The specific social login to be used. This can be either `.email`, `.phone`, `.google`, `.apple`, `.jwt`, `.facebook`, `.twitter`, `.discord`, `.github`, `.twitch`, `.microsoft` or `linkedin`.                                                                                    |
+| `account`         | `string?`            | (Optional) When `type` is set to either `.email`, `.phone`, or `.jwt`, you can use the `account` parameter to pass in an expected email, phone number, or JWT. This is optional for the former two, but required for `.jwt`. If passing a phone number, it must be in E.164 format. |
+| `supportAuthType` | `SupportAuthType[]`  | The methods of authentication visible on the authentication popup UI. By default, this will be exclusive to the chosen social login method, although by passing in additional types, you can expand the UI to include the ability to login with those as an alternative to type.    |
+| `prompt`          | `SocialLoginPrompt?` | (Optional) Changes what the OAuth provider prompts a user to do; either `.none`, `.consent`, or `.select_account`. Only Google, Discord and Microsoft support it.                                                                                                                   |
+| `loginPageConfig` | `LoginPageConfig?`   | (Optional) to customize the UI page, contains project name, icon and description.                                                                                                                                                                                                   |
 
 ```typeScript
 import type { LoginType, SupportAuthType } from '@particle-network/rn-base'
 import * as particleAuthCore from '@particle-network/rn-auth-core';
 
-const supportAuthType = [SupportAuthType.All];
+// Google or other social login
+const userInfo = await particleAuthCore.connect(LoginType.Google, null, [], SocialLoginPrompt.SelectAccount);
 
-const userInfo = await particleAuthCore.connect(LoginType.Email, null, supportAuthType, SocialLoginPrompt.SelectAccount, {
-      projectName: "React Native Example",
-      description: "Welcome to login",
-      imagePath: "https://connect.particle.network/icons/512.png"
-    });
+// Email or phone login, through a presentation page.
+const userInfo = await particleAuthCore.connect(LoginType.Email, null, supportAuthTypes, SocialLoginPrompt.SelectAccount, {
+        projectName: "React Native Example",
+        description: "Welcome to login",
+        imagePath: base64Img
+      });
+// JWT login
+const userInfo = await particleAuthCore.connect(LoginType.JWT, jwt);
+
+// Here's how to log in to a custom page
+// Send verification code to email or phone number, the phone number must be in E.164 format.
+const isSuccess = await particleAuthCore.sendEmailCode("user@example.com");
+const isSuccess = await particleAuthCore.sendPhoneCode("11234567890");
+
+// login with email or phone, the phone number must be in E.164 format.
+const userInfo = await ParticleAuthCore.connectWithCode(null, "user@example.com", code);
+const userInfo = await ParticleAuthCore.connectWithCode("+11234567890", null, this.state.code);
 ```
 
 ---
@@ -408,10 +423,10 @@ Another important component of integrating the Particle Auth SDK (Wallet-as-a-Se
 
 Within the SDK, you can configure the frequency (or requirement) a user is asked to configure security settings. This is controlled with `particleBase.setSecurityAccountConfig` and passing in a `SecurityAccountConfig` object with two parameters:
 
-| Field                                  | Type  | Description                                         |
-| -------------------------------------- | ----- | --------------------------------------------------- |
+| Field                                  | Type  | Description                                                     |
+| -------------------------------------- | ----- | --------------------------------------------------------------- |
 | `promptSettingWhenSign`                | `int` | The payment (signature) password config prompts (default is 1). |
-| `promptMasterPasswordSettingWhenLogin` | `int` | The master password prompts (default is 0).         |
+| `promptMasterPasswordSettingWhenLogin` | `int` | The master password prompts (default is 0).                     |
 
 - `0` means a prompt is never shown requesting this setting.
 - `1` means a prompt is shown only upon the first startup.
@@ -645,7 +660,7 @@ To retrieve the price of specified tokens, you can call `EvmService.getPrice`.
 | Field            | Type       | Description                                                       |
 | ---------------- | ---------- | ----------------------------------------------------------------- |
 | `tokenAddresses` | `string[]` | The tokens's addresses, for native token, you can pass `"native"` |
-| `currencies`     | `string[]` | The currency in which the price is denominated, such as `"usd"`                                  |
+| `currencies`     | `string[]` | The currency in which the price is denominated, such as `"usd"`   |
 
 ```typeScript
 const result = await EvmService.getPrice(tokenAddresses, currencies);
@@ -676,9 +691,9 @@ In addition to `particleAuthCore` for authentication and interaction with Partic
 
 `SolanaService` also extends to Data API methods such as `getTokensAndNFTs`, which returns a highly detailed JSON list of SPL tokens and NFTs belonging to a specified address. This is accessible through `SolanaService.getTokensAndNFTs`, passing in the public address to retrieve the tokens and NFTs of.
 
-| Field              | Type     | Description                 |
-| ------------------ | -------- | --------------------------- |
-| `address`          | `String` | The user's public address.  |
+| Field              | Type     | Description                                |
+| ------------------ | -------- | ------------------------------------------ |
+| `address`          | `String` | The user's public address.                 |
 | `parseMetadataUri` | `bool`   | If you'd like to parse the NFT's metadata. |
 
 ```typeScript
@@ -733,7 +748,7 @@ To retrieve the price of specified tokens, you can call `SolanaService.getPrice`
 | Field            | Type       | Description                                                       |
 | ---------------- | ---------- | ----------------------------------------------------------------- |
 | `tokenAddresses` | `string[]` | The tokens's addresses, for native token, you can pass `"native"` |
-| `currencies`     | `string[]` | The currency in which the price is denominated, such as `"usd"`                                        |
+| `currencies`     | `string[]` | The currency in which the price is denominated, such as `"usd"`   |
 
 ```typeScript
 const result = await SolanaService.getPrice(tokenAddresses, currencies);
