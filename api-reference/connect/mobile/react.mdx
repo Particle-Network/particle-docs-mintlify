@@ -86,9 +86,9 @@ android {
   ...
   defaultConfig {
       ......
-      manifestPlaceholders["PN_PROJECT_ID"] = "your project id"
-      manifestPlaceholders["PN_PROJECT_CLIENT_KEY"] = "your project client key"
-      manifestPlaceholders["PN_APP_ID"] = "your app id"
+      manifestPlaceholders["PN_PROJECT_ID"] = "Your project ID"
+      manifestPlaceholders["PN_PROJECT_CLIENT_KEY"] = "Your client key"
+      manifestPlaceholders["PN_APP_ID"] = "Your app ID"
   }
 
   dataBinding {
@@ -144,7 +144,7 @@ Additionally, within your application's `application` method (as shown below), y
   if ([ParticleConnectSchemeManager handleUrl:url] == YES) {
     return YES;
   } else {
-    // other methods
+    // Other methods
   }
   return YES;
 }
@@ -152,24 +152,28 @@ Additionally, within your application's `application` method (as shown below), y
 
 Wrapping up, you'll need to configure your application's scheme URL. To configure this, select your application from "TARGETS" under the "Info" section, then click "+" to add a URL type.
 
-For example, if your `appId` is `63bfa427-cf5f-4742-9ff1-e8f5a1b9828f`, then the scheme URL would be `pn63bfa427-cf5f-4742-9ff1-e8f5a1b9828f` --simply adding `pn` to the beginning of the `appId`.
+This should be set to "pn" + your `projectId` (retrieved and configured prior), resulting in a scheme URL that looks something like the following:
+
+```text
+pn63bfa427-cf5f-4742-9ff1-e8f5a1b9828f
+```
 
 Additionally, head over to your `Info.plist` file and include the following snippet.
 
 ```xml Info.plist
 <key>LSApplicationQueriesSchemes</key>
 <array>
-<string>metamask</string>
-<string>phantom</string>
-<string>bitkeep</string>
-<string>imtokenv2</string>
-<string>rainbow</string>
-<string>trust</string>
-<string>zerion</string>
-<string>mathwallet</string>
-<string>oneinch</string>
-<string>awallet</string>
-<string>okex</string>
+	<string>metamask</string>
+	<string>phantom</string>
+	<string>bitkeep</string>
+	<string>imtokenv2</string>
+	<string>rainbow</string>
+	<string>trust</string>
+	<string>zerion</string>
+  <string>mathwallet</string>
+  <string>oneinch</string>
+  <string>awallet</string>
+  <string>okex</string>
 </array>
 <key>NSPhotoLibraryUsageDescription</key>
 <string>We need access in order to open photos of barcodes</string>
@@ -180,21 +184,6 @@ Additionally, head over to your `Info.plist` file and include the following snip
 ```
 
 Finally, you'll need to edit your Podfile to ensure `particle_connect` is properly imported. Head over to the [linked guide](https://github.com/Particle-Network/particle-react-native/blob/master/particle-connect/example/ios/Podfile) to complete this if you have not already.
-
-<Note>
-<p>Another important note before continuing.</p>
-<p>Our SDK is a static library (XCFramework). When using the Particle Auth React Native SDK, you'll need to specify that you're using a static framework through the following:</p>
-<p>
-
-```ruby
-post_install do |installer|
-  installer.pods_project.targets.each do |target|
-    target.build_configurations.each do |config|
-      config.build_settings['BUILD_LIBRARY_FOR_DISTRIBUTION'] = 'YES'
-    end
-  end
-end
-```
 
 ---
 
@@ -246,48 +235,7 @@ particleConnect.setWalletConnectV2SupportChainInfos(chainInfos);
 
 ---
 
-### Connect Wallet V2
-
-`particleConnect.connectWithConnectKitConfig` is one click login function, which can present a customizable login UI. The parameter config can be derived from `ConnectKitConfig`.
-
-`ConnectKitConfig.init` have these parameters
-
-| Field                     | Type                       | Description                                                                                                              |
-| ------------------------- | -------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
-| `connectOptions`          | `ConnectOption[]`          | Connect options, support `Email`, `Phone`, `Social` and `Wallet`, the sort order is used for connect kit login UI.       |
-| `socialProviders`         | `EnableSocialProvider[]?`  | Social providers, support `Google`, `Apple` and other social options, the sort order is used for connect kit login UI.   |
-| `walletProviders`         | `EnableWalletProvider[]?`  | Wallet providers, support `MetaMask`, `Trust` and other wallet options, the sort order is used for connect kit login UI. |
-| `additionalLayoutOptions` | `AdditionalLayoutOptions?` | Layout options                                                                                                           |
-| `logo`                    | `string?`                  | logo url or base64 image                                                                                                 |
-
-```typeScript
-const config = {
-      //  You can control the array elements and adjust the UI order
-      connectOptions: [ConnectOption.Email, ConnectOption.Phone, ConnectOption.Social, ConnectOption.Wallet],
-      //  You can control the array elements and adjust the UI order
-      socialProviders: [EnableSocialProvider.Google, EnableSocialProvider.Apple, EnableSocialProvider.Twitter, EnableSocialProvider.Discord, EnableSocialProvider.Github],
-      //  You can control the array elements and adjust the UI order
-      walletProviders: [{ enableWallet: EnableWallet.MetaMask, label: EnableWalletLabel.Recommended },
-      { enableWallet: EnableWallet.OKX, label: EnableWalletLabel.Popular },
-      { enableWallet: EnableWallet.Trust, label: EnableWalletLabel.None },
-      { enableWallet: EnableWallet.Bitget, label: EnableWalletLabel.None }
-      ],
-
-      additionalLayoutOptions: {
-        isCollapseWalletList: false,
-        isSplitEmailAndSocial: true,
-        isSplitEmailAndPhone: false,
-        isHideContinueButton: false,
-      },
-      logo: base64Icon // base64 string or url
-    };
-
-const accountInfo = await particleConnect.connectWithConnectKitConfig(config);
-```
-
----
-
-### Connect Wallet V1 (Legacy)
+### Connect
 
 To directly connect a user with a given wallet type (throwing a connection menu within the current instance), you'll need to use `connect`. Within `connect`, you'll need to pass in a given `walletType`, which should be an item selected from `WalletType`, imported from `@particle-network/rn-connect`. `WalletType` can be set to any of the following:
 
@@ -298,7 +246,7 @@ To directly connect a user with a given wallet type (throwing a connection menu 
 - `Rainbow`.
 - `Trust`.
 - `ImToken`.
-- `Bitget`.
+- `BitKeep`.
 - `WalletConnect`.
 - `Phantom`, intended for Solana.
 - `Zerion`.
@@ -315,11 +263,11 @@ If you're using `AuthCore`, you'll also need to pass in a `ParticleConnectConfig
 | Field               | Type                 | Description                                                                                                                                                                                                                                                                      |
 | ------------------- | -------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `loginType`         | `LoginType`          | The specific social login to be used. This can be either `.email`, `.phone`, `.google`, `.apple`, `.jwt`, `.facebook`, `.twitter`, `.discord`, `.github`, `.twitch`, `.microsoft` or `linkedin`.                                                                                 |
-| `account`           | `string?`            | (Optional) when `type` is set to either `.email`, `.phone`, or `.jwt`, you can use the `account` parameter to pass in an expected email, phone number, or JWT. This is optional for the former two, but required for `.jwt`. The phone number must be in E.164 format.           |
+| `account`           | `string?`            | (Optional) When `type` is set to either `.email`, `.phone`, or `.jwt`, you can use the `account` parameter to pass in an expected email, phone number, or JWT. This is optional for the former two, but required for `.jwt`. When passing a phone number, it must be in E.164 format.           |
 | `code`              | `string?`            | (Optional) when `type` is set to either `.email` pr `.phone`, you can use the code parameter to pass the verification code.                                                                                                                                                      |
 | `supportAuthType`   | `SupportAuthType[]`  | The methods of authentication visible on the authentication popup UI. By default, this will be exclusive to the chosen social login method, although by passing in additional types, you can expand the UI to include the ability to login with those as an alternative to type. |
 | `socialLoginPrompt` | `SocialLoginPrompt?` | (Optional) either `.None`, `.Consent`, or `.SelectAccount`                                                                                                                                                                                                                       |
-| `loginPageConfig`   | `LoginPageConfig?`   | (Optional) to customize the UI page, contains project name, icon and description.                                                                                                                                                                                                |
+| `loginPageConfig`   | `LoginPageConfig?`   | (Optional) Changes what the OAuth provider prompts a user to do; either `.none`, `.consent`, or `.select_account`. Only Google, Discord and Microsoft support it.                                                                                                                                                                                               |
 
 E.g:
 
@@ -434,28 +382,12 @@ const accounts = await particleConnect.getAccounts(walletType);
 
 ### (Optional) Custom WalletConnect Projcet ID
 ```typeScript
-//call before particleConnect.init
+// Call before particleConnect.init
 particleConnect.setWalletConnectProjectId("Your WalletConnect Project ID")
-```
-
----
-
-### Filter unsupported countries
-
-Set unsupported countries, used with phone login UI.
-
-| Field         | Type           | Description                                                                                                    |
-| ------------- | -------------- | -------------------------------------------------------------------------------------------------------------- |
-| `isoCodeList` | `string[]` | [ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) code list, such as the US, the UK, etc. |
-
-
-```typeScript
-const isoCodeList = ['US', 'CA', 'GB'];
-particleBase.setUnsupportCountries(isoCodeList);
 ```
 
 ---
 
 ## Dive Deeper
 
-`@particle-network/rn-connect` includes `@partcile-connect/rn-auth-core`. If you log in with a Particle account, you can access additional function such as `getUserInfo`, `openAccountAndSecurity`, `hasMasterPassword` and `hasPaymentPassword` and `changeMasterPassword`, you can reference the docs from [Connect SDK reference](/api-reference/connect/mobile-sdks/react)
+`@particle-network/rn-connect` includes `@partcile-connect/rn-auth-core`. If you log in with a Particle account, you can access additional function such as `getUserInfo`, `openAccountAndSecurity`, `hasMasterPassword` and `hasPaymentPassword` and `changeMasterPassword`, you can reference the docs from [Auth SDK reference](/api-reference/auth/mobile-sdks/react).

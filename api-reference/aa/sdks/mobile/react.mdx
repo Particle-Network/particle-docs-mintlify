@@ -159,20 +159,20 @@ const feeQuote = wholeFeeQuote.verifyingPaymasterNative['feeQuote'];
 const fee = BigNumber(feeQuote['fee']);
 const balance = BigNumber(feeQuote['balance']);
 
-// check if enough native token is available for gas fees
+// Check if user can afford te transaction
 if (balance.isLessThan(fee)) {
   console.log("Native balance too low to pay for gas fees");
   return;
 }
 
-// check if gasless paymaster is available
+// Check if the transaction can be sponsored
 const verifyingPaymasterGasless = wholeFeeQuote.verifyingPaymasterGasless;
 if (verifyingPaymasterGasless == undefined) {
   console.log("Gasless mode is not available");
   return;
 }
 
-// check if can a token can be used to pay for fees
+// Check if the transaction can be paid for using ERC20 tokens
  const feeQuotes = wholeFeeQuote.tokenPaymaster['feeQuotes'] as any[];
 
 const validFeeQuotes = feeQuotes.filter(item => {
@@ -191,7 +191,7 @@ if (validFeeQuotes.length == 0) {
   return;
 }
 
-// select a fee quote, for example the first.
+// Select a fee quote.
 const feeQuote = validFeeQuotes[0];
 
 const tokenPaymasterAddress =

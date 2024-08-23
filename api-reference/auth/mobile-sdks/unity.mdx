@@ -280,9 +280,9 @@ This is achieved and configured via `ParticleAuthCore.Instance.Connect`. Once th
 | Field                | Type                 | Description                                                                                                                                                                                                                                                                      |
 | -------------------- | -------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `loginType`          | `LoginType`          | The specific social login to be used. This can be either `.EMAIL`, `.PHONE`, `.GOOGLE`, `.FACEBOOK`, `.APPLE`, `.TWITTER`, `.DISCORD`, `.GITHUB`, `.TWITCH`, `.MICROSOFT`, `.LINKEDIN` or `JWT`.                                                                                 |
-| `account`            | `String?`            | (Optional) when `type` is set to either `.email`, `.phone`, or `.jwt`, you can use the `account` parameter to pass in an expected email, phone number, or JWT. This is optional for the former two, but required for `.jwt`. The phone number must be in E.164 format.           |
-| `supportAuthTypeode` | `[SupportAuthType]`  | the methods of authentication visible on the authentication popup UI. By default, this will be exclusive to the chosen social login method, although by passing in additional types, you can expand the UI to include the ability to login with those as an alternative to type. |
-| `socialLoginPrompt`  | `SocialLoginPrompt?` | (Optional) either `.none`, `.consent`, or `.select_account`, only google, discord and microsoft support it.                                                                                                                                                                      |
+| `account`            | `String?`            | (Optional) When `type` is set to either `.email`, `.phone`, or `.jwt`, you can use the `account` parameter to pass in an expected email, phone number, or JWT. This is optional for the former two, but required for `.jwt`. The phone number must be in E.164 format.           |
+| `supportAuthTypeode` | `[SupportAuthType]`  | The methods of authentication visible on the authentication popup UI. By default, this will be exclusive to the chosen social login method, although by passing in additional types, you can expand the UI to include the ability to login with those as an alternative to type. |
+| `socialLoginPrompt`  | `SocialLoginPrompt?` | (Optional) Changes what the OAuth provider prompts a user to do; either `.none`, `.consent`, or `.select_account`. Only Google, Discord and Microsoft support it.                                                                                                                                 |
 | `loginPageConfig`    | `LoginPageConfig?`   | (Optional) to customize the UI page, contains project name, icon and description.                                                                                                                                                                                                |
 
 ```csharp
@@ -360,7 +360,7 @@ await ParticleAuthCore.Instance.SolanaPersonalSign(message);
 Similarly, for signing a transaction, you'll need to call `ParticleAuthCore.Instance.SolanaSignTransaction` and pass in a serialized (string) standard transaction object to be prompted for signature. This is a **Solana-specific** method.
 
 ```csharp
-var transaction = "your transaction";
+var transaction = "Your transaction";
 await ParticleAuthCore.Instance.SolanaSignTransaction(transaction);
 ```
 
@@ -369,8 +369,8 @@ await ParticleAuthCore.Instance.SolanaSignTransaction(transaction);
 `ParticleAuthCore.Instance.SolanaSignAllTransactions` is another **Solana-specific** method that functions adjacent to the former but instead signs multiple (a list of) transactions represented as strings.
 
 ```csharp
-var transaction1 = "transaction1";
-var transaction2 = "transaction2";
+var transaction1 = "Transaction1";
+var transaction2 = "Transaction2";
 
 string[] transactions = new[] { transaction1, transaction2 };
 
@@ -382,7 +382,7 @@ await ParticleAuthCore.Instance.SolanaSignAllTransactions(transactions);
 `ParticleAuthCore.Instance.EvmSendTransaction` and `ParticleAuthCore.Instance.SolanaSignAndSendTransaction`are the primary methods within the SDK for sending transactions as it immediately sends a given transaction after requesting signature (confirmation). This will also take a serialized (string) representation of a transaction,
 
 ```csharp
-var transaction = "transaction";
+var transaction = "Transaction";
 
 var nativeResultData = await ParticleAuthCore.Instance.EvmSendTransaction(transaction);
 
@@ -394,7 +394,7 @@ var nativeResultData = await ParticleAuthCore.Instance.SolanaSendTransaction(tra
 `ParticleAuthCore.Instance.EvmSignTypedData` is an **EVM-specific** method for signing structured (typed) data. For more information on `signTypedData`, see the [Web (JavaScript/TypeScript)](/api-reference/auth/desktop-sdks/web) page.
 
 ```csharp
-string typedData = "your typedata";
+string typedData = "Your typedata";
 
 await ParticleAuthCore.Instance.EvmSignTypedData(typedData);
 ```
@@ -434,18 +434,18 @@ await ParticleAuthCore.Instance.ChangeMasterPassword();
 
 ---
 
-### Blind Sign Enable
+### Enable Blind Signing
 
 Silently sign messages/transactions, this switch will work if the following conditions are met:
 
-1. your account is connected with JWT
-2. your account does not set payment password
+1. Your account is connected with JWT
+2. Your account does not set payment password
 3. SecurityAccountConfig.promptSettingWhenSign is 0, you can call `ParticleNetwork.SetSecurityAccountConfig` to update its value.
 
 ```csharp
-// set blind sign enable
+// Enable blind signing
 ParticleAuthCoreInteraction.SetBlindEnable(true);
-// get current blind sign enable state
+// Retrieve whether or not blind signing is enabled
 var enable = ParticleAuthCoreInteraction.GetBlindEnable();
 ```
 
@@ -469,8 +469,8 @@ In addition to `ParticleAuthCore` for authentication and interaction with Partic
 | `gasFeeLevel`     | `GasFeeLevel`  | (Optional) the gas fee level, `High`, `Medium` or `Low`, default is `High`                                 |
 
 ```csharp
-// abi json string, you can get it from your contract developer.
-// such as
+// Contract ABI, JSON string
+// For example,
 // [{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"quantity\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"mint\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}]
 
 var transaction = await EvmService.WriteContract(from, contractAddress, methodName, parameters,abiJsonString);
@@ -489,8 +489,8 @@ var transaction = await EvmService.WriteContract(from, contractAddress, methodNa
 | `abiJsonString`   | `string?`      | The method's abi json string                                                                               |
 
 ```csharp
-// abi json string, you can get it from your contract developer.
-// such as
+// Contract ABI, JSON string
+// For example,
 // [{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"quantity\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"mint\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}]
 
 string rpcResult =
@@ -552,17 +552,17 @@ Similar to the former method, `EvmService.GetTransactionsByAddress` enables the 
 await EvmService.GetTransactionsByAddress(publicAddress);
 ```
 
-### Get price
+### Get Price
 
-To retrieve token price based upon current network conditions, you can call `EvmService.GetPrice`.
+To retrieve the price of specified tokens, you can call `EvmService.GetPrice`.
 
 ```csharp
  await EvmService.GetPrice(tokenAddresses, currencies);
 ```
 
-### Basic rpc method
+### Basic RPC method
 
-Call any basic EVM rpc method through `EvmService.Rpc`
+Basic RPC methods can be called manually through `EvmService.Rpc`, as shown below.
 
 ```csharp
 await EvmService.Rpc(method, params);
@@ -596,33 +596,33 @@ var resultData = JObject.Parse(result);
 var transaction = (string)resultData["result"]["transaction"]["serialized"];
 ```
 
-### Get price
+### Get Price
 
-To retrieve token price based upon current network conditions, you can call `SolanaService.GetPrice`.
+To retrieve the price of specified tokens, you can call `SolanaService.GetPrice`.
 
 ```csharp
  await SolanaService.GetPrice(tokenAddresses, currencies);
 ```
 
-### Get transactions by address
+### Get transactions by Address
 
-To retrieve transactions from a address, you can call `SolanaService.getTransactionsByAddress`.
+To retrieve transactions executed by a given address, you can call `SolanaService.getTransactionsByAddress`.
 
 ```csharp
 await SolanaService.GetTransactionsByAddress(address);
 ```
 
-### Get token by token address
+### Get Token by Token Address
 
-To obtain the balance of a specified token at a specified address, you can call `SolanaService.GetTokenByTokenAddresses`
+To obtain the balance of a specified token at a specified address, you can call `SolanaService.GetTokenByTokenAddresses`.
 
 ```csharp
 await SolanaService.GetTokenByTokenAddresses(address, tokenAddresses);
 ```
 
-### Basic rpc method
+### Basic RPC Method
 
-Call any basic Solana rpc method through `SolanaService.Rpc`
+Similar to `EvmService`, standard RPC methods can be called through `SolanaService.Rpc`.
 
 ```csharp
 await SolanaService.Rpc(method, params);

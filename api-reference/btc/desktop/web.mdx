@@ -262,7 +262,7 @@ const executeTxBtc = async () => {
 
 Most importantly, `useETHProvider` acts as the single mechanism for driving interaction through the associated EVM smart account. Interaction is driven through one of two ways:
 
-1. With native UserOperation construction and execution functions, such as `buildUserOp` and `sendUserOp`, which will mimic similar functions found within Particle Network's [AA SDK] for managing transactions.
+1. With native UserOperation construction and execution functions, such as `buildUserOp` and `sendUserOp`, which will mimic similar functions found within Particle Network's [AA SDK](/api-reference/aa/sdks/desktop/web) for managing transactions.
 2. Through the attached EIP-1193 `provider` object, enabling utilization of the smart account through a standard Web3 library such as Ethers, Web3.js, viem, etc.
 
 Below is the full list of functions derived from `useETHProvider`:
@@ -290,7 +290,7 @@ import { ethers } from 'ethers';
 
 const { account, getSmartAccountInfo, sendUserOp, getFeeQuotes, chainId, switchChain, publicClient, provider } = useETHProvider();
 
-// smart account info.
+// Retrieves smart account information.
 const accountInfo = await getSmartAccountInfo();
 
 // Retrieves the current chain ID

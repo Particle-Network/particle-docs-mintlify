@@ -21,8 +21,8 @@ Utilizing the Particle Auth Android SDK is quite straightforward, although it re
 - compileSdkVersion, targetSdkVersion **34** or higher.
 - JavaVersion **17**.
 - [Jetpack (AndroidX)](https://developer.android.com/jetpack/androidx/migrate?authuser=0).
-- Android Gradle Plugin Version : 8.5.1 or higher.
-- Gradle Version : 8.9 or higher.
+- Android Gradle Plugin Version: **8.5.1** or higher.
+- Gradle Version: **8.9** or higher.
 
 ### Configuration
 
@@ -171,18 +171,18 @@ Specifically, `AuthCore.login` takes the following parameters:
 <Tip>You can use your existing user base or authentication method with Particle Auth through JWT. This way, your users can still log in with their current accounts. Click [here](/guides/configuration/auth/jwt) to learn how to configure JWT. </Tip>
 
 ```kotlin Kotlin
-// connect with Email or Phone
+// Connect with Email or Phone
 AuthCore.connect(LoginType.EMAIL, loginCallback = connectCallback)
 AuthCore.connect(LoginType.PHONE, loginCallback = connectCallback)
-// connect with Google
+// Connect with Google
 AuthCore.connect(SocialLoginType.GOOGLE, prompt = LoginPrompt.SelectAccount,connectCallback)
-// connect with jwt
-AuthCore.connect("jwt web token",connectCallback =connectCallback)
+// Connect with JWT
+AuthCore.connect("JWT",connectCallback =connectCallback)
 
-// send verification code to email or phone number, the phone number must be in E.164 format.
+// Send verification code to email or phone number, the phone number must be in E.164 format.
 AuthCore.sendCode(CodeReq(email = "xxx@xx.com"), callback)
 AuthCore.sendCode(CodeReq(phone = "+11234567890"), callback)
-//After sending the verification code, you can use the user-entered code to log in. With this approach, you can customize the UI and simply call our API for the login process.
+// After sending the verification code, you can use the user-entered code to log in. With this approach, you can customize the UI and simply call our API for the login process.
 AuthCore.connect(LoginReq(email = "xxx@xx.com", code = "Verification code received by the user"),connectCallback)
 AuthCore.connect(LoginReq(phone = "+11234567890", code = "Verification code received by the user"),connectCallback)
 
@@ -374,12 +374,12 @@ ParticleNetwork.setSecurityAccountConfig(
 User can set master password and payment password to protect assets, call `auth.changeMasterPassword` to set or change master password, call `AuthCore.openAccountAndSecurity()` to set or change payment password.
 
 ```kotlin
-// check user has master password or not
+// Check if user has a master password set
 val result = AuthCore.hasMasterPassword()
-// set or change master password
+// Set or change master password
 AuthCore.changeMasterPassword()
 
-// check user has payment password or not
+// Check if user has payment password set
 val result = AuthCore.hasPaymentPassword()
 ```
 
@@ -389,9 +389,9 @@ You can forcibly set a specific language to be used within the UI using `Particl
 
 | Field          | Type           | Description                                                                                                                                   |
 | -------------- | -------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
-| `languageEnum` | `LanguageEnum` | the specific language to be used. This can be either ZH_CN、ZH_TW、EN、JA、KO.                                                                |
-| isRelaunch     | Boolean        | True app will relaunch,false activity will recreate                                                                                           |
-| isInit         | Boolean        | Set isRelaunch is true, isInit is True，activity will not recreate,Called before call particle opreat(connet、signMessage、sendTraction etc.) |
+| `languageEnum` | `LanguageEnum` | The specific language to be used. This can be either ZH_CN、ZH_TW、EN、JA、KO.                                                                |
+| `isRelaunch`     | Boolean        | If true, the app will relaunch upon a language switch, if false, activity will recreate                                                                                           |
+| `isInit`         | Boolean        | If isRelaunch is set to true, isInit is also true by default，activity will not recreate, called before you call methods like `signMessage`, `sendTransaction`, etc. |
 
 ```kotlin
 ParticleNetwork.setLanguage(LanguageEnum.EN)
@@ -400,12 +400,12 @@ ParticleNetwork.getLanguage()
 
 ---
 
-### Blind Sign Enable
+### Enable Blind Signing
 
 Silently sign messages/transactions, this switch will work if the following conditions are met:
 
-1. your account is connected with JWT
-2. your account does not set payment password
+1. Your account is connected with JWT
+2. Your account does not set payment password
 3. SecurityAccountConfig.promptSettingWhenSign is 0, you can call ParticleNetwork.setSecurityAccountConfig to update its value.
 
 ```kotlin

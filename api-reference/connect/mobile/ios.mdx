@@ -275,8 +275,8 @@ Oftentimes, the primary chain initially set through `initialize` won't be the _o
 ```swift
 ParticleNetwork.setChainInfo(.ethereum)
 
-// switch chain asynchronous from evm to solana or solana to evm.
-// make sure the adapter.walletType is authCore or particle.
+// Switch chains, such as between Solana and Ethereum.
+// Ensure the adapter.walletType is authCore or particle.
 let result = try await (adapter as! ParticleAdapter).switchChain(.ethereum).value
 ```
 
@@ -291,8 +291,8 @@ let result = try await (adapter as! ParticleAdapter).switchChain(.ethereum).valu
 | `connectOptions`          | `[ConnectOption]`         | Connect options, support `email`, `phone`, `social` and `wallet`, the sort order is used for connect kit login UI.       |
 | `socialProviders`         | `[EnableSocialProvider]`  | Social providers, support `google`, `apple` and other social options, the sort order is used for connect kit login UI.   |
 | `walletProviders`         | `[EnableWalletProvider]`  | Wallet providers, support `metamask`, `trust` and other wallet options, the sort order is used for connect kit login UI. |
-| `additionalLayoutOptions` | `AdditionalLayoutOptions` | Layout options                                                                                                           |
-| `designOptions`           | `DesignOptions`           | Design options                                                                                                           |
+| `additionalLayoutOptions` | `AdditionalLayoutOptions` | Layout options.                                                                                                           |
+| `designOptions`           | `DesignOptions`           | Design options.                                                                                                           |
 
 ```swift
 let config = ConnectKitConfig(connectOptions: connectOptions, socialProviders: socialProviders, walletProviders: walletProviders, additionalLayoutOptions: additionalLayoutOptions, designOptions: designOptions)
@@ -301,7 +301,7 @@ let account = try await ParticleConnectUI.connect(config: config).value
 
 ### Connect Wallet V1 (Legacy)
 
-Likely one of the most important methods, specific adapters can initiate connection (through an initialization in a variable such as `adapter`) with the `connect` method. Depending on the specific adapter, this method will throw a modal facilitating connection.
+Specific adapters can initiate connection (through an initialization in a variable such as `adapter`) with the `connect` method. Depending on the specific adapter, this method will throw a modal facilitating connection.
 
 For `EVMConnectAdapter` and `SolanaConnectAdapter`, this will generate a fresh account (public and private key pair). Otherwise, the specific connection flow will be dependent upon the adapter in which `connect` is called. E.g.:
 
@@ -325,11 +325,11 @@ For `EVMConnectAdapter` and `SolanaConnectAdapter`, this will generate a fresh a
 
 ```swift
 
-// show connect with metamask
+// Retrieve and use MetaMask adapter
 let adapter = ParticleConnect.getAllAdapters().first { $0.walletType == .metaMask }!
 let account = try await adapter.connect(ConnectConfig.none).value
 
-// show conenct with particle
+// Retrieve and use Particle (social login) adapter
 let adapter = ParticleConnect.getAllAdapters().first { $0.walletType == .authCore }!
 let account = try await adapter.connect(ParticleAuthCoreConfig(loginType: .google, socialLoginPrompt: .selectAccount)).value
 ```

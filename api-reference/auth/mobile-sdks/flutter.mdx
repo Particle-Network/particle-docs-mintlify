@@ -187,9 +187,9 @@ end
 Before using the full extent of the SDK, you'll need to initialize it with `init`, passing in specific chain in which you intend to primary onboard to within Particle's Wallet-as-a-Service. This is represented as an object containing chain info (often derived from `ChainInfo.{Chain}`).
 
 ```dart
-// set the project info, get it from dashboard.
+// Set relevant project info, retrieved from https://dashboard.particle.network
 ParticleInfo.set(projectId, clientKey);
-// inititilze ParticleAuth and ParticleAuthCore.
+// Inititilze ParticleAuth and ParticleAuthCore.
 ParticleBase.init(ChainInfo.Ethereum, env);
 ParticleAuthCore.init()
 ```
@@ -205,9 +205,9 @@ This is achieved and configured through `ParticleAuthCore.connect`. Once this me
 | Field              | Type                     | Description                                                                                                                                                                                                                                                                      |
 | ------------------ | ------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `loginType`        | `LoginType`              | The specific social login to be used. This can be either `.email`, `.phone`, `.google`, `.apple`, `.jwt`, `.facebook`, `.twitter`, `.discord`, `.github`, `.twitch`, `.microsoft` or `linkedin`.                                                                                 |
-| `account`          | `String?`                | (Optional) when `type` is set to either `.email`, `.phone`, or `.jwt`, you can use the `account` parameter to pass in an expected email, phone number, or JWT. This is optional for the former two, but required for `.jwt`. The phone number must be in E.164 format.           |
-| `prompt`           | `SocialLoginPrompt?`     | (Optional) either `.none`, `.consent`, or `.select_account`, only google, discord and microsoft support it.                                                                                                                                                                      |
-| `loginPageConfig`  | `LoginPageConfig?`       | (Optional) to customize the UI page, contains project name, icon and description.                                                                                                                                                                                                |
+| `account`          | `String?`                | (Optional) When `type` is set to either `.email`, `.phone`, or `.jwt`, you can use the `account` parameter to pass in an expected email, phone number, or JWT. This is optional for the former two, but required for `.jwt`. If passing a phone number, it must be in E.164 format.           |
+| `prompt`           | `SocialLoginPrompt?`     | (Optional) Changes what the OAuth provider prompts a user to do; either `.none`, `.consent`, or `.select_account`. Only Google, Discord and Microsoft support it.                                                                                                                                                                      |
+| `loginPageConfig`  | `LoginPageConfig?`       | (Optional) Controls login UI customization: contains project name, icon and description.                                                                                                                                                                                                |
 | `supportAuthTypes` | `List<SupportAuthType>?` | The methods of authentication visible on the authentication popup UI. By default, this will be exclusive to the chosen social login method, although by passing in additional types, you can expand the UI to include the ability to login with those as an alternative to type. |
 
 <Tip>You can use your existing user base or authentication method with Particle Connect through JWT. This way, your users can still log in with their current accounts. Click [here](/guides/configuration/auth/jwt) to learn how to configure jwt. </Tip>
@@ -250,7 +250,7 @@ final result = await ParticleAuthCore.disconnect();
 
 ### Get User Info
 
-To retrieve the userInfo, you can call `ParticleAuthCore.getUserInfo`.
+To retrieve an object containing detailed user information, you can call `ParticleAuthCore.getUserInfo`.
 
 ```dart
 final userInfo = await ParticleAuthCore.getUserInfo();
@@ -308,7 +308,7 @@ List<String> signatures = await Solana.signAllTransactions(transactions);
 
 ### Sign and Send Transaction
 
-For more generalized transaction sending, `Evm.sendTransaction`and `Solana.signAndSendTransaction` will be the primary method used in virtually every scenario. This will propose a signature (on both EVM and Solana), and then immediately push it to the network once confirmed.
+For more generalized transaction execution, `Evm.sendTransaction`and `Solana.signAndSendTransaction` will be the primary method used in virtually every scenario. This will propose a signature (on both EVM and Solana), and then immediately push it to the network once confirmed.
 
 | Field         | Type     | Description                                                               |
 | ------------- | -------- | ------------------------------------------------------------------------- |
@@ -362,9 +362,9 @@ String network = chainInfo.network;
 
 ### Set Security Account Config
 
-Another important component of integrating the Particle Auth SDK (Wallet-as-a-Service) is the (optional) security account requirements enforced upon application users. For all accounts on Particle, several security options are associated (such as a master password for a login-based non-recoverable password, payment password for a pin required upon transaction signatures, etc.)
+Another important component of integrating the Particle Auth SDK (Wallet-as-a-Service) is the (optional) security account requirements enforced upon application users. For all accounts on Particle, several security options are present (such as a master password for a login-based non-recoverable password, payment password for a pin required upon transaction signatures, etc.)
 
-Within the SDK, you can configure the frequency (or requirement) a user is asked to configure security settings. This is controlled with `ParticleBase.setSecurityAccountConfig` and passing in a `SecurityAccountConfig` object with two parameters:
+Within the SDK, you can configure the frequency (or requirement) in which a user is asked to configure security settings. This is controlled with `ParticleBase.setSecurityAccountConfig` and passing in a `SecurityAccountConfig` object with two parameters:
 
 | Field                                  | Type  | Description                                         |
 | -------------------------------------- | ----- | --------------------------------------------------- |
@@ -410,11 +410,11 @@ You can forcibly set a specific appearance to be used within the UI using `Parti
 | `appearance` | `Appearance` | The specific appearance to be used. This can be either `.system`, `.dark`, `.light`. |
 
 ```dart
-// this is the default setting
+// This is the default setting
 ParticleBase.setAppearance(Appearance.system);
-// dark
+// Dark mode
 ParticleBase.setAppearance(Appearance.dark);
-// light
+// Light mode
 ParticleBase.setAppearance(Appearance.light);
 ```
 
@@ -443,9 +443,9 @@ Silently sign messages/transactions, this switch will work if the following cond
 3. SecurityAccountConfig.promptSettingWhenSign is 0, you can call `ParticleBase.setSecurityAccountConfig` to update its value.
 
 ```dart
-// set blind sign enable
+// Enable blind signing
 ParticleAuthCore.setBlindEnable(enable);
-// get current blind sign enable state
+// Retrieve a Boolean representing whether or not blind signing is enabled
 final result = ParticleAuthCore.getBlindEnable();
 ```
 
@@ -480,15 +480,15 @@ In addition to `ParticleAuthCore` for authentication and interaction with Partic
 | `methodName`      | `String`       | The method name that defined in the contract, such as `mint`, `balanceOf`.  |
 | `parameters`      | `List<Object>` | The parameters of this method.                                              |
 | `abiJsonString`   | `String`       | The abi json string of this method.                                         |
-| `gasFeeLevel`     | `GasFeeLevel`  | (Optional) the gas fee level, `high`, `medium` or `low`, default is `high`. |
+| `gasFeeLevel`     | `GasFeeLevel`  | (Optional) The gas fee level, `high`, `medium` or `low`, default is `high`. |
 
 ```dart
-String contractAddress = "your contract address";
-String methodName = "your method name"; // this is your contract method name, like balanceOf, mint.
-List<Object> params = <Object>["0x1"]; // this is the method params, each parameter requires a hexadecimal string.
+String contractAddress = "Your contract address";
+String methodName = "Your method name"; // This is your contract method name, like balanceOf, mint.
+List<Object> params = <Object>["0x1"]; // This is the method params, each parameter requires a hexadecimal string.
 
-// abi json string, you can get it from your contract developer.
-// such as
+// ABI json string for the contract in question.
+// For example,
 // [{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"quantity\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"mint\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}]
 const abiJsonString = null;
 final result = EvmService.writeContract(publicAddress, contractAddress, methodName, params, abiJsonString, gasFeeLevel: GasFeeLevel.high);
@@ -510,7 +510,7 @@ final result = EvmService.writeContract(publicAddress, contractAddress, methodNa
 String publicAddress = "your public address";
 String contractAddress = "your contract address";
 String methodName ="your method name"; // ex: balanceOf, mint
-List<Object> parameters = <Object>["0x1"];  // this is the method params, each parameter requires a hexadecimal string.
+List<Object> parameters = <Object>["0x1"];  // This is the method params, each parameter requires a hexadecimal string.
 
 // ex: [{"inputs":[{"internalType":"uint256","name":"quantity","type":"uint256"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"mint","outputs":[],"stateMutability":"nonpayable","type":"function"}]
 const abiJsonString = null;
@@ -531,9 +531,9 @@ final result = await EvmService.readContract(publicAddress, contractAddress, met
 | `gasFeeLevel` | `GasFeeLevel` | (Optional) the gas fee level, `high`, `medium` or `low`, default is `high`.                                                                   |
 
 ```dart
-String from = "your public address";
-String receiver = "receiver address"
-String contractAddress = "contract address"
+String from = "Your public address";
+String receiver = "Receiver address"
+String contractAddress = "Contract address"
 BigInt amount = BigInt.from(1000000000000000);
 String to = contractAddress;
 final data =  await EvmService.erc20Transfer(contractAddress, receiver, amount);
@@ -582,7 +582,7 @@ final result = await EvmService.getTransactionsByAddress(publicAddress);
 
 ### Get Price
 
-To retrieve token price based upon current network conditions, you can call `EvmService.getPrice`.
+To retrieve the price of specified tokens, you can call `EvmService.getPrice`.
 
 | Field            | Type           | Description                                                       |
 | ---------------- | -------------- | ----------------------------------------------------------------- |
@@ -593,9 +593,9 @@ To retrieve token price based upon current network conditions, you can call `Evm
 final result = await EvmService.getPrice(tokenAddresses, currencies);
 ```
 
-### Basic Rpc Method
+### Basic RPC Method
 
-Call any basic EVM rpc method through `EvmService.rpc`
+You can call any basic EVM RPC method through `EvmService.rpc`
 
 ```dart
 final result = await EvmService.rpc(method, params);
@@ -624,7 +624,7 @@ final result = await SolanaService.getTokensAndNFTs(publicAddress, true);
 
 `SolanaService.serializeSplTokenTransaction` facilitates the construction of a Spl-token transaction object,
 
-`SolanaService.serializeWSolTokenTransaction` facilitates the construction of a unwrap wsol transaction object.
+`SolanaService.serializeWSolTokenTransaction` facilitates the construction of a unwrap WSOL transaction object.
 
 These transactions, once constructed, can be passed for in-UI proposal with `Solana.signAndSendTransaction`.
 
@@ -663,7 +663,7 @@ final serializedTransaction = result["transaction"]["serialized"];
 
 ### Get Price
 
-To retrieve token price based upon current network conditions, you can call `SolanaService.getPrice`.
+To retrieve the price of specified tokens, you can call `SolanaService.getPrice`.
 
 | Field            | Type           | Description                                                       |
 | ---------------- | -------------- | ----------------------------------------------------------------- |
@@ -676,7 +676,7 @@ final result = await SolanaService.getPrice(tokenAddresses, currencies);
 
 ### Get Transactions by address
 
-To retrieve transactions from a address, you can call `SolanaService.getTransactionsByAddress`.
+To retrieve transactions executed by a specified a address, you can call `SolanaService.getTransactionsByAddress`.
 
 ```dart
 final result = await SolanaService.getTransactionsByAddress(address);
@@ -695,9 +695,9 @@ To obtain the balance of a specified token at a specified address, you can call 
 await SolanaService.getTokenByTokenAddresses(address, tokenAddresses);
 ```
 
-### Basic Rpc Method
+### Basic RPC Method
 
-Call any basic Solana rpc method through `SolanaService.rpc`
+Any basic Solana RPC method can be called through `SolanaService.rpc`.
 
 ```dart
 await SolanaService.rpc(method, params);

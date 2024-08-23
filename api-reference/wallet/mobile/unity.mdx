@@ -319,16 +319,16 @@ The specific parameters that can be used within `ParticleWalletGUI.NavigatorBuyC
 
 | Field           | Type                    | Description                                                                                   |
 | --------------- | ----------------------- | --------------------------------------------------------------------------------------------- |
-| `WalletAddress` | `string?`               | (Optional) the wallet address to receive the cryptocurrency, default is current user address. |
-| `ChainInfo`     | `ChainInfo?`            | (Optional) the chainInfo, default is current chainInfo.                                       |
-| `CryptoCoin`    | `string?`               | (Optional) cryptocurrency denomination. default is current chain native token symbol.         |
-| `FiatCoin`      | `String?`               | (Optional) fiat currency denomination. defualt is current fiat coin.                          |
-| `FiatAmt`       | `int?`                  | (Optional) the amount of fiat to be automatically filled in as the purchase volume.           |
-| `FixFiatCoin`   | `bool`                  | (Optional) lock selection of fiat coin in the buy menu, default is false.                     |
-| `FixCryptoCoin` | `bool`                  | (Optional) lock selection of fiat amount in the buy menu, default is false.                   |
-| `Theme`         | `Theme?`                | (Optional) the buy page theme, `Dark` or `Light`, default is false.                           |
-| `Language`      | `Language?`             | (Optional) the buy page lanuage, default is current language.                                 |
-| `modalStyle`    | `iOSModalPresentStyle?` | (Optional) control iOS presentation style, default is `PageSheet`.                            |
+| `WalletAddress` | `string?`               | (Optional) The wallet address to receive the cryptocurrency, default is current user address. |
+| `ChainInfo`     | `ChainInfo?`            | (Optional) The chainInfo, default is current chainInfo.                                       |
+| `CryptoCoin`    | `string?`               | (Optional) Cryptocurrency denomination. Default is current chain native token symbol.         |
+| `FiatCoin`      | `String?`               | (Optional) Fiat currency denomination. Default is current fiat coin.                          |
+| `FiatAmt`       | `int?`                  | (Optional) The amount of fiat to be automatically filled in as the purchase volume.           |
+| `FixFiatCoin`   | `bool`                  | (Optional) Lock selection of fiat coin in the buy menu, default is false.                     |
+| `FixCryptoCoin` | `bool`                  | (Optional) Lock selection of fiat amount in the buy menu, default is false.                   |
+| `Theme`         | `Theme?`                | (Optional) The buy page theme, `Dark` or `Light`, default is false.                           |
+| `Language`      | `Language?`             | (Optional) The buy page lanuage, default is current language.                                 |
+| `modalStyle`    | `iOSModalPresentStyle?` | (Optional) Control iOS presentation style, default is `PageSheet`.                            |
 
 ```csharp
 BuyCryptoConfig config = new BuyCryptoConfig(TestAccount.EVM.PublicAddress,

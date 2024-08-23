@@ -145,17 +145,16 @@ let result = try await ParticleWalletAPI.getEvmService().getTransactionsFromDB(b
 | `value`          | `String?`         | Native value, default is nil, expressed as a hex string.                                                                                                                                                |
 | `data`           | `String`          | If you send a erc20, erc721, erc1155 or interact with a contract, this is the data field, if you send native, this should be `0x`, default value is `0x`                                                |
 | `contractParams` | `ContractParams?` | You can use this object to describe a write contract function                                                                                                                                           |
-| `type`           | `String`          | default is 0x2, support EIP1559, you can ignore this parameter                                                                                                                                          |
+| `type`           | `String`          | Default is 0x2. Support EIP1559, you can ignore this parameter                                                                                                                                          |
 | `gasFeeLevel`    | `gasFeeLevel`     | The specific gas fee level to be used. This can be either `.low`, `.medium`, `.high`, default is `.medium`                                                                                              |
-| `action`         | `Action`          | The sepcific how to send this transaction. This can be either `.normal`, `.cancel`, `.speedUp`, defualt is `.normal`, which means send a new transaction                                                |
+| `action`         | `Action`          | Transaction execution mechanism. This can be either `.normal`, `.cancel`, `.speedUp`, default is `.normal`, which means send a new transaction                                                |
 
 <CodeGroup>
 
 ```swift Send native
-// before send make sure you account has enough native balance.
 let sender = auth.evm.getAddress() ?? ""
 let receiver = "0xAC6d81182998EA5c196a4424EA6AB250C7eb175b"
-// send 0.0001 native, need convert to the minimal unit.
+// Send 0.0001 native tokens, need convert to the minimal unit.
 let amount = BDouble(0.0001 * pow(10, 18)).rounded()
 
 let transaction = try await ParticleWalletAPI.getEvmService().createTransaction(from: sender, to: receiver, value: amount.toHexString()).value
@@ -163,13 +162,12 @@ let signature = try await auth.evm.sendTransaction(transaction, chainInfo: nil)
 ```
 
 ```swift Send erc20 token
-// before send make sure you account has enough native balance for pay gasfee and enough erc20 tokens.
 let from = auth.evm.getAddress() ?? ""
-// send 0.0001 erc20 token, need convert to the minimal unit, suppose the token decimals is 18.
+// Send 0.0001 ERC20 token, need convert to the minimal unit, suppose the token decimals is 18.
 let amount = BDouble(0.0001 * pow(10, 18)).rounded()
-// the erc20 token contract address
+// The ERC20 token contract address.
 let contractAddress = "0xa36085F69e2889c224210F603D836748e7dC0088"
-// this is receiver address
+// This is receiver address.
 let receiver = "0xAC6d81182998EA5c196a4424EA6AB250C7eb175b"
 
 let contractParams = ContractParams.erc20Transfer(contractAddress: contractAddress, to: receiver, amount: amount)
@@ -179,41 +177,38 @@ let signature = auth.evm.sendTransaction(transaction, chainInfo: nil)
 ```
 
 ```swift Send ERC721 NFT
-// before send make sure you account has enough native balance for pay gasfee and this ERC721 NFT.
 let from = auth.evm.getAddress() ?? ""
-// this is your nft contract address
+// This is your NFT contract address
 let contractAddress = "0xD18e451c11A6852Fb92291Dc59bE35a59d143836"
-// this is the receiver address
+// This is the receiver address
 let receiver = "0xAC6d81182998EA5c196a4424EA6AB250C7eb175b"
-// your ERC721 NFT token id,
+// Your ERC721 NFT token ID
 let tokenId = "2302"
 
 let contractParams = ContractParams.erc721SafeTransferFrom(contractAddress: contractAddress, from: from, to: receiver, tokenId: tokenId)
-// Note the to address is the nft contract address, not receiver address.
+// Note the to address is the NFT contract address, not receiver address.
 let transaction = ParticleWalletAPI.getEvmService().createTransaction(from: from, to: contractAddress, value: nil, contractParams: contractParams).value
 let signature = try await auth.evm.sendTransaction(transaction, chainInfo: nil)
 ```
 
 ```swift Text send erc1155 NFT
-// before send make sure you account has enough native balance for pay gasfee and this erc1155 NFT.
 let from = auth.evm.getAddress() ?? ""
-// this is your nft contract address
+// This is your NFT contract address
 let contractAddress = "0xD18e451c11A6852Fb92291Dc59bE35a59d143836"
-// this is the receiver address
+// This is the receiver address
 let receiver = "0xAC6d81182998EA5c196a4424EA6AB250C7eb175b"
-// your ERC721 NFT token id,
+// Your ERC721 NFT token ID
 let tokenId = "2302"
-// send amount
+// Number of ERC1155 tokens to send
 let tokenAmount: BInt = 10
 
 let contractParams = ContractParams.erc1155SafeTransferFrom(contractAddress: contractAddress, from: from, to: receiver, id: tokenId, amount: tokenAmount, data: "0x")
-// Note the to address is the nft contract address, not receiver address.
+// Note the to address is the NFT contract address, not receiver address.
 let transaction = ParticleWalletAPI.getEvmService().createTransaction(from: from, to: contractAddress, value: nil, contractParams: contractParams).value
 let signature = try await auth.evm.sendTransaction(transaction, chainInfo: nil)
 ```
 
 ```swift Text deploy contract
-//  before send make sure you account has enough native balance for pay gasfee
 let data = getContractData()
 let from = auth.evm.getAddress() ?? ""
 
@@ -234,7 +229,7 @@ Specifically, four key parameters are available within `ParticleWalletAPI.getEvm
 | `contractAddress` | `String`      | The contract address.                                                       |
 | `methodName`      | `String`      | The method's name in the contract.                                          |
 | `params`          | `[Encodable]` | The parameters of the method, each parameter requires a hexadecimal string. |
-| `abiJsonString`   | `String?`     | (Optional) the abi json string for the method.                              |
+| `abiJsonString`   | `String?`     | (Optional) The ABI JSON string for the method.                              |
 
 Here is a abiJsonString example.
 
@@ -364,7 +359,7 @@ ParticleWalletGUI.setCustomLocalizable(customLocalizable)
 Additionally, if you'd like to support the WalletConnect feature within the wallet itself, you'll need to open `AppDelegate.swift` and paste in the below snippet:
 
 ```swift
-// in AppDelegate.swift, under application(_:open:options:)
+// In AppDelegate.swift, under application(_:open:options:)
 func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
   if ParticleWalletGUI.handleWalletConnectUrl(url, withScheme: "particlewallet") {
     return true
@@ -412,8 +407,8 @@ To open the page coordinating sending a token (token referring to ERC20/SPL toke
 | Field          | Type      | Description                                                           |
 | -------------- | --------- | --------------------------------------------------------------------- |
 | `tokenAddress` | `String?` | The address of the token to be sent, default is the native token      |
-| `toAddress`    | `String?` | (Optional) the recipient's address                                    |
-| `amount`       | `BInt?`   | (Optional) the amount to be sent, should pass the minimal unit amount |
+| `toAddress`    | `String?` | (Optional) The recipient's address                                    |
+| `amount`       | `BInt?`   | (Optional) The amount to be sent, should pass the minimal unit amount |
 
 ```swift
 let tokenSendConfig = TokenSendConfig(tokenAddress: nil, toAddress: nil, amount: nil)
@@ -495,16 +490,16 @@ The specific parameters that can be used within `PNRouter.navigatorBuy` are list
 | Field           | Type                    | Description                                                                                   |
 | --------------- | ----------------------- | --------------------------------------------------------------------------------------------- |
 | `walletAddress` | `String?`               | (Optional) the wallet address to receive the cryptocurrency, default is current user address. |
-| `network`       | `ChainInfo?`            | (Optional) the chainInfo, default is current chainInfo.                                       |
-| `cryptoCoin`    | `String?`               | (Optional) cryptocurrency denomination. default is current chain native token symbol.         |
-| `fiatAmt`       | `int?`                  | (Optional) the amount of fiat to be automatically filled in as the purchase volume.           |
-| `fiatCoin`      | `String?`               | (Optional) fiat currency denomination. defualt is current fiat coin.                          |
-| `fixFiatCoin`   | `Bool`                  | (Optional) lock selection of fiat coin in the buy menu, default is false.                     |
-| `fixFiatAmt`    | `bool`                  | (Optional) lock selection of fiat amount in the buy menu, default is false.                   |
-| `fixCryptoCoin` | `bool`                  | (Optional) lock selection of crypto coin in the buy menu, default is false.                   |
-| `theme`         | `String`                | (Optional) the buy page theme, `dark` or `light`, default is current appearance.              |
-| `language`      | `Language?`             | (Optional) the buy page lanuage, default is current language.                                 |
-| `modalStyle`    | `IOSModalPresentStyle?` | (Optional) control iOS presentation style, default is `pageSheet`.                            |
+| `network`       | `ChainInfo?`            | (Optional) The chainInfo, default is current chainInfo.                                       |
+| `cryptoCoin`    | `String?`               | (Optional) Cryptocurrency denomination. default is current chain native token symbol.         |
+| `fiatAmt`       | `int?`                  | (Optional) The amount of fiat to be automatically filled in as the purchase volume.           |
+| `fiatCoin`      | `String?`               | (Optional) Fiat currency denomination. Default is current fiat coin.                          |
+| `fixFiatCoin`   | `Bool`                  | (Optional) Lock selection of fiat coin in the buy menu, default is false.                     |
+| `fixFiatAmt`    | `bool`                  | (Optional) Lock selection of fiat amount in the buy menu, default is false.                   |
+| `fixCryptoCoin` | `bool`                  | (Optional) Lock selection of crypto coin in the buy menu, default is false.                   |
+| `theme`         | `String`                | (Optional) The buy page theme, `dark` or `light`, default is current appearance.              |
+| `language`      | `Language?`             | (Optional) The buy page lanuage, default is current language.                                 |
+| `modalStyle`    | `IOSModalPresentStyle?` | (Optional) Control iOS presentation style, default is `pageSheet`.                            |
 
 ```swift
 let buyCryptoConfig = BuyCryptoConfig(walletAddress: "YOUR WALLET ADDRESS",

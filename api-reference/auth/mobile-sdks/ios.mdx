@@ -42,7 +42,7 @@ Now that you've created a project and an application within the [Particle dashbo
    pod init
    ```
 
-2. Within the newly created Podfile, add the `ParticleAuthCore` pod.
+2. Within the newly created Podfile, add the `ParticleAuthCore`, `ParticleMPCCore`, and `Thresh` pod.
 
    ```ruby Podfile
    pod 'ParticleAuthCore'
@@ -147,25 +147,25 @@ ParticleNetwork.setChainInfo(.ethereum)
 | Field               | Type                 | Description                                                                                                                                                                                                                                                            |
 | ------------------- | -------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `type`              | `LoginType`          | The specific social login to be used. This can be either `.email`, `.phone`, `.google`, `.apple`, `.jwt`, `.facebook`, `.twitter`, `.discord`, `.github`, `.twitch`, `.microsoft` or `linkedin`.                                                                       |
-| `account`           | `String?`            | (Optional) when `type` is set to either `.email`, `.phone`, or `.jwt`, you can use the `account` parameter to pass in an expected email, phone number, or JWT. This is optional for the former two, but required for `.jwt`. The phone number must be in E.164 format. |
-| `code`              | `String?`            | (Optional) when `type` is set to either `.email` pr `.phone`, you can use the code parameter to pass the verification code.                                                                                                                                            |
-| `socialLoginPrompt` | `SocialLoginPrompt?` | (Optional) either `.none`, `.consent`, or `.select_account`, only google, discord and microsoft support it.                                                                                                                                                            |
+| `account`           | `String?`            | (Optional) When `type` is set to either `.email`, `.phone`, or `.jwt`, you can use the `account` parameter to pass in an expected email, phone number, or JWT. This is optional for the former two, but required for `.jwt`. When passing a phone number, it must be in E.164 format. |
+| `code`              | `String?`            | (Optional) When `type` is set to either `.email` pr `.phone`, you can use the `code` parameter to pass the verification code.                                                                                                                                            |
+| `socialLoginPrompt` | `SocialLoginPrompt?` | (Optional) Changes what the OAuth provider prompts a user to do; either `.none`, `.consent`, or `.select_account`. Only Google, Discord and Microsoft support it.                                                                                                                                                                  |
 
 <Tip>You can use your existing user base or authentication method with Particle Auth through JWT. This way, your users can still log in with their current accounts. Click [here](/guides/configuration/auth/jwt) to learn how to configure jwt. </Tip>
 
 ```swift
-// connect with Google
+// Connect with Google
 let userInfo = try await auth.connect(type: .google, socialLoginPrompt: .selectAccount)
 
-// send verification code to email or phone number, the phone number must be in E.164 format.
+// Send verification code to email or phone number, the phone number must be in E.164 format.
 var result = try await auth.sendEmailCode(email: "user@example.com")
 var result = try await auth.sendPhoneCode(email: "+11234567890")
 
-// connect with email or phone, the phone number must be in E.164 format.
+// Connect with email or phone, the phone number must be in E.164 format.
 let userInfo = try await auth.connect(type: .email, account: "user@example.com", code: "xxxxxx")
 let userInfo = try await auth.connect(type: .phone, account: "+11234567890", code: "xxxxxx")
 
-// connect with jwt
+// Connect with JWT
 let jwt = "json web token"
 let userInfo = try await auth.connect(type: .jwt, account: jwt)
 ```
@@ -175,10 +175,10 @@ let userInfo = try await auth.connect(type: .jwt, account: jwt)
 | Field                | Type                 | Description                                                                                                                                                                                                                                                                      |
 | -------------------- | -------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `type`               | `LoginType`          | The specific social login to be used. This can be either `.email`, `.phone`, `.google`, `.apple`, `.jwt`, `.facebook`, `.twitter`, `.discord`, `.github`, `.twitch`, `.microsoft` or `linkedin`.                                                                                 |
-| `account`            | `String?`            | (Optional) when `type` is set to either `.email`, `.phone`, or `.jwt`, you can use the `account` parameter to pass in an expected email, phone number, or JWT. This is optional for the former two, but required for `.jwt`. The phone number must be in E.164 format.           |
+| `account`            | `String?`            | (Optional) When `type` is set to either `.email`, `.phone`, or `.jwt`, you can use the `account` parameter to pass in an expected email, phone number, or JWT. This is optional for the former two, but required for `.jwt`. When passing a phone number, it must be in E.164 format.           |
 | `supportAuthTypeode` | `[SupportAuthType]`  | The methods of authentication visible on the authentication popup UI. By default, this will be exclusive to the chosen social login method, although by passing in additional types, you can expand the UI to include the ability to login with those as an alternative to type. |
-| `socialLoginPrompt`  | `SocialLoginPrompt?` | (Optional) either `'.none'`, `'.consent'`, or `'.selectAccount'`                                                                                                                                                                                                                 |
-| `config`             | `LoginPageConfig?`   | (Optional) to customize the UI page, contains project name, icon and description.                                                                                                                                                                                                |
+| `socialLoginPrompt`  | `SocialLoginPrompt?` | (Optional) Changes what the OAuth provider prompts a user to do; either `.none`, `.consent`, or `.select_account`. Only Google, Discord and Microsoft support it.                                                                                                                                                                                                                |
+| `config`             | `LoginPageConfig?`   | (Optional) To customize the UI page, contains project name, icon and description.                                                                                                                                                                                                |
 
 ```swift
 var userInfo = try await auth.presentLoginPage(type: type, account: text, socialLoginPrompt: .selectAccount, config: config)
@@ -191,9 +191,9 @@ After connect is successful, detailed user information can be retrieved by calli
 To check the user's login status, `auth.getUserInfo() != nil` returns a Boolean based upon the current state of a session (whether or not a user is currently logged into an account). Additionally, an asynchronous method, `auth.isConnected` can be called and subscribed to, returning `userInfo` upon a status of `true`.
 
 ```swift
-// local side
+// Local
 let result = auth.getUserInfo() != nil
-// server side
+// Server side
 let result = try await auth.isConnected()
 ```
 
@@ -230,7 +230,7 @@ To request an EIP191 signature from a user's embedded wallet, you can use either
 | Field       | Type         | Description                                                                            |
 | ----------- | ------------ | -------------------------------------------------------------------------------------- |
 | `message`   | `String`     | Either a hexadecimal string starting with '0x' or a human-readable string is required. |
-| `chainInfo` | `ChainInfo?` | (Optional) default is current chainInfo, the specific use which chain to sign          |
+| `chainInfo` | `ChainInfo?` | (Optional) Default is current chainInfo, the specific chain selected          |
 
 ```swift
 let result = try await auth.evm.personalSign("This is the message that is being signed", chainInfo: nil)
@@ -357,14 +357,14 @@ let securityAccountConfig = PartilceNetwork.getSecurityAccountConfig()
 User can set master password and payment password to protect assets, call `auth.changeMasterPassword` to set or change master password, call `auth.openAccountAndSecurity()` to set or change payment password.
 
 ```swift
-// check user has master password or not
+// Check if user has a master password set
 let result = try auth.hasMasterPassword()
-// set or change master password
+// Set or change master password
 let result = try await auth.changeMasterPassword()
 
-// check user has payment password or not
+// Check if user has a payment password set
 let result = try auth.hasPaymentPassword()
-// open securiy account page
+// Open a general account security page
 let result = try auth.openAccountAndSecurity()
 ```
 
@@ -379,11 +379,11 @@ You can forcibly set a specific appearance to be used within the UI using `Parti
 | `appearance` | `UIUserInterfaceStyle` | The specific appearance to be used. This can be either `.unspefified`, `.dark`, `.light`. |
 
 ```swift
-// this is the default setting
+// This is the default setting, auto
 ParticleNetwork.setAppearance(.unspecified)
-// dark
+// Dark mode
 ParticleNetwork.setAppearance(.dark)
-// light
+// Light mode
 ParticleNetwork.setAppearance(.light)
 ```
 
@@ -406,18 +406,18 @@ ParticleNetwork.getLanguage()
 ### Set Custom UI JSON string
 
 ```swift
-// Set custom ui is pass json string
-let jsonString = "your custom ui json string, keys should be the same with customUIConfig.json in demo"
+// Configure a custom UI through passing a JSON string
+let jsonString = "Your custom UI json string, keys should be the same with customUIConfig.json in demo"
 Auth.loadCustomUIJsonString(jsonString)
 ```
 
 ### Set FiatCoin
 
-You can forcibly set a specific fiatCoin to be used within the UI using `ParticleNetwork.setFiatCoin`, with retrieval of the current active language facilitated by `ParticleNetwork.getFiatCoin`. By default, this is set to USD.
+You can set a specific fiat currency to be used within the UI using `ParticleNetwork.setFiatCoin`, with retrieval of the current active language facilitated by `ParticleNetwork.getFiatCoin`. By default, this is set to USD.
 
 | Field      | Type       | Description                                                                                          |
 | ---------- | ---------- | ---------------------------------------------------------------------------------------------------- |
-| `fiatCoin` | `FiatCoin` | The specific fiatCoin to be used. This can be either `.usd`, `.cny`, `.jpy`, `.hkd`, `.inr`, `.krw`. |
+| `fiatCoin` | `FiatCoin` | The specific fiat currency in which value is denominated. This can be either `.usd`, `.cny`, `.jpy`, `.hkd`, `.inr`, `.krw`. |
 
 ```swift
 ParticleNetwork.setFiatCoin(FiatCoin.usd)
@@ -425,17 +425,17 @@ ParticleNetwork.setFiatCoin(FiatCoin.usd)
 ParticleNetwork.getFiatCoin()
 ```
 
-### Blind Sign Enable
+### Enable Blind Signing
 
 Silently sign messages/transactions, this switch will work if the following conditions are met:
 
-1. your account is connected with JWT
-2. your account does not set payment password
+1. Your account is connected with JWT
+2. Your account hasn't set a payment password
 3. SecurityAccountConfig.promptSettingWhenSign is 0, you can call `ParticleNetwork.setSecurityAccountConfig` to update its value.
 
 ```swift
-// set blind sign enable
+// Enable (or disable) blind signing
 Auth.setBlindEnable(true)
-// get current blind sign enable state
+// Retrieve whether or not blind signing is enabled
 let result = Auth.getBlindEnable()
 ```

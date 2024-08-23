@@ -44,7 +44,7 @@ The Particle Network AA SDK will fail to function correctly until it has been in
   - `AccountName.CYBERCONNECT`, a [CyberConnect smart account](https://wallet.cyber.co/).
   - `AccountName.SIMPLE_V1`, a [SimpleAccount implementation](https://github.com/eth-infinitism/account-abstraction/blob/develop/contracts/samples/SimpleAccount.sol).
   - `AccountName.SIMPLE_V2`, a [SimpleAccount implementation](https://github.com/eth-infinitism/account-abstraction/blob/develop/contracts/samples/SimpleAccount.sol).
-  - `AccountName.LIGHT`, a [Light Account](https://accountkit.alchemy.com/packages/aa-accounts/light-account/).
+  - `AccountName.LIGHT`, a [Light Account implementation](https://accountkit.alchemy.com/packages/aa-accounts/light-account/).
 
 Once `init` has been called, you can close off initialization by enabling AA mode with `ParticleAA.enableAAMode`.
 
@@ -104,7 +104,7 @@ Sending a transaction (UserOperation) is as simple as calling pre-existing metho
     - `wholeFeeQuote`, which can be retrieved through `ParticleAA.rpcGetFeeQuotes`.
   - `AAFeeMode.token`, paying for gas fees in an ERC-20 token (such as USDC). Takes one parameter:
     - `feeQuote`, to be used when leveraging a Token Paymaster. It can be retrieved through `ParticleAA.rpcGetFeeQuotes`.
-    - `tokenPaymasterAddress`, can be  retrieved through `ParticleAA.rpcGetFeeQuotes`.
+    - `tokenPaymasterAddress`, which can be retrieved through `ParticleAA.rpcGetFeeQuotes`.
 
 Alternatively, for `ParticleConnect.batchSendTransactions` or ParticleAuthCore `Evm.batchSendTransactions`, the parameters will be the same, with the exception of `transaction` being an array of transactions.
 
@@ -149,20 +149,20 @@ var feeQuote = verifyingPaymasterNative["feeQuote"];
 var fee = BigInt.parse(feeQuote["fee"], radix: 10);
 var balance = BigInt.parse(feeQuote["balance"], radix: 10);
 
-// check if enough native for gas fee
+// Check if the account can afford gas
 if (balance < fee) {
-  print("can't natively paid, native balance if not enough for gas fee");
+  print("Native balance is not enough for gas fee");
   return;
 }
 
-// check if gasless available
+// Check if a gasless (sponsored) transaction is available
 var verifyingPaymasterGasless = result["verifyingPaymasterGasless"];
 if (verifyingPaymasterGasless == null) {
-  print("gasless is not available");
+  print("Gasless is not available");
   return;
 }
 
-// check if can token paid
+// Check if gas payment via ERC20 is available
 List<dynamic> feeQuotes = result["tokenPaymaster"]["feeQuotes"];
 
 var overFeeQuotes = feeQuotes.where((element) {
@@ -172,14 +172,13 @@ return balance >= fee;
 }).toList();
 
 if (overFeeQuotes.isEmpty) {
-  print("can't token paid, no valid token for gas fee");
+  print("Can't pay in tokens, no valid token for gas fee");
   return;
 }
 
-// select a fee quote, for example the first.
+// Select a fee quote (native, gasless, token), for example the first.
 var feeQuote = overFeeQuotes[0];
 String tokenPaymasterAddress = result["tokenPaymaster"]["tokenPaymasterAddress"];
-
 ```
 
 ***
