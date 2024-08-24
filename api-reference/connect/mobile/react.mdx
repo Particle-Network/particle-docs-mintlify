@@ -243,19 +243,19 @@ particleConnect.setWalletConnectV2SupportChainInfos(chainInfos);
 
 | Field                     | Type                       | Description                                                                                                              |
 | ------------------------- | -------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
-| `connectOptions`          | `ConnectOption[]`          | Connect options, support `Email`, `Phone`, `Social` and `Wallet`, the sort order is used for connect kit login UI.       |
-| `socialProviders`         | `EnableSocialProvider[]?`  | Social providers, support `Google`, `Apple` and other social options, the sort order is used for connect kit login UI.   |
-| `walletProviders`         | `EnableWalletProvider[]?`  | Wallet providers, support `MetaMask`, `Trust` and other wallet options, the sort order is used for connect kit login UI. |
+| `connectOptions`          | `ConnectOption[]`          | Methods supported for connection, `EMAIL`, `PHONE`, `SOCIAL` and `WALLET`; the order in which these are placed will be reflected within the modal.       |
+| `socialProviders`         | `EnableSocialProvider[]?`  | Supported social login methods, such as `GOOGLE`, `APPLE` and other social options; the order in which these are placed will be reflected within the modal.   |
+| `walletProviders`         | `EnableWalletProvider[]?`  | Supported wallet providers, such as `MetaMask`, `Trust` and other wallet options; the order in which these are placed will be reflected. |
 | `additionalLayoutOptions` | `AdditionalLayoutOptions?` | Layout options                                                                                                           |
-| `logo`                    | `string?`                  | logo url or base64 image                                                                                                 |
+| `logo`                    | `string?`                  | Image URL or base64 string representing the logo used within the modal.                                                                                                 |
 
 ```typeScript
 const config = {
-      //  You can control the array elements and adjust the UI order
+      //  You can control the array elements and adjust the order shown in the UI
       connectOptions: [ConnectOption.Email, ConnectOption.Phone, ConnectOption.Social, ConnectOption.Wallet],
-      //  You can control the array elements and adjust the UI order
+      //  You can control the array elements and adjust the order shown in the UI
       socialProviders: [EnableSocialProvider.Google, EnableSocialProvider.Apple, EnableSocialProvider.Twitter, EnableSocialProvider.Discord, EnableSocialProvider.Github],
-      //  You can control the array elements and adjust the UI order
+      //  You can control the array elements and adjust the order shown in the UI
       walletProviders: [{ enableWallet: EnableWallet.MetaMask, label: EnableWalletLabel.Recommended },
       { enableWallet: EnableWallet.OKX, label: EnableWalletLabel.Popular },
       { enableWallet: EnableWallet.Trust, label: EnableWalletLabel.None },
@@ -268,7 +268,7 @@ const config = {
         isSplitEmailAndPhone: false,
         isHideContinueButton: false,
       },
-      logo: base64Icon // base64 string or url
+      logo: base64Icon // base64 string or image URL
     };
 
 const accountInfo = await particleConnect.connectWithConnectKitConfig(config);

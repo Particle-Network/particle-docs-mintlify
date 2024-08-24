@@ -233,27 +233,27 @@ ParticleConnect.setWalletConnectV2SupportChainInfos(chainInfos);
 ---
 ### Connect Wallet V2
 
-`ParticleConnect.connectWithConnectKitConfig` is one click login function, which can present a customizable login UI. The parameter config can be derived from `ConnectKitConfig`.
+`ParticleConnect.connectWithConnectKitConfig` is the core method driving Particle Connect's customizable login modal, enabling one-click onboarding.
 
-`ConnectKitConfig.init` have these parameters
+The parameters available to configure this modal can be found through `ConnectKitConfig`, as detailed below.
 
 | Field                     | Type                          | Description                                                                                                              |
 | ------------------------- | ----------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
-| `connectOptions`          | `List<ConnectOption>`         | Connect options, support `EMAIL`, `PHONE`, `SOCIAL` and `WALLET`, the sort order is used for connect kit login UI.       |
-| `socialProviders`         | `List<EnableSocialProvider>?` | Social providers, support `GOOGLE`, `APPLE` and other social options, the sort order is used for connect kit login UI.   |
-| `walletProviders`         | `List<EnableWalletProvider>?` | Wallet providers, support `MetaMask`, `Trust` and other wallet options, the sort order is used for connect kit login UI. |
+| `connectOptions`          | `List<ConnectOption>`         | Methods supported for connection, `EMAIL`, `PHONE`, `SOCIAL` and `WALLET`; the order in which these are placed will be reflected within the modal.       |
+| `socialProviders`         | `List<EnableSocialProvider>?` | Supported social login methods, such as `GOOGLE`, `APPLE` and other social options; the order in which these are placed will be reflected within the modal.       |   |
+| `walletProviders`         | `List<EnableWalletProvider>?` | Supported wallet providers, such as `MetaMask`, `Trust` and other wallet options; the order in which these are placed will be reflected.  |
 | `additionalLayoutOptions` | `AdditionalLayoutOptions`     | Layout options                                                                                                           |
-| `logo`                    | `String`                      | logo url or base64 image                                                                                                 |
+| `logo`                    | `String`                      | Image URL or base64 string representing the logo used within the modal.                                                                                                 |
 
 ```dart
 final config = ConnectKitConfig(
-  logo: "", //base64 or https
+  logo: "", // base64 string or image URL
   connectOptions: [
     ConnectOption.EMAIL,
     ConnectOption.PHONE,
     ConnectOption.SOCIAL,
     ConnectOption.WALLET,
-  ], // Changing the order can affect the interface
+  ], // Changing the order will alter the interface
   socialProviders: [
     EnableSocialProvider.GOOGLE,
     EnableSocialProvider.TWITCH,
@@ -264,7 +264,7 @@ final config = ConnectKitConfig(
     EnableSocialProvider.GITHUB,
     EnableSocialProvider.MICROSOFT,
     EnableSocialProvider.LINKEDIN,
-  ], // Changing the order can affect the interface
+  ], // Changing the order will alter the interface
   walletProviders: [
     EnableWalletProvider(EnableWallet.MetaMask,
         label: EnableWalletLabel.RECOMMENDED),
@@ -273,7 +273,7 @@ final config = ConnectKitConfig(
         label: EnableWalletLabel.POPULAR),
     EnableWalletProvider(EnableWallet.Bitget),
     EnableWalletProvider(EnableWallet.WalletConnect),
-  ], //Changing the order can affect the interface
+  ], // Changing the order will alter the interface
   additionalLayoutOptions: AdditionalLayoutOptions(
     isCollapseWalletList: false,
     isSplitEmailAndSocial: true,
