@@ -2,9 +2,11 @@
 title: "React Native Quickstart"
 ---
 
-Particle Connect, the core SDK responsible for driving social logins, implementation only takes a few steps.
+# Quickstart: Implementing Particle Connect within applications built with React Native
 
-This document will go through the step-by-step process of configuring, initializing, and using Particle Connect on React Native.
+Particle Connect, the flagship SDK for facilitating onboarding through either social logins or standard wallet connection, has rich support for React Native, as will be covered here.
+
+Specifically, this document will go through the step-by-step process of configuring, initializing, and using Particle Connect with React Native.
 
 <Note>
   For complete documentation covering the implementation of Particle Connect on React Native in more depth, head over to the [React Native SDK reference](/api-reference/connect/mobile/react).
@@ -16,7 +18,7 @@ This document will go through the step-by-step process of configuring, initializ
 
 <Step title="Installing Particle Connect">
 
-To begin, you'll need to begin by adding `@particle-network/rn-connect` to your React Native application; this is a requirement before moving onto platform-specific configuration.
+To begin, go ahead and add `@particle-network/rn-connect`, `@particle-network/rn-auth-core`, and `@particle-network/rn-base` to your React Native application; this is a requirement before moving onto platform-specific configuration.
 
 ```shell Terminal
 npm install @particle-network/rn-auth-core
@@ -34,9 +36,9 @@ yarn add @particle-network/rn-connect
 
 <Step title="Configuring Particle Connect">
 
-Once installed, you're ready to configure Particle Connect and initialize the SDK.
+Once the aforementioned libraries are installed, you're ready to configure Particle Connect.
 
-To do this, you'll need three key values from the [Particle dashboard](https://dashboard.particle.network): your project ID, client key, and app ID. These are used to authenticate your instance of Particle Connect and connect your project to the dashboard; these are required to properly initialize the SDK.
+Most importantly within this process, you'll need three key values from the [Particle dashboard](https://dashboard.particle.network): your project ID, client key, and app ID. These are used to authenticate your instance of Particle Connect and connect your project to the dashboard; these are required to properly initialize the SDK.
 
 To retrieve these keys, follow the steps outlined below:
 
@@ -106,38 +108,36 @@ Sign up or Log in into the [Particle dashboard](https://dashboard.particle.netwo
 
 For more information on the Particle dashboard, take a look at the [dashboard quickstart](/guides/dashboard).
 
-With your project ID, client key, and app ID retrieved, you'll need to add a file named `ParticleNetwork-Info.plist` to your project, then insert the aforementioned keys as is exemplified below.
-
 ---
 
-### Android configuration
+### Android
 
-If you're planning on using Android for your React Native application, ensure that you meet the following prerequisites (otherwise, expect issues or non-functionality):
+If you're planning on using Android for your React Native application, ensure that you meet the following prerequisites:
 
 - minSdkVersion **23** or higher.
 - compileSdkVersion, targetSdkVersion **34** or higher.
 - JavaVersion **17**.
 - [Jetpack (AndroidX)](https://developer.android.com/jetpack/androidx/migrate?authuser=0).
-- Android Gradle Plugin Version : 8.5.1 or higher.
-- Gradle Version : 8.9 or higher.(before react-native:0.75.2, use 8.8)
+- Android Gradle Plugin Version: **8.5.1** or higher.
+- Gradle Version: **8.9** or higher. (before react-native:0.75.2, use 8.8)
 
-Once you've made sure your project meets these requirements, you'll need to move on and define the aforementioned configuration values (`projectId`, `clientKey`, and `appId`) within your `build.grade` file (generally found at `${project name}/android/app/build.gradle`). These directly link your application's instance of Particle Connect with the [dashboard](https://dashboard.particle.network).
+Once you've made sure your project meets these requirements, you'll need to move on and define the aforementioned configuration values (project ID, client key, and app ID) within your `build.grade` file (which is generally found at `${project name}/android/app/build.gradle`). These directly link your application's instance of Particle Connect with the [dashboard](https://dashboard.particle.network).
 
 Specifically, within `build.gradle`, you'll need to set four different values:
 
 1. `dataBinding`, this should be enabled with `enabled = true`.
-2. `manifestPlaceholders["PN_PROJECT_ID"]`, the `projectId` previously retrieved from the Particle dashboard.
-3. `manifestPlaceholders["PN_PROJECT_CLIENT_KEY"]`, the `clientKey` previously retrieved from the Particle dashboard.
-4. `manifestPlaceholders["PN_APP_ID"]`, the `appId` previously retrieved from the Particle dashboard.
+2. `manifestPlaceholders["PN_PROJECT_ID"]`, the project ID previously retrieved from the Particle dashboard.
+3. `manifestPlaceholders["PN_PROJECT_CLIENT_KEY"]`, the client key previously retrieved from the Particle dashboard.
+4. `manifestPlaceholders["PN_APP_ID"]`, the app ID previously retrieved from the Particle dashboard.
 
 ```groovy build.gradle
 android {
   ...
   defaultConfig {
       ......
-      manifestPlaceholders["PN_PROJECT_ID"] = "your project id"
-      manifestPlaceholders["PN_PROJECT_CLIENT_KEY"] = "your project client key"
-      manifestPlaceholders["PN_APP_ID"] = "your app id"
+      manifestPlaceholders["PN_PROJECT_ID"] = "Your project ID"
+      manifestPlaceholders["PN_PROJECT_CLIENT_KEY"] = "Your client key"
+      manifestPlaceholders["PN_APP_ID"] = "Your app ID"
   }
 
   dataBinding {
@@ -149,7 +149,7 @@ android {
 
 ---
 
-### iOS configuration
+### iOS
 
 Alternatively, if you plan to use iOS for your React Native application, the underlying setup process differs slightly. Before diving in, ensure that your project meets the following requirements:
 
@@ -159,94 +159,100 @@ Alternatively, if you plan to use iOS for your React Native application, the und
 
 With these requirements set, you'll need to open an exported iOS project and find `ios/{project name}.xcworkspace`.
 
-At the root of your Xcode project, create a new file, `ParticleNetwork-Info.plist`. Ensure this is marked under "Target Membership."
+<Steps>
+  <Step title="Configuring ParticleNetwork-Info.plist">
+    At the root of your Xcode project, create a new file, `ParticleNetwork-Info.plist`. Ensure this is marked under "Target Membership."
 
-From here, with a fresh `ParticleNetwork-Info.plist` file, go ahead and fill it in with the following:
+    From here, with a fresh `ParticleNetwork-Info.plist` file, go ahead and fill it in with the aforementioned project keys (project ID, client key, and app ID):
 
-```xml ParticleNetwork-Info.plist
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<plist version="1.0">
-<dict>
-	<key>PROJECT_UUID</key>
-	<string>YOUR_PROJECT_UUID</string>
-	<key>PROJECT_CLIENT_KEY</key>
-	<string>YOUR_PROJECT_CLIENT_KEY</string>
-	<key>PROJECT_APP_UUID</key>
-	<string>YOUR_PROJECT_APP_UUID</string>
-</dict>
-</plist>
-```
+    ```xml ParticleNetwork-Info.plist
+    <?xml version="1.0" encoding="UTF-8"?>
+    <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+    <plist version="1.0">
+    <dict>
+      <key>PROJECT_UUID</key>
+      <string>YOUR_PROJECT_UUID</string>
+      <key>PROJECT_CLIENT_KEY</key>
+      <string>YOUR_PROJECT_CLIENT_KEY</string>
+      <key>PROJECT_APP_UUID</key>
+      <string>YOUR_PROJECT_APP_UUID</string>
+    </dict>
+    </plist>
+    ```
+  </Step>
 
-Similar to the Android configuration, you'll need to fill in `PROJECT_UUID` (`projectId`), `PROJECT_CLIENT_KEY` (`clientKey`), and `PROJECT_APP_UUID` (`appId`) with the corresponding values retrieved from the [Particle dashboard](https://dashboard.particle.network).
+  <Step title="Configuring AppDelegate.swift">
+    Next, you'll need to head over to your `AppDelegate.swift` file to add an import of `react_native_particle_connect`.
 
-Next, you'll need to head over to your `AppDelegate.swift` file to add an import of `react_native_particle_connect`.
+    ```swift AppDelegate.swift
+    #import <react_native_particle_connect/react_native_particle_connect-Swift.h>
+    ```
 
-```swift AppDelegate.swift
-#import <react_native_particle_connect/react_native_particle_connect-Swift.h>
-```
+    Additionally, within your application's `application` method (as shown below), you'll need to include a handler condition derived from `ParticleConnectSchemeManager handleUrl:url`. This should be as simple as a `YES` (true) return upon a true value of `ParticleConnectSchemeManager handleUrl:url`.
 
-Additionally, within your application's `application` method (as shown below), you'll need to include a handler condition derived from `ParticleConnectSchemeManager handleUrl:url`. This should be as simple as a `YES` (true) return upon a true value of `ParticleConnectSchemeManager handleUrl:url`.
+    ```swift AppDelegate.swift
+    - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options {
+      if ([ParticleConnectSchemeManager handleUrl:url] == YES) {
+        return YES;
+      } else {
+        // other methods
+      }
+      return YES;
+    }
+    ```
+  </Step>
 
-```swift AppDelegate.swift
-- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options {
-  if ([ParticleConnectSchemeManager handleUrl:url] == YES) {
-    return YES;
-  } else {
-    // other methods
-  }
-  return YES;
-}
-```
+  <Step title="Setting your scheme URL">
+    Additionally, you'll need to configure your application's scheme URL. To configure this, select your application from "TARGETS" under the "Info" section, then click "+" to add a URL type.
 
-Wrapping up, you'll need to configure your application's scheme URL. To configure this, select your application from "TARGETS" under the "Info" section, then click "+" to add a URL type.
+    For example, if your `appId` is `63bfa427-cf5f-4742-9ff1-e8f5a1b9828f`, then the scheme URL would be `pn63bfa427-cf5f-4742-9ff1-e8f5a1b9828f` --simply adding `pn` to the beginning of the `appId`.
+  </Step>
 
-For example, if your `appId` is `63bfa427-cf5f-4742-9ff1-e8f5a1b9828f`, then the scheme URL would be `pn63bfa427-cf5f-4742-9ff1-e8f5a1b9828f` --simply adding `pn` to the beginning of the `appId`.
+  <Step title="Configuring Info.plist">
+    Now, head over to your `Info.plist` file and include the following snippet.
 
-Additionally, head over to your `Info.plist` file and include the following snippet.
+    ```xml Info.plist
+    <key>LSApplicationQueriesSchemes</key>
+    <array>
+    <string>metamask</string>
+    <string>phantom</string>
+    <string>bitkeep</string>
+    <string>imtokenv2</string>
+    <string>rainbow</string>
+    <string>trust</string>
+    <string>zerion</string>
+    <string>mathwallet</string>
+    <string>oneinch</string>
+    <string>awallet</string>
+    <string>okex</string>
+    </array>
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>We need access in order to open photos of barcodes</string>
+    <key>NSCameraUsageDescription</key>
+    <string>We use the camera to scan barcodes</string>
+    <key>NSFaceIDUsageDescription</key>
+    <string>We use Face ID for secure access to the app.</string>
+    ```
+  </Step>
 
-```xml Info.plist
-<key>LSApplicationQueriesSchemes</key>
-<array>
-<string>metamask</string>
-<string>phantom</string>
-<string>bitkeep</string>
-<string>imtokenv2</string>
-<string>rainbow</string>
-<string>trust</string>
-<string>zerion</string>
-<string>mathwallet</string>
-<string>oneinch</string>
-<string>awallet</string>
-<string>okex</string>
-</array>
-<key>NSPhotoLibraryUsageDescription</key>
-<string>We need access in order to open photos of barcodes</string>
-<key>NSCameraUsageDescription</key>
-<string>We use the camera to scan barcodes</string>
-<key>NSFaceIDUsageDescription</key>
-<string>We use Face ID for secure access to the app.</string>
-```
-
-Finally, you'll need to edit your Podfile to ensure `particle_connect` is properly imported. Head over to the [linked guide](https://github.com/Particle-Network/particle-react-native/blob/master/particle-connect/example/ios/Podfile) to complete this if you have not already.
-
-
----
+  <Step title="Configuring your Podfile">
+    Finally, you'll need to edit your Podfile to ensure `particle_connect` is properly imported. Head over to the [linked guide](https://github.com/Particle-Network/particle-react-native/blob/master/particle-connect/example/ios/Podfile) to complete this if you have not already.
+  </Step>
+</Steps>
 
 </Step>
 
 
-<Step title="Initialize Particle Connect">
+<Step title="Initializing Particle Connect">
 
 At this point, you've installed and configured Particle Connect; the only step remaining before the SDK can be used is initialization.
 
 Particle Connect can be initialized by simply calling the `init` method on `particleConnect`. This takes the following parameters:
   - `chainInfo`, representing the primary chain you intend to use (for example, `ChainInfo.Ethereum`, `chainInfo.Polygon`).
-  - `dappMetaData`, derived from `DappMetaData`
+  - `metadata`, a collection of information about your project.
   - `env`, affecting the information logged within your environment (`Env.dev`, `Env.production`, or `Env.staging`).
-  - `rpcUrlConfig`, for custom rpc url
 
-The snippet below is an example of this.
+An example of this has been included below.
 
 ```typeScript
 const chainInfo: ChainInfo = Ethereum;
@@ -266,16 +272,16 @@ particleAuthCore.init();
 
 <Step title="Facilitating connection">
 
-Now that Particle Connect has been installed, configured, and initialized, you're ready to facilitate connection through the Particle Connect modal.
+At this point, you're ready to facilitate connection through the Particle Connect modal (via either socials or standard wallets).
 
-To do this, you'll need to establish a `connectKitConfig` specifying the:
-- Onboarding mechanisms you'd like to support, through `connectOptions` (such as `.Email`, `.Phone`, `Social`, `Wallet`).
-- Social login providers you'd like to support, through `socialProviders` (such as `.Google`, `.Apple`).
-- Wallets you'd like to be included as options within the modal, through `walletProviders` (specified through an instance of `EnableWalletProvider`, as shown below).
+To do this, you'll need to establish a config object specifying the:
+- Onboarding mechanisms you'd like to support, through `connectOptions` (such as `ConnectOption.Email`, `ConnectOption.Phone`, `ConnectOption.Social`, `ConnectOption.Wallet`).
+- Social login providers you'd like to support, through `socialProviders` (such as `EnableSocialProvider.Google`, `EnableSocialProvider.Apple`, and so on).
+- Wallets you'd like to be included as options within the modal, through `walletProviders` (such as EnableWallet.MetaMask, as shown below).
 - (Optionally), layout options altering the format of the connection modal through `additionalLayoutOptions`.
 - (Optionally), additional customizations, such as a custom icon, through `logo`.
 
-Upon generating this config (with `ConnectKitConfig`), you'll be able to call `ParticleConnect.connectWithConnectKitConfig`, initiating the resulting connection modal.
+Upon generating this config, you'll be able to call `particleConnect.connectWithConnectKitConfig`, initiating the resulting connection modal.
 
 ```typeScript
 const config = {
@@ -296,7 +302,7 @@ const config = {
         isSplitEmailAndPhone: false,
         isHideContinueButton: false,
       },
-      logo: base64Icon // base64 string or url
+      logo: base64Icon // base64 string or image URL
     };
 
 const accountInfo = await particleConnect.connectWithConnectKitConfig(config);
@@ -314,16 +320,11 @@ Upon wallet connection (or social login), you'll be able to retrieve information
 
 Basic account information can be found through the result of `particleConnect.connectWithConnectKitConfig`, in this case, that was saved to `account`, which contains properties such as `publicAddress` and `walletType`.
 
-To explicitly retrieve `userInfo` (a collection of information regarding the login mechanism, attached addresses, and so on; more information can be found within its [API reference](/api-reference/auth/server/getuserinfo)), you'll need to call `auth.getUserInfo`.
+To explicitly retrieve `userInfo` (a collection of information regarding the login mechanism, attached addresses, and so on; more information can be found within its [API reference](/api-reference/auth/server/getuserinfo)), you'll need to call `particleAuthCore.getUserInfo`.
 
 An example of both approaches can be found below.
 
 ```typeScript
-if account.walletType == WalletType.authCore {
-    let auth = Auth()
-    let userInfo = auth.getUserInfo()
-}
-
 const publicAddress = account.publicAddress
 const walletType = account.walletType
 
@@ -334,7 +335,7 @@ if (walletType == WalletType.AuthCore) {
 
 ### Send a Transaction
 
-To do this, you'll need to construct a transaction with `EvmService.createTransaction` using standard parameters such as `from`, `data`, `value`, and `to`,
+To do this, you'll need to construct a transaction with `EvmService.createTransaction` using standard parameters such as `evmAddress` (from, or the sender), `data`, `value`, and `receiverAddress` (to, or the recipient),
 
 To execute the resulting transaction, you'll need to initialize an instance of the active connected wallet; an example of doing this has been included in the snippet below.
 
@@ -352,7 +353,7 @@ const txHash = await ParticleConnect.signAndSendTransaction(WalletType.AuthCore,
 
 ### Open Wallet
 
-If you included `@particle-network/rn-wallet` within your `package.json`, you can open the (optional) embedded wallet interface at any time after a user connects, use `ParticleWallet.setSupportChain` to set supported chains, then `ParticleWallet.navigatorWallet` to open the interface.
+If you installed `@particle-network/rn-wallet`, you can open the (optional) [embedded wallet interface](/api-reference/wallet/mobile/react) at any time after a user connects, use `particleWallet.setSupportChain` to set supported chains, then `particleWallet.navigatorWallet` to open the interface.
 
 ```typeScript
 const chainInfos = [Ethereum, EthereumSepolia, Base];

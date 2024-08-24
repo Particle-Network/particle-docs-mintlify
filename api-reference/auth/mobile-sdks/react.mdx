@@ -249,21 +249,21 @@ import * as particleAuthCore from '@particle-network/rn-auth-core';
 // Google or other social login
 const userInfo = await particleAuthCore.connect(LoginType.Google, null, [], SocialLoginPrompt.SelectAccount);
 
-// Email or phone login, through a presentation page.
+// Email or phone login, facilitated through Particle's UI
 const userInfo = await particleAuthCore.connect(LoginType.Email, null, supportAuthTypes, SocialLoginPrompt.SelectAccount, {
         projectName: "React Native Example",
         description: "Welcome to login",
         imagePath: base64Img
       });
-// JWT login
+
+// Custom authentication via JWT
 const userInfo = await particleAuthCore.connect(LoginType.JWT, jwt);
 
-// Here's how to log in to a custom page
-// Send verification code to email or phone number, the phone number must be in E.164 format.
+// Configuration of a custom email or phone login page, programmatically driving verification codes
 const isSuccess = await particleAuthCore.sendEmailCode("user@example.com");
 const isSuccess = await particleAuthCore.sendPhoneCode("11234567890");
 
-// login with email or phone, the phone number must be in E.164 format.
+// After a code is sent, the user should enter it within your UI, upon which you can use it for connection
 const userInfo = await ParticleAuthCore.connectWithCode(null, "user@example.com", code);
 const userInfo = await ParticleAuthCore.connectWithCode("+11234567890", null, this.state.code);
 ```
@@ -515,9 +515,9 @@ const result = await particleAuthCore.getBlindEnable();
 
 ---
 
-### Filter unsupported countries
+### Filter Unsupported Countries (Phone Authentication)
 
-Set unsupported countries, used with phone login UI.
+If necessary, you can restrict specific countries from authenticating via. phone number; upon entering a phone number originating from a country specified here, the user will be blocked by the login modal.
 
 | Field         | Type           | Description                                                                                                    |
 | ------------- | -------------- | -------------------------------------------------------------------------------------------------------------- |

@@ -210,24 +210,23 @@ This is achieved and configured through `ParticleAuthCore.connect`. Once this me
 | `loginPageConfig`  | `LoginPageConfig?`       | (Optional) Controls login UI customization: contains project name, icon and description.                                                                                                                                                                                                |
 | `supportAuthTypes` | `List<SupportAuthType>?` | The methods of authentication visible on the authentication popup UI. By default, this will be exclusive to the chosen social login method, although by passing in additional types, you can expand the UI to include the ability to login with those as an alternative to type. |
 
-<Tip>You can use your existing user base or authentication method with Particle Connect through JWT. This way, your users can still log in with their current accounts. Click [here](/guides/configuration/auth/jwt) to learn how to configure jwt. </Tip>
+<Tip>You can use your existing user base (account system) or a custom authentication method with Particle Connect through JWT. Click [here](/guides/configuration/auth/jwt) to learn how to configure JWT.</Tip>
 
 ```dart
 // Google or other social login
 final userInfo = await ParticleAuthCore.connect(LoginType.google, prompt: SocialLoginPrompt.select_account);
 
-// Email or phone login, through a presentation page.
+// Email or phone login, facilitated through Particle's UI
 final userInfo = await ParticleAuthCore.connect(LoginType.email, supportAuthTypes: SupportAuthType.values, prompt: SocialLoginPrompt.select_account);
 
-// JWT login
+// Custom authentication via JWT
 final userInfo = await ParticleAuthCore.connect(LoginType.jwt, account: jwt);
 
-// Here's how to log in to a custom page
-// Send verification code to email or phone number, the phone number must be in E.164 format.
+// Configuration of a custom email or phone login page, programmatically driving verification codes
 final result = await ParticleAuthCore.sendEmailCode("user@example.com");
-final result = await ParticleAuthCore.sendPhoneCode("+11234567890");
+final result = await ParticleAuthCore.sendPhoneCode("+11234567890"); // Must be in E.164 format
 
-// login with email or phone, the phone number must be in E.164 format.
+// After a code is sent, the user should enter it within your UI, upon which you can use it for connection
 final userInfo = await ParticleAuthCore.connectWithCode(email: "user@example.com", code: code);
 final userInfo = await ParticleAuthCore.connectWithCode(phone: "+11234567890", code: code);
 ```
@@ -451,9 +450,9 @@ final result = ParticleAuthCore.getBlindEnable();
 
 ---
 
-### Filter unsupported countries
+### Filter Unsupported Countries (Phone Authentication)
 
-Set unsupported countries, used with phone login UI.
+If necessary, you can restrict specific countries from authenticating via. phone number; upon entering a phone number originating from a country specified here, the user will be blocked by the login modal.
 
 | Field         | Type           | Description                                                                                                    |
 | ------------- | -------------- | -------------------------------------------------------------------------------------------------------------- |
