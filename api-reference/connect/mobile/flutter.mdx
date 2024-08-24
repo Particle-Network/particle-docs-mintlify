@@ -206,16 +206,15 @@ Now that you've spun up a project on the [Particle dashboard]() and configured y
 
 | Field          | Type            | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
 | -------------- | --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `chainInfo`    | `ChainInfo`     | The primary chain to be used within your application. This should be dictated by an overall blockchain, followed by a specific network (testnet). Within this example, it's `.Ethereum`(alternatively it could be `.EthereumSepolia`, and so on.)                                                                                                                                                                                                                                                                                                                              |
-| `dAppData`     | `DAppMetadata`  | Metadata outlining the description of your application, This should be an instance of `DAppMetadata` with the following parameters: `walletConnectProjectId`, the wallet connect project id retrieved from the [WalletConnect dashboard](https://cloud.walletconnect.com), `name`, the name of your project. `icon`, a URL linking to the icon of your project; this should be 512x512, ideally. `url`, the URL of your project's website. `description`, the description of your project, `redirect`, optional, redirect universal link of you project, `verifyUrl`, optional |
-| `env`          | `Env`           | The specific environmennt to be used. This can be either `.dev`, `.staging`, `.production`, this should be set to `.production` when release                                                                                                                                                                                                                                                                                                                                                                                                                                   |
-| `rpcUrlConfig` | `RpcUrlConfig?` | Customize rpc url                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
+| `chainInfo`    | `ChainInfo`     | The primary chain to be used within your application. This should be dictated by an overall blockchain, followed by a specific network (testnet). Within this example, it's `.Ethereum` (alternatively it could be `.EthereumSepolia`, and so on.)                                                                                                                                                                                                                                                                                                                              |
+| `dAppData`     | `DAppMetadata`  | Metadata outlining the description of your application, This should be an instance of `DAppMetadata` with the following parameters: `name`, the name of your project. `icon`, a URL linking to the icon of your project; this should be 512x512, ideally. `url`, the URL of your project's website. `description`, the description of your project, `redirect`, optional, redirect universal link of you project, `verifyUrl`, optional |
+| `env`          | `Env`           | The specific environmennt to be used. This can be either `.dev`, `.staging`, or `.production`.                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+| `rpcUrlConfig` | `RpcUrlConfig?` | Customize the RPC URL.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
 
 ```dart
 ParticleInfo.set(projectId, clientKey);
 
 final dappInfo = DappMetaData(
-    "WalletConnect project id",
     "Particle Connect",
     "https://connect.particle.network/icons/512.png",
     "https://connect.particle.network",
@@ -260,16 +259,16 @@ If you're using `authCore`, you'll also need to pass in a `ParticleConnectConfig
 | Field               | Type                     | Description                                                                                                                                                                                                                                                                      |
 | ------------------- | ------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `loginType`         | `LoginType`              | The specific social login to be used. This can be either `.email`, `.phone`, `.google`, `.apple`, `.jwt`, `.facebook`, `.twitter`, `.discord`, `.github`, `.twitch`, `.microsoft` or `linkedin`.                                                                                 |
-| `account`           | `String?`                | (Optional) when `type` is set to either `.email`, `.phone`, or `.jwt`, you can use the `account` parameter to pass in an expected email, phone number, or JWT. This is optional for the former two, but required for `.jwt`. The phone number must be in E.164 format.           |
-| `code`              | `String?`                | (Optional) when `type` is set to either `.email` pr `.phone`, you can use the code parameter to pass the verification code.                                                                                                                                                      |
+| `account`           | `String?`                | (Optional) When `type` is set to either `.email`, `.phone`, or `.jwt`, you can use the `account` parameter to pass in an expected email, phone number, or JWT. This is optional for the former two, but required for `.jwt`. When passing a phone number, it must be in E.164 format.           |
+| `code`              | `String?`                | (Optional) When `type` is set to either `.email` or `.phone`, you can use the code parameter to pass the verification code.                                                                                                                                                      |
 | `supportAuthTypes`  | `List<SupportAuthType>?` | The methods of authentication visible on the authentication popup UI. By default, this will be exclusive to the chosen social login method, although by passing in additional types, you can expand the UI to include the ability to login with those as an alternative to type. |
-| `socialLoginPrompt` | `SocialLoginPrompt?`     | (Optional) either `.none`, `.consent`, or `.select_account`                                                                                                                                                                                                                      |
-| `loginPageConfig`   | `LoginPageConfig?`       | (Optional) to customize the UI page, contains project name, icon and description.                                                                                                                                                                                                |
+| `socialLoginPrompt` | `SocialLoginPrompt?`     | Changes what the OAuth provider prompts a user to do; either `.none`, `.consent`, or `.select_account`. Only Google, Discord and Microsoft support it.                                                                                                                                                                                                                 |
+| `loginPageConfig`   | `LoginPageConfig?`       | (Optional) To customize the UI page, contains project name, icon and description.                                                                                                                                                                                                |
 
 E.g:
 
 ```dart
-// use particle authentication
+// Use social login
 final loginPageConfig = LoginPageConfig(
           "https://static.particle.network/wallet-icons/Particle-iOS.png",
           "Flutter Example",
@@ -279,7 +278,7 @@ final config = ParticleConnectConfig(loginType, "user@example.com",
           loginPageConfig: loginPageConfig);
 final account = await ParticleConnect.connect(WalletType.authCore, config: config);
 
-// use metamask or other supported wallet
+// Use MetaMask or other supported wallet
 final account = await ParticleConnect.connect(WalletType.metaMask)
 ```
 
@@ -374,9 +373,15 @@ final account = await ParticleConnect.importMnemonic(WalletType.evmPrivateKey, m
 // Exportation
 String privateKey = await ParticleConnect.exportPrivateKey(WalletType.evmPrivateKey, publicAddress);
 ```
+### (Optional) Custom WalletConnect Projcet ID
+```dart
+// Call before ParticleConnect.init
+ParticleConnect.setWalletConnectProjectId("Your WalletConnect Project ID, from https://cloud.walletconnect.com")
+```
 
 ---
 
 ## Dive Deeper
 
 `particle_connect` includes `particle_auth_core`. If you log in with a Particle account, you can access additional function such as `getUserInfo`, `openAccountAndSecurity`, `hasMasterPassword` and `hasPaymentPassword` and `changeMasterPassword`, you can reference the docs from [Auth SDK reference](/api-reference/auth/mobile-sdks/flutter)
+

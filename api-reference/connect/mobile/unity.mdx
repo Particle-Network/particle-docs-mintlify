@@ -29,13 +29,6 @@ Before diving in, all of the Particle Network Unity SDKs (for Particle Auth and 
 />
 </div>
 
-<Warning>
-  It is strongly discouraged to use a private key or the mnemonic
-  import/generate function. If you use it, you need to secure the data yourself,
-  as Particle doesn't have a relationship with the imported/generated mnemonic
-  or private key.
-</Warning>
-
 ## Getting Started
 
 ### Prerequisites
@@ -254,7 +247,7 @@ Within implementations of Particle Connect, `Connect` drives connection with a w
 - `WalletConnect`.
 - `Zerion`.
 - `Math`.
-- `Inch1`, 1inch.
+- `Inch1`.
 - `Zengo`.
 - `Alpha`.
 - `OKX`.
@@ -275,14 +268,14 @@ If you're using `AuthCore`, you'll also need to pass in a `ConnectConfig` object
 E.g.:
 
 ```csharp
-// use particle authentication
+// Use social logins
 var supportLoginTypes = new List<SupportLoginType> { SupportLoginType.APPLE, SupportLoginType.EMAIL, SupportLoginType.PHONE, SupportLoginType.GOOGLE};
 var loginPageConfig = new LoginPageConfig("Particle Unity Example",
                 "An example description", "https://connect.particle.network/icons/512.png");
 ConnectConfig config = new ConnectConfig(LoginType.Email, "user@example.come", null, supportLoginTypes, SocialLoginPrompt.SelectAccount, loginPageConfig);
 await ParticleConnect.Instance.Connect(WalletType.Particle, config);
 
-// use metamask or other supported wallet
+// Use MetaMask or other supported wallet
 await ParticleConnect.Instance.Connect(WalletType.MetaMask);
 ```
 

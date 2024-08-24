@@ -48,8 +48,9 @@ If you're planning on using Android for your React Native application, ensure yo
 - compileSdkVersion, targetSdkVersion **34** or higher.
 - JavaVersion **17**.
 - [Jetpack (AndroidX)](https://developer.android.com/jetpack/androidx/migrate?authuser=0).
-- Android Gradle Plugin Version : 8.5.1 or higher.
-- Gradle Version : 8.9 or higher.
+- Android Gradle Plugin Version: 8.5.1 or higher.
+- Gradle Version: 8.9 or higher. (before react-native:0.75.2, use 8.8)
+
 
 Once you've made sure your project meets these requirements, you'll need to move on and define the aforementioned configuration values (`projectId`, `clientKey`, and `appId`) within your `build.grade` file (generally found at `${project name}/android/app/build.gradle`). These directly link your application's instance of Particle Connect with the [dashboard](https://dashboard.particle.network).
 
@@ -121,7 +122,7 @@ Additionally, within your application's `application` method (as shown below), y
   if ([ParticleConnectSchemeManager handleUrl:url] == YES) {
     return YES;
   } else {
-    // other methods
+    // Other methods
   }
   return YES;
 }
@@ -187,7 +188,7 @@ import * as particleAuthCore from '@particle-network/rn-auth-core';
 const chainInfo = Ethereum;
 const env = Env.Dev;
 const metaData = {
-  walletConnectProjectId: 'your wallet connect project id, get it from wallet connect',
+  walletConnectProjectId: 'Your WalletConnect Project ID, retrieved from https://cloud.walletconnect.com',
   name: 'Particle Connect',
   icon: 'https://connect.particle.network/icons/512.png',
   url: 'https://connect.particle.network',
@@ -283,16 +284,16 @@ The specific parameters that can be used within `ParticleWallet.navigatorBuyCryp
 
 | Field           | Type         | Description                                                                                   |
 | --------------- | ------------ | --------------------------------------------------------------------------------------------- |
-| `walletAddress` | `string?`    | (Optional) the wallet address to receive the cryptocurrency, default is current user address. |
-| `cryptoCoin`    | `string?`    | (Optional) cryptocurrency denomination. default is current chain native token symbol.         |
-| `fiatCoin`      | `string?`    | (Optional) fiat currency denomination. defualt is current fiat coin.                          |
-| `fiatAmt`       | `int?`       | (Optional) the amount of fiat to be automatically filled in as the purchase volume.           |
-| `chainInfo`     | `ChainInfo?` | (Optional) the chainInfo, default is current chainInfo.                                       |
-| `fixFiatCoin`   | `boolean`    | (Optional) lock selection of fiat coin in the buy menu, default is false.                     |
-| `fixFiatAmt`    | `boolean`    | (Optional) lock selection of fiat amount in the buy menu, default is false.                   |
-| `fixCryptoCoin` | `boolean`    | (Optional) lock selection of crypto coin in the buy menu, default is false.                   |
-| `theme`         | `string?`    | (Optional) the buy page theme, `dark` or `light`, default is curreny appearance.              |
-| `language`      | `Language?`  | (Optional) the buy page lanuage, default is current language.                                 |
+| `walletAddress` | `string?`    | (Optional) The wallet address to receive the cryptocurrency, default is current user address. |
+| `cryptoCoin`    | `string?`    | (Optional) Cryptocurrency denomination. Default is current chain native token symbol.         |
+| `fiatCoin`      | `string?`    | (Optional) Fiat currency denomination. Default is current fiat coin.                          |
+| `fiatAmt`       | `int?`       | (Optional) The amount of fiat to be automatically filled in as the purchase volume.           |
+| `chainInfo`     | `ChainInfo?` | (Optional) The chainInfo, default is current chainInfo.                                       |
+| `fixFiatCoin`   | `boolean`    | (Optional) Lock selection of fiat coin in the buy menu, default is false.                     |
+| `fixFiatAmt`    | `boolean`    | (Optional) Lock selection of fiat amount in the buy menu, default is false.                   |
+| `fixCryptoCoin` | `boolean`    | (Optional) Lock selection of crypto coin in the buy menu, default is false.                   |
+| `theme`         | `string?`    | (Optional) The buy page theme, `dark` or `light`, default is curreny appearance.              |
+| `language`      | `Language?`  | (Optional) The buy page lanuage, default is current language.                                 |
 
 ```typeScript
 const config = {
@@ -319,9 +320,9 @@ Particle Wallet features a built-in swap widget, aggregating multiple providers 
 
 | Field              | Type      | Description                                                                                                                                            |
 | ------------------ | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `fromTokenAddress` | `string?` | (Optional) the swap pair from token address                                                                                                            |
-| `toTokenAddress`   | `string?` | (Optional) the swap pair to token address                                                                                                              |
-| `amount`           | `string?` | (Optional) the swap from token amount, should pass the minimal unit string, for example 0.01 ETH, it's decimals is 18, should pass "10000000000000000" |
+| `fromTokenAddress` | `string?` | (Optional) The swap pair from token address                                                                                                            |
+| `toTokenAddress`   | `string?` | (Optional) The swap pair to token address                                                                                                              |
+| `amount`           | `string?` | (Optional) The swap from token amount, should pass the minimal unit string, for example 0.01 ETH, it's decimals is 18, should pass "10000000000000000" |
 
 E.g.:
 

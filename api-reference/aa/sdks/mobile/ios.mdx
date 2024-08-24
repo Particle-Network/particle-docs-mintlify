@@ -84,7 +84,7 @@ You can also retrieve the address of the smart account, among other details, by 
 
 | Field  | Type   | Description                                                                                              |
 |--------|--------|----------------------------------------------------------------------------------------------------------|
-| `publicAddress` | `String` | Eoa address.   |
+| `publicAddress` | `String` | EOA address.   |
 | `chainInfo`| `ChainInfo?`| (Optional) default is current chainInfo.|
 
 
@@ -101,7 +101,6 @@ The `auth.evm.sendTransaction` method, defined in `ParticleAuthCore`, is used to
 The `adapter.signAndSendTransaction` method, defined in `ConnectAdapter`, is used to send a single transaction to the network.
 
 The `aaService.quickSendTransactions` method, defined in `ParticleAA`, is used to send batched transactions within a single UserOperation.
-
 
 `auth.evm.sendTransaction` takes the following parameters:
 
@@ -160,15 +159,15 @@ class YourViewController {
 
 extension YourViewController: MessageSigner {
     func signMessage(_ message: String, chainInfo: ParticleNetworkBase.ParticleNetwork.ChainInfo?) -> RxSwift.Single<String> {
-        // if you are using ParticleAuthService
+        // If you are using ParticleAuthService
         return Single<String>.fromAsync { [weak self] in
             guard let self = self else { throw ParticleNetwork.ResponseError(code: nil, message: "self is nil") }
             return try await self.evm.personalSign(message, chainInfo: chainInfo)
         }
         
-        // if you are using ParticleConnectService
-        // get current adapter by walletType and publicAddress
-        // here we assume currentWalletType is Metamask
+        // If you are using ParticleConnectService
+        // Get current adapter by walletType and publicAddress
+        // Here we assume currentWalletType is Metamask
         
         let currentWalletType = WalletType.metaMask
         let adapters = ParticleConnect.getAllAdapters().filter {
@@ -182,14 +181,14 @@ extension YourViewController: MessageSigner {
     }
     
     func getEoaAddress() -> String {
-        // if you are using ParticleAuthCore
+        // If you are using ParticleAuthCore
         return auth.evm.getAddress() ?? ""
         
-        // if you are using ParticleConnectService
+        // If you are using ParticleConnectService
         return self.publicAddress
     }
 }
-// Add this Signle extension to support convert rxswift function to combine function
+// Add this single extension to support converting rxswift function to combine function
 extension Single {
     static func fromAsync<T>(_ fn: @escaping () async throws -> T) -> Single<T> {
         .create { observer in
@@ -216,13 +215,13 @@ extension YourViewController {
         let wholeFeeQuote = try await aa.rpcGetFeeQuotes(eoaAddress: eoaAddress, transactions: [transaction], chainInfo: chainInfo).value
             
         if wholeFeeQuote.gasless != nil {
-            // There are two ways to send gasless
+            // There are two ways to sponsor transactions
             // 1, call adapter or ParticleAuthService, requires one transaction
             let txHash1 = try await auth.evm.sendTransaction(transaction, feeMode: .gasless, chainInfo: chainInfo)
-            // 2, call aa, support multi transactions, requires implement MessageSigner delegate.
+            // 2, call AA, supports batched transactions, requires implementation of MessageSigner delegate.
             let txHash2 = try await aa.quickSendTransactions([transaction], feeMode: .gasless, messageSigner: self, wholeFeeQuote: wholeFeeQuote, chainInfo: chainInfo).value
         } else {
-            // you can't gasless
+            // Gasless wouldn't be possible in this condition.
         }
             
         let nativeFeeQuote = AA.FeeQuote(json: wholeFeeQuote.native.feeQuote, tokenPaymasterAddress: nil)
@@ -230,10 +229,10 @@ extension YourViewController {
             // There are two ways to send, pay token
             // 1, call adapter or ParticleAuthService, requires one transaction
             let txHash1 = try await auth.evm.signAndSendTransaction(transaction, feeMode: .native, chainInfo: chainInfo)
-            // 2, call aa, support multi transactions, requires implement MessageSigner delegate.
+            // 2, call AA, supports batched transactions, requires implementation of MessageSigner delegate.
             let txHash2 = try await aa.quickSendTransactions([transaction], feeMode: .native, messageSigner: self, wholeFeeQuote: wholeFeeQuote, chainInfo: chainInfo).value
         } else {
-            // you don't have enough native to pay
+            // User can't afford transaction
         }
 
         if let token = wholeFeeQuote.token {
@@ -241,19 +240,19 @@ extension YourViewController {
             let tokenFeeQuotes = token.feeQuotes.map {
                 AA.FeeQuote(json: $0, tokenPaymasterAddress: tokenPaymasterAddress)
             }.filter {
-                // filter out balance >= fee
+                // Filter out balance >= fee
                 $0.isEnoughForPay
             }
             if tokenFeeQuotes.count > 0 {
-                // select a feeQuote, here we select the first one.
+                // Select a feeQuote, here we select the first one.
                 let feeQuote = tokenFeeQuotes[0]
                 // There are two ways to send, pay token
                 // 1, call adapter or ParticleAuthService, requires one transaction
                 let txHash1 = try await auth.evm.signAndSendTransaction(transaction, feeMode: .token(feeQuote), chainInfo: chainInfo)
-                // 2, call aa, support multi transactions, requires implement MessageSigner delegate.
+                // 2, call AA, supports batched transactions, requires implementation of MessageSigner delegate.
                 let txHash2 = try await aa.quickSendTransactions([transaction], feeMode: .token(feeQuote), messageSigner: self, wholeFeeQuote: wholeFeeQuote, chainInfo: chainInfo).value
             } else {
-                // you can't select token to pay
+                // You can't select a token to pay
             }
         }
     }

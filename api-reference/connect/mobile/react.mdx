@@ -86,9 +86,9 @@ android {
   ...
   defaultConfig {
       ......
-      manifestPlaceholders["PN_PROJECT_ID"] = "your project id"
-      manifestPlaceholders["PN_PROJECT_CLIENT_KEY"] = "your project client key"
-      manifestPlaceholders["PN_APP_ID"] = "your app id"
+      manifestPlaceholders["PN_PROJECT_ID"] = "Your project ID"
+      manifestPlaceholders["PN_PROJECT_CLIENT_KEY"] = "Your client key"
+      manifestPlaceholders["PN_APP_ID"] = "Your app ID"
   }
 
   dataBinding {
@@ -144,7 +144,7 @@ Additionally, within your application's `application` method (as shown below), y
   if ([ParticleConnectSchemeManager handleUrl:url] == YES) {
     return YES;
   } else {
-    // other methods
+    // Other methods
   }
   return YES;
 }
@@ -219,7 +219,7 @@ Additionally, extra chains can be configured for WalletConnect through `setWalle
 const chainInfo: ChainInfo = Ethereum;
     const env = Env.Dev;
     const metadata = {
-      walletConnectProjectId: 'your wallet connect project id, get it from wallet connect',
+      walletConnectProjectId: 'Your WalletConnect Project ID',
       url: 'https://connect.particle.network',
       icon: 'https://connect.particle.network/icons/512.png',
       name: 'Particle Connect',
@@ -263,11 +263,11 @@ If you're using `AuthCore`, you'll also need to pass in a `ParticleConnectConfig
 | Field               | Type                 | Description                                                                                                                                                                                                                                                                      |
 | ------------------- | -------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `loginType`         | `LoginType`          | The specific social login to be used. This can be either `.email`, `.phone`, `.google`, `.apple`, `.jwt`, `.facebook`, `.twitter`, `.discord`, `.github`, `.twitch`, `.microsoft` or `linkedin`.                                                                                 |
-| `account`           | `string?`            | (Optional) when `type` is set to either `.email`, `.phone`, or `.jwt`, you can use the `account` parameter to pass in an expected email, phone number, or JWT. This is optional for the former two, but required for `.jwt`. The phone number must be in E.164 format.           |
+| `account`           | `string?`            | (Optional) When `type` is set to either `.email`, `.phone`, or `.jwt`, you can use the `account` parameter to pass in an expected email, phone number, or JWT. This is optional for the former two, but required for `.jwt`. When passing a phone number, it must be in E.164 format.           |
 | `code`              | `string?`            | (Optional) when `type` is set to either `.email` pr `.phone`, you can use the code parameter to pass the verification code.                                                                                                                                                      |
 | `supportAuthType`   | `SupportAuthType[]`  | The methods of authentication visible on the authentication popup UI. By default, this will be exclusive to the chosen social login method, although by passing in additional types, you can expand the UI to include the ability to login with those as an alternative to type. |
 | `socialLoginPrompt` | `SocialLoginPrompt?` | (Optional) either `.None`, `.Consent`, or `.SelectAccount`                                                                                                                                                                                                                       |
-| `loginPageConfig`   | `LoginPageConfig?`   | (Optional) to customize the UI page, contains project name, icon and description.                                                                                                                                                                                                |
+| `loginPageConfig`   | `LoginPageConfig?`   | (Optional) Changes what the OAuth provider prompts a user to do; either `.none`, `.consent`, or `.select_account`. Only Google, Discord and Microsoft support it.                                                                                                                                                                                               |
 
 E.g:
 
@@ -380,8 +380,14 @@ Within an active session, you can retrieve the accounts (addresses) that belong 
 const accounts = await particleConnect.getAccounts(walletType);
 ```
 
+### (Optional) Custom WalletConnect Projcet ID
+```typeScript
+// Call before particleConnect.init
+particleConnect.setWalletConnectProjectId("Your WalletConnect Project ID")
+```
+
 ---
 
 ## Dive Deeper
 
-`@particle-network/rn-connect` includes `@partcile-connect/rn-auth-core`. If you log in with a Particle account, you can access additional function such as `getUserInfo`, `openAccountAndSecurity`, `hasMasterPassword` and `hasPaymentPassword` and `changeMasterPassword`, you can reference the docs from [Auth SDK reference](/api-reference/auth/mobile-sdks/react)
+`@particle-network/rn-connect` includes `@partcile-connect/rn-auth-core`. If you log in with a Particle account, you can access additional function such as `getUserInfo`, `openAccountAndSecurity`, `hasMasterPassword` and `hasPaymentPassword` and `changeMasterPassword`, you can reference the docs from [Auth SDK reference](/api-reference/auth/mobile-sdks/react).

@@ -62,7 +62,7 @@ Before you can use the full extent of the SDK, you'll need to initialize it thro
   - `CYBERCONNECT`, a [CyberConnect smart account](https://wallet.cyber.co).
   - `SIMPLE_V1`, a [SimpleAccount implementation](https://github.com/eth-infinitism/account-abstraction/blob/develop/contracts/samples/SimpleAccount.sol).
   - `SIMPLE_V2`, a [SimpleAccount implementation](https://github.com/eth-infinitism/account-abstraction/blob/develop/contracts/samples/SimpleAccount.sol).
-  - `LIGHT`, a [Light Account](https://accountkit.alchemy.com/packages/aa-accounts/light-account/).
+  - `LIGHT`, a [Light Account implementation](https://accountkit.alchemy.com/packages/aa-accounts/light-account/).
 
 Once the Particle AA SDK has been initialized through `ParticleAAInteraction`, you'll need to go ahead and enable AA mode through `ParticleAAInteraction.EnableAAMode`. From there, you can directly interact with the SDK (sending UserOperations, retrieving fee quotes, etc.)
 
@@ -141,11 +141,10 @@ var nativeResultData = await ParticleConnect.Instance.BatchSendTransactions(Wall
 Check if you can send gasless/native/token.
 
 ```csharp
-// check if enough native for gas fee
+// Check if user can afford the transaction
 var feeQuotesResult =
     await ParticleAA.Instance.RpcGetFeeQuotes(eoaAddress, new List<string> { transaction });
 
-// check if can natively paid.
 var verifyingPaymasterNative = JObject.Parse(feeQuotesResult.data)["verifyingPaymasterNative"];
 var feeQuote = verifyingPaymasterNative["feeQuote"];
 
@@ -154,20 +153,20 @@ var balance = BigInteger.Parse((string)feeQuote["balance"]);
 
 if (balance < fee)
 {
-  Debug.Log("can't natively paid, native balance is not enough for gas fee");
+  Debug.Log("Native balance is not enough for gas fee");
   return;
 }
 
-// check if can gasless
+// Check if the transaction can be sponsored
 var verifyingPaymasterGasless = JObject.Parse(feeQuotesResult.data)["verifyingPaymasterGasless"];
 
 if (verifyingPaymasterGasless == null)
 {
-  Debug.Log("gasless is not available");
+  Debug.Log("Gasless is not available");
   return;
 }
 
-// check if can token paid
+// Check if the transaction can be paid for using an ERC20 token
  JArray feeQuotes = (JArray)(JObject.Parse(feeQuotesResult.data)["tokenPaymaster"]["feeQuotes"]);
 
 var overFeeQuotes = feeQuotes
@@ -180,11 +179,11 @@ var overFeeQuotes = feeQuotes
 
 if (overFeeQuotes.Count == 0)
 {
-  Debug.Log("no valid token for gas fee");
+  Debug.Log("No valid token for gas fee");
   return;
 }
 
-// select a feeQuote, for example the first.
+// Select a feeQuote, for example the first.
 var feeQuote = overFeeQuotes[0];
 var tokenPaymasterAddress =
     JObject.Parse(feeQuotesResult.data)["tokenPaymaster"]["tokenPaymasterAddress"].Value<string>();
