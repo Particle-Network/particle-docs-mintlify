@@ -231,8 +231,63 @@ ParticleConnect.setWalletConnectV2SupportChainInfos(chainInfos);
 ```
 
 ---
+### Connect Wallet V2
 
-### Connect
+`ParticleConnect.connectWithConnectKitConfig` is the core method driving Particle Connect's customizable login modal, enabling one-click onboarding.
+
+The parameters available to configure this modal can be found through `ConnectKitConfig`, as detailed below.
+
+| Field                     | Type                          | Description                                                                                                              |
+| ------------------------- | ----------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
+| `connectOptions`          | `List<ConnectOption>`         | Methods supported for connection, `EMAIL`, `PHONE`, `SOCIAL` and `WALLET`; the order in which these are placed will be reflected within the modal.       |
+| `socialProviders`         | `List<EnableSocialProvider>?` | Supported social login methods, such as `GOOGLE`, `APPLE` and other social options; the order in which these are placed will be reflected within the modal.       |   |
+| `walletProviders`         | `List<EnableWalletProvider>?` | Supported wallet providers, such as `MetaMask`, `Trust` and other wallet options; the order in which these are placed will be reflected.  |
+| `additionalLayoutOptions` | `AdditionalLayoutOptions`     | Layout options                                                                                                           |
+| `logo`                    | `String`                      | Image URL or base64 string representing the logo used within the modal.                                                                                                 |
+
+```dart
+final config = ConnectKitConfig(
+  logo: "", // base64 string or image URL
+  connectOptions: [
+    ConnectOption.EMAIL,
+    ConnectOption.PHONE,
+    ConnectOption.SOCIAL,
+    ConnectOption.WALLET,
+  ], // Changing the order will alter the interface
+  socialProviders: [
+    EnableSocialProvider.GOOGLE,
+    EnableSocialProvider.TWITCH,
+    EnableSocialProvider.APPLE,
+    EnableSocialProvider.DISCORD,
+    EnableSocialProvider.TWITTER,
+    EnableSocialProvider.FACEBOOK,
+    EnableSocialProvider.GITHUB,
+    EnableSocialProvider.MICROSOFT,
+    EnableSocialProvider.LINKEDIN,
+  ], // Changing the order will alter the interface
+  walletProviders: [
+    EnableWalletProvider(EnableWallet.MetaMask,
+        label: EnableWalletLabel.RECOMMENDED),
+    EnableWalletProvider(EnableWallet.OKX),
+    EnableWalletProvider(EnableWallet.Trust,
+        label: EnableWalletLabel.POPULAR),
+    EnableWalletProvider(EnableWallet.Bitget),
+    EnableWalletProvider(EnableWallet.WalletConnect),
+  ], // Changing the order will alter the interface
+  additionalLayoutOptions: AdditionalLayoutOptions(
+    isCollapseWalletList: false,
+    isSplitEmailAndSocial: true,
+    isSplitEmailAndPhone: false,
+    isHideContinueButton: false,
+  ),
+);
+
+final account = await ParticleConnect.connectWithConnectKitConfig(config);
+```
+
+---
+
+### Connect Wallet V1 (Legacy)
 
 Acting as the primary method of returning a connection menu for a specific `WalletType`, the `connect` method on `ParticleConnect` will be the main mechanism for wallet connection within the Particle Connect SDK. `ParticleConnect.connect` takes one parameter, the `WalletType` to be requested for connection. Upon calling, the wallet specified in this field will throw an interface initiating the connection.
 
