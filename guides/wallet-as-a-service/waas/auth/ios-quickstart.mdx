@@ -7,7 +7,7 @@ Particle Auth, the core SDK responsible for driving social logins, has various i
 This document will go through the step-by-step process of configuring, initializing, and using Particle Auth on iOS.
 
 <Note>
-  For complete documentation covering the implementation of Particle Auth on Android in more depth, head over to the [iOS SDK reference](/api-reference/auth/mobile-sdks/ios).
+  For complete documentation covering the implementation of Particle Auth on iOS in more depth, head over to the [iOS SDK reference](/api-reference/auth/mobile-sdks/ios).
 </Note>
 
 Before jumping into it, ensure your project meets the following minimum requirements (otherwise, you may encounter compatibility issues).
@@ -194,11 +194,6 @@ if flag {
 
 // If you're using account abstraction through ParticleAA, you'll need to retrieve their address through the following:
 let smartAccountAddress = self.auth.getUserInfo()?.smartAccountAddress
-
-if account.walletType == WalletType.authCore {
-    let auth = Auth()
-    let userInfo = auth.getUserInfo()
-}
 ```
 
 ### Send a Transaction
@@ -210,9 +205,10 @@ To do this, you'll need to construct a transaction with `ParticleWalletAPI.creat
 Upon construction, the transaction can be sent through `auth.evm.sendTransaction`; once the user signs/confirms, it'll be pushed to the network; an example of this is shown below.
 
 ```swift
+let evmAddress = auth.evm.getAddress()
 let receiverAddress = "0x0000000000000000000000000000000000000000"
 let value = BDouble(0.000000001 * pow(10, 18)).rounded().toHexString()
-let transaction = try await ParticleWalletAPI.evm().createTransaction(from: account.publicAddress, to: receiverAddress, value: value, data: "0x").value
+let transaction = try await ParticleWalletAPI.evm().createTransaction(from: evmAddress, to: receiverAddress, value: value, data: "0x").value
               
 let txHash = try await self.auth.evm.sendTransaction(transaction, chainInfo: nil)
 ```

@@ -155,17 +155,17 @@ Additionally, head over to your `Info.plist` file and include the following snip
 ```xml Info.plist
 <key>LSApplicationQueriesSchemes</key>
 <array>
-	<string>metamask</string>
-	<string>phantom</string>
-	<string>bitkeep</string>
-	<string>imtokenv2</string>
-	<string>rainbow</string>
-	<string>trust</string>
-	<string>zerion</string>
-  <string>mathwallet</string>
-  <string>oneinch</string>
-  <string>awallet</string>
-  <string>okex</string>
+<string>metamask</string>
+<string>phantom</string>
+<string>bitkeep</string>
+<string>imtokenv2</string>
+<string>rainbow</string>
+<string>trust</string>
+<string>zerion</string>
+<string>mathwallet</string>
+<string>oneinch</string>
+<string>awallet</string>
+<string>okex</string>
 </array>
 <key>NSPhotoLibraryUsageDescription</key>
 <string>We need access in order to open photos of barcodes</string>
@@ -183,9 +183,7 @@ Finally, you'll need to edit your Podfile to ensure `particle_connect` is correc
 
 ### Initialization
 
-Before the SDK is usable, you'll have to go through initialization. This is required before other methods function. To do this, you'll need to call both `ParticleWallet.setWalletConnectV2ProjectId` and `ParticleWallet.init`. `setWalletConnectV2ProjectId` takes one parameter, a string representing your WalletConnect project ID retrieved from the [WalletConnect dashboard](https://cloud.walletconnect.com).
-
-With `setWalletConnectV2ProjectId` set, you can also call `ParticleWallet.init`, passing in a `WalletMetaData` object (included within the `package:particle_wallet/particle_wallet.dart` import) containing:
+Before the SDK is usable, you'll have to go through initialization. This is required before other methods function. To do this, you'll need to call `ParticleWallet.init`.
 
 | Field                    | Type     | Description                                                                                       |
 | ------------------------ | -------- | ------------------------------------------------------------------------------------------------- |
@@ -193,7 +191,6 @@ With `setWalletConnectV2ProjectId` set, you can also call `ParticleWallet.init`,
 | `icon`                   | `String` | The link to an icon/logo representing your project - ideally 512x512.                             |
 | `url`                    | `String` | The URL for your project's website.                                                               |
 | `description`            | `String` | A short description of your project.                                                              |
-| `walletConnectProjectId` | `String` | Wallet connect project id, get it from [WalletConnect dashboard](https://cloud.walletconnect.com) |
 
 E.g.:
 
@@ -202,8 +199,7 @@ ParticleWallet.init(WalletMetaData(
         "Particle Connect",
         "https://connect.particle.network/icons/512.png",
         "https://connect.particle.network",
-        "Particle Connect Flutter Demo",
-        "WalletConnect project ID"));
+        "Particle Connect Flutter Demo"));
 ```
 
 ---
@@ -238,7 +234,7 @@ You can also open a send token (token referring to ERC20/SPL/native) page by cal
 | -------------- | -------- | --------------------------------------------------------------------------------------------------------------- |
 | `tokenAddress` | `String` | The address of a token to be auto-filled within the send menu. This can be `native` for a default/native token. |
 | `toAddress`    | `String` | The recipient's address.                                                                                        |
-| `amount`       | `String` | The volume of tokens (`tokenAddress`) to be sent.                                                               |
+| `amount`       | `String?` | (Optional) The volume of tokens (`tokenAddress`) to be sent.                                                               |
 
 E.g.:
 
@@ -387,7 +383,7 @@ Additionally, to switch the current wallet type (`walletType`) active within the
 - `rainbow`.
 - `trust`.
 - `imToken`.
-- `bitKeep`.
+- `bitget`.
 - `walletConnect`.
 - `zerion`.
 - `math`.
@@ -402,6 +398,12 @@ E.g.:
 WalletType walletType = WalletType.authCore;
 await ParticleWallet.switchWallet(walletType, publicAddress);
 ```
+---
+### (Optional) Custom WalletConnect Projcet ID
+```dart
+//call before ParticleConnect.init
+ParticleWallet.setWalletConnectProjectId("Your WalletConnect Project ID, from https://cloud.walletconnect.com")
+```
 
 ---
 
@@ -412,6 +414,8 @@ Additional interface customizations can be manually set through a variety of met
 - `setSwapDisabled`, whether or not the "Swap" functionality is displayed within the interface. This takes one parameter, either `true` or `false`, with the default being `false`.
 
 - `setPayDisabled`, whether or not the "Buy" functionality is displayed within the interface. This takes one parameter, either `true` or `false`, with the default being `false`.
+
+- `setBridgeDisabled`, whether or not the "Bridge" functionality is displayed within the interface. This takes one parameter, either `true` or `false`, with the default being `false`.
 
 - `setShowTestNetwork`, configures the visibility of the Testnets within the interface. It accepts a boolean value, `true` or `false`.
 

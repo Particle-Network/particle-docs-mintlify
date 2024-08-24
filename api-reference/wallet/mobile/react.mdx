@@ -141,17 +141,17 @@ Additionally, head over to your `Info.plist` file and include the following snip
 ```xml Info.plist
 <key>LSApplicationQueriesSchemes</key>
 <array>
-	<string>metamask</string>
-	<string>phantom</string>
-	<string>bitkeep</string>
-	<string>imtokenv2</string>
-	<string>rainbow</string>
-	<string>trust</string>
-	<string>zerion</string>
-  <string>mathwallet</string>
-  <string>oneinch</string>
-  <string>awallet</string>
-  <string>okex</string>
+<string>metamask</string>
+<string>phantom</string>
+<string>bitkeep</string>
+<string>imtokenv2</string>
+<string>rainbow</string>
+<string>trust</string>
+<string>zerion</string>
+<string>mathwallet</string>
+<string>oneinch</string>
+<string>awallet</string>
+<string>okex</string>
 </array>
 <key>NSPhotoLibraryUsageDescription</key>
 <string>We need access in order to open photos of barcodes</string>
@@ -368,7 +368,7 @@ You can also switch the `walletType` being used within Particle Wallet. For exam
 - `Rainbow`.
 - `Trust`.
 - `ImToken`.
-- `BitKeep`.
+- `Bitget`.
 - `WalletConnect`.
 - `Phantom`, intended for Solana.
 - `Zerion`.
@@ -426,6 +426,8 @@ Particle Wallet can also undergo additional customization, specifically regardin
 - `setSwapDisabled`, whether or not the "Swap" functionality is displayed within the interface. This takes one parameter, either `true` or `false`, with the default being `false`.
 
 - `setPayDisabled`, whether or not the "Buy" functionality is displayed within the interface. This takes one parameter, either `true` or `false`, with the default being `false`.
+
+- `setBridgeDisabled`, whether or not the "Bridge" functionality is displayed within the interface. This takes one parameter, either `true` or `false`, with the default being `false`.
 
 - `setDisplayTokenAddresses`, an synchronous function to set specific token addresses to be displayed in the Particle Wallet. It takes an array of token addresses as a parameter, `tokenAddresses`.
 
