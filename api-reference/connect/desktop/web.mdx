@@ -841,20 +841,23 @@ export const App = () => {
 When a user connects through socials, you can use the `useParticleAuth()` hook to retrieve `userinfo` (which includes details about the method they used to connect, when the account was created, etc.) and other relevant details from **Particle Auth**.
 
 ```tsx App.tsx
-import { useAccount, useParticleAuth } from '@particle-network/connectkit';
+import { useAccount, useParticleAuth, useWallets} from '@particle-network/connectkit';
 import { useState, useEffect } from 'react';
 
 export const App = () => {
     const { getUserInfo } = useParticleAuth();
     const { isConnected } = useAccount();
 
+    // Retrieve the primary wallet from the Particle Wallets
+    const [primaryWallet] = useWallets();
+
     // Store userInfo in a useState to use it in your app
     const [userInfo, setUserInfo] = useState<any>(null);
 
     useEffect(() => {
         const fetchUserInfo = async () => {
-            // Use isConnected as a condition to avoid account not initialized errors
-            if (isConnected) {
+            // Use walletConnectorType as a condition to avoid account not initialized errors
+            if (primaryWallet?.connector?.walletConnectorType === "particleAuth") {
                 const userInfo = await getUserInfo();
                 setUserInfo(userInfo);
             }
@@ -866,6 +869,10 @@ export const App = () => {
     return <h2 className="text-style">Name: {userInfo.name || 'N/A'}</h2>;
 };
 ```
+
+<Tip>
+  The `userInfo` object is provided by Particle AuthKit. For a detailed breakdown of its structure and available properties, refer to the [Handling User Information](/api-reference/auth/desktop-sdks/web#handling-user-information) section in the Particle AuthKit documentation.
+</Tip>
 
 ### Use EIP-1193 Provider (Ethers, Web3.js)
 
