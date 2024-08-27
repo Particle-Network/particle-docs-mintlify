@@ -1,0 +1,227 @@
+export const InteractiveConnectkit = () => {
+  const ethereumIcon = "/snippets/logos/eth.png";
+  const polygonIcon = '/snippets/logos/polygon.png';
+  const seiIcon = '/snippets/logos/sei.png';
+  const baseIcon = '/snippets/logos/base.png';
+  const BerachainbArtioIcon = '/snippets/logos/bera.png';
+
+  const authIcons = {
+    email: '/snippets/logos/email.png',
+    phone: '/snippets/logos/phone.png',
+    facebook: '/snippets/logos/facebook.png',
+    google: '/snippets/logos/google.png',
+    apple: '/snippets/logos/apple.png',
+    twitter: '/snippets/logos/twitter.png',
+    discord: '/snippets/logos/discord.png',
+    github: '/snippets/logos/github.png',
+    microsoft: '/snippets/logos/microsoft.png',
+    linkedin: '/snippets/logos/linkedin.png',
+  };
+  
+  if (typeof document === "undefined") {
+    return null;
+  } else {
+    setTimeout(() => {
+      const chains = [
+        { id: 'mainnet', name: 'Ethereum', icon: ethereumIcon },
+        { id: 'polygon', name: 'Polygon', icon: polygonIcon },
+        { id: 'sei', name: 'Sei', icon: seiIcon },
+        { id: 'base', name: 'Bese', icon: baseIcon },
+        { id: 'berachainTestnetbArtio', name: 'BerachainbArtio', icon: BerachainbArtioIcon },
+      ];
+
+      let selectedChains = ['mainnet', 'polygon'];
+      let selectedAuthTypes = ['email', 'google', 'twitter', 'github'];
+      let allSocialLoginsSelected = false;
+
+      const authTypes = Object.keys(authIcons);
+
+      const handleToggleChain = (chainId) => {
+        const index = selectedChains.indexOf(chainId);
+        if (index > -1) {
+          selectedChains = selectedChains.filter((id) => id !== chainId);
+        } else {
+          selectedChains.push(chainId);
+        }
+        renderToggles();
+        renderCodeSnippet();
+      };
+
+      const handleToggleAuthType = (authTypeId) => {
+        if (authTypeId === 'allSocialLogins') {
+          allSocialLoginsSelected = !allSocialLoginsSelected;
+          selectedAuthTypes = allSocialLoginsSelected ? [] : selectedAuthTypes;
+        } else {
+          const index = selectedAuthTypes.indexOf(authTypeId);
+          if (index > -1) {
+            selectedAuthTypes = selectedAuthTypes.filter((id) => id !== authTypeId);
+          } else {
+            selectedAuthTypes.push(authTypeId);
+          }
+          allSocialLoginsSelected = false;
+        }
+        renderAuthToggles();
+        renderCodeSnippet();
+      };
+
+      const renderToggles = () => {
+        const toggleContainer = document.getElementById('toggle-buttons');
+        toggleContainer.innerHTML = chains.map(chain => `
+          <button
+            class="toggle-button ${selectedChains.includes(chain.id) ? 'selected' : ''}"
+            onclick="handleToggleChain('${chain.id}')"
+          >
+            <img src="${chain.icon}" alt="${chain.name}" class="icon"/>
+          </button>
+        `).join('') +
+        `<button
+          class="toggle-button"
+          onclick="window.location.href='/guides/network-coverage';"
+          style="opacity: 0.5; color: white; background-color: rgba(255, 255, 255, 0.1);"
+        >
+          +62
+        </button>`;
+      };
+
+      const renderAuthToggles = () => {
+        const authToggleContainer = document.getElementById('auth-toggle-buttons');
+        authToggleContainer.innerHTML = `
+          <button
+            class="toggle-button ${allSocialLoginsSelected ? 'selected' : ''}"
+            onclick="handleToggleAuthType('allSocialLogins')"
+          >
+            All
+          </button>
+        ` + authTypes.map(authType => `
+          <button
+            class="toggle-button ${selectedAuthTypes.includes(authType) ? 'selected' : ''}"
+            onclick="handleToggleAuthType('${authType}')"
+          >
+            <img src="${authIcons[authType]}" alt="${authType}" class="icon"/>
+          </button>
+        `).join('');
+      };
+
+const renderCodeSnippet = () => {
+  const importStatements = `import { ${selectedChains.join(", ")} } from '@particle-network/connectkit/chains';`;
+  const supportChainsArray = `chains: [${selectedChains.join(", ")}],`;
+  const authTypesArray = !allSocialLoginsSelected
+    ? `authTypes: [${selectedAuthTypes.map((type) => `'${type}'`).join(", ")}],`
+    : "// No need for the authTypes array if you want to include all of the available social login options";
+
+const codeSnippet = `
+"use client";
+
+// Particle imports
+import { ConnectKitProvider, createConfig } from '@particle-network/connectkit';
+import { authWalletConnectors } from '@particle-network/connectkit/auth';
+import { evmWalletConnectors } from '@particle-network/connectkit/evm';
+import { solanaWalletConnectors } from '@particle-network/connectkit/solana';
+import { EntryPosition, wallet } from '@particle-network/connectkit/wallet';
+
+${importStatements} // Chains are imported here
+import React from 'react';
+
+const config = createConfig({
+  projectId: process.env.NEXT_PUBLIC_PROJECT_ID!,
+  clientKey: process.env.NEXT_PUBLIC_CLIENT_KEY!,
+  appId: process.env.NEXT_PUBLIC_APP_ID!,
+
+  appearance: {
+    recommendedWallets: [
+      { walletId: 'metaMask', label: 'Recommended' },
+      { walletId: 'coinbaseWallet', label: 'popular' },
+    ],
+    language: 'en-US',
+    mode: "auto", // dark or auto.
+  },
+  
+  walletConnectors: [
+    evmWalletConnectors({
+      // Replace this with your app metadata.
+      metadata: {
+        name: 'Connectkit Demo',
+        icon: typeof window !== 'undefined' ? \`\${window.location.origin}/favicon.ico\` : '',
+        description: 'Particle Connectkit Next.js Scaffold.',
+        url: typeof window !== 'undefined' ? window.location.origin : '',
+      },
+      walletConnectProjectId: process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID as string,
+    }),
+    
+    authWalletConnectors({
+      ${authTypesArray} // Optional, restricts the types of social logins supported
+    }),
+  ],
+  
+  plugins: [
+    wallet({
+      visible: true,
+      entryPosition: EntryPosition.BR, // Use BR (bottom right), BL (bottom left), TR (top right), TL (top left) to move the wallet entry position
+    }),
+  ],
+  
+  // List the chains you want to include
+  ${supportChainsArray}
+});
+
+// Wrap your application with this exported component, or ConnectKitProvider directly.
+export const ParticleConnectkit = ({ children }: React.PropsWithChildren) => {
+  return <ConnectKitProvider config={config}>{children}</ConnectKitProvider>;
+};
+`;
+
+
+  const codeSnippetContainer = document.getElementById('code-snippets');
+codeSnippetContainer.innerHTML = `
+  <div class="snippet-header">
+    <span class="language-label">layout.tsx</span>
+    <button id="copy-button" class="copy-button">
+      <img src="/snippets/logos/copy.png" alt="Copy icon" class="copy-icon"/>
+    </button>
+  </div>
+  <pre><code>${escapeHtml(codeSnippet)}</code></pre>
+`;
+
+
+  const copyButton = document.getElementById('copy-button');
+  copyButton.addEventListener('click', () => {
+    navigator.clipboard.writeText(codeSnippet)
+      .then(() => {
+        copyButton.innerHTML = '<span class="copied-text">Copied!</span>';
+      })
+      .catch(err => {
+        console.error('Failed to copy: ', err);
+      });
+  });
+};
+
+
+      const escapeHtml = (unsafe) => {
+        return unsafe
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;")
+          .replace(/'/g, "&#039;");
+      };
+
+      window.handleToggleChain = handleToggleChain;
+      window.handleToggleAuthType = handleToggleAuthType;
+      renderToggles();
+      renderAuthToggles();
+      renderCodeSnippet();
+    }, 1);
+
+    return (
+      <div>
+        <p class="section-header chain-selection">Chain selection</p>
+
+        <div id="toggle-buttons" className="toggles"></div>
+        <p class="section-header auth-selection">AuthType selection</p>
+        <div id="auth-toggle-buttons" className="toggles"></div>
+        <div id="code-snippets" className="code-snippet"></div>
+      </div>
+    );
+  }
+};
+
