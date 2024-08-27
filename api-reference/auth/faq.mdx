@@ -55,6 +55,140 @@ description: 'Find Frequently Asked Questions about Particle Auth.'
   These values indicate the blockchain network associated with the account.
   </Accordion>
 
+<Accordion title="How do I fix webpack 5 polyfills error when creating a new React application?" icon="browser">
+  **Answer:** When using `create-react-app` version 5 or above, you might encounter issues due to the lack of NodeJS polyfills, which are no longer included by default. To fix this, you can use `react-app-rewired` and install the necessary polyfill modules.
+
+  - **Step 1:** After creating a new application with `CRA`, install `react-app-rewired` and the required polyfill packages.
+
+    If you're using Yarn:
+
+    ```sh
+    yarn add --dev react-app-rewired crypto-browserify stream-browserify assert stream-http https-browserify os-browserify url buffer process vm-browserify browserify-zlib
+    ```
+
+    If you're using NPM:
+
+    ```sh
+    npm install --save-dev react-app-rewired crypto-browserify stream-browserify assert stream-http https-browserify os-browserify url buffer process vm-browserify browserify-zlib
+    ```
+
+  - **Step 2:** Create a `config-overrides.js` file in the root of your project and add the necessary configuration to include the missing polyfills. This file will override the default Webpack configuration provided by `create-react-app`.
+
+    ```js config-overrides.js
+    const webpack = require('webpack');
+
+    module.exports = function override(config) {
+      const fallback = config.resolve.fallback || {};
+      Object.assign(fallback, {
+        crypto: require.resolve('crypto-browserify'),
+        stream: require.resolve('stream-browserify'),
+        assert: require.resolve('assert'),
+        http: require.resolve('stream-http'),
+        https: require.resolve('https-browserify'),
+        os: require.resolve('os-browserify'),
+        url: require.resolve('url'),
+        zlib: require.resolve('browserify-zlib'),
+        process: require.resolve('process/browser'),
+      });
+      config.resolve.fallback = fallback;
+      config.plugins = (config.plugins || []).concat([
+        new webpack.ProvidePlugin({
+          process: 'process/browser.js',
+          Buffer: ['buffer', 'Buffer'],
+        }),
+      ]);
+
+      config.module.rules = config.module.rules.map((rule) => {
+        if (rule.oneOf instanceof Array) {
+          rule.oneOf[rule.oneOf.length - 1].exclude = [
+            /\.(js|mjs|jsx|cjs|ts|tsx)$/,
+            /\.html$/,
+            /\.json$/,
+          ];
+        }
+        return rule;
+      });
+
+      return config;
+    };
+    ```
+
+  - **Step 3:** Modify the `scripts` section in your `package.json` to use `react-app-rewired` instead of the default `react-scripts`:
+
+    ```json
+    "scripts": {
+      "start": "react-app-rewired start",
+      "build": "react-app-rewired build",
+      "test": "react-app-rewired test",
+      "eject": "react-scripts eject"
+    },
+    ```
+
+  After making these changes, your React application should build successfully without encountering NodeJS polyfill errors.
+</Accordion>
+
+<Accordion title="How do I fix the '__wbindgen_add_to_stack_pointer' error in a React app using Vite?" icon="desktop">
+
+  **Answer:** If you're encountering the error `"Cannot read properties of undefined (reading '__wbindgen_add_to_stack_pointer')"` in your React app using Vite, it likely relates to issues with loading a WebAssembly (Wasm) module. 
+
+  To resolve this, you can use the Particle Network WASM plugin with a customized Vite configuration. Here's how to set it up:
+
+  1. **Install the Vite Plugin:** Ensure you have the necessary WASM files and the plugin configured.
+
+  ```sh Terminal
+  npm i @vitejs/plugin-react
+  ```
+  
+  2. **Update your `vite.config.ts`:** Add the following configuration to correctly handle the WebAssembly module in development mode:
+
+  ```ts vite.config.ts
+      import { defineConfig, Plugin, ConfigEnv } from 'vite';
+    import react from '@vitejs/plugin-react';
+    import fs from 'fs';
+    import path from 'path';
+
+    const particleWasmPlugin: Plugin | undefined = {
+        name: 'particle-wasm',
+        apply: (_, env: ConfigEnv) => {
+            return env.mode === 'development';
+        },
+        buildStart: () => {
+            const copiedPath = path.join(
+                __dirname,
+                'node_modules/@particle-network/thresh-sig/wasm/thresh_sig_wasm_bg.wasm'
+            );
+            const dir = path.join(__dirname, 'node_modules/.vite/wasm');
+            const resultPath = path.join(dir, 'thresh_sig_wasm_bg.wasm');
+            if (!fs.existsSync(dir)) {
+                fs.mkdirSync(dir, { recursive: true });
+            }
+            fs.copyFileSync(copiedPath, resultPath);
+        },
+    };
+
+    export default defineConfig({
+      plugins: [react(), particleWasmPlugin],
+      server: {
+        host: '0.0.0.0',
+      },
+      define: {
+        'process.env': process.env
+      },
+      build: {
+        target: 'esnext', // you can also use 'es2020' here
+      },
+      optimizeDeps: {
+        esbuildOptions: {
+          target: 'esnext', // you can also use 'es2020' here
+        },
+      },
+    });
+  ```
+
+  This configuration helps ensure that the WebAssembly module is correctly copied and accessible during development, preventing the `__wbindgen_add_to_stack_pointer` error from occurring.
+</Accordion>
+
+
 </AccordionGroup>
 
 <Note>

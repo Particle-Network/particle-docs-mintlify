@@ -1,4 +1,4 @@
-export const InteractiveLayout = () => {
+export const InteractiveConnectkit = () => {
   const ethereumIcon = "https://imgur.com/LfmLH04.png";
   const polygonIcon = '/snippets/logos/polygon.png';
   const seiIcon = '/snippets/logos/sei.png';
@@ -103,66 +103,73 @@ export const InteractiveLayout = () => {
       };
 
 const renderCodeSnippet = () => {
-  const importStatements = `import { ${selectedChains.join(", ")} } from "@particle-network/authkit/chains";`;
+  const importStatements = `import { ${selectedChains.join(", ")} } from '@particle-network/connectkit/chains';`;
   const supportChainsArray = `chains: [${selectedChains.join(", ")}],`;
   const authTypesArray = !allSocialLoginsSelected
-    ? `authTypes: [${selectedAuthTypes.map((type) => `AuthType.${type}`).join(", ")}],`
+    ? `authTypes: [${selectedAuthTypes.map((type) => `'${type}'`).join(", ")}],`
     : "// No need for the authTypes array if you want to include all of the available social login options";
 
-  const codeSnippet = `
-  "use client";
+const codeSnippet = `
+"use client";
 
-  // Particle imports
-  ${importStatements} // Chains are imported here
-  import { AuthType } from "@particle-network/auth-core";
-  import {
-    AuthCoreContextProvider,
-    PromptSettingType,
-  } from "@particle-network/authkit"; 
+// Particle imports
+import { ConnectKitProvider, createConfig } from '@particle-network/connectkit';
+import { authWalletConnectors } from '@particle-network/connectkit/auth';
+import { evmWalletConnectors } from '@particle-network/connectkit/evm';
+import { solanaWalletConnectors } from '@particle-network/connectkit/solana';
+import { EntryPosition, wallet } from '@particle-network/connectkit/wallet';
 
-  export const ParticleAuthkit = ({ children }: React.PropsWithChildren) => {
-    return (
-      <AuthCoreContextProvider
-        options={{
-          projectId: process.env.NEXT_PUBLIC_PROJECT_ID!,
-          clientKey: process.env.NEXT_PUBLIC_CLIENT_KEY!,
-          appId: process.env.NEXT_PUBLIC_APP_ID!,
-          ${authTypesArray}
-          themeType: "dark",
+${importStatements} // Chains are imported here
+import React from 'react';
 
-          // List the chains you want to include
-          ${supportChainsArray}
+const config = createConfig({
+  projectId: process.env.NEXT_PUBLIC_PROJECT_ID!,
+  clientKey: process.env.NEXT_PUBLIC_CLIENT_KEY!,
+  appId: process.env.NEXT_PUBLIC_APP_ID!,
 
-          // Optionally, switches the embedded wallet modal to reflect a smart account
-          // erc4337: {
-          //   name: "SIMPLE",
-          //   version: "2.0.0",
-          // },
+  appearance: {
+    recommendedWallets: [
+      { walletId: 'metaMask', label: 'Recommended' },
+      { walletId: 'coinbaseWallet', label: 'popular' },
+    ],
+    language: 'en-US',
+    mode: "auto", // dark or auto.
+  },
+  
+  walletConnectors: [
+    evmWalletConnectors({
+      // Replace this with your app metadata.
+      metadata: {
+        name: 'Connectkit Demo',
+        icon: typeof window !== 'undefined' ? \`\${window.location.origin}/favicon.ico\` : '',
+        description: 'Particle Connectkit Next.js Scaffold.',
+        url: typeof window !== 'undefined' ? window.location.origin : '',
+      },
+      walletConnectProjectId: process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID as string,
+    }),
+    
+    authWalletConnectors({
+      ${authTypesArray} // Optional, restricts the types of social logins supported
+    }),
+  ],
+  
+  plugins: [
+    wallet({
+      visible: true,
+      entryPosition: EntryPosition.BR, // Use BR (bottom right), BL (bottom left), TR (top right), TL (top left) to move the wallet entry position
+    }),
+  ],
+  
+  // List the chains you want to include
+  ${supportChainsArray}
+});
 
-          // You can prompt the user to set up extra security measures upon login or other interactions
-          promptSettingConfig: {
-            promptPaymentPasswordSettingWhenSign: PromptSettingType.first,
-            promptMasterPasswordSettingWhenLogin: PromptSettingType.first,
-          },
+// Wrap your application with this exported component, or ConnectKitProvider directly.
+export const ParticleConnectkit = ({ children }: React.PropsWithChildren) => {
+  return <ConnectKitProvider config={config}>{children}</ConnectKitProvider>;
+};
+`;
 
-          wallet: {
-            themeType: "dark", // Wallet modal theme
-
-            // Set to false to remove the embedded wallet modal
-            visible: true,
-            customStyle: {
-              supportUIModeSwitch: true,
-              supportLanguageSwitch: false,
-            },
-          },
-        }}
-      >
-        {children}
-      </AuthCoreContextProvider>
-    );
-  };
-
-  `;
 
   const codeSnippetContainer = document.getElementById('code-snippets');
 codeSnippetContainer.innerHTML = `
