@@ -104,74 +104,17 @@ With your `projectId`, `clientKey`, and `appId` retrieved, you'll need to config
 </Step>
 <Step title="Configuring `AuthCoreContextProvider`">
 
+
+
 The `AuthCoreContextProvider` component handles the configuration for Particle Auth. It's best practice to place this configuration in a dedicated `AuthKit.tsx` file within the `src` directory, where you can set up and export the component.
 
 Once configured, you can use this export to wrap your main `App` component, ensuring authentication is available throughout your application.
 
 Here’s an example of how to configure `AuthCoreContextProvider`:
 
-```ts AuthKit.tsx
-"use client";
+import {InteractiveLayout} from '/snippets/InteractiveLayout.mdx'
 
-import {
-  AuthCoreContextProvider,
-  PromptSettingType,
-} from "@particle-network/authkit";
-import { AuthType } from "@particle-network/auth-core";
-import { mainnet, polygon } from "@particle-network/authkit/chains";
-
-export const ParticleAuthkit = ({ children }: React.PropsWithChildren) => {
-  return (
-    <AuthCoreContextProvider
-      options={{
-        projectId: process.env.NEXT_PUBLIC_PROJECT_ID as string,
-        clientKey: process.env.NEXT_PUBLIC_CLIENT_KEY as string,
-        appId: process.env.NEXT_PUBLIC_APP_ID as string,
-        // This is how you limit the options available.
-        // Remove the authTypes array to display all options available
-        authTypes: [
-          AuthType.email,
-          AuthType.google,
-          AuthType.twitter,
-          AuthType.github,
-          AuthType.discord,
-        ],
-
-        // Locks the chain selector to Ethereum and Polygon
-        chains: [mainnet, polygon],
-        themeType: "dark", // Login modal theme
-        fiatCoin: "USD",
-        language: "en",
-
-        // Optionally, switches the embedded wallet modal to reflect a smart account
-        // erc4337: {
-        //   name: "SIMPLE",
-        //   version: "2.0.0",
-        // },
-
-        // You can prompt the user to set up extra security measure upon login or other interactions
-        promptSettingConfig: {
-          promptPaymentPasswordSettingWhenSign: PromptSettingType.first,
-          promptMasterPasswordSettingWhenLogin: PromptSettingType.first,
-        },
-        wallet: {
-          themeType: "dark", // Wallet modal theme
-          
-          // Set to false to remove the embedded wallet modal
-          visible: true,
-          customStyle: {
-            supportUIModeSwitch: true,
-            supportLanguageSwitch: false,
-          },
-        },
-      }}
-    >
-      {children}
-    </AuthCoreContextProvider>
-  );
-};
-
-```
+<InteractiveLayout />
 
 <Tip>Learn more about the Particle Auth configuration options in the [Particle Auth SDK page](/api-reference/auth/desktop-sdks/web).</Tip>
 
@@ -310,3 +253,4 @@ export default function Home() {
         Using Particle Auth to create smart accounts.
     </Card>
 </CardGroup>
+
