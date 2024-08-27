@@ -1,6 +1,5 @@
 export const InteractiveLayout = () => {
   const ethereumIcon = "/snippets/logos/eth.png";
-  const bnbIcon = '/snippets/logos/bnb.png';
   const polygonIcon = '/snippets/logos/polygon.png';
   const seiIcon = '/snippets/logos/sei.png';
   const baseIcon = '/snippets/logos/base.png';
@@ -24,15 +23,14 @@ export const InteractiveLayout = () => {
   } else {
     setTimeout(() => {
       const chains = [
-        { id: 'Ethereum', name: 'Ethereum', icon: ethereumIcon },
-        { id: 'BNBChain', name: 'BNB Chain', icon: bnbIcon },
-        { id: 'Polygon', name: 'Polygon', icon: polygonIcon },
-        { id: 'Sei', name: 'Sei', icon: seiIcon },
-        { id: 'Base', name: 'Bese', icon: baseIcon },
-        { id: 'BerachainbArtio', name: 'BerachainbArtio', icon: BerachainbArtioIcon },
+        { id: 'mainnet', name: 'Ethereum', icon: ethereumIcon },
+        { id: 'polygon', name: 'Polygon', icon: polygonIcon },
+        { id: 'sei', name: 'Sei', icon: seiIcon },
+        { id: 'base', name: 'Bese', icon: baseIcon },
+        { id: 'berachainTestnetbArtio', name: 'BerachainbArtio', icon: BerachainbArtioIcon },
       ];
 
-      let selectedChains = ['Ethereum'];
+      let selectedChains = ['mainnet', 'polygon'];
       let selectedAuthTypes = ['email', 'google', 'twitter', 'github'];
       let allSocialLoginsSelected = false;
 
@@ -81,7 +79,7 @@ export const InteractiveLayout = () => {
           onclick="window.location.href='/guides/network-coverage';"
           style="opacity: 0.5; color: white; background-color: rgba(255, 255, 255, 0.1);"
         >
-          +61
+          +62
         </button>`;
       };
 
@@ -105,54 +103,65 @@ export const InteractiveLayout = () => {
       };
 
 const renderCodeSnippet = () => {
-  const importStatements = `import { ${selectedChains.join(", ")} } from "@particle-network/chains";`;
-  const supportChainsArray = `supportChains: [${selectedChains.join(", ")}],`;
+  const importStatements = `import { ${selectedChains.join(", ")} } from "@particle-network/authkit/chains";`;
+  const supportChainsArray = `chains: [${selectedChains.join(", ")}],`;
   const authTypesArray = !allSocialLoginsSelected
     ? `authTypes: [${selectedAuthTypes.map((type) => `AuthType.${type}`).join(", ")}],`
     : "// No need for the authTypes array if you want to include all of the available social login options";
 
   const codeSnippet = `
-    "use client";
-    import { Inter } from "next/font/google";
-    import "./globals.css";
+  "use client";
 
-    // Particle imports
-    ${importStatements} // Chains are imported here
-    import { AuthType } from "@particle-network/auth-core";
-    import { AuthCoreContextProvider } from "@particle-network/auth-core-modal";
+  // Particle imports
+  ${importStatements} // Chains are imported here
+  import { AuthType } from "@particle-network/auth-core";
+  import {
+    AuthCoreContextProvider,
+    PromptSettingType,
+  } from "@particle-network/authkit"; 
 
-    const inter = Inter({ subsets: ["latin"] });
+  export const ParticleAuthkit = ({ children }: React.PropsWithChildren) => {
+    return (
+      <AuthCoreContextProvider
+        options={{
+          projectId: process.env.NEXT_PUBLIC_PROJECT_ID!,
+          clientKey: process.env.NEXT_PUBLIC_CLIENT_KEY!,
+          appId: process.env.NEXT_PUBLIC_APP_ID!,
+          ${authTypesArray}
+          themeType: "dark",
 
-    export default function RootLayout({
-      children,
-    }: Readonly<{
-      children: React.ReactNode;
-    }>) {
-      return (
-        <html lang="en">
-          <body className={inter.className}>
-            <AuthCoreContextProvider
-              options={{
-                projectId: process.env.NEXT_PUBLIC_PROJECT_ID!,
-                clientKey: process.env.NEXT_PUBLIC_CLIENT_KEY!,
-                appId: process.env.NEXT_PUBLIC_APP_ID!,
-                ${authTypesArray}
-                themeType: "dark",
-                wallet: {
-                  visible: true,
-                  customStyle: {
-                  // List the chains you want to include
-                    ${supportChainsArray} 
-                  },
-                },
-              }}
-            >
-              {children}
-            </AuthCoreContextProvider>
-          </body>
-        </html>
-      );
-    }
+          // List the chains you want to include
+          ${supportChainsArray}
+
+          // Optionally, switches the embedded wallet modal to reflect a smart account
+          // erc4337: {
+          //   name: "SIMPLE",
+          //   version: "2.0.0",
+          // },
+
+          // You can prompt the user to set up extra security measures upon login or other interactions
+          promptSettingConfig: {
+            promptPaymentPasswordSettingWhenSign: PromptSettingType.first,
+            promptMasterPasswordSettingWhenLogin: PromptSettingType.first,
+          },
+
+          wallet: {
+            themeType: "dark", // Wallet modal theme
+
+            // Set to false to remove the embedded wallet modal
+            visible: true,
+            customStyle: {
+              supportUIModeSwitch: true,
+              supportLanguageSwitch: false,
+            },
+          },
+        }}
+      >
+        {children}
+      </AuthCoreContextProvider>
+    );
+  };
+
   `;
 
   const codeSnippetContainer = document.getElementById('code-snippets');
