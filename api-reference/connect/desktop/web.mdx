@@ -364,9 +364,58 @@ const config = createConfig({
 });
 ```
 
+### Authentication via Passkey
+
+**Particle Connect** supports authentication with **Passkey**, a cutting-edge solution for secure, passwordless authentication. 
+
+**Passkey** on **Connect** enables users to create non-custodial smart wallets by replacing traditional passwords with cryptographic key pairs. This delivers superior security, a streamlined user experience, and protection against phishing attacks.
+
+To enable **Passkey** in your **Connect** project, import `passkeySmartWallet` from `"@particle-network/connectkit/evm"` and include it in the `evmWalletConnectors` object.
+
+<Note>**Passkey** authentication is exclusively available with **Biconomy** or **Coinbase** smart accounts.</Note>
+
+```tsx 
+import {
+  evmWalletConnectors,
+  passkeySmartWallet,
+} from "@particle-network/connectkit/evm";
+
+const config = createConfig({
+    walletConnectors: [
+    // evm start
+    evmWalletConnectors({
+      // TODO: replace it with your app metadata.
+      metadata: { name: "Connectkit Demo", },
+      connectorFns: [passkeySmartWallet()],
+      multiInjectedProviderDiscovery: false,
+    }),
+
+    // evm end
+    ],
+      plugins: [
+    // embedded wallet start
+    wallet({
+      visible: true,
+      entryPosition: EntryPosition.BR,
+    }),
+    // embedded wallet end
+
+    // aa config start
+    // With Passkey auth use Biconomy or Coinbase
+    aa({
+      name: "BICONOMY",
+      version: "2.0.0",
+    }),
+    // aa config end
+  ],
+});
+    // Other connectors..
+});
+```
+
 ### EVM Wallets
 
-In addition to social logins, **Particle Connect** supports all standard EVM wallets, and you can use the `injected` method to support additional extension-based wallets that inject a provider.
+In addition to **social logins** and **Passkey**, **Particle Connect** supports all standard EVM wallets, and you can use the `injected` method to support additional extension-based wallets that inject a provider.
 
 **Particle Connect** supports the following EVM wallets by default:
 
