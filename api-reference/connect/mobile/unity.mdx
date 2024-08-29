@@ -52,7 +52,7 @@ Your **Unity** project must meet several requirements to avoid compatibility iss
 
 ### Setting up the Particle dashboard
 
-Once you've ensured that your project meets the above prerequisites, you'll also need three critical values from the [Particle dashboard](https://dashboard.particle.network): your `projectId`, `clientKey`, and `appId`.
+Once you've ensured that your project meets the above prerequisites, you'll also need three key values from the [Particle dashboard](https://dashboard.particle.network): your `projectId`, `clientKey`, and `appId`.
 
 These connect your **Unity** project directly with the Particle dashboard, enabling customization, analytics, tracking, etc.
 
@@ -73,7 +73,7 @@ Head over to the [GitHub repository](https://github.com/Particle-Network/particl
 If you're building a Unity game on iOS, you must follow a specific configuration process to ensure that Particle Connect functions. The first step within this process is to set up a scheme URL within the Unity editor.
 
 1. Head into the [iOS Player Settings](https://docs.unity3d.com/Manual/class-PlayerSettingsiOS.html) menu (`Edit` -> `Project Settings` -> `Player Settings` -> `iOS`).
-2. Select `Other` from here, then scroll down to `Configuration`.
+2. From here, select `Other`, then scroll down to `Configuration`.
 3. Open the `Supported URL schemes` section, and within the `Element 0` field, paste in your `projectId` with a prefix of `pn`.
    1. For example, if your `projectId` (from the [Particle dashboard](https://dashboard.particle.network)) is something like `63bfa427-cf5f-4742-9ff1-e8f5a1b9828f`, then the scheme URL, in this case, would be `pn63bfa427-cf5f-4742-9ff1-e8f5a1b9828f`
 
@@ -194,7 +194,7 @@ An example of the above process can be found below.
 | ----------- | -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `chainInfo` | `ChainInfo`    | The primary chain to be used within your application. This should be indicated by an overall blockchain, followed by a specific network. Within this example, it's `.Ethereum`(alternatively it could be `.EthereumSepolia`, and so on.)                                                                                                                                                                                                                                                                                                                              |
 | `dAppData`  | `DAppMetadata` | Metadata that describes your application and should be provided as an instance of `DAppMetadata` with the following parameters: `walletConnectProjectId`, the WalletConnect project ID retrieved from the [WalletConnect dashboard](https://cloud.walletconnect.com), `name`, the name of your project. `icon`, a URL linking to the icon of your project; this should be 512x512, ideally. `url`, the URL of your project's website. `description`, the description of your project, `redirect`, optional, a redirect universal link to you project, `verifyUrl`, optional. |
-| `rpcUrl`    | `RpcUrl?`      | Customize the RPC url.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+| `rpcUrl`    | `RpcUrl?`      | Customize the RPC URL.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
 | `env`       | `Env`          | The specific environmennt to be used. This can be either `.DEV`, `.STAGING`, `.PRODUCTION`, this should be set to `.PRODUCTION` when released.                                                                                                                                                                                                                                                                                                                                                                                                                                   |
 
 ```csharp

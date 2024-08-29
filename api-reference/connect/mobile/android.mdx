@@ -7,7 +7,7 @@ description: Leveraging Particle Connect within Android applications.
 
 ## Particle Connect for Android
 
-**Particle Connect** is a custom, in-house connection modal designed to onboard users across different login verticals, including **Web2** accounts via **Particle Auth**, various **Web3** wallets via `WalletConnect`, **Solana**'s mobile `wallet-adapter`, and **private key** imports. 
+**Particle Connect** is a custom, in-house connection modal designed to onboard users across different login verticals, including **Web2** accounts via **Particle Auth**, various **Web3** wallets via `WalletConnect`, **Solana**'s mobile `wallet-adapter`, and private key imports. 
 
 This ensures universal accessibility within your application, bringing users, Web3-native or not, on-chain.
 
@@ -383,8 +383,6 @@ val result = connectAdapter.connected(address)
 
 ### Import & Export Wallet
 
-Here’s an enhanced version of the text:
-
 When using an instance of either `EVMConnectAdapter` or `SolanaConnectAdapter` within your `connectAdapter` setup, you can import a wallet using a private key or a mnemonic (seed phrase).
 
 To do this, use the `connectAdapter.importWalletFromPrivateKey` or `connectAdapter.importWalletFromMnemonic` methods. Both methods will return an account structure you can use within your application.
@@ -449,7 +447,7 @@ connectAdapter.signAndSendTransaction(address, transaction, callback)
 | :-------------- | :------------------ | :-------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `publicAddress` | `String`            | For the connected public address, if `adapter` is `AuthCoreAdapter`, you can pass an empty string; for other wallet types, you need to pass a connected public address. |
 | `transaction`   | `String`            | EVM transaction, expressed as a hexadecimal string, or a Solana transaction, expressed as a base58 string.                                                       |
-| callback        | TransactionCallback | A function to handle the transaction's return response.                                                                                   |
+| callback        | SignCallback | A function to handle the transaction's return response.                                                                                   |
 
 E.g.:
 
@@ -468,7 +466,7 @@ To sign a basic UTF-8 message (string), you can use `connectAdapter.signMessage`
 | :-------------- | :------------------ | :-------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `publicAddress` | `String`            | For the connected public address, if `adapter` is `AuthCoreAdapter`, you can pass an empty string; for other wallet types, you need to pass a connected public address. |
 | `transaction`   | `String`            | EVM transaction, expressed as a hexadecimal string, or a Solana transaction, expressed as a base58 string.                                                       |
-| callback        | TransactionCallback | A function to handle the transaction's return response.                                                                                  |
+| callback        | SignCallback | A function to handle the transaction's return response.                                                                                  |
 
 E.g.:
 
@@ -484,7 +482,7 @@ Alternatively, **for EVM chains**, you can request that a user signs typed (stru
 | :-------------- | :----------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `publicAddress` | `String`            | For the connected public address, if `adapter` is `AuthCoreAdapter`, you can pass an empty string; for other wallet types, you need to pass a connected public address. |
 | `data`          | `String`     | the typed data to be signed; see the [Web (JavaScript/TypeScript)](/api-reference/auth/desktop-sdks/web) page for additional guidance.                          |
-| callback        | TransactionCallback | A function to handle the transaction's return response.                                                                                 |
+| callback        | SignCallback | A function to handle the transaction's return response.                                                                                 |
 
 - `address` — The user address to target for signature initiation.
 - `data` — The typed data to be signed. For more details, refer to the [Web (JavaScript/TypeScript)](/api-reference/auth/desktop-sdks/web) documentation.
