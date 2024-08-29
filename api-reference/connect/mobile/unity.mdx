@@ -5,13 +5,15 @@ description: "Leveraging Particle Connect within mobile applications built on Un
 
 ## Particle Connect for Unity
 
-Particle Connect acts as a central wallet connection mechanism within games built on Unity. With it, you can onboard users into a completely functional account through either social logins (via Particle Auth) or typical Web3 wallets (via WalletConnect, Solana's `wallet-adapter`, or private key imports). This creates a Web2-adjacent login experience while retaining unified compatibility with existing popular Web3 wallets.
+**Particle Connect** acts as a central wallet connection mechanism within games built on **Unity**. 
 
-Particle Connect has a dedicated Unity SDK for integration; the configuration process and examples of utilization **are outlined below.**
+With it, you can onboard users into a functional account through social logins (via **Particle Auth**) or typical Web3 wallets (via WalletConnect, Solana's `wallet-adapter`, or private key imports). This creates a Web2-adjacent login experience while retaining unified compatibility with existing popular Web3 wallets.
+
+**Particle Connect** has a dedicated **Unity** SDK for integration; the configuration process and examples of utilization **are outlined below.**
 
 ## Repository
 
-Before diving in, all of the Particle Network Unity SDKs (for Particle Auth and Particle Connect) are publicly available and viewable through the [official repository](https://github.com/Particle-Network/particle-unity). Feel free to look at the underlying architecture and demos showcasing end-to-end implementation for an initial understanding of working with Particle Connect on Unity.
+Before diving in, all of the Particle Network **Unity** SDKs (for **Particle Auth** and **Particle Connect**) are publicly available and viewable through the [official repository](https://github.com/Particle-Network/particle-unity). Feel free to look at the underlying architecture and demos showcasing end-to-end implementation to gain an initial understanding of working with **Particle Connect** on **Unity**.
 
 <div className="flex justify-center">
 
@@ -33,7 +35,7 @@ Before diving in, all of the Particle Network Unity SDKs (for Particle Auth and 
 
 ### Prerequisites
 
-To start, your Unity project will need to meet several requirements to avoid any compatibility issues. These requirements will be, in some capacity, dependent on the platform that you've decided to use. They are as follows:
+Your **Unity** project must meet several requirements to avoid compatibility issues. These requirements will be, in some capacity, dependent on the platform that you've decided to use. They are as follows:
 
 - **Unity 2021.3.35f1** or higher.
 - If you're using iOS:
@@ -52,7 +54,7 @@ To start, your Unity project will need to meet several requirements to avoid any
 
 Once you've ensured that your project meets the above prerequisites, you'll also need three key values from the [Particle dashboard](https://dashboard.particle.network): your `projectId`, `clientKey`, and `appId`.
 
-These directly connect your Unity project with the Particle dashboard, enabling customization, analytics, tracking, etc.
+These connect your **Unity** project directly with the Particle dashboard, enabling customization, analytics, tracking, etc.
 
 <Note>
   Follow the quickstart tutorial to set up a project and find the required keys:
@@ -62,7 +64,7 @@ These directly connect your Unity project with the Particle dashboard, enabling 
 
 ### Configuration
 
-With these values retrieved, you can move on to initial configuration and dependency management. This will vary in complexity depending on the platform used. To begin, for both iOS and Android, you'll need to download and install the Particle Unity package; this will include the necessary files for both Particle Connect and Particle Auth.
+With these values in hand, you can move on to initial configuration and dependency management, which will vary in complexity depending on the platform used. To begin, for both iOS and Android, you'll need to download and install the Particle Unity package, which will include the necessary files for both Particle Connect and Particle Auth.
 
 Head over to the [GitHub repository](https://github.com/Particle-Network/particle-unity/releases), and download the latest release (`.unitypackage`), then import this into your project.
 
@@ -93,11 +95,11 @@ If you're building a Unity game on iOS, you must follow a specific configuration
   <p>- `ParticleAA` - usage of the Particle AA, contains all services.</p>
 </Note>
 
-You'll also need to configure your Podfile if you haven't already. If you don't have a Podfile, go to the root of your project directory and run `pod init`, this will generate a Podfile
+You'll also need to configure your Podfile if you haven't already. To do so, go to the root of your project directory and run `pod init`; this will generate a Podfile.
 
 Open this Podfile, and insert the specific pods (services) you'd like to use within your project. In this case, `ParticleConnect` and `CommonConnect` will generally suffice, but additional services can be added if needed.
 
-Additionally, you'll need to paste in the below code snippet for installation handling:
+Additionally, you'll need to paste in the code snippet below for installation handling:
 
 ```ruby Podfile
 pod 'ParticleConnect'
@@ -113,7 +115,7 @@ installer.pods_project.targets.each do |target|
  end
 ```
 
-Also you can copy the example [Podfile](https://github.com/Particle-Network/particle-unity/blob/main/ios-build/Podfile) .
+You can also copy the example [Podfile](https://github.com/Particle-Network/particle-unity/blob/main/ios-build/Podfile).
 
 With your Podfile set, you'll need to run `pod install` and open your `.xcworkspace` file, as shown below:
 
@@ -123,7 +125,7 @@ pod install --repo-update
 open {your project}.xcworkspace
 ```
 
-Finally, for iOS, you'll need to formally use the `projectId`, `clientKey`, and `appId` previously retrieved. To do this, head into the root of your Xcode project and create a file, `ParticleNetwork-Info.plist`. Within this file, paste the following text (then replace the placeholders):
+Finally, for **iOS**, you'll need to formally use the `projectId`, `clientKey`, and `appId` previously retrieved. To do this, head to the root of your **Xcode** project and create a file called `ParticleNetwork-Info.plist`. Within this file, paste the following text (then replace the placeholders):
 
 ```xml ParticleNetwork-Info.plist
 <?xml version="1.0" encoding="UTF-8"?>
@@ -142,7 +144,7 @@ Finally, for iOS, you'll need to formally use the `projectId`, `clientKey`, and 
 
 #### Android configuration
 
-If you're building your Unity game for Android, you'll just need to configure two files before you're ready to go. The first of these two files can be found at `Assets/Plugins/Android/launcherTemplate.gradle` within your project. Here, you'll need to ensure you have the necessary dependencies included.
+If you're building your **Unity** game for **Android**, you'll just need to configure two files before you're ready to go. The first of these two files can be found at `Assets/Plugins/Android/launcherTemplate.gradle` within your project. Here, you'll need to ensure you have the necessary dependencies included.
 
 Specifically, you'll need the following dependencies at a minimum:
 
@@ -168,7 +170,7 @@ dependencies {
 }
 ```
 
-Finally, for Android, you'll need to place your `projectId`, `clientKey`, and `appId` within `gradleTemplate.properties`, found at `Assets/Plugins/Android/gradleTemplate.properties`.
+Finally, for **Android**, you'll need to place your `projectId`, `clientKey`, and `appId` within `gradleTemplate.properties`, which can be found at `Assets/Plugins/Android/gradleTemplate.properties`.
 
 ```groovy gradleTemplate.properties
 particle.network.project_client_key=Your Client Key
@@ -180,7 +182,7 @@ particle.network.app_id=Your App ID
 
 ## Initialization
 
-Now that you've managed the relevant dependencies and configured your Unity environment, you'll need to initialize `ParticleNetwork` and `ParticleConnectInteraction` (both derived from `Network.Particle.Scripts.Core`) before moving on. This is required for Particle Connect to function.
+Now that you've managed the relevant dependencies and configured your Unity environment, you'll need to initialize `ParticleNetwork` and `ParticleConnectInteraction` (derived from `Network.Particle.Scripts.Core`) before moving on. This is required for Particle Connect to function.
 
 `ParticleNetwork` can be initialized by simply calling `Init` and passing in a `chainInfo` object (\*). `ParticleConnectInteraction.Init` will require both a `chainInfo` object and a `DAppMetaData` parameter (in this example, represented as `metadata`) containing a WalletConnect project ID retrieved from the WalletConnect dashboard, alongside the name of your project, the icon (preferably 512x512), the website URL, and a project description.
 
@@ -190,10 +192,10 @@ An example of the above process can be found below.
 
 | Field       | Type           | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
 | ----------- | -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `chainInfo` | `ChainInfo`    | The primary chain to be used within your application. This should be dictated by an overall blockchain, followed by a specific network (testnet). Within this example, it's `.Ethereum`(alternatively it could be `.EthereumSepolia`, and so on.)                                                                                                                                                                                                                                                                                                                              |
-| `dAppData`  | `DAppMetadata` | Metadata outlining the description of your application, This should be an instance of `DAppMetadata` with the following parameters: `walletConnectProjectId`, the wallet connect project id retrieved from the [WalletConnect dashboard](https://cloud.walletconnect.com), `name`, the name of your project. `icon`, a URL linking to the icon of your project; this should be 512x512, ideally. `url`, the URL of your project's website. `description`, the description of your project, `redirect`, optional, redirect universal link of you project, `verifyUrl`, optional |
-| `rpcUrl`    | `RpcUrl?`      | Customize rpc url                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
-| `env`       | `Env`          | The specific environmennt to be used. This can be either `.DEV`, `.STAGING`, `.PRODUCTION`, this should be set to `.PRODUCTION` when release                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| `chainInfo` | `ChainInfo`    | The primary chain to be used within your application. This should be indicated by an overall blockchain, followed by a specific network. Within this example, it's `.Ethereum`(alternatively it could be `.EthereumSepolia`, and so on.)                                                                                                                                                                                                                                                                                                                              |
+| `dAppData`  | `DAppMetadata` | Metadata that describes your application and should be provided as an instance of `DAppMetadata` with the following parameters: `walletConnectProjectId`, the WalletConnect project ID retrieved from the [WalletConnect dashboard](https://cloud.walletconnect.com), `name`, the name of your project. `icon`, a URL linking to the icon of your project; this should be 512x512, ideally. `url`, the URL of your project's website. `description`, the description of your project, `redirect`, optional, a redirect universal link to you project, `verifyUrl`, optional. |
+| `rpcUrl`    | `RpcUrl?`      | Customize the RPC URL.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+| `env`       | `Env`          | The specific environmennt to be used. This can be either `.DEV`, `.STAGING`, `.PRODUCTION`, this should be set to `.PRODUCTION` when released.                                                                                                                                                                                                                                                                                                                                                                                                                                   |
 
 ```csharp
 var metadata = new DAppMetaData(TestConfig.walletConnectProjectId,"Particle Connect",
@@ -219,7 +221,9 @@ ParticleConnectInteraction.SetWalletConnectV2SupportChainInfos(chainInfos.ToArra
 
 ### Set Chain Info
 
-Before a user has connected, if you'd like to set the primary chain after initialization through `.Init`, you can call `ParticleNetwork.SetChainInfo`, passing in a corresponding `chainInfo` object for the chain you'd like to switch to. Alternatively, if you only support evm chains, `ParticleNetwork.SetChainInfo` is enough, you can call it anytime, if you support both evm and solana, `ParticleAuthCore.Instance.SwitchChain` should be called when switch from an evm chain to solana or switch from solana to an evm chain. E.g:
+If you want to set the primary chain after initializing with `.Init` and before a user is connected, you can call `ParticleNetwork.SetChainInfo`, passing in the appropriate `chainInfo` object for the desired chain.
+
+If your application supports only EVM chains, `ParticleNetwork.SetChainInfo` is sufficient and can be called anytime. However, if you support both EVM and Solana chains, use `ParticleAuthCore.Instance.SwitchChain` when switching between EVM and Solana chains. For example:
 
 ```csharp
 ParticleNetwork.SetChainInfo(ChainInfo.Ethereum);
@@ -232,7 +236,7 @@ await ParticleAuthCore.Instance.SwitchChain(ChainInfo.Ethereum);
 
 ### Connect Wallet
 
-Within implementations of Particle Connect, `Connect` drives connection with a wallet in the Particle Connect stack, (social login or otherwise.) This is done through `ParticleConnect.Instance.Connect`, then passing in a relevant `WalletType` object, derived from `Network.Particle.Scripts.Model`
+Within implementations of **Particle Connect**, `Connect` drives connection with a wallet in the **Particle Connect** stack, (social login or otherwise.) This is done through `ParticleConnect.Instance.Connect`, then passing in a relevant `WalletType` object, derived from `Network.Particle.Scripts.Model`
 
 `WalletType` is an `enum` containing the following choices:
 
@@ -262,8 +266,8 @@ If you're using `AuthCore`, you'll also need to pass in a `ConnectConfig` object
 | `account`           | `string?`                 | (Optional) when `type` is set to either `.email`, `.phone`, or `.jwt`, you can use the `account` parameter to pass in an expected email, phone number, or JWT. This is optional for the former two, but required for `.jwt`. The phone number must be in E.164 format.           |
 | `code`              | `string?`                 | (Optional) when `type` is set to either `.email` pr `.phone`, you can use the code parameter to pass the verification code.                                                                                                                                                      |
 | `supportAuthTypes`  | `List<SupportLoginType>?` | The methods of authentication visible on the authentication popup UI. By default, this will be exclusive to the chosen social login method, although by passing in additional types, you can expand the UI to include the ability to login with those as an alternative to type. |
-| `socialLoginPrompt` | `SocialLoginPrompt?`      | (Optional) either `.None`, `.Consent`, or `.SelectAccount`                                                                                                                                                                                                                       |
-| `loginPageConfig`   | `LoginPageConfig?`        | (Optional) to customize the UI page, contains project name, icon and description.                                                                                                                                                                                                |
+| `socialLoginPrompt` | `SocialLoginPrompt?`      | (Optional) either `.None`, `.Consent`, or `.SelectAccount`.                                                                                                                                                                                                                       |
+| `loginPageConfig`   | `LoginPageConfig?`        | (Optional) customize the UI page, includes project name, icon and description.                                                                                                                                                                                                |
 
 E.g.:
 
@@ -283,7 +287,7 @@ await ParticleConnect.Instance.Connect(WalletType.MetaMask);
 
 ### Disconnect Wallet
 
-To disconnect an active session, identified by a specific address, you can call `ParticleConnect.Instance.Disconnect`, passing in the specific wallet type (`WalletType` object) and associated address that you'd like to disconnect from your application, as is shown below.
+To disconnect an active session identified by a specific address, you can call `ParticleConnect.Instance.Disconnect`, passing in the particular wallet type (`WalletType` object) and associated address that you'd like to disconnect from your application, as is shown below.
 
 ```csharp
 await ParticleConnect.Instance.Disconnect(this._walletType, publicAddress);
@@ -293,7 +297,7 @@ await ParticleConnect.Instance.Disconnect(this._walletType, publicAddress);
 
 ### Is Connected
 
-Another important method is `IsConnected`, returning a Boolean indicating whether or not a user (or, in this case, an address and `WalletType`) are currently connected to your application. This can be called through `ParticleConnectInteraction.IsConnected`. E.g.:
+Another critical method is `IsConnected`, returning a Boolean indicating whether or not a user (or, in this case, an address and `WalletType`) is currently connected to your application. This can be called through `ParticleConnectInteraction.IsConnected`. E.g.:
 
 ```csharp
 ParticleConnectInteraction.IsConnected(this._walletType, publicAddress);
@@ -303,11 +307,11 @@ ParticleConnectInteraction.IsConnected(this._walletType, publicAddress);
 
 ### Sign and Send Transaction
 
-`ParticleConnect.Instance.SignAndSendTransaction` acts as the primary mechanism for both EVM and Solana for sending (or, in this case, suggesting) transactions. Upon calling, the `WalletType` (the adapter in question) will return a confirmation popup requesting a signature from the user before sending the transaction directly to the network. `SignAndSendTransaction` takes three parameters:
+`ParticleConnect.Instance.SignAndSendTransaction` is the primary mechanism for EVM and Solana to send (or, in this case, suggest) transactions. Upon calling, the `WalletType` (the adapter in question) will return a confirmation popup requesting a signature from the user before sending the transaction directly to the network. `SignAndSendTransaction` takes three parameters:
 
-- `WalletType`, the type of wallet being used.
-- `address`, the public address being used.
-- `transaction`, a stringified representation of a transaction object.
+- `WalletType` is the type of wallet being used.
+- `address` is the public address being used.
+- `transaction,` a stringified representation of a transaction object.
 
 E.g.:
 
@@ -321,7 +325,7 @@ await ParticleConnect.Instance.SignAndSendTransaction(this._walletType, publicAd
 
 `ParticleConnect.Instance.SignTransaction` is a **Solana-specific** method for signing a transaction without pushing it to the network. This will behave similarly to `SignAndSendTransaction`, although it will only function on either the `Phantom` or `SolanaPrivateKey` wallet types and will purely return a signature.
 
-The plural of this method is `ParticleConnect.Instance.SignAllTransactions`, taking a list of transactions to be prompted for signature, rather than just one.
+The plural of this method is `ParticleConnect.Instance.SignAllTransactions`, which takes a list of transactions rather than just one to be prompted for signature.
 
 ```csharp
 await ParticleConnect.Instance.SignTransaction(this._walletType, publicAddress, transaction);
@@ -347,7 +351,7 @@ await ParticleConnect.Instance.SignMessage(this._walletType, publicAddress, mess
 
 As an alternative to `SignMessage`, for **EVM chains**, you can request that a user signs typed (structured) data rather than purely a raw string. To do this, you can use `adapter.signTypedData` (equivalent to `eth_signTypedData`, represented as either `TypedDataV4`, `TypedDataV2`, or `TypedDataV1`). This takes the following parameters:
 
-- `address`, the user address to target for signature initiation.
+- `address` is the user address to target for signature initiation.
 - `data`, the typed data to be signed; see the [Web (JavaScript/TypeScript)](/api-reference/auth/desktop-sdks/web) page for additional guidance.
 
 E.g.:
@@ -363,7 +367,9 @@ await ParticleConnect.Instance.SignTypedData(this._walletType, publicAddress, ty
 
 ### Import Wallet
 
-If you're using the`EvmPrivateKey` or `SolanaPrivateKey` wallet types, you can import wallets through either a seed phrase or private key. These methods will associate an account instance derived from these keys, allowing utilization within your application. These can be achieved through either `ImportWalletFromPrivateKey` for importing a private key, or `ImportWalletFromMnemonic` for importing a mnemonic (seed phrase). Both of these methods require both the `WalletType` (either `EvmPrivateKey` or `SolanaPrivateKey`) and the private key/seed phrase to be imported.
+If you're using the`EvmPrivateKey` or `SolanaPrivateKey` wallet types, you can import wallets through either a seed phrase or private key. These methods will associate an account instance derived from these keys, allowing utilization within your application. 
+
+These can be achieved through `ImportWalletFromPrivateKey` for importing a private key, or `ImportWalletFromMnemonic` for importing a mnemonic (seed phrase). These methods require the `WalletType` (either `EvmPrivateKey` or `SolanaPrivateKey`) and the private key/seed phrase to be imported.
 
 Additionally, you can export one of these wallets with `ParticleConnect.Instance.ExportWalletPrivateKey`, passing in the address (of the `EvmPrivateKey` or `SolanaPrivateKey` imported/generated wallet) that you'd like to export.
 
@@ -380,4 +386,4 @@ await ParticleConnect.Instance.ExportWalletPrivateKey(this._walletType, publicAd
 
 ## Dive Deeper
 
-`ParticleConnect` includes `ParticleAuthCore`. If you log in with a Particle account, you can access additional function such as `getUserInfo`, `openAccountAndSecurity`, `hasMasterPassword` and `hasPaymentPassword` and `changeMasterPassword`, you can reference the docs from [Auth SDK reference](/api-reference/auth/mobile-sdks/unity)
+`ParticleConnect` includes `ParticleAuthCore`. When logged in with a Particle account, you can access additional functions such as `getUserInfo`, `openAccountAndSecurity`, `hasMasterPassword`, `hasPaymentPassword`, and `changeMasterPassword`. For more information, refer to the [Auth SDK reference](/api-reference/auth/mobile-sdks/unity).
