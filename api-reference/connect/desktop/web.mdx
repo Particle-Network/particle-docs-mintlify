@@ -6,9 +6,9 @@ description: 'Leveraging Particle Connect within web applications.'
 
 ## Particle Connect for Web
 
-**Particle Connect** enables a unified modal driving connection with social logins (through Particle Auth) and standard Web3 wallets, creating an equally accessible experience for Web3 natives and traditional consumers. 
+**Particle Connect** enables a unified modal driving connection with social logins (through Particle Auth) and standard Web3 wallets, creating an equally accessible experience for Web3 natives and traditional consumers.
 
-**Particle Connect** is an all-in-one SDK capable of handling end-to-end onboarding and wallet connection.
+In essence, **Particle Connect** is an all-in-one SDK capable of handling end-to-end onboarding and wallet connection.
 
 Leveraging **Particle Connect** as the primary connection mechanism (the **Connect** button within your application) only takes a few steps, **as outlined below**.
 
@@ -33,7 +33,7 @@ Additionally, a boilerplate and associated quickstart is available [here](/guide
 
 To begin, you must install the **Particle Connect** Web SDK alongside viem.
 
-Below is an example using **yarn**.
+Below is an example of doing so using **yarn**.
 
 ```shell Terminal
 yarn add @particle-network/connectkit viem@^2
@@ -51,7 +51,7 @@ These are required values, and you'll need in the coming configuration process; 
 
 ### Configuration
 
-Once **Particle Connect** is installed and you have your **project keys**, you can configure the SDK. Simply wrap your application in the `ConnectKitProvider` component to apply customizations and integrate the keys.
+Once **Particle Connect** is installed and you have your **project keys**, you can configure the SDK. Simply wrap your application in the `ConnectKitProvider` component to apply customizations and insert the aforementioned keys.
 
 Here, you'll configure the following core parameters:
 
@@ -190,7 +190,7 @@ export default function RootLayout({
 
 **Particle Connect** supports multiple **EVM** chains alongside **Solana**.
 
-<Tip>Refer to the [Network Coverage](/guides/network-coverage) page for a detailed list.</Tip>
+<Tip>Refer to the [Network Coverage](/guides/network-coverage) page for a detailed list of supported chains.</Tip>
 
 You can easily import predefined chains from `@particle-network/connectkit/chains`. 
 
@@ -233,11 +233,13 @@ const merlinTestnet = defineChain({
 });
 ```
 
-This example demonstrates importing predefined chains and defining a custom chain (`Merlin Testnet`). By doing so, you can expand your application's network capabilities to include virtually any EVM-compatible chain.
+This example demonstrates importing predefined chains and defining a custom chain (Merlin Testnet). By doing so, you can expand your application's network capabilities to include virtually any EVM-compatible chain.
+
+<Note>Defining custom chains through `defineChain` will only work with supported chain IDs (those listed in [Network Coverage](/guides/network-coverage)), as such, this function is primarily for using custom RPCs, explorers, symbols, etc.</Note>
 
 ### Adding the connection button
 
-Moving out of your `index` file and into your main `App` component, you'll need to include the **Connect** button (`ConnectButton` from `@particle-network/connectkit`) to facilitate the useAccount of Particle Connect.
+Moving out of your `index` file and into your main `App` component, you'll need to include the **Connect** button (`ConnectButton` from `@particle-network/connectkit`) to facilitate the utilization of Particle Connect.
 
 You can then use `isConnected` from `useAccount()` to handle your frontend post-connection.
 
@@ -366,13 +368,11 @@ const config = createConfig({
 
 ### Authentication via Passkey
 
-**Particle Connect** supports authentication with **Passkey**, a cutting-edge solution for secure, passwordless authentication. 
+**Particle Connect** supports authentication with **Passkey**, a solution for secure, device-embedded authentication. 
 
-**Passkey** on **Connect** enables users to create non-custodial smart wallets by replacing traditional passwords with cryptographic key pairs. This delivers superior security, a streamlined user experience, and protection against phishing attacks.
+To enable **Passkeys** within your **Particle Connect** project, import `passkeySmartWallet` from `"@particle-network/connectkit/evm"` and include it in the `evmWalletConnectors` object.
 
-To enable **Passkey** in your **Connect** project, import `passkeySmartWallet` from `"@particle-network/connectkit/evm"` and include it in the `evmWalletConnectors` object.
-
-<Note>**Passkey** authentication is exclusively available with **Biconomy** or **Coinbase** smart accounts.</Note>
+<Note>**Passkey** authentication is exclusively available with **Biconomy V2** or **Coinbase** smart accounts.</Note>
 
 ```tsx 
 import {
@@ -382,31 +382,27 @@ import {
 
 const config = createConfig({
     walletConnectors: [
-    // evm start
     evmWalletConnectors({
-      // TODO: replace it with your app metadata.
+      // Replace this with your app metadata.
       metadata: { name: "Connectkit Demo", },
       connectorFns: [passkeySmartWallet()],
       multiInjectedProviderDiscovery: false,
     }),
 
-    // evm end
     ],
       plugins: [
-    // embedded wallet start
+    // Embedded wallet configuration
     wallet({
       visible: true,
       entryPosition: EntryPosition.BR,
     }),
-    // embedded wallet end
 
-    // aa config start
-    // With Passkey auth use Biconomy or Coinbase
+    // AA configuration
+    // For Passkeys, use Biconomy or Coinbase
     aa({
-      name: "BICONOMY",
-      version: "2.0.0",
+      name: "COINBASE",
+      version: "1.0.0",
     }),
-    // aa config end
   ],
 });
     // Other connectors..
