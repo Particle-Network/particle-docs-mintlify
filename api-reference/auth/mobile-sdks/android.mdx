@@ -5,15 +5,17 @@ description: Interacting with Particle Auth on Android using Kotlin.
 
 # Particle Auth for Android
 
-The Particle Auth Android SDK is the flagship mechanism for integrating Particle's Wallet-as-a-Service within Android applications. This SDK, for most applications, acts as the sole facilitator of integration on Android, built for simplicity. As with the other Particle Auth SDKs, it requires only a few lines of code.
+The **Particle Auth Android SDK** is the flagship mechanism for integrating Particle's **Wallet-as-a-Service** within **Android** applications. This SDK is the sole facilitator of **Android** integration for most applications and is built for simplicity. 
 
-Unlike the Unity SDK and Web SDK, the Android SDK deviates in installation and configuration; these specific intricacies and setup processes **are detailed below**.
+As with the other **Particle Auth** SDKs, it requires only a few lines of code.
+
+Unlike the **Unity** SDK and **Web** SDK, the **Android** SDK differs in installation and configuration; these specific intricacies and setup processes are detailed below.
 
 ---
 
 ## Getting Started
 
-Utilizing the Particle Auth Android SDK is quite straightforward, although it requires a few prerequisite version minimums to get started and ensure compatibility.
+Using the **Particle Auth Android SDK** is straightforward but requires meeting a few minimum version prerequisites to ensure compatibility.
 
 ### Prerequisites
 
@@ -26,9 +28,9 @@ Utilizing the Particle Auth Android SDK is quite straightforward, although it re
 
 ### Configuration
 
-Before you begin using the Particle Auth Android SDK, you'll need a few required values that are universal across all Particle Auth SDKs.
+Before you begin using the **Particle Auth Android SDK**, you'll need a few required universal values across all **Particle Auth** SDKs.
 
-These values are `projectId`, `clientKey`, and `appId`. All three can be retrieved by heading over to the [Particle dashboard](https://dashboard.particle.network).
+These values are `projectId`, `clientKey`, and `appId`. All three can be retrieved by heading to the [Particle dashboard](https://dashboard.particle.network).
 
 <Note>
   Follow the quickstart tutorial to set up a project and find the required keys:
@@ -38,7 +40,9 @@ These values are `projectId`, `clientKey`, and `appId`. All three can be retriev
 
 ### Installation
 
-With a project and application created on the Particle Dashboard, you can move on to installing and initializing `ParticleNetwork`. For the former, you must begin by declaring the Particle Auth SDK in your Gradle file.
+Once you've created a project and application on the **Particle Dashboard**, you can install and initialize `ParticleNetwork`. 
+
+Start by declaring the **Particle Auth** SDK in your **Gradle** file.
 
 ```kotlin Kotlin
 repositories {
@@ -69,9 +73,9 @@ dependencies {
   repository](https://github.com/Particle-Network/particle-android).
 </Tip>
 
-Additionally, you'll need to go ahead and declare specific configurations, such as the insertion of aforementioned values `projectId`, `clientKey`, and `appId` within the relevant `AndroidManifest.xml` file.
+Additionally, you'll need to declare specific configurations, such as inserting values above `projectId`, `clientKey`, and `appId` within the relevant `AndroidManifest.xml` file.
 
-An example of such configuration is attached below- placeholders such as `pn_project_id` would need to be filled in.
+An example of such a configuration is attached below. Placeholders such as `pn_project_id` will need to be filled in.
 
 ```xml XML
  <manifest xmlns:android="http://schemas.android.com/apk/res/android"
@@ -124,7 +128,9 @@ An example of such configuration is attached below- placeholders such as `pn_pro
 
 ### Initialize the SDK
 
-Upon application startup, `ParticleNetwork` will need to be initialized to function properly. This can be done by calling the `init` method on `ParticleNetwork` and passing in the primary chain you intend to use within your application
+Upon application startup, `ParticleNetwork` must be initialized to function correctly. 
+
+This can be done by calling the `init` method on `ParticleNetwork` and passing in the primary chain you intend to use within your application.
 
 ```kotlin Kotlin
 class App : Application() {
@@ -143,7 +149,7 @@ class App : Application() {
 
 ### Switch Chain
 
-To switch the used chain after initial configuration, `AuthCore.switchChain` is used. This enables asynchronous switching. Similar to the initial configuration.
+To switch the chain after the initial configuration, use `AuthCore.switchChain`. This allows for asynchronous switching, just like the initial setup.
 
 ```kotlin Kotlin
 val chainInfo = ChainInfo.Polygon
@@ -155,20 +161,23 @@ ParticleNetwork.setChainInfo(chainInfo,callback)
 
 ### Login
 
-`AuthCore.connect` throws the standard login popup, which changes depending on the associated configurations such as `loginType` (adjacent to the Web SDK's `preferredAuthType`), `supportAuthTypeValues`, and so on. This login popup acts as the primary mechanism facilitating account creation and, for existing users, account login.
+`AuthCore.connect` triggers the standard login popup, which changes based on configurations like `loginType` (similar to the **Web** SDK's `preferredAuthType`) and `supportAuthTypeValues`. 
 
-Specifically, `AuthCore.login` takes the following parameters:
+This popup serves as the primary method for account creation and login for existing users.
+
+The `AuthCore.login` function accepts the following parameters:
 
 | **Field**         | **Type**                            | **Description**                                                                                                                                                                                                                          |
 | ----------------- | ----------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| loginType         | LoginType                           | the social login method preferred. This supports either EMAIL, PHONE, TWITTER, GOOGLE, FACEBOOK, APPLE, DISCORD, GITHUB, TWITCH, MICROSOFT, LINKEDIN, JWT.                                                                               |
-| account           | String                              | Default is empty String, you can use the `account` parameter to pass in an expected email, phone number, or JWT. This is optional for the former two, but required for `JWT`. The phone number must be in E.164 format.                  |
-| supportLoginTypes | List`<SupportLoginType>`            | The default setting includes support for all SupportLoginTypes: EMAIL, PHONE, FACEBOOK, GOOGLE, APPLE, TWITTER, DISCORD, GITHUB, TWITCH, MICROSOFT, and LINKEDIN. You can also provide a specific subset of SupportLoginTypes if needed. |
-| prompt            | LoginPrompt?                        | the prompt to be displayed following social either None,ConSent, or SelectAccount, only google, discord and microsoft support it.                                                                                                        |
-| loginPageConfig   | LoginPageConfig?                    | to customize the UI page, contains project name, icon and description.                                                                                                                                                                   |
-| loginCallback     | AuthCoreServiceCallback`<UserInfo>` | success : wiil return UserInfo. <br /><br />failure : will return a ErrorInfo                                                                                                                                                            |
+| loginType         | LoginType                           | Specifies the preferred social login method. Options include `EMAIL`, `PHONE`, `TWITTER`, `GOOGLE`, `FACEBOOK`, `APPLE`, `DISCORD`, `GITHUB`, `TWITCH`, `MICROSOFT`, `LINKEDIN`, and `JWT`.                                                                               |
+| account           | String                              | The account parameter allows you to pass an expected email, phone number, or JWT. This field is optional for email and phone logins but required for `JWT`. The phone number must be in E.164 format.                  |
+| supportLoginTypes | List`<SupportLoginType>`            | Defines the supported social login methods. By default, all options are supported: `EMAIL`, `PHONE`, `FACEBOOK`, `GOOGLE`, `APPLE`, `TWITTER`, `DISCORD`, `GITHUB`, `TWITCH`, `MICROSOFT`, and `LINKEDIN`. You can also specify a subset of these types if needed. |
+| prompt            | LoginPrompt?                        | Controls the prompt displayed after social login. Options are `None`, `Consent`, or `SelectAccount`. This is only supported by Google, Discord, and Microsoft.                                                                                                        |
+| loginPageConfig   | LoginPageConfig?                    | Customizes the UI of the login page, including the project name, icon, and description.                                                                                                                                                                   |
+| loginCallback     | AuthCoreServiceCallback`<UserInfo>` | Callback triggered after the login attempt.<br /><br />**Success:** Returns `UserInfo`.<br />**Failure:** Returns `ErrorInfo`.        |
+                                                                                                                                                 |
 
-<Tip>You can use your existing user base or authentication method with Particle Auth through JWT. This way, your users can still log in with their current accounts. Click [here](/guides/configuration/auth/jwt) to learn how to configure JWT. </Tip>
+<Tip>You can use your existing user base or authentication method with Particle Auth through JWT. This way, your users can still log in with their current accounts. Check [Custom Authentication (JWT)](/guides/configuration/auth/jwt) to learn how to configure it.</Tip>
 
 ```kotlin Kotlin
 // Connect with Email or Phone
@@ -194,7 +203,7 @@ val connectCallback = object :AuthCoreServiceCallback<UserInfo>{
 
 ### UserInfo and Address Retrieval (post-login)
 
-After the login is successful, detailed user information can be retrieved by calling the following methods.
+After a successful login, you can retrieve detailed user information by calling the following methods.
 
 ```kotlin Kotlin
 AuthCore.getUserInfo()
@@ -204,7 +213,7 @@ AuthCore.solana.getAddress()
 
 ### Logout
 
-`AuthCore.disconnect` will log a user out of their current session and return them to the previous state before login.
+`AuthCore.disconnect` logs the user out of their current session and returns them to their pre-login state.
 
 ```kotlin Kotlin
 AuthCore.disconnect(object : ResultCallback {
@@ -220,13 +229,13 @@ AuthCore.disconnect(object : ResultCallback {
 
 ### Is User Logged In
 
-`AuthCore.isLogin` returns a Boolean based upon the account status of a given session (whether or not a user is logged in with Particle.
+`AuthCore.isLogin` returns a Boolean indicating whether the user is currently logged in with Particle.
 
 ```kotlin Kotlin
 AuthCore.isConnected()
 ```
 
-If the user login on another device, causing the user’s token to become invalid, you can use syncUserInfo to synchronize information,it's a suspend
+If the user logs in on another device, causing their token to become invalid, you can use `syncUserInfo` to synchronize the information.
 
 ```
 try{
@@ -238,18 +247,20 @@ try{
 
 ### Signatures
 
-Once `ParticleNetwork` has been initialized and a user has successfully logged in, signatures can be proposed for confirmation through a popup
+Once `ParticleNetwork` has been initialized and a user has successfully logged in, signatures can be proposed for confirmation through a pop-up.
 
 ### EVM
 
 ### Signing Messages (EIP191)
 
-To request an EIP191 signature from a user's embedded wallet, you can use either the `AuthCore.evm.personalSign` or `AuthCore.evm.personalSignUnique` method. If you need the same message to return a unique signature each time, use the `AuthCore.evm.personalSignUnique` method. Otherwise, the `AuthCore.evm.personalSign`method is generally recommended.
+To request an **EIP191** signature from a user's embedded wallet, you can use either the `AuthCore.evm.personalSign` or `AuthCore.evm.personalSignUnique` method. 
+
+If you need the same message to return a unique signature each time, use the `AuthCore.evm.personalSignUnique` method. Otherwise, the `AuthCore.evm.personalSign`method is generally recommended.
 
 | Field                 | Type                                | Description                                                                            |
 | :-------------------- | :---------------------------------- | :------------------------------------------------------------------------------------- |
-| `hexUnSignedMessage ` | `PrefixedHexString`                 | either a hexadecimal string starting with '0x' or a human-readable string is required. |
-| `callback`            | AuthCoreSignCallback`<SignOutput>`) | Success->return signature , failed->return an ErrorInfo                                |
+| `hexUnSignedMessage`  | `PrefixedHexString`                 | A required field that accepts either a hexadecimal string starting with '0x' or a human-readable string. |
+| `callback`            | `AuthCoreSignCallback<SignOutput>`  | Handles the response of the signing operation.<br />**Success:** Returns the signature.<br />**Failure:** Returns `ErrorInfo`. |
 
 ```kotlin signAndSendTransaction (Kotlin)
 AuthCore.evm.personalSign(hexUnSignedMessage: PrefixedHexString, callback)
@@ -258,12 +269,14 @@ AuthCore.evm.personalSignUnique(hexUnSignedMessage: PrefixedHexString, callback)
 
 ### Signing Typed Data V4 (EIP712)
 
-To request an EIP712 signature from a user's embedded wallet, you can use either the `AuthCore.evm.signTypedData` or `AuthCore.evm.signTypedDataUnique` method. If you need the same message to return a unique signature each time, use the `AuthCore.evm.signTypedDataUnique` method. Otherwise, the `AuthCore.evm.signTypedData` method is generally recommended.
+To request an EIP712 signature from a user's embedded wallet, you can use either the `AuthCore.evm.signTypedData` or `AuthCore.evm.signTypedDataUnique` method. 
+
+If you need the same message to return a unique signature each time, use the `AuthCore.evm.signTypedDataUnique` method. Otherwise, the `AuthCore.evm.signTypedData` method is generally recommended.
 
 | Field      | Type                               | Description                                             |
 | :--------- | :--------------------------------- | :------------------------------------------------------ |
-| `data `    | `PrefixedHexString`                | a hexadecimal string starting with "0x"                 |
-| `callback` | AuthCoreSignCallback`<SignOutput>` | Success->return signature , failed->return an ErrorInfo |
+| `data `    | `PrefixedHexString`                | A hexadecimal string that must start with "0x".                |
+| `callback` | AuthCoreSignCallback`<SignOutput>` | Handles the response of the signing operation.<br />**Success**: Returns the signature.<br />**Failure**: Returns `ErrorInfo`. |
 
 ```kotlin signAndSendTransaction (Kotlin)
 AuthCore.evm.signTypedData(data: PrefixedHexString, callback)
@@ -274,17 +287,17 @@ AuthCore.evm.signTypedDataUnique(data: PrefixedHexString, callback)
 
 To send a transaction from a user's embedded wallet, you can use `AuthCore.evm.sendTransaction`.
 
-| Field          | Type                               | Description                                             |
-| :------------- | :--------------------------------- | :------------------------------------------------------ |
-| `transaction ` | `PrefixedHexString`                | a hexadecimal string starting with "0x"                 |
-| `callback`     | AuthCoreSignCallback`<SignOutput>` | Success->return signature , failed->return an ErrorInfo |
-| feeMode        | FeeMode                            | Default FeeModeNative(),only AA mode enabled use        |
+| Field         | Type                               | Description                                                                 |
+| :------------ | :--------------------------------- | :-------------------------------------------------------------------------- |
+| `transaction` | `PrefixedHexString`                | A hexadecimal string that must start with "0x".                              |
+| `callback`    | `AuthCoreSignCallback<SignOutput>` | Handles the response of the signing operation.<br />**Success:** Returns the signature.<br />**Failure:** Returns `ErrorInfo`. |
+| `feeMode`     | `FeeMode`                          | The mode for handling transaction fees. The default is `FeeModeNative()`. Use this field only when AA mode is enabled.  |
 
 ```
 AuthCore.evm.sendTransaction(transaction: PrefixedHexString, callback: AuthCoreSignCallback<SignOutput>, feeMode: FeeMode = FeeModeNative())
 ```
 
-You can create en EVM transaction with class ParticleNetwork.evm.createTransaction()
+You can create an **EVM** transaction using the `ParticleNetwork.evm.createTransaction()` method.
 
 ```
 val tx = ParticleNetwork.evm.createTransaction()
@@ -295,12 +308,12 @@ val hexTx = tx.serialize()
 
 ### Signing Messages
 
-To request a signature from a user's embedded wallet, you can use `AuthCore.solana.signMessage`.
+To request a signature from a user's embedded wallet, use `AuthCore.solana.signMessage`.
 
-| Field     | Type                               | Description                                             |
-| :-------- | :--------------------------------- | :------------------------------------------------------ |
-| `message` | `String`                           | a base58 formatted string is required.                  |
-| callback  | `AuthCoreSignCallback<SignOutput>` | Success->return signature , failed->return an ErrorInfo |
+| Field     | Type                               | Description                                                             |
+| :-------- | :--------------------------------- | :---------------------------------------------------------------------- |
+| `message` | `String`                           | A base58-formatted string that is required for the signature request.   |
+| `callback`| `AuthCoreSignCallback<SignOutput>` | Handles the response of the signing operation.<br />**Success:** Returns the signature.<br />**Failure:** Returns `ErrorInfo`. |
 
 ```swift
 val message = Base58Utils.encodeFromString("This is the message that is being signed")
@@ -311,34 +324,34 @@ AuthCore.solana.signMessage(message, chainInfo: nil)
 
 ### Transaction
 
-To send a transaction from a user's embedded wallet, you can use `AuthCore.solana.signAndSendTransaction`.
+To send a transaction from a user's embedded wallet, use `AuthCore.solana.signAndSendTransaction`.
 
-| Field         | Type                               | Description                                             |
-| :------------ | :--------------------------------- | :------------------------------------------------------ |
-| `transaction` | `String`                           | a base58 formatted string is required.                  |
-| `callback`    | `AuthCoreSignCallback<SignOutput>` | Success->return signature , failed->return an ErrorInfo |
+| Field         | Type                               | Description                                                             |
+| :------------ | :--------------------------------- | :---------------------------------------------------------------------- |
+| `transaction` | `String`                           | A base58-formatted string that is required for the transaction.         |
+| `callback`    | `AuthCoreSignCallback<SignOutput>` | Handles the response of the transaction.<br />**Success:** Returns the signature.<br />**Failure:** Returns `ErrorInfo`. |
 
 ```kotlin
 AuthCore.solana..signAndSendTransaction(transaction: Base58String, callback: AuthCoreSignCallback<SignOutput>)
 ```
 
-To sign a transaction from a user's embedded wallet, you can use ``AuthCore.solana.signTransaction`.
+To sign a transaction from a user's embedded wallet, use ``AuthCore.solana.signTransaction`.
 
 | Field         | Type                                | Description                                             |
 | :------------ | :---------------------------------- | :------------------------------------------------------ |
-| `transaction` | `String`                            | a base58 formatted string is required.                  |
-| `callback`    | `AuthCoreSignCallback<SignOutput>)` | Success->return signature , failed->return an ErrorInfo |
+| `transaction` | `String`                            | A base58-formatted string is required.                  |
+| `callback`    | `AuthCoreSignCallback<SignOutput>`  | **Success:** Returns the signature.<br />**Failure:** Returns `ErrorInfo`. |
 
 ```kotlin
 AuthCore.solana..signTransaction(transaction: Base58String, callback: AuthCoreSignCallback<SignOutput>)
 ```
 
-To sign multi transactions from a user's embedded wallet, you can use `AuthCore.solana.signAllTransactions`.
+To sign multiple transactions from a user's embedded wallet, use `AuthCore. Solana.signAllTransactions`.
 
-| Field                    | Type                                  | Description                                              |
-| :----------------------- | :------------------------------------ | :------------------------------------------------------- |
-| `serializedTransactions` | `List<Base58String>`                  | base58 formatted strings are required.                   |
-| `callback`               | AuthCoreSignCallback`<SignAllOutput>` | Success->return signatures , failed->return an ErrorInfo |
+| Field                    | Type                                  | Description                                                              |
+| :----------------------- | :------------------------------------ | :----------------------------------------------------------------------- |
+| `serializedTransactions` | `List<Base58String>`                  | A list of base58-formatted strings is required.                          |
+| `callback`               | `AuthCoreSignCallback<SignAllOutput>` | **Success:** Returns the signatures.<br />**Failure:** Returns `ErrorInfo`. |
 
 ```swift
 AuthCore.solana.signAllTransactions(transaction: Base58String, callback: AuthCoreSignCallback<SignAllOutput>)
@@ -346,19 +359,20 @@ AuthCore.solana.signAllTransactions(transaction: Base58String, callback: AuthCor
 
 ### Open Account and Security
 
-Additionally, if you'd like to, force the "Account and Security" options to be opened on-screen (from which you can control master passwords, payment passwords, additional accounts, and so on), on the frontend, then you can call `AuthCore.openAccountAndSecurity`.
-
+If you want to force the "Account and Security" options to open on-screen—where you can manage master passwords, payment passwords, additional accounts, and more—call `AuthCore.openAccountAndSecurity`.
 ```kotlin Kotlin
 AuthCore.openAccountAndSecurity()
 ```
 
 ### Set Security Account Config
 
-Within the security settings, specific popups can be set to display upon confirmation or wallet UI entrance. These popups include `promptSettingWhenSign`, which refers to payment (signature) passwords, and `promptMasterPasswordSettingWhenLogin`, which refers to a login-based master password.
+Within the security settings, specific popups can be configured to display during confirmation or when entering the wallet UI. 
 
-By default, `promptSettingWhenSign` is set to 1, which will show the prompt upon the first signature a given account conducts. If it's set to 0, it will never be shown; if it's set to 2, it will be shown upon every signature confirmation.
+These include `promptSettingWhenSign` for payment (signature) passwords and `promptMasterPasswordSettingWhenLogin` for a login-based master password.
 
-This same logic applies to `promptMasterPasswordSettingWhenLogin`, although by default it's set to 0.
+By default, `promptSettingWhenSign` is set to 1, prompting the user on the first signature for a given account. If set to 0, the prompt is never shown; if set to 2, it is shown for every signature confirmation.
+
+The same logic applies to `promptMasterPasswordSettingWhenLogin`, though it defaults to 0.
 
 ```kotlin Kotlin
 ParticleNetwork.setSecurityAccountConfig(
@@ -371,7 +385,9 @@ ParticleNetwork.setSecurityAccountConfig(
 
 ### Master Password and Payment Password
 
-User can set master password and payment password to protect assets, call `auth.changeMasterPassword` to set or change master password, call `AuthCore.openAccountAndSecurity()` to set or change payment password.
+Users can set a master password and payment password to protect their assets. To set or change the master password, call `auth.changeMasterPassword`. 
+
+To set or change the payment password, call `AuthCore.openAccountAndSecurity()`.
 
 ```kotlin
 // Check if user has a master password set
@@ -385,14 +401,13 @@ val result = AuthCore.hasPaymentPassword()
 
 ### Language Setting
 
-You can forcibly set a specific language to be used within the UI using `ParticleNetwork.setLanguage`, with retrieval of the current active language facilitated by `ParticleNetwork.getAppliedLanguage`. By default, this is set to English.
+You can force a specific language within the UI using `ParticleNetwork.setLanguage` and retrieve the currently active language with `ParticleNetwork.getAppliedLanguage`. The default language is English.
 
 | Field          | Type           | Description                                                                                                                                   |
 | -------------- | -------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
-| `languageEnum` | `LanguageEnum` | The specific language to be used. This can be either ZH_CN、ZH_TW、EN、JA、KO.                                                                |
-| `isRelaunch`     | Boolean        | If true, the app will relaunch upon a language switch, if false, activity will recreate                                                                                           |
-| `isInit`         | Boolean        | If isRelaunch is set to true, isInit is also true by default，activity will not recreate, called before you call methods like `signMessage`, `sendTransaction`, etc. |
-
+| `languageEnum` | `LanguageEnum` | The specific language to be used. Options include `ZH_CN`, `ZH_TW`, `EN`, `JA`, `KO`.                                                                |
+| `isRelaunch`   | `Boolean`      | If true, the app will relaunch upon a language switch; if false, the activity will be recreated.                                                                                           |
+| `isInit`       | `Boolean`      | If `isRelaunch` is set to true, `isInit` defaults to true. The activity will not be recreated and should be called before methods like `signMessage` or `sendTransaction`. |
 ```kotlin
 ParticleNetwork.setLanguage(LanguageEnum.EN)
 ParticleNetwork.getLanguage()
@@ -402,11 +417,11 @@ ParticleNetwork.getLanguage()
 
 ### Enable Blind Signing
 
-Silently sign messages/transactions, this switch will work if the following conditions are met:
+Silently sign messages/transactions if the following conditions are met:
 
-1. Your account is connected with JWT
-2. Your account does not set payment password
-3. SecurityAccountConfig.promptSettingWhenSign is 0, you can call ParticleNetwork.setSecurityAccountConfig to update its value.
+1. Your account is connected via **JWT**.
+2. Your account does not have a payment password set.
+3. `SecurityAccountConfig.promptSettingWhenSign` is set to 0. You can update this value by calling `ParticleNetwork.setSecurityAccountConfig`.
 
 ```kotlin
 AuthCore.setBlindEnable(true)
