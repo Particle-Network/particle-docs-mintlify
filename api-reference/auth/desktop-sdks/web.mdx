@@ -31,7 +31,7 @@ yarn add @particle-network/authkit viem@2
 
 ## Configuration
 
-**Configuration** is primarily handled by **wrapping** an **application** with **Particle Auth**'s master configuration component, essential for authenticating your project and [customizing the optional embedded wallet modal](/guides/configuration/appearance/wallet).
+Configuration is primarily handled by wrapping an application with **Particle Auth**'s master configuration component, essential for authenticating your project and [customizing the optional embedded wallet modal](/guides/configuration/appearance/wallet).
 
 No matter which **Particle Auth** SDK you're using, you must define your `projectId`, `clientKey`, and `appId` within this configuration object to authenticate your Particle Auth instance properly. Additionally, [you can apply customizations to the wallet modal](/guides/configuration/appearance/wallet) for a tailored user experience.
 
@@ -198,7 +198,7 @@ const handleLogout = async () => {
 
 In this example, the `handleLogin` function initiates the login process by displaying the login modal if the `connected` status is `false`, indicating that the user is not currently logged in.
 
-### Customize the login Experience
+### Customize the Login Experience
 
 You can set specific configurations within the `connect()` function to further tailor the **login** experience beyond [frontend customizations](/guides/configuration/appearance/auth). 
 
@@ -228,9 +228,9 @@ const useInfo = await connect({
 
 #### Log in with a Specific Social Platform
 
-You can streamline the **login** process by bypassing the standard login modal and directing users to log in with a specific social platform.
+You can streamline the login process by bypassing the standard login modal and directing users to log in with a specific social platform.
 
-The following example shows how to automatically prompt users to log in with their **Google** account, skipping the login modal entirely:
+The following example shows how to automatically prompt users to log in with their Google account, skipping the login modal entirely:
 
 ```tsx App.tsx
 'use client';
@@ -564,7 +564,7 @@ const result = await signAndSendTransaction(transaction);
 
 ## Data Signing
 
-When you need to sign either a raw string (personal) or typed data (`eth_signTypedData`), the process is simple.
+In cases where you'd like to sign either a raw string (personal) or typed data (`eth_signTypedData`), the process is quite straightforward.
 
 You can accomplish this using standard libraries like **Ethers** or **Web3.js** or leveraging **Particle’s** native functionality. The examples below illustrate both approaches.
 
