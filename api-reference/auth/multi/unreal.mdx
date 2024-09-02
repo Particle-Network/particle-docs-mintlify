@@ -5,13 +5,13 @@ description: "Interacting with Particle Auth within applications made using Unre
 
 ## Particle Auth for Unreal Engine
 
-Extending beyond directly programmatic implementations, **Particle Auth** also features full support for **Unreal Engine 5** through a no-code interface, enabling the integration of **Particle's Wallet-as-a-Service** in a familiar and straightforward environment when building games on **Unreal Engine**.
+Extending beyond directly programmatic implementations, **Particle Auth** also features full support for **Unreal Engine 5** through a no-code interface, enabling the integration of Particle's Wallet-as-a-Service in a familiar and straightforward environment when building games on Unreal Engine.
 
 ***
 
 ## Getting Started
 
-Getting started with the **Particle Auth Unreal Engine SDK** is simple, although you must manually download and install the **SDK** using the [`particle-unreal` GitHub repository](https://github.com/Particle-Network/particle-unreal). 
+Getting started with the **Particle Auth Unreal Engine SDK** is simple, although you must manually download and install the SDK using the [`particle-unreal` GitHub repository](https://github.com/Particle-Network/particle-unreal). 
 
 To install:
 
@@ -32,11 +32,11 @@ To begin, you'll need to create a config object with your `projectId`, `clientKe
 
 After retrieving and setting the necessary values, you must call the `Init` function to complete the initialization. The `Init` function accepts the following parameters:
 
-- **Default Browser Widget:** Typically set to `W_ExecuteWebBrowser`. If you prefer to use a custom `WebBrowser` blueprint, you can do so if it follows the structure of `W_ExecuteWebBrowser`.
-- **In Config:** This links to the previously defined configuration object containing `projectId`, `clientKey`, and `appId`.
-- **In Theme:** An optional JSON string for customization. For more details, see [Particle Auth Set Auth Theme](/api-reference/auth/desktop-sdks/web#usecustomize).
-- **In Language:** Specifies the language used in the modal. Options include `en`, `zh-cn`, `zh-tw`, `ja`, or `ko`.
-- **In Chain Name & In Chain Id:** Defines the primary chain to be used, either EVM or Solana. For details on specific `chainId` and `chainName` configurations, refer to [EVM Chains Structure](/guides/network-coverage).
+- **Default Browser Widget**: Typically set to `W_ExecuteWebBrowser`. If you prefer to use a custom `WebBrowser` blueprint, you can do so if it follows the structure of `W_ExecuteWebBrowser`.
+- **In Config**: This links to the previously defined configuration object containing `projectId`, `clientKey`, and `appId`.
+- **In Theme**: An optional JSON string for customization. For more details, see [Particle Auth Set Auth Theme](/api-reference/auth/desktop-sdks/web#usecustomize).
+- **In Language**: Specifies the language used in the modal. Options include `en`, `zh-cn`, `zh-tw`, `ja`, or `ko`.
+- **In Chain Name & In Chain Id**: Defines the primary chain to be used, either EVM or Solana. For details on specific `chainId` and `chainName` configurations, refer to [EVM Chains Structure](/guides/network-coverage).
 
 <img
   className="block dark:hidden"
@@ -79,7 +79,7 @@ To prompt a standard message signature (for general strings, not typed data), yo
 
 This blueprint displays a signature request for the end user to confirm. The `SignMessage` function includes the following parameter:
 
-- `Message`: The message to be signed by the user. For **EVM** chains, this should be a standard **UTF-8** string. For **Solana**, it should be a **base58** string.
+- `Message`: The message to be signed by the user. For EVM chains, this should be a standard UTF-8 string. For Solana, it should be a base58 string.
 
 Upon successful confirmation, the signature is returned as event data via `OnSignMessageEvent`.
 
@@ -96,13 +96,13 @@ Upon successful confirmation, the signature is returned as event data via `OnSig
 
 ### Sign and Send Transaction
 
-`SignAndSendTransaction` is the core method for sending transactions on **EVM** and **Solana**. 
+`SignAndSendTransaction` is the core method for sending transactions on EVM and Solana. 
 
 When called, it prompts the user with a transaction, allowing them to either confirm and push it to the network or reject and cancel the operation. The `SignAndSendTransaction` blueprint includes the following parameter:
 
-- `Transaction`: A string representing the transaction object/structure to be sent. For **EVM**, this should be a standard **UTF-8** string; for **Solana**, it should be a **base58** string (it can be a stringified object).
+- `Transaction`: A string representing the transaction object/structure to be sent. For EVM, this should be a standard UTF-8 string; for Solana, it should be a base58 string (it can be a stringified object).
 
-You can also use the `MakeEvmTransaction` helper method to generate an **EVM** transaction, which can then be attached to the `Transaction` parameter in `SignAndSendTransaction` for no-code transaction creation.
+You can also use the `MakeEvmTransaction` helper method to generate an EVM transaction, which can then be attached to the `Transaction` parameter in `SignAndSendTransaction` for no-code transaction creation.
 
 Upon a successful signature, the event data, including the signature, is returned via `OnSignAndSendTransactionEvent`.
 
