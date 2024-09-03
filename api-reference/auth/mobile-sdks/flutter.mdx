@@ -5,17 +5,18 @@ description: "Interacting with Particle Auth within applications made using Flut
 
 ## Particle Auth for Flutter
 
-The Particle Auth Flutter SDK enables full stack integration of Particle Auth into applications built on Flutter. This includes everything from the initial configuration of Particle's Wallet-as-a-Service to specific interactions. Specifically in this case, Flutter can be leveraged in either Android or iOS environments, both to the same degree. This is done primarily through Dart.
+The **Particle Auth Flutter SDK** enables full-stack integration of Particle Auth into applications built on Flutter. This includes everything from the initial configuration of Particle's Wallet-as-a-Service to specific interactions. 
 
-Platform-specific configuration instructions, alongside examples of utilization, can be found below.
+In this case, Flutter can be leveraged in either Android or iOS environments, both to the same degree. This is done primarily through Dart.
+
+<Note>Platform-specific configuration instructions, alongside examples of utilization, can be found below.</Note>
 
 ## Getting Started
 
-Interaction with the Particle Auth Flutter SDK is quite standard and in line with other Particle Auth SDKs, although the key deviations can be found within the configuration process.
+Interaction with the Particle Auth Flutter SDK follows a standard approach consistent with other Particle Auth SDKs, though notable differences exist within the configuration process.
 
 <Tip>
-  The configuration process of this SDK differs significantly based on whether
-  you're using Flutter on Android or iOS.
+The configuration process for this SDK varies significantly depending on whether you're using Flutter for Android or iOS.
 </Tip>
 
 To begin, you'll need to head over to the [Particle dashboard](https://dashboard.particle.network) and retrieve your `projectId`, `clientKey`, and `appId`.
@@ -28,7 +29,7 @@ To begin, you'll need to head over to the [Particle dashboard](https://dashboard
 
 ### Adding the Particle Auth Flutter SDK to your application
 
-Additionally, regardless of platform, you'll need to begin by adding `particle_auth_core` to your Flutter application; this is a requirement before moving onto platform-specific configuration.
+Additionally, regardless of platform, you'll need to begin by adding `particle_auth_core` to your **Flutter** application; this is a requirement before moving onto platform-specific configuration.
 
 ```shell Terminal
 flutter pub add particle_auth_core
@@ -45,7 +46,7 @@ flutter pub add particle_auth_core
 - Android Gradle Plugin Version : 8.5.1 or higher.
 - Gradle Version : 8.9 or higher.
 
-If you're building an Android application with Flutter, you must follow the steps below to configure Particle Auth. To begin, you'll need to go ahead and open your `build.gradle` file, often found at the following file path: `${project name}/android/app/build.gradle`
+If you're building an Android application with Flutter, follow the steps below to configure Particle Auth. To begin, you'll need to go ahead and open your `build.gradle` file, often found at the following file path: `${project name}/android/app/build.gradle`
 
 Within your `build.gradle` file, you'll need to add four new lines to ensure Particle Auth runs appropriately:
 
@@ -184,7 +185,7 @@ end
 
 ### Initialization
 
-Before using the full extent of the SDK, you'll need to initialize it with `init`, passing in specific chain in which you intend to primary onboard to within Particle's Wallet-as-a-Service. This is represented as an object containing chain info (often derived from `ChainInfo.{Chain}`).
+Before using the full extent of the SDK, you'll need to initialize it with `init`, passing in the specific chain to which you intend to primarily onboard within Particle's Wallet-as-a-Service. This is represented as an object containing chain info (often derived from `ChainInfo.{Chain}`).
 
 ```dart
 // Set relevant project info, retrieved from https://dashboard.particle.network
@@ -196,9 +197,7 @@ ParticleAuthCore.init()
 
 ### Connect
 
-Now that you've installed, configured, and initialized Particle Auth, you'll need to initiate a login and throw a social login prompt for a user to authenticate through. Post-login (through the menu obtained via the login), a user will have an account generated, thus unlocking the remaining SDK methods for interaction.
-
-This is achieved and configured through `ParticleAuthCore.connect`. Once this method is called, the corresponding login popup will be thrown by requesting user authentication before returning to the application in a signed-in state.
+After installing, configuring, and initializing Particle Auth, initiate the login process by using `ParticleAuthCore.connect`. This triggers a social login prompt, and upon successful authentication, a user account is created, unlocking the full SDK functionality.
 
 `ParticleAuthCore.connect` takes the following parameters:
 
@@ -233,7 +232,7 @@ final userInfo = await ParticleAuthCore.connectWithCode(phone: "+11234567890", c
 
 ### Is Connected
 
-There may be scenarios in which knowing whether a current session (a user) is currently logged in with Particle Auth or not is important. This is achieved through `ParticleAuthCore.isConnected` (server-side check).
+There may be scenarios where it is important to know whether a current session (a user) is logged in with Particle Auth. This is achieved through `ParticleAuthCore.isConnected` (server-side check).
 
 ```dart
 final isConnected = await ParticleAuthCore.isConnected();
@@ -241,7 +240,7 @@ final isConnected = await ParticleAuthCore.isConnected();
 
 ### Disconnect
 
-To exit an existing session (logging a user out), you can simply call `ParticleAuthCore.disconnect`.
+To exit an existing session (logging a user out), call `ParticleAuthCore.disconnect`.
 
 ```dart
 final result = await ParticleAuthCore.disconnect();
@@ -249,7 +248,7 @@ final result = await ParticleAuthCore.disconnect();
 
 ### Get User Info
 
-To retrieve an object containing detailed user information, you can call `ParticleAuthCore.getUserInfo`.
+To retrieve an object containing detailed user information, call `ParticleAuthCore.getUserInfo`.
 
 ```dart
 final userInfo = await ParticleAuthCore.getUserInfo();
@@ -257,7 +256,7 @@ final userInfo = await ParticleAuthCore.getUserInfo();
 
 ### Get Address
 
-To retrieve the address, you can call `Evm.getAddress` or `Solana.getAddress`.
+To retrieve the address, call `Evm.getAddress` or `Solana.getAddress`.
 
 ```dart
 final address = await Evm.getAddress();
@@ -266,7 +265,9 @@ final address = await Solana.getAddress();
 
 ### Sign Message (EIP191)
 
-To request an EIP191 signature from a user's embedded wallet, you can use either the `Evm.personalSign` or `Evm.personalSignUnique` method. If you need the same message to return a unique signature each time, use the `Evm.personalSignUnique` method. Otherwise, the `Evm.personalSign` method is generally recommended. On Solana, you can call `Solana.signMessage`, you can pass in a UTF-8/readable string.
+To request an EIP191 signature from a user's embedded wallet, you can use either the `Evm.personalSign` or `Evm.personalSignUnique` method. 
+
+If you need the same message to return a unique signature each time, use the `Evm.personalSignUnique` method. Otherwise, the `Evm.personalSign` method is generally recommended. On Solana, you can call `Solana.signMessage`, you can pass in a UTF-8/readable string.
 
 | Field     | Type     | Description                                                                       |
 | --------- | -------- | --------------------------------------------------------------------------------- |
@@ -283,7 +284,9 @@ final signature = await Solana.signMessage(message);
 
 ### Sign Transaction
 
-This is a **Solana-specific** method for signing a transaction without sending it. Similar to message signing, this will prompt a signature in-UI with details about the transaction. Programmatically, the proposed transaction should be formatted as a (converted to a) base58 string. Passing in an object directly will not work in this case.
+This is a **Solana-specific** method for signing a transaction without sending it. Similar to message signing, this will prompt a signature in-UI with details about the transaction. 
+
+Programmatically, the proposed transaction should be formatted as a (converted to a) base58 string. Passing in an object directly will not work in this case.
 
 | Field         | Type     | Description              |
 | ------------- | -------- | ------------------------ |
@@ -295,7 +298,7 @@ final signature = await Solana.signTransaction(transaction);
 
 ### Sign All Transactions
 
-Following the aforementioned method, you can use `Solana.signAllTransactions` to propose a collection of **Solana** transactions for signature, rather than just a single transaction.
+Following the method above, you can use `Solana.signAllTransactions` to propose a collection of **Solana** transactions for signature, rather than just a single transaction.
 
 | Field          | Type           | Description                           |
 | -------------- | -------------- | ------------------------------------- |
@@ -307,7 +310,9 @@ List<String> signatures = await Solana.signAllTransactions(transactions);
 
 ### Sign and Send Transaction
 
-For more generalized transaction execution, `Evm.sendTransaction`and `Solana.signAndSendTransaction` will be the primary method used in virtually every scenario. This will propose a signature (on both EVM and Solana), and then immediately push it to the network once confirmed.
+For more generalized transaction execution, `Evm.sendTransaction` and sendTransaction` and `Solana.signAndSendTransaction` will be the primary smethods used in virtually every scenario. 
+
+This will propose a signature (on both EVM and Solana) and then immediately push it to the network once confirmed.
 
 | Field         | Type     | Description                                                               |
 | ------------- | -------- | ------------------------------------------------------------------------- |
@@ -320,7 +325,9 @@ final signature = await Solana.signAndSendTransaction(transaction);
 
 ### Sign Typed Data V4 (EIP712)
 
-To request an EIP712 signature from a user's embedded wallet, you can use either the `Evm.signTypedData` or `Evm.signTypedDataUnique` method. If you need the same message to return a unique signature each time, use the `Evm.signTypedDataUnique` method. Otherwise, the `Evm.signTypedData` method is generally recommended.
+To request an EIP712 signature from a user's embedded wallet, you can use the `Evm.signTypedData` or `Evm.signTypedDataUnique` method. 
+
+If you need the same message to return a unique signature each time, use the `Evm.signTypedDataUnique` method. Otherwise, the `Evm.signTypedData` method is generally recommended.
 
 | Field     | Type     | Description                   |
 | --------- | -------- | ----------------------------- |
@@ -336,7 +343,7 @@ String signature = await Evm.signTypedDataUnique(typedDataHex);
 
 ### Set Chain Info
 
-If you'd like to set the chain being utilized (after initially defining this in `init`), you can call either `ParticleBase.setChainInfo` (synchronous) or ` ParticleAuthCore.switchChain` (asynchronous), often derived from `ChainInfo.{Chain}`.
+To change the chain after it’s initially defined in `init`, you can use `ParticleBase.setChainInfo` for a synchronous update or `ParticleAuthCore.switchChain` for an asynchronous update, both typically using `ChainInfo.{Chain}`.
 
 ```dart
 await ParticleBase.setChainInfo(ChainInfo.Ethereum);
@@ -346,11 +353,11 @@ await ParticleAuthCore.switchChain(ChainInfo.Ethereum);
 
 ### Get Chain Info
 
-For the retrieval of the currently selected (primary) chain within an active session, you'll need to call `ParticleBase.getChainInfo`. This returns a ChainInfo object containing:
+To retrieve the currently selected (primary) chain in an active session, use `ParticleBase.getChainInfo`. This returns a `ChainInfo` object containing:
 
-- `name`, the name of the chain in question (ex: Ethereum).
-- `id`, the ID of the chain in question (ex: 11155111).
-- `network`, the specific network corresponding to the chain ID (ex: Sepolia)
+- `name`: The chain's name (e.g., Ethereum).
+- `id`: The ID of the chain (e.g., 11155111).
+- `network`: The specific network associated with the chain ID (e.g., Sepolia).
 
 ```dart
 final chainInfo = await ParticleBase.getChainInfo();
@@ -361,9 +368,14 @@ String network = chainInfo.network;
 
 ### Set Security Account Config
 
-Another important component of integrating the Particle Auth SDK (Wallet-as-a-Service) is the (optional) security account requirements enforced upon application users. For all accounts on Particle, several security options are present (such as a master password for a login-based non-recoverable password, payment password for a pin required upon transaction signatures, etc.)
+Another important component of integrating the Particle Auth SDK (Wallet-as-a-Service) is the (optional) security account requirements enforced upon application users. 
 
-Within the SDK, you can configure the frequency (or requirement) in which a user is asked to configure security settings. This is controlled with `ParticleBase.setSecurityAccountConfig` and passing in a `SecurityAccountConfig` object with two parameters:
+For all Particle accounts, various security options are available, including:
+
+- **Master Password**: A non-recoverable password required upon login.
+- **Payment Password**: A PIN required for transaction signatures.
+
+With the SDK, you can determine how often a user is prompted to configure their security settings. This control is facilitated by `ParticleBase.setSecurityAccountConfig`, where you pass in a `SecurityAccountConfig` object with two parameters:
 
 | Field                                  | Type  | Description                                         |
 | -------------------------------------- | ----- | --------------------------------------------------- |
@@ -390,7 +402,9 @@ await ParticleAuthCore.openAccountAndSecurity();
 
 ### Has Master Password, Payment Password, Security Account
 
-Similarly to the `isConnected` function covered prior, there are various scenarios in which knowing whether or not a user has specific security settings enabled may be useful. In the case of the Particle Auth Flutter SDK, this can happen in one of two ways:
+Similarly to the `isConnected` function covered prior, there are various scenarios in which knowing whether or not a user has specific security settings enabled may be useful. 
+
+In the case of the Particle Auth Flutter SDK, this can happen in one of two ways:
 
 With the built-in `ParticleAuthCore.hasMasterPassword`, `ParticleAuthCore.hasPaymentPassword`, and `ParticleAuthCore.changeMasterPassword` methods.
 
@@ -402,7 +416,7 @@ await ParticleAuthCore.changeMasterPassword();
 
 ### Set Appearance
 
-You can forcibly set a specific appearance to be used within the UI using `ParticleBase.setAppearance`. By default, it will follow current system setting.
+You can forcibly set a specific appearance within the UI using `ParticleBase.setAppearance`. By default, it will follow the current system setting.
 
 | Field        | Type         | Description                                                                          |
 | ------------ | ------------ | ------------------------------------------------------------------------------------ |
@@ -419,7 +433,7 @@ ParticleBase.setAppearance(Appearance.light);
 
 ### Set and Get Language
 
-You can forcibly set a specific language to be used within the UI using `ParticleBase.setLanguage`, with retrieval of the current active language facilitated by `ParticleBase.getLanguage`. By default, this is set to English.
+You can forcibly set a specific language to be used within the UI using `ParticleBase.setLanguage`, with the retrieval of the currently active language facilitated by `ParticleBase.getLanguage`. By default, this is set to English.
 
 | Field      | Type       | Description                                                                                       |
 | ---------- | ---------- | ------------------------------------------------------------------------------------------------- |
@@ -452,7 +466,7 @@ final result = ParticleAuthCore.getBlindEnable();
 
 ### Filter Unsupported Countries (Phone Authentication)
 
-If necessary, you can restrict specific countries from authenticating via. phone number; upon entering a phone number originating from a country specified here, the user will be blocked by the login modal.
+If necessary, you can restrict specific countries from authenticating via phone number; upon entering a phone number originating from a country specified here, the login modal will block the user.
 
 | Field         | Type           | Description                                                                                                    |
 | ------------- | -------------- | -------------------------------------------------------------------------------------------------------------- |
@@ -542,7 +556,9 @@ final transaction = await EvmService.createTransaction(from, data, amount, to, g
 
 ### Estimate Gas
 
-Given a standard transaction structure (detached set of values, as shown below), gas estimations can be ran to simulate and retrieve the volume of gas to be consumed by a specified transaction (wrapper for `eth_estimateGas`). This is done through `EvmService.ethEstimateGas`.
+Given a standard transaction structure (a detached set of values as shown below), you can estimate the gas consumption for a specified transaction using the `EvmService.ethEstimateGas` method. 
+
+This acts as a wrapper for `eth_estimateGas` to simulate and retrieve the estimated gas required.
 
 ```dart
 final gasLimit = await EvmService.ethEstimateGas(from, to, value, data);
@@ -558,7 +574,9 @@ final gasFees = await EvmService.suggestedGasFees();
 
 ### Get Tokens and NFTs
 
-`EvmService` also extends to Data API methods such as `getTokensAndNFTs`, which returns a highly detailed JSON list of ERC20 tokens and ERC721 NFTs belonging to a specified address. This is accessible through `EvmService.getTokensAndNFTs`, passing in the public address to retrieve the tokens and NFTs of, also you can retrieve tokens from `getTokens` or NFTs from `getNFTs`
+`EvmService` also extends to Data API methods such as `getTokensAndNFTs`, which returns a highly detailed JSON list of ERC20 tokens and ERC721 NFTs belonging to a specified address. 
+
+This is accessible through `EvmService.getTokensAndNFTs`, passing in the public address to retrieve the tokens and NFTs. Also, you can retrieve tokens from `getTokens` or NFTs from `getNFTs`
 
 | Field            | Type           | Description                    |
 | ---------------- | -------------- | ------------------------------ |
@@ -581,7 +599,7 @@ final result = await EvmService.getTransactionsByAddress(publicAddress);
 
 ### Get Price
 
-To retrieve the price of specified tokens, you can call `EvmService.getPrice`.
+To retrieve the price of specific tokens, call `EvmService.getPrice`.
 
 | Field            | Type           | Description                                                       |
 | ---------------- | -------------- | ----------------------------------------------------------------- |
@@ -662,7 +680,7 @@ final serializedTransaction = result["transaction"]["serialized"];
 
 ### Get Price
 
-To retrieve the price of specified tokens, you can call `SolanaService.getPrice`.
+To retrieve the price of specific tokens, call `SolanaService.getPrice`.
 
 | Field            | Type           | Description                                                       |
 | ---------------- | -------------- | ----------------------------------------------------------------- |
@@ -675,7 +693,7 @@ final result = await SolanaService.getPrice(tokenAddresses, currencies);
 
 ### Get Transactions by address
 
-To retrieve transactions executed by a specified a address, you can call `SolanaService.getTransactionsByAddress`.
+To retrieve transactions executed by a specific a address, call `SolanaService.getTransactionsByAddress`.
 
 ```dart
 final result = await SolanaService.getTransactionsByAddress(address);
@@ -683,7 +701,7 @@ final result = await SolanaService.getTransactionsByAddress(address);
 
 ### Get Token by Token Address
 
-To obtain the balance of a specified token at a specified address, you can call `SolanaService.getTokenByTokenAddresses`
+To obtain the balance of a specific token at a given address, call `SolanaService.getTokenByTokenAddresses`
 
 | Field            | Type           | Description                |
 | ---------------- | -------------- | -------------------------- |

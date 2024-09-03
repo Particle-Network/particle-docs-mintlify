@@ -5,13 +5,15 @@ description: "Interacting with Particle Auth within applications made using Coco
 
 ## Particle Auth for Cocos
 
-Particle Auth also extends to Cocos with the Particle Auth Cocos SDK, facilitating complete integration of Particle's Wallet-as-a-Service within applications building games on Cocos. The utilization of Particle Auth and Cocos is virtually identical in nature to [React Native (JavaScript)](/api-reference/auth/mobile-sdks/react), although the primary differentiator is in prerequisites and initial setup.
+**Particle Auth** supports Cocos through the Particle Auth Cocos SDK, enabling full integration of Particle's Wallet-as-a-Service within Cocos-based game applications. 
 
-This document will outline the setup process; for examples of utilization, see the [React Native (JavaScript)](/api-reference/auth/mobile-sdks/react).
+The usage of Particle Auth with Cocos is nearly identical to [React Native (JavaScript)](/api-reference/auth/mobile-sdks/react), with the main differences being in prerequisites and initial setup.
+
+This document will guide you through the setup process. For usage examples, refer to the [React Native (JavaScript)](/api-reference/auth/mobile-sdks/react) documentation.
 
 ## Getting Started
 
-To begin the setup process for the Particle Auth Cocos SDK, you'll need to ensure that your project meets a few initial prerequisites to avoid compatibility issues. These are:
+To start the setup process for the Particle Auth Cocos SDK, make sure your project meets the following prerequisites to ensure compatibility:
 
 - **Cocos 3.7.2** or higher.
 - For iOS:
@@ -23,7 +25,7 @@ To begin the setup process for the Particle Auth Cocos SDK, you'll need to ensur
   - Targets **API Level 31** or higher.
   - Java SDK **version 11**.
 
-You'll now need to retrieve three key (and universally required across Particle's various SDKs) values from the [Particle dashboard](https://dashboard.particle.network). These values include your `projectId`, `clientKey`, and `appId`.
+Next, you’ll need to retrieve three essential values from the [Particle dashboard](https://dashboard.particle.network), which are required across all of Particle’s SDKs: `projectId`, `clientKey`, and `appId`.
 
 <Note>
   Follow the quickstart tutorial to set up a project and find the required keys:
@@ -33,14 +35,27 @@ You'll now need to retrieve three key (and universally required across Particle'
 
 ### Installation and configuration
 
-To install and begin using the Particle Auth Cocos SDK, you must copy two folders into your project. The first is `assets/Mobile/Core` from `particle-cocos`, while the second is `native/engine`:
+To install and start using the Particle Auth Cocos SDK in your project, follow these steps:
 
-1. Head over to [`assets/Mobile/Core` within the `particle-cocos` repository](https://github.com/Particle-Network/particle-cocos/tree/mobile/assets/Mobile/Core). Copy this folder to your `assets` directory.
-2. Go to [`native/engine` within the `particle-cocos` repository](https://github.com/Particle-Network/particle-cocos/tree/mobile/native/engine). Copy this folder to your `native` directory.
+#### Step 1: Copy the Core Assets
+
+1. **Locate the Core Assets directory**:
+   - Navigate to the [assets/Mobile/Core directory in the `particle-cocos` repository](https://github.com/Particle-Network/particle-cocos/tree/mobile/assets/Mobile/Core).
+
+2. **Copy the Core Assets directory**:
+   - Copy the entire `Core` folder to your project’s `assets` directory.
+
+#### Step 2: Copy the Native Engine Files
+
+1. **Locate the Native Engine directory**:
+   - Navigate to the [native/engine directory in the `particle-cocos` repository](https://github.com/Particle-Network/particle-cocos/tree/mobile/native/engine).
+
+2. **Copy the Native Engine directory**:
+   - Copy the entire `engine` directory to your project’s `native` directory.
 
 #### Android
 
-If you're using Cocos on Android, configuration is quite simple and purely requires the placement of the previously retrieved values (`projectId`, `clientKey`, and `appId`) within `$exportDir/proj/gradle.properties`, such as within the example below.
+If you're using Cocos on Android, the configuration is quite simple and purely requires the placement of the previously retrieved values (`projectId`, `clientKey`, and `appId`) within `$exportDir/proj/gradle.properties,` such as within the example below.
 
 ```kotlin gradle.properties
 android.enableJetifier=true
@@ -54,13 +69,17 @@ PN_APP_ID = YOUR_APP_ID
 
 #### iOS
 
-If you use iOS, the initial configuration will be a bit more complicated. To begin, ensure you have a Podfile created. If you don't have one already, head over to the root of your Xcode project directory and run:
+If you use iOS, the initial configuration will be more complicated. To begin, ensure you have a Podfile. 
+
+If you don't have one already, head over to the root of your Xcode project directory and run:
 
 ```shell Terminal
 pod init
 ```
 
-Head into this newly generated (or existing) Podfile and remove all existing contents, then paste the configuration included below. Alternatively, if you're already using other SDKs through CocoaPods, you can simply include the Particle Auth SDK declaration:
+Head into this newly generated (or existing) **Podfile** and remove all existing contents, then paste the configuration included below. 
+
+Alternatively, if you're already using other SDKs through **CocoaPods**, you can include the Particle Auth SDK declaration:
 
 ```ruby Ruby
 ENV['SWIFT_VERSION'] = '5'
@@ -91,7 +110,7 @@ post_install do |installer|
 end
 ```
 
-Additionally, you can go ahead and run `pod install --repo-update`, then `open {your project}.xcworkspace` to update and see your project within Xcode.
+Additionally, you can run `pod install --repo-update`, then `open {your project}.xcworkspace` to update and see your project within Xcode.
 
 Now that you've configured your [Particle dashboard](https://dashboard.particle.network), installed the SDK, and configured a Podfile, it's time to initialize the SDK with the aforementioned `projectId`, `clientKey`, and `appId` retrieved from the [Particle dashboard](https://dashboard.particle.network).
 
@@ -116,7 +135,9 @@ Now that you've configured your [Particle dashboard](https://dashboard.particle.
 
 3. Replace the placeholders with the values retrieved from your project and application within the [Particle dashboard](https://dashboard.particle.network).
 
-4. Drop the following files into your project and set the target at the main app. Make sure Base58.swift, Model.swift, and ParticleAuthPlugin.swift are marked within TargetMembership. If Xcode asks to make a Swift bridging file, select "Yes."
+4. Drop the following files into your project and set the target at the main app. Make sure `Base58.swift`, `Model.swift`, and `ParticleAuthPlugin.swift` are marked within `TargetMembership`. 
+
+    <Note>If Xcode asks to make a Swift bridging file, select **Yes**.</Note>
 
 <img
   className="block dark:hidden"
@@ -140,15 +161,13 @@ Now that you've configured your [Particle dashboard](https://dashboard.particle.
 6. Within `AppDelegate`, ensure a project-specific import is included at the top of the file. This should be `#import "{project name}-Swift.h"`.
 
 <Warning>
-  <p>
-    `JsbBridgeTest.m` and `JsbBridgeTest.h` are vital as they function at the
-    core of bridging JS and native code.
-  </p>
-  <p>
-    To ensure issues don't stem from these files being improperly setup, make
-    sure the code within them is either consistent with the code from the demo
-    or contains code directly from it.
-  </p>
+<p>
+  `JsbBridgeTest.m` and `JsbBridgeTest.h` are crucial components, serving as the core bridge between JS and native code.
+</p>
+<p>
+  To prevent any issues arising from improper setup, ensure that the code within these files matches the code from the demo or includes the exact code from it.
+</p>
+
 </Warning>
 
 7. Finally, to configure your app scheme URL, select your app from "TARGETS" within the "Info" section, click the plus icon to add the URL types, and paste your scheme in "URL Schemes."
@@ -167,7 +186,9 @@ Now that you've configured your [Particle dashboard](https://dashboard.particle.
 
 ## Usage
 
-Using the Particle Auth Cocos SDK is identical to the examples showcased within the [React Native (JavaScript)](/api-reference/auth/mobile-sdks/react). The only deviation is the import statement, which should contain an internal path, `../../Core/particleAuth`, as shown below:
+Using the Particle Auth Cocos SDK is identical to the examples provided in the [React Native (JavaScript)](/api-reference/auth/mobile-sdks/react) documentation. 
+
+The only difference is the import statement, which should include the internal path `../../Core/particleAuth`, as shown below:
 
 ```js JavaScript
 import * as particleAuth from "../../Core/particleAuth";
