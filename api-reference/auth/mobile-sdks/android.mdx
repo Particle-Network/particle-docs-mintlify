@@ -5,11 +5,11 @@ description: Interacting with Particle Auth on Android using Kotlin.
 
 # Particle Auth for Android
 
-The **Particle Auth Android SDK** is the flagship mechanism for integrating Particle's **Wallet-as-a-Service** within **Android** applications. This SDK is the sole facilitator of **Android** integration for most applications and is built for simplicity. 
+The **Particle Auth Android SDK** is the flagship mechanism for integrating Particle's Wallet-as-a-Service within Android applications. This SDK is the sole facilitator of Android integration for most applications and is built for simplicity. 
 
 As with the other **Particle Auth** SDKs, it requires only a few lines of code.
 
-Unlike the **Unity** SDK and **Web** SDK, the **Android** SDK differs in installation and configuration; these specific intricacies and setup processes are detailed below.
+Unlike the Unity SDK and Web SDK, the Android SDK differs in installation and configuration; these specific intricacies and setup processes are detailed below.
 
 ---
 
@@ -42,7 +42,7 @@ These values are `projectId`, `clientKey`, and `appId`. All three can be retriev
 
 Once you've created a project and application on the **Particle Dashboard**, you can install and initialize `ParticleNetwork`. 
 
-Start by declaring the **Particle Auth** SDK in your **Gradle** file.
+Start by declaring the Particle Auth SDK in your Gradle file.
 
 ```kotlin Kotlin
 repositories {
@@ -161,7 +161,7 @@ ParticleNetwork.setChainInfo(chainInfo,callback)
 
 ### Login
 
-`AuthCore.connect` triggers the standard login popup, which changes based on configurations like `loginType` (similar to the **Web** SDK's `preferredAuthType`) and `supportAuthTypeValues`. 
+`AuthCore.connect` triggers the standard login popup, which changes based on configurations like `loginType` (similar to the Web SDK's `preferredAuthType`) and `supportAuthTypeValues`. 
 
 This popup serves as the primary method for account creation and login for existing users.
 
@@ -174,7 +174,7 @@ The `AuthCore.login` function accepts the following parameters:
 | supportLoginTypes | List`<SupportLoginType>`            | Defines the supported social login methods. By default, all options are supported: `EMAIL`, `PHONE`, `FACEBOOK`, `GOOGLE`, `APPLE`, `TWITTER`, `DISCORD`, `GITHUB`, `TWITCH`, `MICROSOFT`, and `LINKEDIN`. You can also specify a subset of these types if needed. |
 | prompt            | LoginPrompt?                        | Controls the prompt displayed after social login. Options are `None`, `Consent`, or `SelectAccount`. This is only supported by Google, Discord, and Microsoft.                                                                                                        |
 | loginPageConfig   | LoginPageConfig?                    | Customizes the UI of the login page, including the project name, icon, and description.                                                                                                                                                                   |
-| loginCallback     | AuthCoreServiceCallback`<UserInfo>` | Callback triggered after the login attempt.<br /><br />**Success:** Returns `UserInfo`.<br />**Failure:** Returns `ErrorInfo`.        |
+| loginCallback     | AuthCoreServiceCallback`<UserInfo>` | Callback triggered after the login attempt.<br /><br />**Success**: Returns `UserInfo`.<br />**Failure**: Returns `ErrorInfo`.        |
                                                                                                                                                  |
 
 <Tip>You can use your existing user base or authentication method with Particle Auth through JWT. This way, your users can still log in with their current accounts. Check [Custom Authentication (JWT)](/guides/configuration/auth/jwt) to learn how to configure it.</Tip>
@@ -260,7 +260,7 @@ If you need the same message to return a unique signature each time, use the `Au
 | Field                 | Type                                | Description                                                                            |
 | :-------------------- | :---------------------------------- | :------------------------------------------------------------------------------------- |
 | `hexUnSignedMessage`  | `PrefixedHexString`                 | A required field that accepts either a hexadecimal string starting with '0x' or a human-readable string. |
-| `callback`            | `AuthCoreSignCallback<SignOutput>`  | Handles the response of the signing operation.<br />**Success:** Returns the signature.<br />**Failure:** Returns `ErrorInfo`. |
+| `callback`            | `AuthCoreSignCallback<SignOutput>`  | Handles the response of the signing operation.<br />**Success**: Returns the signature.<br />**Failure**: Returns `ErrorInfo`. |
 
 ```kotlin signAndSendTransaction (Kotlin)
 AuthCore.evm.personalSign(hexUnSignedMessage: PrefixedHexString, callback)
@@ -290,7 +290,7 @@ To send a transaction from a user's embedded wallet, you can use `AuthCore.evm.s
 | Field         | Type                               | Description                                                                 |
 | :------------ | :--------------------------------- | :-------------------------------------------------------------------------- |
 | `transaction` | `PrefixedHexString`                | A hexadecimal string that must start with "0x".                              |
-| `callback`    | `AuthCoreSignCallback<SignOutput>` | Handles the response of the signing operation.<br />**Success:** Returns the signature.<br />**Failure:** Returns `ErrorInfo`. |
+| `callback`    | `AuthCoreSignCallback<SignOutput>` | Handles the response of the signing operation.<br />**Success**: Returns the signature.<br />**Failure**: Returns `ErrorInfo`. |
 | `feeMode`     | `FeeMode`                          | The mode for handling transaction fees. The default is `FeeModeNative()`. Use this field only when AA mode is enabled.  |
 
 ```
@@ -313,7 +313,7 @@ To request a signature from a user's embedded wallet, use `AuthCore.solana.signM
 | Field     | Type                               | Description                                                             |
 | :-------- | :--------------------------------- | :---------------------------------------------------------------------- |
 | `message` | `String`                           | A base58-formatted string that is required for the signature request.   |
-| `callback`| `AuthCoreSignCallback<SignOutput>` | Handles the response of the signing operation.<br />**Success:** Returns the signature.<br />**Failure:** Returns `ErrorInfo`. |
+| `callback`| `AuthCoreSignCallback<SignOutput>` | Handles the response of the signing operation.<br />**Success**: Returns the signature.<br />**Failure**: Returns `ErrorInfo`. |
 
 ```swift
 val message = Base58Utils.encodeFromString("This is the message that is being signed")
@@ -329,7 +329,7 @@ To send a transaction from a user's embedded wallet, use `AuthCore.solana.signAn
 | Field         | Type                               | Description                                                             |
 | :------------ | :--------------------------------- | :---------------------------------------------------------------------- |
 | `transaction` | `String`                           | A base58-formatted string that is required for the transaction.         |
-| `callback`    | `AuthCoreSignCallback<SignOutput>` | Handles the response of the transaction.<br />**Success:** Returns the signature.<br />**Failure:** Returns `ErrorInfo`. |
+| `callback`    | `AuthCoreSignCallback<SignOutput>` | Handles the response of the transaction.<br />**Success**: Returns the signature.<br />**Failure**: Returns `ErrorInfo`. |
 
 ```kotlin
 AuthCore.solana..signAndSendTransaction(transaction: Base58String, callback: AuthCoreSignCallback<SignOutput>)
@@ -340,7 +340,7 @@ To sign a transaction from a user's embedded wallet, use ``AuthCore.solana.signT
 | Field         | Type                                | Description                                             |
 | :------------ | :---------------------------------- | :------------------------------------------------------ |
 | `transaction` | `String`                            | A base58-formatted string is required.                  |
-| `callback`    | `AuthCoreSignCallback<SignOutput>`  | **Success:** Returns the signature.<br />**Failure:** Returns `ErrorInfo`. |
+| `callback`    | `AuthCoreSignCallback<SignOutput>`  | **Success**: Returns the signature.<br />**Failure**: Returns `ErrorInfo`. |
 
 ```kotlin
 AuthCore.solana..signTransaction(transaction: Base58String, callback: AuthCoreSignCallback<SignOutput>)
@@ -351,7 +351,7 @@ To sign multiple transactions from a user's embedded wallet, use `AuthCore. Sola
 | Field                    | Type                                  | Description                                                              |
 | :----------------------- | :------------------------------------ | :----------------------------------------------------------------------- |
 | `serializedTransactions` | `List<Base58String>`                  | A list of base58-formatted strings is required.                          |
-| `callback`               | `AuthCoreSignCallback<SignAllOutput>` | **Success:** Returns the signatures.<br />**Failure:** Returns `ErrorInfo`. |
+| `callback`               | `AuthCoreSignCallback<SignAllOutput>` | **Success**: Returns the signatures.<br />**Failure**: Returns `ErrorInfo`. |
 
 ```swift
 AuthCore.solana.signAllTransactions(transaction: Base58String, callback: AuthCoreSignCallback<SignAllOutput>)
