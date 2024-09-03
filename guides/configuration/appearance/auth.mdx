@@ -149,6 +149,16 @@ const config = createConfig({
 
 <Tip>For a full guide on configuring Particle Connect, head over to the [quickstart guide](/guides/wallet-as-a-service/waas/connect/web-quickstart).</Tip>
 
+### Customizing the `ConnectButton` Text
+
+**Particle Connect** enables you to customize the text displayed on the `ConnectButton` component used for user login. 
+
+To modify the text, add the `label` **prop** to the `ConnectButton` component:
+
+```tsx
+<ConnectButton label="Click to Login" />
+```
+
 ## Particle AuthKit Customization
 
 As an alternative to Particle Connect, Particle Auth (`@particle-network/authkit`) offers a dedicated modal containing exclusively social logins. The most common way to customize this interface is through programmatic style definitions, which can be applied during SDK initialization through the `AuthCoreContextProvider` component, as will be demonstrated below.
