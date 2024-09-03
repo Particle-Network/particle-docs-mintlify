@@ -372,10 +372,8 @@ Another important component of integrating the Particle Auth SDK (Wallet-as-a-Se
 
 For all Particle accounts, various security options are available, including:
 
-- **Master Password**: A login-based non-recoverable password for securing access.
+- **Master Password**: A non-recoverable password required upon login.
 - **Payment Password**: A PIN required for transaction signatures.
-
-These options ensure enhanced security for user interactions.
 
 With the SDK, you can determine how often a user is prompted to configure their security settings. This control is facilitated by `ParticleBase.setSecurityAccountConfig`, where you pass in a `SecurityAccountConfig` object with two parameters:
 
@@ -703,7 +701,7 @@ final result = await SolanaService.getTransactionsByAddress(address);
 
 ### Get Token by Token Address
 
-To obtain the balance of a specific token at a specific address, call `SolanaService.getTokenByTokenAddresses`
+To obtain the balance of a specific token at a given address, call `SolanaService.getTokenByTokenAddresses`
 
 | Field            | Type           | Description                |
 | ---------------- | -------------- | -------------------------- |
