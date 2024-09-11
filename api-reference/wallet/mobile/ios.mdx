@@ -59,7 +59,35 @@ Now that you've created a project and an application within the [Particle dashbo
    open your-project.xcworkspace
    ```
 
-4. Add the Privacy/Cameras usage description within your `info.plist` file to ensure proper permissions exist to take photos for usage of QR codes
+4. From there, you'll need to configure the scheme URL itself; select your application target within the "Info" section, add a URL type, and include the scheme. **This scheme should be `pn` added to your `appId`.**
+
+For example, if your `appId` is `63bfa427-cf5f-4742-9ff1-e8f5a1b9828f`, then the scheme URL would be `pn63bfa427-cf5f-4742-9ff1-e8f5a1b9828f` --simply adding `pn` to the beginning of the `appId`.
+
+With the scheme URL configured, you'll also need to head into `info.plist` and add `LSApplicationQueriesSchemes` according to your specific utilization of Web3 wallets (not Particle Auth, but independent wallet adapters). An example of this can be seen below (each of these is optional and dependent upon your given implementation)
+
+```xml Info.plist
+<key>LSApplicationQueriesSchemes</key>
+<array>
+<string>metamask</string>
+<string>phantom</string>
+<string>bitkeep</string>
+<string>imtokenv2</string>
+<string>rainbow</string>
+<string>trust</string>
+<string>zerion</string>
+<string>mathwallet</string>
+<string>oneinch</string>
+<string>awallet</string>
+<string>okex</string>
+<string>bnc</string>
+</array>
+<key>NSPhotoLibraryUsageDescription</key>
+<string>We need access in order to open photos of barcodes</string>
+<key>NSCameraUsageDescription</key>
+<string>We use the camera to scan barcodes</string>
+<key>NSFaceIDUsageDescription</key>
+<string>We use Face ID for secure access to the app.</string>
+```
 
 #### Podfile Configuration
 
