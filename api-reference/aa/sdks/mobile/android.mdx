@@ -82,7 +82,7 @@ With your project configured, you can move onto initializing the AA SDK. This is
 E.g.:
 
 ```kotlin Kotlin
-ParticleNetwork.initAAMode(emptyMap(), aaService = BiconomyAAService)
+ParticleNetwork.initAAMode(aaService = BiconomyV2AAService)
 ```
 
 ## Enable AA Mode
@@ -109,26 +109,34 @@ Sending a standard transaction (UserOperation after enabling AA mode), requestin
 - `callback`, return handling.
 - `feeMode`, the mechanism to be used for paying gas fees, can be:
   - `FeeModeGasless`, for sponsored transactions. This will happen automatically for Testnets, pulling from your previously defined (or configured) Paymaster for Mainnets.
-  - `FeeModeAuto`, automatic decision, generally native payments.
-  - `FeeModeCustom`, enables the selection of a specific mechanism, takes one parameter:
+  - `FeeModeNative`,  native payments.
+  - `FeeModeToken`, enables the selection of a specific mechanism, takes one parameter:
     - `feeQuote`, to be used when leveraging a Token Paymaster, can be retrieved through `ParticleNetwork.getAAService().rpcGetFeeQuotes()`.
 
 Additionally, if you're using Particle Connect, you can send the same type of transaction by calling the `signAndSendTransaction` method on a relevant adapter. This takes the same parameters, although it requires passing the `publicAddress` of the targeted user for the transaction.
 
 ```kotlin Kotlin
-ParticleNetwork.signAndSendTransaction(transaction, callback, FeeModeGasless())
+val feeModeGasLess: FeeMode = FeeModeGasless()
+val transaction = "your transaction"
+val feeQuote = ParticleNetwork.getAAService().rpcGetFeeQuotes("eoa address", listOf(transaction)).result
+val feeModeNative: FeeMode = FeeModeNative(verifyingPaymasterNative =feeQuote.verifyingPaymasterNative )
+val feeModeToken: FeeMode = FeeModeToken(feeQuote.tokenPaymaster.feeQuotes[0], feeQuote.tokenPaymaster.tokenPaymasterAddress)
+AuthCore.evm.sendTransaction(transaction, object : AuthCoreSignCallback<SignOutput> {
+    override fun success(output: SignOutput) {
+        // success output.signature
+    }
 
-ParticleNetwork.signAndSendTransaction(transaction, callback, FeeModeAuto())
-
-val feeQuote: Erc4337FeeQuote // ParticleNetwork.getAAService().rpcGetFeeQuotes()
-ParticleNetwork.signAndSendTransaction(transaction, callback , FeeModeCustom(feeQuote))
+    override fun failure(errMsg: ErrorInfo) {
+        // Handle error
+    }
+}, feeModeGasLess) //feeModeNative or feeModeToken
 
 // Alternatively, if using Particle Connect
-connectAdapter.signAndSendTransaction(publicAddress, transaction, FeeModeGasless(), callback)
+connectAdapter.signAndSendTransaction(publicAddress, transaction, feeModeGasLess, callback)
 
-connectAdapter.signAndSendTransaction(publicAddress, transaction, FeeModeAuto(), callback)
+connectAdapter.signAndSendTransaction(publicAddress, transaction, feeModeToken, callback)
 
-connectAdapter.signAndSendTransaction(publicAddress, transaction, FeeModeCustom(feeQuote), callback)
+connectAdapter.signAndSendTransaction(publicAddress, transaction, feeModeToken, callback)
 ```
 
 ## Send Batch Transactions
