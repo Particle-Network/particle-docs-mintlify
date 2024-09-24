@@ -49,7 +49,7 @@ You can initialize the SDK through `AAService.initialize`, which requires the fo
   - `.cyberConnect`, a [CyberConnect smart account](https://wallet.cyber.co/).
   - `.simpleV1`, a [SimpleAccount implementation](https://github.com/eth-infinitism/account-abstraction/blob/develop/contracts/samples/SimpleAccount.sol).
   - `.simpleV2`, a [SimpleAccount implementation](https://github.com/eth-infinitism/account-abstraction/blob/develop/contracts/samples/SimpleAccount.sol).
-  - `.light`, a [Light Account](https://accountkit.alchemy.com/packages/aa-accounts/light-account/).
+  - `.light`, a [Light Account](https://accountkit.alchemy.com/smart-contracts/light-account).
 
 Once `AAService.initialize` has been called, you'll need to use `ParticleNetwork.setAAService`, passing in an instance of `AAService`. This will tell Particle Auth to use your smart account rather than your EOA. Either before or after doing this, you'll also need to call `aaService.enableAAMode`.
 
