@@ -540,7 +540,7 @@ const config = createConfig({
             // Optional configurations for the attached embedded wallet modal
             entryPosition: EntryPosition.BR, // Alters the position in which the modal button appears upon login
             visible: true, // Dictates whether or not the wallet modal is included/visible or not
-            widgetIntegration: 'modal', // Optional, changes the wallet widget integration type (modal or embedded)
+            widgetIntegration: 'modal', // Optional: changes the wallet widget integration type (modal or embedded)
             customStyle: {
                 // Override the default configuration.
                 // Define the wallet-specific configurations.
@@ -551,14 +551,17 @@ const config = createConfig({
 });
 ```
 
-#### Customizing
+#### Customizing the Embedded Wallet
 
-You can display the wallet component anywhere by setting `widgetIntegration: 'embedded'`, and control its visibility yourself.
+You can embed the wallet widget anywhere in your application by setting `widgetIntegration: 'embedded'`. This allows you to have complete control over the wallet component's visibility and placement. 
+
+Use the provided methods to append the wallet iframe to your desired location and listen for specific events (e.g., closing the wallet) to customize the user experience.
 
 ```tsx
 import { useEmbeddedWallet } from '@particle-network/connectkit';
 
 const { getWalletIFrame } = useEmbeddedWallet();
+
 // get wallet widget
 const walletIFrame = getWalletIFrame();
 // then you can append the wallet widget to your desired location
