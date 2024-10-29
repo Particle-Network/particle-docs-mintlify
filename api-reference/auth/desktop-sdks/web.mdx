@@ -207,7 +207,9 @@ The following example showcases all available configuration options:
 ```typescript TypeScript
 'use client';
 
-import { connect } from '@particle-network/authkit';
+import { useConnect } from '@particle-network/authkit';
+
+const { connect, disconnect, connected } = useConnect();
 
 const useInfo = await connect({
     // socialType, if set, will skip the auth modal shown above and will instead automatically redirect to a chosen social login
@@ -235,7 +237,9 @@ The following example shows how to automatically prompt users to log in with the
 ```tsx App.tsx
 'use client';
 
-import { connect } from '@particle-network/authkit';
+import { useConnect } from '@particle-network/authkit';
+
+const { connect, disconnect, connected } = useConnect();
 
 // Handle user login
 const handleLogin = async () => {
@@ -262,7 +266,9 @@ Then, you can refer to the code below to log in using JWT.
 ```typescript TypeScript
 'use client';
 
-import { connect } from '@particle-network/authkit';
+import { useConnect } from '@particle-network/authkit';
+
+const { connect, disconnect, connected } = useConnect();
 
 // connect with JWT
 const userInfo = await connect({
@@ -289,7 +295,9 @@ The following is an example of how you can connect with Telegram Miniapp.
 ```typescript TypeScript
 'use client';
 
-import { connect } from '@particle-network/authkit';
+import { useConnect } from '@particle-network/authkit';
+
+const { connect, disconnect, connected } = useConnect();
 
 const userInfo = await connect({
     provider: 'telegram',
