@@ -9,10 +9,10 @@ description: 'Find Frequently Asked Questions about Particle Auth.'
   <Accordion title="How can I ensure the signature result is consistent each time?" icon="signature">
     **Answer:** Due to the unique characteristics of Multi-Party Computation (MPC), the signature result for the same message can vary each time, unlike traditional private key wallets such as MetaMask. 
     
-    To address scenarios requiring a consistent signature result, we provide the `uniq` parameter. This parameter ensures that the signature remains consistent every time you sign the same message.
+    To address scenarios requiring a consistent signature result, we provide the `unique` parameter. This parameter ensures that the signature remains consistent every time you sign the same message.
 
     ```tsx App.tsx
-    // Sign a message with the uniq flag
+    // Sign a message with the unique flag
     const result = await signMessage(message, true);
     ```
   </Accordion>
