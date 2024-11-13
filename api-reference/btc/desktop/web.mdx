@@ -274,7 +274,7 @@ Below is the full list of functions derived from `useETHProvider`:
 - `switchChain`, for forcibly changing the EVM chain used through the smart account. This takes a specific `chainId` (should be one of the aforementioned supported chains).
 - `provider`, the EIP-1193 provider object associated with the smart account.
 - `getFeeQuotes`, for retrieving fee quotes (a collection of UserOperation structures based upon different fee payment mechanisms); this is equivalent to [getFeeQuotes](/api-reference/aa/rpc/getfeequotes).
-- `buildUserOp`, to build a execution-ready UserOperation with a standard transaction object.
+- `buildUserOp`, to build an execution-ready UserOperation with a standard transaction object.
 - `sendUserOp`, for sending UserOperations (either objects derived from `getFeeQuotes`/`buildUserOp`, or standard transaction objects).
 - `publicClient`, the [viem](https://github.com/wevm/viem) `PublicClient` object for making standard JSON-RPC requests.
 
