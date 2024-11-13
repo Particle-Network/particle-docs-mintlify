@@ -169,9 +169,9 @@ let result = try await ParticleWalletAPI.getEvmService().getTransactionsFromDB(b
 | Field            | Type              | Description                                                                                                                                                                                             |
 | ---------------- | ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `from`           | `String`          | The user's public address, which to sign the transaction.                                                                                                                                               |
-| `to`             | `String?`         | If you send a erc20, erc721, erc1155 or interact with a contract, this is the contract address, if you send native, this is receiver address, if you want to deploy a contract, this to should be `nil` |
+| `to`             | `String?`         | If you send an erc20, erc721, erc1155 or interact with a contract, this is the contract address, if you send native, this is receiver address, if you want to deploy a contract, this to should be `nil` |
 | `value`          | `String?`         | Native value, default is nil, expressed as a hex string.                                                                                                                                                |
-| `data`           | `String`          | If you send a erc20, erc721, erc1155 or interact with a contract, this is the data field, if you send native, this should be `0x`, default value is `0x`                                                |
+| `data`           | `String`          | If you send an erc20, erc721, erc1155 or interact with a contract, this is the data field, if you send native, this should be `0x`, default value is `0x`                                                |
 | `contractParams` | `ContractParams?` | You can use this object to describe a write contract function                                                                                                                                           |
 | `type`           | `String`          | Default is 0x2. Support EIP1559, you can ignore this parameter                                                                                                                                          |
 | `gasFeeLevel`    | `gasFeeLevel`     | The specific gas fee level to be used. This can be either `.low`, `.medium`, `.high`, default is `.medium`                                                                                              |
@@ -259,7 +259,7 @@ Specifically, four key parameters are available within `ParticleWalletAPI.getEvm
 | `params`          | `[Encodable]` | The parameters of the method, each parameter requires a hexadecimal string. |
 | `abiJsonString`   | `String?`     | (Optional) The ABI JSON string for the method.                              |
 
-Here is a abiJsonString example.
+Here is an abiJsonString example.
 
 ```swift
 let abiJsonString = "[{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"quantity\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"mint\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}]"
@@ -526,7 +526,7 @@ The specific parameters that can be used within `PNRouter.navigatorBuy` are list
 | `fixFiatAmt`    | `bool`                  | (Optional) Lock selection of fiat amount in the buy menu, default is false.                   |
 | `fixCryptoCoin` | `bool`                  | (Optional) Lock selection of crypto coin in the buy menu, default is false.                   |
 | `theme`         | `String`                | (Optional) The buy page theme, `dark` or `light`, default is current appearance.              |
-| `language`      | `Language?`             | (Optional) The buy page lanuage, default is current language.                                 |
+| `language`      | `Language?`             | (Optional) The buy page language, default is current language.                                 |
 | `modalStyle`    | `IOSModalPresentStyle?` | (Optional) Control iOS presentation style, default is `pageSheet`.                            |
 
 ```swift
@@ -571,7 +571,7 @@ if let url = URL(string: "app.uniswap.org") {
 }
 ```
 
-### (Optional) Custom WalletConnect Projcet ID
+### (Optional) Custom WalletConnect Project ID
 
 ```swift
 ParticleWalletConnect.setWalletConnectV2ProjectId("WalletConnect project ID")
