@@ -867,11 +867,12 @@ Example of sending a Solana transaction:
 import { useWallets, useAccount, usePublicClient, type SolanaChain } from '@particle-network/connectkit';
 import { PublicKey, SystemProgram, Transaction } from '@solana/web3.js';
 
-const [primaryWallet] = useWallets<SolanaChain>();
+const [primaryWallet] = useWallets();
+const solanaWallet = primaryWallet?.getWalletClient<SolanaChain>();
 const publicClient = usePublicClient<SolanaChain>();
 
 const executeTx = async () => {
-    const publicKey = primaryWallet.publicKey;
+    const publicKey = solanaWallet.publicKey;
     // Prepare the transaction object
     const tx = new Transaction();
     tx.add(
@@ -890,7 +891,7 @@ const executeTx = async () => {
     tx.lastValidBlockHeight = lastValidBlockHeight;
     tx.feePayer = publicKey;
 
-    const transactionResponse = await primaryWallet.sendTransaction(tx);
+    const transactionResponse = await solanaWallet.sendTransaction(tx);
     console.log('Transaction sent:', transactionResponse);
 };
 ```
@@ -923,13 +924,13 @@ import { usePublicClient, SolanaChain } from '@particle-network/connectkit';
 export const App = () => {
     // Init public client
     const publicClient = usePublicClient<SolanaChain>();
-    
+
     const [primaryWallet] = useWallets();
     const solanaWallet = primaryWallet?.getWalletClient<SolanaChain>();
 
     // Fetch the balance of an account
     const fetchBalance = async () => {
-        const balanceResponse = await publicClient?.getBalance(primaryWallet.publicKey);
+        const balanceResponse = await publicClient?.getBalance(solanaWallet.publicKey);
     };
 };
 ```
