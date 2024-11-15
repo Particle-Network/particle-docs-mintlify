@@ -251,24 +251,28 @@ Moving out of your `index` file and into your main `App` component, you'll need 
 You can then use `isConnected` from `useAccount()` to handle your frontend post-connection.
 
 ```typescript
-import { ConnectButton, useAccount } from '@particle-network/connectkit';
+"use client";
 
-export const App = () => {
-    const { address, isConnected, chainId } = useAccount();
+import { ConnectButton, useAccount } from "@particle-network/connectkit";
 
-    // Standard ConnectButton utilization
-    return (
-        <div>
-            <ConnectButton />
-            {isConnected && (
-                <>
-                    <h2>Address: {address}</h2>
-                    <h2>Chain ID: {chainId}</h2>
-                </>
-            )}
-        </div>
-    );
+const App = () => {
+  const { address, isConnected, chainId } = useAccount();
+
+  // Standard ConnectButton utilization
+  return (
+    <div>
+      <ConnectButton />
+      {isConnected && (
+        <>
+          <h2>Address: {address}</h2>
+          <h2>Chain ID: {chainId}</h2>
+        </>
+      )}
+    </div>
+  );
 };
+
+export default App;
 ```
 
 ## Appearance
@@ -919,7 +923,9 @@ import { usePublicClient, SolanaChain } from '@particle-network/connectkit';
 export const App = () => {
     // Init public client
     const publicClient = usePublicClient<SolanaChain>();
-    const [primaryWallet] = useWallets<SolanaChain>();
+    
+    const [primaryWallet] = useWallets();
+    const solanaWallet = primaryWallet?.getWalletClient<SolanaChain>();
 
     // Fetch the balance of an account
     const fetchBalance = async () => {
