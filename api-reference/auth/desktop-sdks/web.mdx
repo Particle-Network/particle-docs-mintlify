@@ -673,6 +673,8 @@ window.web3.currentProvider.request({ method, params })
 
 To enable blind signatures (signing without a popup) in Particle Auth, certain conditions must be met when configuring the `AuthCoreContextProvider` component and setting up the authentication flow.
 
+<Note>Blind signing is only supported when the user is authenticated via **JWT** or **Telegram**.</Note>
+
 1. **Master Password Requirement**
    - Users must either:
      - Have entered the master password, or
@@ -690,12 +692,7 @@ To enable blind signatures (signing without a popup) in Particle Auth, certain c
         promptPaymentPasswordSettingWhenSign: false,
     };
     ```
-
-4. **Use JWT or Telegram for Login**
-   - User authentication flow is either:
-     - JSON Web Token (JWT), or
-     - Telegram.
-
+    
 When these conditions are satisfied, blind signing is enabled.
 
 ---
