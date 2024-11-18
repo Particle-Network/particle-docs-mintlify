@@ -669,6 +669,37 @@ window.web3.currentProvider.request({ method, params })
 
 ---
 
+## Enabling Blind Signatures
+
+To enable blind signatures (signing without a popup) in Particle Auth, certain conditions must be met when configuring the `AuthCoreContextProvider` component and setting up the authentication flow.
+
+1. **Master Password Requirement**
+   - Users must either:
+     - Have entered the master password, or
+     - Not have set a master password in the first place.
+
+2. **No Payment Password**
+   - Users should not have set a payment password.
+
+3. **Disable Payment Password Prompt Setting**
+   - Set the `promptPaymentPasswordSettingWhenSign` parameter to `false` within `AuthCoreContextProvider`.
+
+    ```typescript
+    // Configuration for disabling payment password prompt
+    const promptSettingConfig = {
+        promptPaymentPasswordSettingWhenSign: false,
+    };
+    ```
+
+4. **Use JWT or Telegram for Login**
+   - User authentication flow is either:
+     - JSON Web Token (JWT), or
+     - Telegram.
+
+When these conditions are satisfied, blind signing is enabled.
+
+---
+
 ## Particle Native Hooks
 
 Below is a collection of examples describing the different hooks available with **Particle Auth**. 
