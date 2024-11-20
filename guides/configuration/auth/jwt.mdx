@@ -310,6 +310,8 @@ Click on the **JSON Web Token** button and add the necessary configuration.
 
 Now, you can move into the `particle-auth-frontend` directory to work on the front end. 
 
+<Note>This demo is configured to enable blind signatures, allowing users to sign messages and send transactions without a confirmation popup. For more details on setting up blind signatures, refer to the [Particle Auth documentation](/api-reference/auth/desktop-sdks/web#enabling-blind-signatures).</Note>
+
 Before getting started, retrieve the API keys generated during the creation of your project and app and place them in a  `.env` file within the `particle-auth-frontend` directory file using the following keys:
 
 ```sh .env
@@ -318,28 +320,40 @@ NEXT_PUBLIC_CLIENT_KEY=""
 NEXT_PUBLIC_APP_ID=""
 ```
 
-To configure Particle Auth for JWT, you'll use the `AuthCoreContextProvider` component in `layout.tsx`. This component initializes Particle Auth.
+To configure Particle Auth for JWT, use the `AuthCoreContextProvider` component in `src/components/Authkit.tsx`.This component initializes Particle Auth.
 
-```tsx src/app/layout.tsx
-        <AuthCoreContextProvider
-          options={{
-            // All env variable must be defined at runtime
-            projectId: process.env.NEXT_PUBLIC_PROJECT_ID!,
-            clientKey: process.env.NEXT_PUBLIC_CLIENT_KEY!,
-            appId: process.env.NEXT_PUBLIC_APP_ID!,
-            themeType: "dark",
-            wallet: {
-              // Set to false to remove the embedded wallet modal
-              visible: true,
-              customStyle: {
-                // Locks the chain selector to Base Sepolia and Ethereum Sepolia
-                supportChains: [BaseSepolia, EthereumSepolia],
-              },
-            },
-          }}
-        >
-          {children}
-        </AuthCoreContextProvider>
+```tsx src/components/authkit.tsx
+  <AuthCoreContextProvider
+  options={{
+    // All environment variables must be defined at runtime
+    projectId: process.env.NEXT_PUBLIC_PROJECT_ID!,
+    clientKey: process.env.NEXT_PUBLIC_CLIENT_KEY!,
+    appId: process.env.NEXT_PUBLIC_APP_ID!,
+
+    // Configure for JWT authentication only (if needed)
+    // authTypes: [AuthType.jwt],
+
+    // Theme configuration
+    themeType: "dark",
+
+    // Wallet settings
+    wallet: {
+      // Set to false to remove the embedded wallet modal
+      visible: true,
+    },
+
+    // Prompt settings
+    promptSettingConfig: {
+      promptPaymentPasswordSettingWhenSign: false,
+    },
+
+    // Supported chains
+    chains: [sepolia, baseSepolia],
+  }}
+>
+  {children}
+</AuthCoreContextProvider>
+
 ```
 
 To handle the login request and extract data from the JWT, create two support functions in `src/app/utils/jwtUtils.ts`.
@@ -409,14 +423,16 @@ After the above, you can integrate integrate the login and JWT handling function
       const token = await loginRequest(username);
 
       if (token) {
+        const decodedData = await decodeJWT(token);
+        
         // Use the returned JWT to connect with Particle Auth
         if (!userInfo) {
           await connect({
-            jwt: token,
+            provider: "jwt",
+            thirdpartyCode: token,
           });
         }
 
-        const decodedData = await decodeJWT(token);
         setJwtData(decodedData);
       }
     } catch (error) {
