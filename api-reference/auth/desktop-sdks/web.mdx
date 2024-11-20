@@ -671,7 +671,7 @@ window.web3.currentProvider.request({ method, params })
 
 ## Enabling Blind Signatures
 
-To enable blind signatures (signing without a popup) in Particle Auth, certain conditions must be met when configuring the `AuthCoreContextProvider` component and setting up the authentication flow.
+To enable blind signatures (signing without a confirmation popup) in Particle Auth, certain conditions must be met when configuring the `AuthCoreContextProvider` component and setting up the authentication flow.
 
 <Note>Blind signing is only supported when the user is authenticated via **JWT** or **Telegram**.</Note>
 
@@ -681,14 +681,14 @@ To enable blind signatures (signing without a popup) in Particle Auth, certain c
      - Not have set a master password in the first place.
 
 2. **No Payment Password**
-   - Users should not have set a payment password.
+   - Users should not have set a payment password (as this interrupts the signing process).
 
 3. **Disable Payment Password Prompt Setting**
-   - Set the `promptPaymentPasswordSettingWhenSign` parameter to `false` within `AuthCoreContextProvider`.
+   - Set the `promptPaymentPasswordSettingWhenSign` parameter to `false` within [`AuthCoreContextProvider`](https://developers.particle.network/api-reference/auth/desktop-sdks/web#configuration).
 
     ```typescript
     // Configuration for disabling payment password prompt
-    const promptSettingConfig = {
+    promptSettingConfig = {
         promptPaymentPasswordSettingWhenSign: false,
     };
     ```
