@@ -22,16 +22,24 @@ iconType: "light"
 
 Launched in 2022, Particle Network debuted as a Wallet Abstraction service provider, enabling users to create smart contract wallets linked to their Web2 social accounts. These wallets can be accessed on their own or within dApp-embedded interfaces, and have been widely implemented across the Web3 ecosystem, with over 17 Million wallet activations, 10 Million UserOperations, and 900 dApp integrations.
 
-Particle Network's live Wallet Abstraction product suite consists of two key technologies:
+Particle Network's live Wallet Abstraction product suite consists of three key technologies:
 
-1. Smart Wallet-as-a-Service
-2. BTC Connect
+1. **User Onboarding**
+2. **Account Abstraction**
+2. **BTC Connect**
+3. **Upcoming Products: Chain Abstraction**
 
-### Smart Wallet-as-a-Service
+### User Onboarding
 
-Particle Network's Smart Wallet-as-a-Service features an application-embedded modal (with the option of being headless) aggregating both social logins and standard wallet connection, acting as an all-in-one mechanism of onboarding users into applications across both EVM-compatible blockchains and Solana.
+Particle Auth and Particle Connect offer social login and multi-channel onboarding options, including social accounts, email, and phone numbers. Additionally, Particle Connect supports onboarding through standard Web3 wallets using Wallet Connect.
 
-<Card title="Learn more about Smart Wallet-as-a-Service" icon="wallet" href="/landing/wallet-abstraction/waas/overview"></Card>
+<Card title="Learn more about Wallet Abstraction" icon="wallet" href="/landing/wallet-abstraction/waas/overview"></Card>
+
+### Account Abstraction
+
+The AA SDK enables Account Abstraction and smart accounts, unlocking ERC-4337 features such as gasless transactions and enhanced user experiences.
+
+<Card title="Learn more about Account Abstraction" icon="gas-pump" href="api-reference/aa/introduction"></Card>
 
 ### BTC Connect
 
@@ -45,24 +53,22 @@ BTC Connect implements ERC-4337 account abstraction throughout the EVM-compatibl
 
 # Upcoming Products: Chain Abstraction
 
-## The L1 Unifying All Chains Through Universal Accounts
+## Chain-Agnostic Experience Through Universal Accounts
 
 ##### Particle Network's goal is to solve Web3’s fragmentation of users and liquidity across chains.
 
-As an evolution of its Wallet Abstraction products, Particle is taking the next step in its evolution, offering users a borderless Web3 experience through **Universal Accounts, coordinated by the Particle Network L1 blockchain**
+As an evolution of its Wallet Abstraction products, Particle is taking the next step in its evolution, offering users a borderless Web3 experience through **Universal Accounts**.
 
-## Modular L1
+## Universal Account SDKs
 
-The Particle Network modular L1 blockchain powers chain abstraction by enabling users to have a single address and balance across every chain and pay for gas in any token. It does so by providing the infrastructure that coordinates three core functionalities, each reducing friction for users:
+Particle Network's **Chain Abstraction** tools empower developers to create chain-agnostic applications, offering users a seamless and unified experience across multiple blockchains. These tools eliminate the need for manual asset bridging and simplify cross-chain asset management.  
 
-- **Universal Accounts (core chain abstraction product):** Specialized Smart Account implementations powered by Particle Network’s Universal SDK. Users of Universal Accounts have a single address and balance across ecosystems, including EVM networks and heterogeneous blockchains like Bitcoin and Solana. This allows them to seamlessly utilize their assets across all chains without manually bridging.
-- **Universal Liquidity:** Unifies the liquidity of all chains through the optimistic execution of multi-chain atomic transactions—essentially, bridging assets for users automatically to fulfill their transactions’ requirements. This allows users to interact with new chains without holding tokens on them.
-- **Universal Gas:** Allows users to pay gas with any token (e.g. PARTI, USDT, or USDC) sourced from any blockchain, as opposed to the multi-chain ecosystem’s need for multiple chain-exclusive gas units (SOL, ETH, MATIC, etc.)
+### Key Features  
 
-The Particle Network L1, responsible exclusively for facilitating the aforementioned functionalities, features a secure, high-performance EVM-compatible execution environment. Relying on the Cosmos SDK to build this chain means the Particle Network L1 retains its sovereignty while being able to outsource key functions like validation and data availability.
+- **Unified Balance**: Provides a consolidated view of assets across multiple blockchains, allowing users to manage all holdings through a single interface.  
+- **Automatic Asset Bridging**: Ensures seamless transactions by automatically settling them using the user's assets, regardless of asset type, target chain, or location.  
 
-Particle Network’s multiple functionalities are driven by Modular Nodes, which help secure the L1 and allow for its decentralized operation through managing transaction validation, data availability, etc.
-
+Chain Abstraction is implemented through two SDKs: **UniversalX** and **Universal Accounts**.  
 
 <Frame caption="L1 Modular architecture.">
 <img
@@ -76,42 +82,3 @@ Particle Network’s multiple functionalities are driven by Modular Nodes, which
   alt="Modular L1 scheme"
 />
 </Frame>
-
-
-### Design and security
-
-#### Security and data availability
-
-The Particle Network L1 features a **dual staking system**, combining Proof-of-Stake through Tendermint with Bitcoin’s economic security and resilience, powered by **[Babylon](https://babylonchain.io)**.
-
-<img
-  className="block dark:hidden"
-  src="/images/babylon-dual-staking.png"
-  alt="Babylon-Dual-Staking"
-/>
-<img
-  className="hidden dark:block"
-  src="/images/babylon-dual-staking.png"
-  alt="Babylon-Dual-Staking"
-/>
-
-Furthermore, it presents a unique data availability aggregation (AggDA) model relying on providers [Celestia](https://celestia.org/), [Avail](https://www.availproject.org/), and [NEAR DA](https://near.org/data-availability) to reduce vendor lock-in and liveness risks. This constitutes a decentralized system of Aggregated DA node operators (a type of Modular Node) to dynamically publish and verify data between providers for conditional redundancy or optimization.
-
-<img
-  className="block dark:hidden"
-  src="/images/data.jpeg"
-  alt="Hero Light"
-/>
-<img
-  className="hidden dark:block"
-  src="/images/data.jpeg"
-  alt="Hero Dark"
-/>
-
-#### Key modules, initial ecosystem, and more.
-
-<Card title="Learn more about the Particle Network L1" icon="wand-magic-sparkles" href="/landing/modular-l1/introduction">
-Particle Network is primarily constituted by three key modules. For a detailed description of these modules and related architectural information, head over the linked page.
-</Card>
-
-
