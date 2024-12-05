@@ -141,6 +141,10 @@ const config = createConfig({
             // Optional configurations for the attached embedded wallet modal
             entryPosition: EntryPosition.BR, // Alters the position in which the modal button appears upon login
             visible: true, // Dictates whether or not the wallet modal is included/visible or not
+            customStyle: {
+                displayTokenAddresses: ["0x4d224452801ACEd8B2F0aebE155379bb5D594381"], // Display a custom token within the wallet modal
+                priorityTokenAddresses: ["0x4d224452801ACEd8B2F0aebE155379bb5D594381"],
+            },
         }),
     ],
     chains: [mainnet, solana],
