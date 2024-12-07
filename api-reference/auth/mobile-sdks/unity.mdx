@@ -27,8 +27,8 @@ Your Unity project needs to meet several requirements to avoid any compatibility
   - compileSdkVersion, targetSdkVersion **34** or higher.
   - JavaVersion **17**.
   - [Jetpack (AndroidX)](https://developer.android.com/jetpack/androidx/migrate?authuser=0).
-  - Android Gradle Plugin Version : 8.5.1 or higher.
-  - Gradle Version : 8.9 or higher.
+  - Android Gradle Plugin Version: 8.5.1 or higher.
+  - Gradle Version: 8.9 or higher.
 
 ### Setting up the Particle dashboard
 
@@ -81,7 +81,7 @@ You'll also need to configure your Podfile if you haven't already. If you don't 
   <p>Copy our example Podfile</p>
   <p></p>
   <p>
-    You can copy our examole
+    You can copy our example
     [Podfile](https://github.com/Particle-Network/particle-unity/blob/main/ios-build/Podfile),
     it will always use the latest version.
   </p>
@@ -131,7 +131,7 @@ installer.pods_project.targets.each do |target|
  end
 ```
 
-Also you can copy the example [Podfile](https://github.com/Particle-Network/particle-unity/blob/main/ios-build/Podfile) .
+Also, you can copy the example [Podfile](https://github.com/Particle-Network/particle-unity/blob/main/ios-build/Podfile) .
 
 With your Podfile set, you'll need to run `pod install` and open your `.xcworkspace` file, such as is shown below:
 
@@ -513,12 +513,12 @@ var result = (string)JObject.Parse(rpcResult)["result"];
 | `gasFeeLevel` | `GasFeeLevel` | (Optional) the gas fee level, `High`, `Medium` or `Low`, default is `High`. |
 
 ```csharp
-var transaction = await EvmService.CreateTransaction(from, data, value, reciver);
+var transaction = await EvmService.CreateTransaction(from, data, value, receiver);
 ```
 
 ### Estimate Gas
 
-Given a standard transaction structure (detached set of values, as shown below), gas estimations can be ran to simulate and retrieve the volume of gas to be consumed by a specified transaction (wrapper for `eth_estimateGas`). This is done through `EvmService.EstimateGas`.
+Given a standard transaction structure (detached set of values, as shown below), gas estimations can be run to simulate and retrieve the volume of gas to be consumed by a specified transaction (wrapper for `eth_estimateGas`). This is done through `EvmService.EstimateGas`.
 
 ```csharp
 final result = await EvmService.EstimateGas(from, to, value, data);
@@ -585,7 +585,7 @@ await SolanaService.GetTokensAndNFTs(publicAddress, true);
 
 `SolanaService.SerializeSOLTransaction` facilitates the construction of a SOL transaction object.
 
-These transactions, once constructed , can be passed for in-UI proposal with `ParticleAuthCore.Instance.SolanaSendTransaction`.
+These transactions, once constructed, can be passed for in-UI proposal with `ParticleAuthCore.Instance.SolanaSendTransaction`.
 
 ```csharp
 string receiver = "";
