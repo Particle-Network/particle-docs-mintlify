@@ -279,7 +279,29 @@ const App = () => {
 export default App;
 ```
 
-## Appearance
+#### Customizing the Connect Button Widget
+
+The `ConnectButton` component turns into an embedded widget that displays a chain selector on one side and address/account information on the other after the user logs in.
+
+If you want to remove the chain selector portion of the widget, you can do it by adding the following styles to your `global.css` file:
+
+```css global.css
+
+/* Hide the chain selector elements */
+.sc-dUMaFF.iLJvQa {
+  display: none;
+}
+
+.sc-dKGrn.cHiobV {
+  display: none;
+}
+```
+
+These styles target the specific elements responsible for rendering the chain selector, effectively removing them from the widget's interface.
+
+<Note>Ensure the class names (`.sc-dUMaFF.iLJvQa` and `.sc-dKGrn.cHiobV`) match the generated CSS in your project. These names may vary depending on your library or framework, so inspect your component's rendered DOM if the provided selectors do not work.</Note>
+
+## Login Modal Appearance
 
 The `appearance` property allows you to customize the modal's style, including changing the accent color, border radius, primary button color, font, and more.
 
