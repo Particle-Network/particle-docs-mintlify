@@ -55,7 +55,7 @@ pod 'ParticleMPCCore'
 pod 'Thresh'
 pod 'AuthCoreAdapter'
 
-pod 'ParticleWalletAPI' #Optional, for create transaciton
+pod 'ParticleWalletAPI' #Optional, for create transaction
 pod `ParticleWalletGUI` #Optional, for wallet
 pod 'ParticleWalletConnect' #Optional, for wallet
 ```
@@ -201,7 +201,7 @@ Additionally, you can set specific chains to be used within WalletConnect (`chai
 
 ```swift
 var adapters: [ConnectAdapter] = [
-    AuthCoreAdaper(),
+    AuthCoreAdapter(),
     // Select the third-party wallet you want from the options below. 
     WalletConnectAdapter(),
     MetaMaskConnectAdapter(),

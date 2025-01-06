@@ -407,7 +407,7 @@ ParticleConnectKit.connect(config,connectCallback = object : ConnectKitCallback 
 
 Transactions can be constructed and sent directly through the SDK; below is an example of the standard flow here.
 
-In essense, you'll need to generate a transaction object with `ParticleNetwork.evm.createTransaction` (or the `solana` equivalent), passing in standard parameters such as `from`, `to`, `value`, and (if you're interacting with a contract) `data`. Using these, an object will be returned which can be used directly for execution.
+In essence, you'll need to generate a transaction object with `ParticleNetwork.evm.createTransaction` (or the `solana` equivalent), passing in standard parameters such as `from`, `to`, `value`, and (if you're interacting with a contract) `data`. Using these, an object will be returned which can be used directly for execution.
 
 Execution needs to be initiated through an instance of the active connector, or adapter (the method in which a user connected); this can be retrieved and loaded using `ParticleConnect.getAdapters`, as demonstrated below. Upon loading the adapter, you can simply call `{adapter}.signAndSendTransaction`, passing in the previously generated transaction object. Upon doing so, the user will be prompted to confirm the transaction.
 
