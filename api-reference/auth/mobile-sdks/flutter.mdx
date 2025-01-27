@@ -43,8 +43,8 @@ flutter pub add particle_auth_core
 - compileSdkVersion, targetSdkVersion **34** or higher.
 - JavaVersion **17**.
 - [Jetpack (AndroidX)](https://developer.android.com/jetpack/androidx/migrate?authuser=0).
-- Android Gradle Plugin Version : 8.5.1 or higher.
-- Gradle Version : 8.9 or higher.
+- Android Gradle Plugin Version: 8.5.1 or higher.
+- Gradle Version: 8.9 or higher.
 
 If you're building an Android application with Flutter, follow the steps below to configure Particle Auth. To begin, you'll need to go ahead and open your `build.gradle` file, often found at the following file path: `${project name}/android/app/build.gradle`
 
@@ -271,7 +271,7 @@ If you need the same message to return a unique signature each time, use the `Ev
 
 | Field     | Type     | Description                                                                       |
 | --------- | -------- | --------------------------------------------------------------------------------- |
-| `message` | `String` | On Evm requires a hexadeciaml string, on Solana, requires a UTF-8/readable string |
+| `message` | `String` | On Evm requires a hexadecimal string, on Solana, requires a UTF-8/readable string |
 
 ```dart
 final messageHex = "0x${StringUtils.toHexString("Hello Particle")}";
@@ -316,7 +316,7 @@ This will propose a signature (on both EVM and Solana) and then immediately push
 
 | Field         | Type     | Description                                                               |
 | ------------- | -------- | ------------------------------------------------------------------------- |
-| `transaction` | `String` | On Evm requires a hexadeciaml string, on Solana, requires a base58 string |
+| `transaction` | `String` | On Evm requires a hexadecimal string, on Solana, requires a base58 string |
 
 ```dart
 final signature = await Evm.sendTransaction(transaction);
@@ -540,7 +540,7 @@ final result = await EvmService.readContract(publicAddress, contractAddress, met
 | `from`        | `String`      | The user's public address.                                                                                                                    |
 | `data`        | `String`      | The transaction's data.                                                                                                                       |
 | `value`       | `BigInt`      | The native amount.                                                                                                                            |
-| `to`          | `String`      | If you send a erc20, erc721, erc1155 or interact with a contract, this is the contract address, if you send native, this is receiver address. |
+| `to`          | `String`      | If you send an erc20, erc721, erc1155 or interact with a contract, this is the contract address, if you send native, this is receiver address. |
 | `gasFeeLevel` | `GasFeeLevel` | (Optional) the gas fee level, `high`, `medium` or `low`, default is `high`.                                                                   |
 
 ```dart
@@ -693,7 +693,7 @@ final result = await SolanaService.getPrice(tokenAddresses, currencies);
 
 ### Get Transactions by address
 
-To retrieve transactions executed by a specific a address, call `SolanaService.getTransactionsByAddress`.
+To retrieve transactions executed by a specific address, call `SolanaService.getTransactionsByAddress`.
 
 ```dart
 final result = await SolanaService.getTransactionsByAddress(address);
