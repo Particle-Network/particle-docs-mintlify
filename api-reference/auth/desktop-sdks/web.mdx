@@ -255,6 +255,43 @@ const handleLogin = async () => {
 };
 ```
 
+#### Customizing the Email Login Flow
+
+By default, **Particle Auth** supports email login with an **OTP** (One Time Password) flow through the login modal. However, you can build a custom UI to request and validate OTPs directly, allowing for greater flexibility and control over the authentication experience.
+
+<Note>`@particle-network/auth-core` is already included as a dependency in `@particle-network/authkit`, so you don’t need to install it separately.</Note>
+
+**Step 1: Request an OTP**
+
+Use the `getConnectCaptcha()` function from `@particle-network/auth-core` to send an **OTP** to the user’s email.
+
+```tsx page.tsx
+import { getConnectCaptcha } from "@particle-network/auth-core";
+
+// Send an OTP to the email
+const sendOtpRequest = async (email) => {
+  const success = await getConnectCaptcha({ email });
+  console.log(success ? "OTP sent successfully!" : "Failed to request OTP. Try again.");
+};
+```
+
+**Step 2: Verify OTP & Log In**
+
+Once the user receives the OTP, use the `connect()` function, including OTP and email within `loginParams`, to verify it and complete the login.
+
+```tsx page.tsx
+import { ConnectWithEmailParam } from "@particle-network/auth-core";
+
+// Verify the OTP and log in
+const verifyOtp = async (email, otp) => {
+    const loginParams: ConnectWithEmailParam = { email, code: otp };
+    await connect(loginParams);
+    console.log("Login successful!");
+};
+```
+
+<Note>Find a complete implementation in the [Particle Auth Custom Email Login repository](https://github.com/Particle-Network/particle-auth-custom-email-otp-demo).</Note>
+
 #### Login with JWT
 
 You can use your existing user base or authentication method with Particle Auth through JWT. This way, your users can still log in with their current accounts.
