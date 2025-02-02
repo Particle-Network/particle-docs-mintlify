@@ -240,7 +240,7 @@ let signature = try await auth.evm.sendTransaction(transaction, chainInfo: nil)
 let data = getContractData()
 let from = auth.evm.getAddress() ?? ""
 
-let transacion = try await ParticleWalletAPI.getEvmService().createTransaction(from: from, to: nil, data: data).value
+let transaction = try await ParticleWalletAPI.getEvmService().createTransaction(from: from, to: nil, data: data).value
 let signature = try await auth.evm.sendTransaction(transaction, chainInfo: nil)
 ```
 
@@ -311,7 +311,7 @@ ParticleWalletConnect.initialize(
 
 ### Custom Wallet UI
 
-`ParticleWalletGUI` is drived by wallet adapters; after initializing the SDK, you'll be able to retrieve all relevant adapters through `ParticleConnect.getAdapters`, which can be plugged into `ParticleWalletGUI.setAdapters` to initiate the custom wallet interface, as is shown below.
+`ParticleWalletGUI` is derived by wallet adapters; after initializing the SDK, you'll be able to retrieve all relevant adapters through `ParticleConnect.getAdapters`, which can be plugged into `ParticleWalletGUI.setAdapters` to initiate the custom wallet interface, as is shown below.
 
 ```swift
 let adapters = ParticleConnect.getAdapters()
@@ -526,7 +526,7 @@ The specific parameters that can be used within `PNRouter.navigatorBuy` are list
 | `fixFiatAmt`    | `bool`                  | (Optional) Lock selection of fiat amount in the buy menu, default is false.                   |
 | `fixCryptoCoin` | `bool`                  | (Optional) Lock selection of crypto coin in the buy menu, default is false.                   |
 | `theme`         | `String`                | (Optional) The buy page theme, `dark` or `light`, default is current appearance.              |
-| `language`      | `Language?`             | (Optional) The buy page lanuage, default is current language.                                 |
+| `language`      | `Language?`             | (Optional) The buy page language, default is current language.                                 |
 | `modalStyle`    | `IOSModalPresentStyle?` | (Optional) Control iOS presentation style, default is `pageSheet`.                            |
 
 ```swift
@@ -571,7 +571,7 @@ if let url = URL(string: "app.uniswap.org") {
 }
 ```
 
-### (Optional) Custom WalletConnect Projcet ID
+### (Optional) Custom WalletConnect Project ID
 
 ```swift
 ParticleWalletConnect.setWalletConnectV2ProjectId("WalletConnect project ID")

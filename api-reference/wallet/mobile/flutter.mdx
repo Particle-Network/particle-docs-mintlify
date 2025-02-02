@@ -313,8 +313,8 @@ The specific parameters that can be used within `ParticleWallet.navigatorBuyCryp
 | `fixFiatCoin`   | `bool`                  | (Optional) Lock selection of fiat coin in the buy menu, default is false.                     |
 | `fixFiatAmt`    | `bool`                  | (Optional) Lock selection of fiat amount in the buy menu, default is false.                   |
 | `fixCryptoCoin` | `bool`                  | (Optional) Lock selection of crypto coin in the buy menu, default is false.                   |
-| `theme`         | `Theme`                 | (Optional) The buy page theme, `dark` or `light`, default is curreny appearance.              |
-| `language`      | `Language?`             | (Optional) The buy page lanuage, default is current language.                                 |
+| `theme`         | `Theme`                 | (Optional) The buy page theme, `dark` or `light`, default is current appearance.              |
+| `language`      | `Language?`             | (Optional) The buy page language, default is current language.                                 |
 | `modalStyle`    | `IOSModalPresentStyle?` | (Optional) Control iOS presentation style, default is `pageSheet`.                            |
 
 ```dart
@@ -400,7 +400,7 @@ WalletType walletType = WalletType.authCore;
 await ParticleWallet.switchWallet(walletType, publicAddress);
 ```
 ---
-### (Optional) Custom WalletConnect Projcet ID
+### (Optional) Custom WalletConnect Project ID
 ```dart
 //call before ParticleConnect.init
 ParticleWallet.setWalletConnectProjectId("Your WalletConnect Project ID, from https://cloud.walletconnect.com")

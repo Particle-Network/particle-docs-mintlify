@@ -347,7 +347,7 @@ This same logic applies to `promptMasterPasswordSettingWhenLogin`, which by defa
 ParticleNetwork.setSecurityAccountConfig(config:
   .init(promptSettingWhenSign: 1, promptMasterPasswordSettingWhenLogin: 2))
 
-let securityAccountConfig = PartilceNetwork.getSecurityAccountConfig()
+let securityAccountConfig = ParticleNetwork.getSecurityAccountConfig()
 ```
 
 ---
@@ -376,7 +376,7 @@ You can forcibly set a specific appearance to be used within the UI using `Parti
 
 | Field        | Type                   | Description                                                                               |
 | ------------ | ---------------------- | ----------------------------------------------------------------------------------------- |
-| `appearance` | `UIUserInterfaceStyle` | The specific appearance to be used. This can be either `.unspefified`, `.dark`, `.light`. |
+| `appearance` | `UIUserInterfaceStyle` | The specific appearance to be used. This can be either `.unspecified`, `.dark`, `.light`. |
 
 ```swift
 // This is the default setting, auto

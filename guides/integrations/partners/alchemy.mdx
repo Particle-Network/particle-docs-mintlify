@@ -75,7 +75,7 @@ const particleSigner = new ParticleSigner({
 });
 ```
 
-Additionally, we'll need to initiate social login and thus unlock the full extent of `ParticleSigner`. If the SDK hasn't loaded an account (via social login), all methods will return an error. To avoid this, you can call the custom `authenticate` method on your instance of `ParticleSigner`, passing in a specific (potentially customized) call to the standard `login` method on a constructed `PartneNetwork` object (in this case represented through `particleSigner.inner.auth.login`). Your call to `authenticate` should look adjacent to the following snippet:
+Additionally, we'll need to initiate social login and thus unlock the full extent of `ParticleSigner`. If the SDK hasn't loaded an account (via social login), all methods will return an error. To avoid this, you can call the custom `authenticate` method on your instance of `ParticleSigner`, passing in a specific (potentially customized) call to the standard `login` method on a constructed `PartnerNetwork` object (in this case represented through `particleSigner.inner.auth.login`). Your call to `authenticate` should look adjacent to the following snippet:
 
 ```typescript TypeScript
 await particleSigner.authenticate({
