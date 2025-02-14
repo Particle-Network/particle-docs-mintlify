@@ -115,7 +115,6 @@ Now that you've configured an instance of **Particle Auth**, it's time to levera
 To begin, you'll need to choose between the following interaction mechanisms:
 
 1. **Ethers.js**.
-2. **Web3.js**.
 3. **viem**.
 4. **Particle native**.
 
@@ -146,13 +145,6 @@ const ethersProvider = new ethers.BrowserProvider(
   "any"
 );
 ```
-```typescript Web3.js
-import { Web3 } from "web3";
-
-const { provider } = useEthereum();
-
-window.web3 = new Web3(provider);
-````
 
 ```typescript viem
 import { createWalletClient, custom } from 'viem'
@@ -487,7 +479,7 @@ const address = accounts[0].address;
 const signer = await ethersProvider.getSigner();
 const address = await signer.getAddress();
 
-````
+```
 ```typescript Ethers.js V5
 import { ethers } from "ethers";
 
@@ -499,19 +491,8 @@ const ethersProvider = new ethers.providers.Web3Provider(provider, "any");
 
 const accounts = await ethersProvider.listAccounts();
 const address = accounts[0].address;
-````
-
-```typescript Web3.js
-import Web3 from 'web3';
-
-import { useEthereum } from '@particle-network/authkit';
-const { provider } = useEthereum();
-
-const web3 = new Web3(provider);
-// Assuming Web3 is not already initialized
-
-const accounts = await web3.eth.getAccounts();
 ```
+
 
 ```typescript Particle (EVM)
 import { useEthereum } from '@particle-network/authkit';
@@ -539,7 +520,7 @@ const { address } = useSolana();
 
 Sending transactions using **Particle** as the Signer/underlying wallet is also quite simple. 
 
-If you're using **Ethers.js** or **Web3.js**, you're already set —as long as a user has logged in with Particle, transactions can be sent as you would with any other wallet.
+If you're using **Ethers.js**, you're already set —as long as a user has logged in with Particle, transactions can be sent as you would with any other wallet.
 
 When a given transaction is sent, and a signature is needed for authentication, a standard confirmation popup (also customizable through the Particle dashboard) will appear directly within the application. Transactions can be sent through the following:
 
@@ -563,13 +544,7 @@ const txReceipt = await txResponse.wait();
 console.log(txReceipt);
 };
 
-````
-```typescript Web3.js
-window.web3.eth.sendTransaction(txnParams, (error, txnHash) => {
-    if (error) throw error;
-    console.log(txnHash);
-});
-````
+```
 
 ```typescript Particle (EVM)
 // After configuring AuthCoreContextProvider and logging in
@@ -615,7 +590,7 @@ const result = await signAndSendTransaction(transaction);
 
 In cases where you'd like to sign either a raw string (personal) or typed data (`eth_signTypedData`), the process is quite straightforward.
 
-You can accomplish this using standard libraries like **Ethers** or **Web3.js** or leveraging **Particle’s** native functionality. The examples below illustrate both approaches.
+You can accomplish this using standard libraries like **Ethers** or leveraging **Particle’s** native functionality. The examples below illustrate both approaches.
 
 For instance, when sending transactions, the signatures are automatically formatted and presented to the user in a popup request. This ensures a user-friendly experience by displaying the relevant data in UTF-8 format.
 
@@ -656,20 +631,6 @@ signer
     });
 ```
 
-```typescript Web3.js
-const msg = 'GM, Particle!';
-const accounts = await window.web3.eth.getAccounts();
-
-window.web3.eth.personal
-    .sign(msg, accounts[0])
-    .then((result) => {
-        console.log('personal_sign', result);
-    })
-    .catch((error) => {
-        console.error('personal_sign', error);
-    });
-```
-
 </CodeGroup>
 
 ### Sign Typed Data
@@ -684,26 +645,6 @@ const msg = { ... };
 const { signTypedData } = useEthereum();
 
 const result = await signTypedData({ data: msg, version: 'V4' });
-```
-
-```typescript Web3.js
-const accounts = await window.web3.eth.getAccounts();
-const from = accounts[0];
-
-// Placeholder data
-const msg = { ... };
-
-const params = [from, msg];
-const method = "eth_signTypedData_v4";
-
-window.web3.currentProvider.request({ method, params })
-  .then((result) => {
-    console.log("signTypedData result", result);
-  })
-  .catch((err) => {
-    console.log("signTypedData error", err);
-  });
-
 ```
 
 </CodeGroup>
@@ -763,7 +704,7 @@ await disconnect();
 
 ### useEthereum
 
-`useEthereum` provides direct interaction with a given **EVM** chain as an alternative to a traditional library such as **ethers** or **Web3.js**.
+`useEthereum` provides direct interaction with a given **EVM** chain as an alternative to a traditional library such as **ethers**.
 
 ```typescript TypeScript
 const {
