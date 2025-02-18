@@ -237,6 +237,9 @@ const merlinTestnet = defineChain({
         default: { name: 'Explorer', url: 'https://testnet-scan.merlinchain.io' },
     },
     testnet: true,
+      custom: {
+    icon: "https://ICON_URL",
+    },
 });
 ```
 
@@ -789,11 +792,11 @@ In this example, the chain's name is displayed using `chain?.name`. You can acce
 
 This structure enables you to dynamically access a wide range of information, offering flexibility in how you display and use this information within your application, thereby eliminating the need to hardcode blockchain-specific data.
 
-### Use EIP-1193 Provider (Ethers, Web3.js)
+### Use EIP-1193 Provider (Ethers)
 
-If your dApp already uses a standard library such as Ethers or Web3.js, you can manage accounts by plugging in an **EIP-1193** provider attached to the connected EOA.
+If your dApp already uses a standard library such as Ethers, you can manage accounts by plugging in an **EIP-1193** provider attached to the connected EOA.
 
-Upon creating an instance of Ethers or Web3.js, you can use the provider to send transactions and sign messages using standard syntax from that library; these requests will be automatically routed to the EOA connected through **Particle Connect**.
+Upon creating an instance of Ethers, you can use the provider to send transactions and sign messages using standard syntax from that library; these requests will be automatically routed to the EOA connected through **Particle Connect**.
 
 An example of this approach with Ethers has been included below.
 
@@ -805,7 +808,9 @@ const [primaryWallet] = useWallets();
 
 const EOAprovider = await primaryWallet.connector.getProvider();
 
-const customProvider = new ethers.providers.Web3Provider(EOAprovider, 'any');
+const customProvider = new ethers.BrowserProvider(
+    EOAprovider as Eip1193Provider, "any"
+);
 ```
 
 With this configured, both read and write calls can be made from the resulting provider object, for example:
