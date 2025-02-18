@@ -299,7 +299,7 @@ For first-time users, only the address of the current chain will be generated. F
 ```typeScript
 import {evm, solana} from '@particle-network/rn-auth-core';
 
-const evmAaddress = await evm.getAddress();
+const evmAddress = await evm.getAddress();
 const solanaAddress = await solana.getAddress();
 ```
 
@@ -321,7 +321,7 @@ To request an EIP191 signature from a user's account, you can use either the `ev
 
 | Field     | Type     | Description                                                                                                  |
 | --------- | -------- | ------------------------------------------------------------------------------------------------------------ |
-| `message` | `string` | On Evm requires a hexadeciaml string or a UTF-8/readable string, on Solana, requires a UTF-8/readable string |
+| `message` | `string` | On Evm requires a hexadecimal string or a UTF-8/readable string, on Solana, requires a UTF-8/readable string |
 
 ```typeScript
 const message = "GM, Particle!"
@@ -366,7 +366,7 @@ For more generalized transaction sending, `evm.sendTransaction`and `solana.signA
 
 | Field         | Type     | Description                                                               |
 | ------------- | -------- | ------------------------------------------------------------------------- |
-| `transaction` | `string` | On Evm requires a hexadeciaml string, on Solana, requires a base58 string |
+| `transaction` | `string` | On Evm requires a hexadecimal string, on Solana, requires a base58 string |
 
 ```typeScript
 const txHash = await evm.sendTransaction(transaction);
@@ -382,7 +382,7 @@ To request an EIP712 signature from a user's embedded wallet, you can use either
 
 | Field     | Type     | Description                                    |
 | --------- | -------- | ---------------------------------------------- |
-| `message` | `string` | Requires a hexadeciaml string or a json string |
+| `message` | `string` | Requires a hexadecimal string or a json string |
 
 ```typeScript
  const signature = await evm.signTypedData(typedData);
