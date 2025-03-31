@@ -50,7 +50,7 @@ Particle Auth Core is configured exclusively through `AuthCoreContextProvider`, 
 - `projectId`, `clientKey`, and `appId`. Each of these are required values retrieved from the [Particle dashboard](https://dashboard.particle.network). Without them, your application will throw an error. Your project ID, client key, and app ID essentially link your application with the dashboard, thereby authenticating API requests, allowing you to track users, etc. Retrieve these values even if you aren't configuring `AuthCoreContextProvider`, as you'll be using them for `SmartAccount` in a moment.
 - `erc4337`, containing `name` and `version`. In this example, we're using a Biconomy V2 smart account, thus `name` can be set to "BICONOMY" and `version` can be set to "2.0.0."
 
-Beyond these parameters, there are numerous other (mostly visual) customizations that can be made, including determining whether the embedded wallet modal is visible or not (and if so, what chains it supports). An example of the constructed `index` file used for this example isincluded below:
+Beyond these parameters, there are numerous other (mostly visual) customizations that can be made, including determining whether the embedded wallet modal is visible or not (and if so, what chains it supports). An example of the constructed `index` file used for this example is included below:
 
 ```typescript TypeScript
 import React from 'react'
