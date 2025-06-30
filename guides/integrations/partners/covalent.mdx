@@ -167,7 +167,7 @@ Otherwise, if `account` is defined, `GoldRushProvider` and `TokenBalancesListVie
 
 Within `GoldRushProvider` should be `TokenBalancesListView`, which contains:
 
-- `chain_names`, the list of chains to be included in the list of token balances (they'll be queried collectivelly, each contributing to the list of balances). The full list of supported chains can be found on the [Covalent documentation](https://www.covalenthq.com/docs/networks).
+- `chain_names`, the list of chains to be included in the list of token balances (they'll be queried collectively, each contributing to the list of balances). The full list of supported chains can be found on the [Covalent documentation](https://www.covalenthq.com/docs/networks).
 - `address`, the targeted address (one at a time). We'll be using `account` (from `useAccount`) for this.
 - Optionally, Booleans such as `mask_balances` and `hide_small_balances` can be included, alongside the `on_transfer_click` function (which will handle the "View Transfer History" button attached to each token; this should be linked to the `TokenTransfersListView` component if you're planning on using it).
 

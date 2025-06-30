@@ -312,7 +312,7 @@ For `EVMConnectAdapter` and `SolanaConnectAdapter`, the 'connect' method will in
 
 | Field    | Type             | Description                                                                                                                                                                                                                                     |
 | -------- | ---------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `config` | `ConnectConifg?` | The `ConnectConfig` will only be effective when `adapter.walletType` is `.authCore`. You can construct a valid object using the subclass `ParticleAuthCoreConfig`. When `adapter.walletType` is another value, you can pass `ConnectConfig.none`. |
+| `config` | `ConnectConfig?` | The `ConnectConfig` will only be effective when `adapter.walletType` is `.authCore`. You can construct a valid object using the subclass `ParticleAuthCoreConfig`. When `adapter.walletType` is another value, you can pass `ConnectConfig.none`. |
 
 `ParticleAuthCoreConfig` construct method `init` support the following parameters:
 
@@ -464,7 +464,7 @@ As an alternative to `signMessage`, for **EVM chains**, you can request that a u
 let signed = try await adapter.signTypedData(publicAddress: publicAddress, data: message).value
 ```
 
-### (Optional) Custom WalletConnect Projcet ID
+### (Optional) Custom WalletConnect Project ID
 
 ```swift
 ParticleConnect.setWalletConnectV2ProjectId("WalletConnect V2 Project ID")

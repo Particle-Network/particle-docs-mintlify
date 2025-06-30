@@ -135,17 +135,17 @@ E.g.:
 
 ```swift
 // Gasless
-let txHash = try await auth.evm.sendTransacton(transaction, feeMode: .gasless, chainInfo: chainInfo)
+let txHash = try await auth.evm.sendTransaction(transaction, feeMode: .gasless, chainInfo: chainInfo)
 
 let txHash =  try await aaService.quickSendTransactions([transaction], feeMode: .gasless, messageSigner: self, wholeFeeQuote: wholeFeeQuote, chainInfo: chainInfo).value
 
 // Native
-let txHash = try await auth.evm.sendTransacton(transaction, feeMode: .native, chainInfo: chainInfo) 
+let txHash = try await auth.evm.sendTransaction(transaction, feeMode: .native, chainInfo: chainInfo) 
 
 let txHash = try await aaService.quickSendTransactions([transaction], feeMode: .native, messageSigner: self, wholeFeeQuote: wholeFeeQuote, chainInfo: chainInfo).value
 
 // ERC-20 Token
-let txHash = try await auth.evm.sendTransacton(transaction, feeMode: .token(feeQuote), chainInfo: chainInfo)
+let txHash = try await auth.evm.sendTransaction(transaction, feeMode: .token(feeQuote), chainInfo: chainInfo)
 
 let txHash = try await aaService.quickSendTransactions([transaction], feeMode: .token(feeQuote), messageSigner: self, wholeFeeQuote: wholeFeeQuote, chainInfo: chainInfo).value
 ```
