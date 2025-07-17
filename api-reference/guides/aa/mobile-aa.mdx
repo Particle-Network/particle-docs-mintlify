@@ -1,0 +1,92 @@
+---
+title: "Mobile (Android/iOS) Quickstart - AA"
+sidebarTitle: "Mobile (Android/iOS) Quickstart"
+---
+
+# Implementing Particle's Modular AA Stack within Mobile Applications
+
+Recently, Particle Network released its modular AA stack, enabling full-stack utilization of account abstraction on various mobile and desktop platforms, working natively with Particle's Wallet-as-a-Service. The Particle AA SDK handles smart account deployment and assignment, UserOperation construction, session keys, and more. This is built around modularity, with the ability to function across various smart account implementations and AA infrastructure providers if needed. 
+
+Specifically, this stack includes:
+
+- **The Particle Bundler:** Particle Network's in-house, open-source Bundler, responsible for almost 1 million UserOperations.
+- **Particle's Omnichain Paymaster:** Facilitates cross-chain USDT-based gas sponsorships from a single deposit.
+- **Particle's AA SDKs:** These streamline the implementation of AA  natively with Particle's Wallet-as-a-Service.
+
+On this page, you'll find a brief walkthrough on installing and configuring the Particle AA SDK across each mobile platform. For more information on the specific utilization details within each platform, head over to [Introduction to Smart Wallet-as-a-Service](/api-reference/aa/introduction). Otherwise, if you'd like to learn more about Particle Network's Modular Smart Wallet-as-a-Service, look at [Modular Smart Wallet-as-a-Service](/landing/wallet-abstraction/waas/overview).
+
+***
+
+# Installing and configuring the AA SDK
+
+As mentioned, Particle has different AA SDK instances deployed across major mobile platforms. These include Android (through Kotlin), iOS (through Swift), Flutter (through Dart), React Native (through JavaScript), and Unity (through C#). Each has a slightly different configuration and initialization mechanism, although you'll need to begin by installing the SDK corresponding to your platform.
+
+| Platform     | Package                                                                                                 |
+| :----------- | :------------------------------------------------------------------------------------------------------ |
+| Android      | `network.particle:aa-service`                                                                           |
+| iOS          | `ParticleAA` (through `pod`)                                                                            |
+| Flutter      | `particle_aa`                                                                                           |
+| React Native | `@particle-network/rn-aa`                                                                               |
+| Unity        | [GitHub Repository](https://github.com/Particle-Network/particle-unity/tree/main/Assets/ParticleNetwork/Mobile/Modules/AA) |
+
+To leverage the AA SDK corresponding to your platform, you'll first need to integrate either Particle Connect or Particle Auth. These SDKs, on mobile platforms, act as middleware enabling account abstraction within the typical Particle Auth or Particle Connect interaction flow. Once you've configured either of the SDKs, you'll need to go ahead and initialize the AA SDK, such as is shown below:
+
+```javascript Mixed languages
+// Android
+val apiKey = mapOf(
+            Ethereum.id to "YOUR_BICONOMY_API_KEY",
+            Polygon.id to "YOUR_BICONOMY_API_KEY"
+        ) // Optional, only if using Biconomy's paymaster
+
+// BiconomyAAService, CyberConnectAAService, or SimpleAAService
+ParticleNetwork.initAAMode(apiKey, aaService = BiconomyAAService) 
+
+ParticleNetwork.getAAService().enableAAMode()
+
+
+// iOS
+// .biconomyV1, .biconomyV2, .cyberConnect, .simple or .light
+AAService.initialize(name: .biconomyV1) 
+
+let aaService = AAService()
+aaService.enableAAMode()
+
+ParticleNetwork.setAAService(aaService)
+
+// Flutter
+// BICONOMY_V1, BICONOMY_V2, CYBERCONNECT, SIMPLE or LIGHT
+ParticleAA.init(AccountName.BICONOMY_V1());
+
+ParticleAA.enableAAMode();
+
+// Unity
+// BICONOMY_V1, BICONOMY_V2, SIMPLE, CYBERCONNECT or LIGHT
+ParticleAAInteraction.Init(AAAccountName.BICONOMY_V1()); 
+
+// React Native
+particleAA.init(AccountName.BICONOMY_V1());
+```
+
+***
+
+## Learn more
+
+For a deep dive into these different SDKs, select your platform from the cards listed below. This will take you directly to the SDK reference.
+
+<CardGroup cols={2}>
+  <Card title="Unity (Mobile) SDK" href="/api-reference/aa/sdks/mobile/unity">
+    Integrating Particle Connect within mobile games built on Unity using C#.
+  </Card>
+   <Card title="Android SDK" href="/api-reference/aa/sdks/mobile/android">
+    Integrating Particle Connect on Android using Kotlin.
+  </Card>
+    <Card title="iOS SDK" href="/api-reference/aa/sdks/mobile/ios">
+    Integrating Particle Connect on iOS using Swift.
+  </Card>
+     <Card title="Flutter SDK" href="/api-reference/aa/sdks/mobile/flutter">
+    Integrating Particle Connect within applications built using Flutter.
+  </Card>
+    <Card title="React Native SDK" href="/api-reference/aa/sdks/mobile/react">
+    Integrating Particle Connect within applications built using React Native.
+  </Card>
+</CardGroup>

@@ -1,0 +1,27 @@
+---
+title: "Choosing a Bundler"
+description: Selecting an external Bundler implementation to be used with Particle's AA SDK.
+---
+
+## Bundlers within Particle's AA SDK
+
+Particle Network's AA stack is built to be as modular as possible while retaining a central mechanism for managing and sending UserOperations. Thus, the in-house Particle Bundler is used by default when sending UserOperations through the Particle AA SDK ([Introduction to Smart Wallet-as-a-Service](/api-reference/aa/introduction)). However, a core element of Particle's AA SDK is the ability to build a UserOperation and then send it directly through whatever alternative Bundler you prefer.
+
+The below image showcases the different native and external implementations present in Particle's AA SDK.
+
+***
+
+<img
+  className="block dark:hidden"
+  src="/guides/integrations/aa/images/bundlers.png"
+  alt="Particle Bundlers schema."
+/>
+<img
+  className="hidden dark:block"
+  src="/guides/integrations/aa/images/bundlers.png"
+  alt="Particle Bundlers schema."
+/>
+
+***
+
+<Tip>For more information on the Particle Bundler, head over to either [Particle Bundler](/guides/integrations/aa/bundler) (for general information) or [Bundler](/guides/aa/bundler) (for details on its technical implementation).</Tip>

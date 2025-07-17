@@ -1,0 +1,95 @@
+---
+title: "Understanding Wallet-as-a-Service"
+description: "An overview of Wallet-as-a-Service solutions and their many advantages."
+sidebarTitle: "Understanding WaaS"
+---
+
+Wallet-as-a-Service represents a **fundamental shift** in how users, especially non-Web3-natives, **onboard and interact with decentralized applications**. Wallet-as-a-Services leverages **non-custodial key management mechanisms to facilitate account creation** through familiar **social accounts**, upon which interaction with these accounts happens through an interface embedded within an application. Onboarding users through traditional means (OAuth) and then keeping on-chain interactions confined within a given application, rather than requiring extension downloads or external applications, enables a user experience (UX) flow that feels familiar and natural to end-users.
+
+The resulting account from this novel onboarding process is generally an Externally-Owned-Account (EOA). However, some Wallet-as-a-Service providers, such as Particle Network, use these EOAs as signers (owners) for smart accounts, thus bringing the power of account abstraction directly to accounts generated via WaaS, further increasing the possibilities for powerful UX.
+
+<Frame>
+<img src="https://static.particle.network/mintlify/videos/01-Email-Phone-Socials-Login.gif" alt="Customizing authentication methods on the login screen." style={{ width: '100%', maxWidth: '600px' }} />
+</Frame>
+
+
+***
+
+## Transitioning from extension-based wallets to application-embedded wallets
+
+At the moment, most users onboard and use Web3 through either extension-based wallets or mobile applications. While these are effective at providing a general interface for using various dApps and perform basic state-changing actions, such as sending P2P transactions, bridging, swapping, and managing multiple accounts, **they fail to cultivate an experience that is accessible to mainstream audiences**.
+
+These types of wallets require a relatively high degree of cognitive labor to set up as they require users to download a specific application, handle private keys (through a seed phrase), etc. This presents a **considerable learning curve and barrier to entry for most individuals**, thus requiring a new user to be motivated enough to learn the specifics of the wallet setup process and then go through the download, installation, and configuration process itself.
+
+Wallet-as-a-Service presents itself as an alternative to this process, **instead allowing users to create non-custodial accounts using mechanisms similar to what they're familiar with from Web2 applications**. Furthermore, due to Wallet-as-a-Service being application-embedded, users **don't need to download any additional tools** to interact with a given application.
+
+For applications expecting general, consumer-level audiences, Wallet-as-a-Service is a robust solution to efficiently onboard new users and facilitate natural engagement.
+
+<Tip>For a deeper dive onto the need to transition to wallets that are friendlier towards the mass market , look at "[MetaMask's Growth Flywheel is Faltering: Pan-User Applications Emerge as the 'Hub' of Web3](https://blog.particle.network/metamasks-growth-flywheel-is-faltering-pan-user-applications-emerge-as-the-hub-of-web3)."</Tip>
+
+*** 
+
+## Curating a naturally-integrated wallet experience
+
+<Frame>
+<img src="https://static.particle.network/mintlify/videos/03-Embedded-wallet.gif" alt="Particle Wallet in use." style={{ width: '100%', maxWidth: '600px' }} />
+</Frame>
+
+Beyond the convenience of onboarding users through their social accounts, the embedded nature of Wallet-as-a-Service is also worth noting. Applications can implement customized Wallet-as-a-Service products to be **a natural component of their user flow**, feeling like **an extension of the application itself**, not a third-party service.
+
+Transaction confirmations are handled **within the application's frontend **, with account information being stored and accessible directly by the developer within the backend. Some Wallet-as-a-Service products, including Particle Network's Wallet-as-a-Service, also include built-in wallet interface modals for the generalized utilization of a given account. These, along with the in-UI transaction confirmations, are **entirely customizable**.
+
+<div className="flex justify-center">
+<img
+  className="block h-64 dark:hidden"
+  src="/guides/wallet-as-a-service/waas/images/walletinterface.png"
+  alt="Wallet as a service interface."
+/>
+<img
+  className="hidden h-64 dark:block"
+  src="/guides/wallet-as-a-service/waas/images/walletinterface.png"
+  alt="Wallet as a service interface."
+/>
+</div>
+
+***
+
+## Mechanisms of implementing Wallet-as-a-Service
+
+Implementing Wallet-as-a-Service products within your application often happens through one of two mechanisms. The first is directly with a given provider's SDK (in our case, Particle Auth). This approach involves building custom social login buttons and mapping them to functions within the SDK (such as `login` or `connect` within our SDKs). Alternatively, connection kits such as RainbowKit, Solana's `wallet-adapter`, and Web3Modal are also common mechanisms for facilitating social login with Wallet-as-a-Service products. Providers will generally provide library extensions or direct integrations with these connection kits, enabling developers to include social logins among the connection options.
+
+Particle Network's Wallet-as-a-Service can be implemented either directly through the Particle Auth (Auth Core) SDK or through various connection kits, as described within [Connection Kits](/guides/wallet-as-a-service/connection-kits/solana).
+
+<div className="flex justify-center">
+<img
+  className="block h-64 dark:hidden"
+  src="/guides/wallet-as-a-service/waas/images/connect.png"
+  alt="Wallet as a service implementation."
+/>
+<img
+  className="hidden h-64 dark:block"
+  src="/guides/wallet-as-a-service/waas/images/connect.png"
+  alt="Wallet as a service implementation."
+/>
+</div>
+
+***
+
+## Comparing Wallet-as-a-Service providers
+
+The Wallet-as-a-Service vertical is occupied by multiple providers, each with different intricacies and infrastructure. Due to the sheer volume of choices, understanding the specific differences between each provider and choosing the one that best aligns with your needs and expectations is key.
+
+For more information on comparing various Wallet-as-a-Service providers, look at [Particle vs. Alternatives](/landing/wallet-abstraction/waas/differentiators).
+
+<div className="flex justify-center">
+<img
+  className="block h-64 dark:hidden"
+  src="/guides/wallet-as-a-service/waas/images/providers.gif"
+  alt="Wallet as a service providers."
+/>
+<img
+  className="hidden h-64 dark:block"
+  src="/guides/wallet-as-a-service/waas/images/providers.gif"
+  alt="Wallet as a service providers."
+/>
+</div>

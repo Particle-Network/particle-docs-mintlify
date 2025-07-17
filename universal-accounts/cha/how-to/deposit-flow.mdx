@@ -1,0 +1,185 @@
+---
+title: "Enabling Cross-Chain Deposits via Universal Accounts"
+sidebarTitle: "Use Universal Accounts as Deposit Flow"
+description: "Implement a cross-chain deposit flow using Universal Accounts."
+---
+
+## Overview
+
+This guide demonstrates how to integrate **Universal Accounts** to facilitate cross-chain deposits in dApps that already support **EOA** wallets.
+
+This deposit flow is ideal for applications with an existing wallet connection flow. It enables users to deposit the necessary assets to interact with your dApp (and any dApp leveraging Universal Accounts) from any supported chain, **without manually bridging.**
+
+<Note>
+  This guide is based on a demo app allowing users to turn different assets on multiple chains into BNB on BNB Chain. However, Universal Accounts users can deposit from any supported chain. To better understand this deposit flow, try out our [Live demo](https://universal-accounts-flow-demo.vercel.app/).
+</Note>
+
+<Card title="Demo App Repository" icon="wand-magic-sparkles" href="https://github.com/soos3d/universal-accounts-flow-demo">
+  Explore the above Demo app's code on GitHub.
+</Card>
+
+---
+
+## Universal Accounts' Deposit Flow
+
+Here’s how the deposit flow works in the Demo app from a user’s perspective. Within this app, Universal Accounts are used to convert users' assets across multiple chains into BNB in BNB Chain and withdraw it:
+
+<Steps>
+  <Step title="Connect Wallet">
+    The user connects an EOA wallet (e.g., MetaMask), linking it to their **Universal Account**.
+  </Step>
+  <Step title="Deposit Tokens into the Universal Account">
+    The app then scans their EOA wallet for **USDC** and **USDT** across all [supported chains](/universal-accounts/cha/chains).
+
+    Using the provided UI, the user selects any of those tokens to deposit into their Universal Account—no manual bridging required.
+
+    <Note>
+      The demo includes a basic UI for depositing, but users can also manually deposit any supported [Primary Asset](/universal-accounts/cha/chains#primary-assets) directly to the Universal Account address.
+    </Note>
+  </Step>
+  <Step title="Convert to BNB and Withdraw to EOA">
+    With assets now held in the Universal Account across chains, the user withdraws **BNB on BNB Chain** back into their EOA. Routing and conversion are handled automatically by the Universal Account.
+  </Step>
+  <Step title="Use BNB in the dApp">
+    The user can now use the received BNB in their EOA.
+  </Step>
+</Steps>
+
+---
+
+## Setup Instructions
+
+The following instructions are a high-level overview of how to implement a deposit flow using Universal Accounts. For a complete implementation, refer to the [Demo app](https://github.com/soos3d/universal-accounts-flow-demo).
+
+<Steps>
+  <Step title="Install the SDK">
+    ```bash
+    npm install ethers @particle-network/universal-account-sdk
+    ```
+
+    <Note>
+      The SDK is private—contact the Particle team for access.
+    </Note>
+  </Step>
+  <Step title="Configure Your Environment">
+    Add your project ID to `.env.local`:
+
+    ```env
+    NEXT_PUBLIC_UA_PROJECT_ID=your_universal_accounts_project_id
+    ```
+  </Step>
+</Steps>
+
+---
+
+## Implementation Details
+
+### 1. Initialize Universal Account
+
+The first step is to initialize the Universal Account instance using the project ID and Owner Address (the signer EOA), e.g. as follows:
+
+```tsx page.tsx
+const ua = new UniversalAccount({
+  projectId: process.env.NEXT_PUBLIC_UA_PROJECT_ID,
+  ownerAddress: walletAddress,
+  tradeConfig: {
+    universalGas: false,
+});
+```
+
+### 2. Create a Custom Universal Account Transfer
+
+Once the user has deposited assets into their Universal Account, the next step is to generate a custom transfer that withdraws a specific amount of tokens back to their EOA.
+
+This is done using a **payable** Universal Account transaction, which guarantees that the specified amount of the target token (in this case, BNB) is included in the transaction.
+
+<Note>
+  In the demo app, the `bnbAmount` is derived from the USD value the user wants to withdraw, and the `to` address is set to the user’s connected **EOA**.
+</Note>
+
+Here’s a basic example:
+
+```tsx page.tsx
+const transaction = await ua.createUniversalTransaction({
+        chainId: CHAIN_ID.BSC_MAINNET,
+        expectTokens: [
+          {
+            type: SUPPORTED_TOKEN_TYPE.BNB,
+            amount: bnbAmount,
+          },
+        ],
+        transactions: [
+          {
+            to: walletAddress,
+            data: "0x",
+            value: toBeHex(parseEther(bnbAmount)),
+          },
+        ],
+      });
+```
+
+You can also find the full implementation on the following repository:
+
+<Card title="Create a Custom Universal Transaction" icon="code" href="https://github.com/soos3d/universal-accounts-flow-demo/blob/adcb62ba340691c131efa18e05a02be38d560133/app/components/DepositSection.tsx#L113">
+  **Code location:** `components` → `DepositSection.tsx` → `generateTransactionPreview()`
+</Card>
+
+### 3. Sign and Execute the Transaction
+
+With the Universal Account transaction prepared, the final step is to sign and execute it.
+
+The user signs the transaction’s root hash using their connected EOA wallet (e.g., MetaMask). Once signed, the transaction is submitted through Universal Accounts' infrastructure.
+
+You can see a basic example in the following snippet:
+
+```tsx page.tsx
+// Get wallet instance for signing
+const provider = new ethers.BrowserProvider(window.ethereum);
+const signer = await provider.getSigner();
+
+// Sign and send the transaction
+const messageBytes = ethers.getBytes(transactionPreview.rootHash);
+const signature = await signer.signMessage(messageBytes);
+const sendResult = await universalAccount.sendTransaction(
+    transactionPreview,
+    signature
+);
+
+console.log("Transaction result:", sendResult);
+```
+
+You can also find the full implementation in the following repository:
+
+<Card title="Sign and Execute the Transaction" icon="code" href="https://github.com/soos3d/universal-accounts-flow-demo/blob/adcb62ba340691c131efa18e05a02be38d560133/app/components/DepositSection.tsx#L158">
+  **Code location:** `components` → `DepositSection.tsx` → `handleDeposit()`
+</Card>
+
+---
+
+## How Does This Improve My App's UX?
+
+In this guide, we've introduced a new deposit pattern powered by **Universal Accounts**, without needing to bridge, swap, or manage gas.
+
+Some of it's key benefits are:
+
+- **No bridges or manual swaps:** Users don’t need to know or manage source and destination chains.
+- **EOA compatibility:** Works alongside existing wallet flows (e.g., MetaMask).
+- **Asset flexibility:** Users can deposit from any chain using tokens they already hold.
+- **Simplified UX:** One clear, predictable transaction instead of multiple approvals and steps.
+
+## What's Next?
+
+Explore the SDK reference for more advanced capabilities.
+
+<CardGroup cols="2">
+  <Card title="SDK Reference" icon="code" href="/universal-accounts/ua-reference/desktop/web">
+    Learn more about the SDK APIs.
+  </Card>
+  <Card title="Supported Chains" icon="link" href="/universal-accounts/cha/chains">
+    See which chains are supported.
+  </Card>
+</CardGroup>
+
+<Card title="Demo App Repository" icon="wand-magic-sparkles" href="https://github.com/soos3d/universal-accounts-flow-demo">
+  Explore the code on GitHub.
+</Card>

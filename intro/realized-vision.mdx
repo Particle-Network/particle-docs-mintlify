@@ -1,0 +1,54 @@
+---
+title: "Next Step: Chain Abstraction"
+description: "Particle Network's road from a Wallet-as-a-Service tool to powering chain abstraction."
+icon: "layer-group"
+iconType: "light"
+---
+
+___
+
+Particle Network debuted as a Wallet Abstraction tool for developers. Our initial Wallet-as-a-Service (WaaS) stack aimed to leverage MPC-TSS and social logins to enable self-custodial, dApp-embedded wallets. Then, as account abstraction (AA) launched and became a fundamental component of Web3, we saw the opportunity to integrate it into our offering, adapting to upgraded account structures through smart contract wallets. We aimed to offer developers a seamless experience while aiming for maximum flexibility and programmability, and so [Modular Smart WaaS](/landing/wallet-abstraction/waas/overview) was born.
+
+900+ integrations and more than 17 Million activated wallets later, remaining focused on propelling Web3’s growth, we decided to release our L1 to take our solutions to the next level, addressing Web3's largest UX problem: the fragmentation of users and liquidity. This solution receives the name **chain abstraction**.
+
+## What is chain abstraction?
+
+The Web3 experience is far from feeling intuitive or universal. Different chains incentivize users to exclusively utilize their network and require different wallets to interact with them. Meanwhile, protocols decide which chain to deploy on by prioritizing co-marketing activities, TVL, and market sentiment, not technology or innovation. This creates siloed and incompatible ecosystems, stunting Web3’s growth and limiting it to technically-aware users.
+
+**The solution to this problem is chain abstraction:** the simplification of users’ interactions with blockchains, allowing them to use any product and asset without worrying about managing multiple wallets, bridging, underlying blockchains, etc.
+
+<img
+  className="block dark:hidden"
+  src="/images/chain-abstraction.png"
+  alt="Chain Abstraction scheme"
+/>
+<img
+  className="hidden dark:block"
+  src="/images/chain-abstraction.png"
+  alt="Chain Abstraction scheme"
+/>
+
+A fully chain-abstracted experience can look as follows:
+
+1. Alice discovers a Play-to-Earn dApp. The dApp is hosted on Arbitrum.
+2. Alice starts using the dApp. The assets in her wallet (Polygon-native) are used for basic dApp interactions. Bridging is automatic, executed atomically as she interacts.
+3. After playing for a bit, Alice earns some tokens. She uses them to buy an NFT for her friend Bob’s birthday. Unbeknownst to her, the NFT is hosted on Optimism. She can seamlessly send it to Bob’s Universal Account. Importantly, throughout her whole experience, Alice has only used a single gas token. Bob decides to take a loan against the NFT on Solana and use the proceeds to buy a meme Bitcoin Ordinal. He does this in just a few clicks within a few minutes, all through the same account.
+
+## Particle Network's role in chain abstraction
+
+The Particle Network Modular L1 aims to solve Web3’s fragmentation of users and wallets across chains, providing three key services for chain abstraction:
+
+1. **Wallet Abstraction:** Removing the need for multiple wallets and separated balances across chains, creating a single interaction point for the multi-chain ecosystem, called a Universal Account.
+2. **Liquidity Abstraction:** Unifies all networks through atomic transactions and automated swaps, allowing users to interact across chains effortlessly.
+3. **Gas Abstraction:** Allows users to pay gas for cross-chain transactions with any token, such as PARTI, USDT, or USDC sourced from any blockchain, as opposed to the multi-chain ecosystem’s need for multiple chain-exclusive gas units (SOL, ETH, MATIC, etc.)
+
+<img
+  className="block dark:hidden"
+  src="/images/ca-circles.png"
+  alt="Chain Abstraction diagram"
+/>
+<img
+  className="hidden dark:block"
+  src="/images/ca-circles.png"
+  alt="Chain Abstraction diagram"
+/>

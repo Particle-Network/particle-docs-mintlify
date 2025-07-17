@@ -1,0 +1,58 @@
+---
+title: "Chains and Primary Assets Supported by Universal Accounts"
+sidebarTitle: "Supported Chains & Primary Assets"
+description: "A list of the blockchains and Primary Assets supported by Universal Accounts."
+---
+
+**Universal Accounts** support a wide range of networks, enabling users to interact across them with a **single account** and a **unified balance**.
+
+## Supported Networks
+
+### EVM-Compatible Chains
+
+
+| Chain Name | Network ID |
+| ---------- | ---------- |
+| Ethereum	| 1 |
+| BNB Chain	| 56 |
+| Base	| 8453 |
+| Arbitrum	| 42161 |
+| Avalanche	| 43114 |
+| OP	| 10 |
+| Polygon	| 137 |
+| HyperEVM	| 999 |
+| Berachain	| 80094 |
+| Linea	| 59144 |
+| Sonic	| 146 |
+| Merlin	| 4200 |
+
+### Non-EVM Chains
+
+| Chain Name | Network ID |
+| ---------- | ---------- |
+| Solana     | 101        |
+
+<Note>
+  This list is regularly updated as support for new chains is added. All supported chains can be accessed through a single Universal Account—no separate wallets or setups required.
+</Note>
+
+## Primary Assets
+
+**Primary Assets** are a set of key tokens with deep liquidity **that can be used for cross-chain transactions, including gas payments**. When engaging in a cross-chain operation, they're automatically selected and used by the SDK on a per-transaction basis.
+
+<Note>
+  Currently, the list of Primary Assets includes:
+
+  - **ETH**
+  - **USDT**
+  - **USDC**
+  - **BTC**
+  - **SOL**
+  - **BNB**
+</Note>
+
+When a user sends a transaction (e.g. swapping a token), the SDK will:
+
+- Identify the optimal Primary Asset from the user’s portfolio. For example, it may select USDC on Polygon to allow a user to purchase a memecoin on Solana.
+- Route liquidity across all the chains the user holds this Primary Asset using Universal Liquidity.
+- Complete the transaction on the destination chain, even if the user holds **no assets on that chain**.

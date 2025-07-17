@@ -1,0 +1,144 @@
+---
+title: "Bundler"
+---
+
+# Understanding The Particle Bundler
+
+The Particle Bundler is Particle Network's **in-house and open-source bundler implementation**, reliably facilitating close to **1 million UserOperations** across the EVM ecosystem. The Particle Bundler is automatically used natively within Particle's [various AA SDKs](/api-reference/aa/introduction), although it can also be used on its own, for free, through the open Particle Bundler RPC. The Particle Bundler has been proven to be a highly efficient and robust Bundler implementation capable of large-scale utilization of account abstraction. The Particle Bundler has been battle-tested by acting as the primary infrastructure component driving some of the ecosystem's largest [AA-centric growth campaigns](https://galxe.com/ParticleNetwork). 
+
+This document will briefly describe how you can leverage the Particle Bundler on its own through its public RPC endpoint.
+
+***
+
+<Tip>Check out the [Particle's Bundler repository](https://github.com/Particle-Network/particle-bundler-server).</Tip>
+
+***
+
+## Available methods
+
+The Particle Bundler is open for use through its public RPC endpoint, which is: `https://bundler.particle.network`, with an optional path parameter of `chainId`.
+
+At the moment, this RPC contains the standard bundler methods of:
+
+- `eth_supportedEntryPoints`
+- `eth_estimateUserOperationGas`
+- `eth_sendUserOperation`
+- `eth_getUserOperationByHash`
+- `eth_getUserOperationReceipt`
+
+All of these can be called through standard RPC requests without any authentication required, as shown in the example below:
+
+```json JSON
+{
+  "method": "eth_sendUserOperation",
+  "params": [
+    {
+      "sender": "0x8Fb859E944561678be40Cdd2dB16551396c0b074",
+      "nonce": "0x0150",
+      "initCode": "0x",
+      "callData": "0x9e5d4c49000000000000000000000000329a7f8b91ce7479035cb1b5d62ab41845830ce8000000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000000600000000000000000000000000000000000000000000000000000000000000000",
+      "callGasLimit": "0xa13c",
+      "verificationGasLimit": "0xe2d8",
+      "maxFeePerGas": "0x7ca702cd",
+      "maxPriorityFeePerGas": "0x7ca702b0",
+      "paymasterAndData": "0x000031dd6d9d3a133e663660b959162870d755d4000000000000000000000000329a7f8b91ce7479035cb1b5d62ab41845830ce8000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000416665636080709b968ebec098bf71fb0e79b3b480cc9ff809f192afb478c84ec50ad2de74b93a67860542099b11a1b5dbfa9bc21a2790c58e10015ce992a02f411b00000000000000000000000000000000000000000000000000000000000000",
+      "preVerificationGas": "0x011120",
+      "signature": "0x7cc0a2ae350b79c5b189bd36d55ab6a2756097d6d37537e3ec2c26daaa82c6d909fed87ff9d79a6fa127bd798126259ee72fa9395ecbeb1f70ed22ca35983aea1c"
+    },
+    "0x5ff137d4b0fdcd49dca30c7cf57e578a026d2789"
+  ],
+  "id": 1695717470,
+  "jsonrpc": "2.0",
+  "chainId": 80001
+}
+```
+
+***
+
+## Supported chains
+
+Currently, the Particle Bundler supports every chain available within Particle's Smart Wallet-as-a-Service. For a complete list of all chains supported, AA or not, look at [Network Coverage](/guides/network-coverage). Otherwise, the following chains are supported by the Particle Bundler:
+
+- Ethereum Mainnet
+  - Ethereum Goerli
+  - Ethereum Sepolia
+- Polygon Mainnet
+  - Polygon Mumbai
+- Optimism Mainnet
+  - Optimism Goerli
+- Scroll Mainnet
+  - Scroll Sepolia
+- Linea Mainnet
+  - Linea Testnet
+- Base Mainnet
+  - Base Goerli
+- Mantle Mainnet
+  - Mantle Testnet
+- Taiko Katla
+- Avalanche Mainnet
+  - Avalanche Fuji
+- BNB Chain Mainnet
+  - BNB Chain Testnet
+- opBNB Mainnet
+  - opBNB Testnet
+- COMBO Testnet
+- PGN Mainnet
+  - PGN Testnet
+- Gnosis Mainnet
+  - Gnosis Testnet
+- Astar zkEVM Testnet
+- X1 Testnet
+- Viction Mainnet
+  - Viction Testnet
+- Moonbeam
+  - Moonriver
+  - Moonbase
+- Polygon zkEVM Mainnet
+  - Polygon zkEVM Testnet
+- Lumoz zkEVM Testnet
+- ReadON Testnet
+- ZetaChain Mainnet
+  - ZetaChain Testnet
+- Ancient8 Testnet
+- ZKFair Mainnet
+  - ZkFair Testnet
+- Berachain Testnet
+- Blast Mainnet
+  - Blast Testnet
+- MAP Protocol Mainnet
+  - MAP Protocol Testnet
+- Merlin Mainnet
+  - Merlin Testnet
+- LumiBit Testnet
+- BEVM Canary Mainnet
+  - BEVM Canary Testnet
+- B² Testnet
+- Core Mainnet
+  - Core Testnet
+- SatoshiVM Testnet
+- Mode Mainnet
+  - Mode Testnet
+
+***
+
+## Interactive API examples
+
+For a full list of interactive API request examples alongside parameter descriptions for each endpoint, head over to [Bundler RPC](/api-reference/aa/bundler/getuseroperationreceipt) within the SDKs & APIs section of the documentation, or choose your desired endpoint below:
+
+<CardGroup cols={2}>
+  <Card title="getUserOperationReceipt" href="/api-reference/aa/bundler/getuseroperationreceipt">
+    Returns a detailed object containing specific transaction details for a given user operation hash.
+  </Card>
+   <Card title="getUserOperationByHash" href="/api-reference/aa/bundler/getuseroperationbyhash">
+    Returns a user operation object corresponding with a specific hash.
+  </Card>
+    <Card title="sendUserOperation" href="/api-reference/aa/bundler/senduseroperation">
+    Pushes a signed user operation to the network.
+  </Card>
+     <Card title="estimateUserOperationGas" href="/api-reference/aa/bundler/estimateuseroperationgas">
+    Takes a partial user operation object and returns detailed gas estimates.
+  </Card>
+    <Card title="supportedEntryPoints" href="/api-reference/aa/bundler/supportedentrypoints">
+    Returns a list of EntryPoint addresses supported by the Particle Bundler.
+  </Card>
+</CardGroup>

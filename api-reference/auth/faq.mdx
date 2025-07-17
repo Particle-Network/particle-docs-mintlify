@@ -17,31 +17,9 @@ description: 'Find Frequently Asked Questions about Particle Auth.'
     ```
   </Accordion>
 
-<Accordion title="How can I silently log in and sign messages/transactions?" icon="key">
-    **Answer:** Currently, silent login and signing are not directly supported. However, this functionality can be achieved using the following approaches:
-
-    1. **[Session Keys](https://your-link-to-guides/integrations/aa/keys#implementing-session-keys)** with Biconomy V2:
-        Session keys enable silent signing by creating temporary keys with limited permissions and expiration, allowing you to bypass frequent authentication popups.
-
-    2. **Enabling Blind Signatures with Particle Auth:**
-        Blind signing (signing without a confirmation popup) is possible in Particle Auth if specific conditions are met:
-        - **Authentication Method:** The user must be authenticated via JWT or Telegram.
-        - **Master Password Requirement:** 
-            - The user has entered their master password, or
-            - The user has not set a master password.
-        - **No Payment Password:** The user has not set a payment password.
-        - **Disable Payment Password Prompt:** Configure `AuthCoreContextProvider` with the parameter `promptPaymentPasswordSettingWhenSign` set to `false`.
-
-        ```javascript
-        // Configuration for disabling payment password prompt
-        const promptSettingConfig = {
-            promptPaymentPasswordSettingWhenSign: false,
-        };
-        ```
-
-        When these conditions are satisfied, blind signing is enabled.
-</Accordion>
-
+  <Accordion title="How can I silently log in and sign messages/transactions?" icon="key">
+    **Answer:** Currently, silent login and signing are not directly supported. However, this functionality can be achieved using [session keys](/guides/integrations/aa/keys#implementing-session-keys) with Biconomy V2. We are exploring other options to support silent signing in the future.
+  </Accordion>
 
   <Accordion title="How do I determine if an account is new?" icon="user-plus">
     **Answer:** When you retrieve `UserInfo`, either through the `connect` method or via the `userInfo` object from `useAuthCore`, a field provide the relevant information:
@@ -68,7 +46,7 @@ description: 'Find Frequently Asked Questions about Particle Auth.'
   <Accordion title="How to add support for a new EVM chain?" icon="ethereum">
   **Answer:** Our team needs to implement support for integrating a new EVM chain on our platform. Once we have added support for the chain, developers can use it within their applications.
 
-  <Note>Please [contact us](https://t.me/particle_developer_bot) to discuss potential integration.</Note>
+  <Note>Please contact us to discuss potential integration.</Note>
   </Accordion>
 
   <Accordion title="What are the options for chain_name returned by the backend API?" icon="link">

@@ -1,0 +1,173 @@
+---
+title: "Integrating Universal Accounts with Browser Wallets"
+sidebarTitle: "Integrate with Browser Wallets"
+description: "Learn how to integrate Universal Accounts alongside standard EVM wallets (e.g. MetaMask)."
+---
+
+Within this guide, you'll learn how to use **Universal Accounts** alongside browser-injected EVM wallets —such as **MetaMask** or other providers.
+
+You’ll learn how to:
+
+- Initialize a Universal Account from a connected EOA.
+- Create and sign a transaction with MetaMask.
+- Send the transaction through the Universal Accounts SDK.
+
+<Note>
+  This guide uses `window.ethereum` as the provider used via `ethers.js`.
+</Note>
+
+---
+
+## Getting Started
+
+To start, ensure you have an app set up with a browser-injected EVM wallet like **MetaMask** installed. Then, follow the steps below:
+
+<Info>
+  You can find a repository with a working example of this integration [on GitHub](https://github.com/soos3d/ethers-universal-accounts).
+</Info>
+
+<Steps>
+  <Step title="Install the Universal Accounts SDK">
+    Install the required dependencies in your project:
+
+    <CodeGroup>
+
+    ```bash npm
+    npm install ethers @particle-network/universal-account-sdk
+    ```
+
+    
+    ```bash yarn
+    yarn add ethers @particle-network/universal-account-sdk
+    ```
+
+    </CodeGroup>
+
+    <Note>
+      The Universal Accounts SDK is currently private. Contact the Particle Team to get access.
+    </Note>
+  </Step>
+  <Step title="Set Environment Variables">
+    Add your Universal Accounts project ID to `.env.local`:
+
+    ```env .env
+    NEXT_PUBLIC_UA_PROJECT_ID=your_universal_accounts_project_id
+    ```
+
+    <Info>
+      Contact the Particle team if you need access to Universal Accounts.
+    </Info>
+  </Step>
+</Steps>
+
+---
+
+## Set Up a Browser Wallet
+
+To interact with Universal Accounts using `window.ethereum`, you first need to connect to an EVM-compatible browser wallet like MetaMask.
+
+Here’s a simple example using `ethers.js`:
+
+```tsx
+import { ethers } from "ethers";
+
+// Ensure MetaMask (or another injected provider) is available
+if (!window.ethereum) {
+  throw new Error("MetaMask is not installed");
+}
+
+const provider = new ethers.BrowserProvider(window.ethereum);
+
+// Prompt user to connect their wallet
+await provider.send("eth_requestAccounts", []);
+
+// Retrieve the connected account
+const accounts = await provider.listAccounts();
+const walletAddress = accounts[0].address;
+setWalletAddress(walletAddress);
+```
+
+<Note>
+  This example uses `ethers.BrowserProvider`, available in **ethers v6**.
+</Note>
+
+This wallet address can now be passed into the Universal Account SDK as the `ownerAddress`.
+
+## Initializing a Universal Account
+
+Once the user connects their wallet and you obtain their EOA address, create a new Universal Account instance:
+
+```ts
+import { UniversalAccount } from "@particle-network/universal-account-sdk";
+
+const universalAccount = new UniversalAccount({
+  projectId: process.env.NEXT_PUBLIC_UA_PROJECT_ID!,
+  ownerAddress: walletAddress,
+  tradeConfig: {
+    universalGas: false,
+  },
+});
+```
+
+<Info>
+  You only need the EOA wallet address to initialize a Universal Account.
+</Info>
+
+---
+
+## Sending a Transaction with a Browser Wallet
+
+Once you have a Universal Account instance, you can use it to send transactions.
+
+The code below shows how to set up a custom transaction using the user's browser-injected EVM wallet as a signer.
+
+In this case, the funds will be automatically sourced from the user's [Primary Assets](/universal-accounts/cha/chains#primary-assets) and converted into **1 USDT** on **Avalanche**.
+
+```ts
+import { ethers } from "ethers";
+import { CHAIN_ID, SUPPORTED_TOKEN_TYPE } from "@particle-network/universal-account-sdk";
+
+const transaction = await universalAccount.createUniversalTransaction({
+  chainId: CHAIN_ID.AVALANCHE_MAINNET,
+  expectTokens: [
+    {
+      type: SUPPORTED_TOKEN_TYPE.USDT,
+      amount: "1",
+    },
+  ],
+  transactions: [],
+});
+
+if (!window.ethereum) {
+  throw new Error("Wallet not found");
+}
+
+const provider = new ethers.BrowserProvider(window.ethereum);
+const signer = await provider.getSigner();
+const signature = await signer.signMessage(transaction.rootHash);
+
+const result = await universalAccount.sendTransaction(transaction, signature);
+
+console.log(`View on Explorer: https://universalx.app/activity/details?id=${result.transactionId}`);
+```
+
+This pattern works for all transaction types supported by the SDK.
+
+<Card title="More Transaction Examples" icon="coin" href="/universal-accounts/ua-reference/desktop/web#sending-a-transfer-transaction">
+  Check our SDK reference for more transaction examples.
+</Card>
+
+---
+
+## What’s Next?
+
+Explore the SDK reference for more advanced capabilities.
+
+<CardGroup cols="2">
+  <Card title="SDK Reference" icon="code" href="/universal-accounts/ua-reference/desktop/web">
+    Learn more about the SDK APIs.
+  </Card>
+  <Card title="Supported Chains" icon="link" href="/universal-accounts/cha/chains">
+    See which chains are supported.
+  </Card>
+</CardGroup>

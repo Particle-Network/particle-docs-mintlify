@@ -1,0 +1,344 @@
+---
+title: "Preview Transaction Details with Universal Accounts"
+sidebarTitle: "Preview Transaction Details"
+description: "Previewing transaction details before sending a transaction through Universal Accounts. "
+---
+
+The Universal Accounts SDK provides a complete transaction preview when you call `createBuyTransaction()` or any other transaction-related method.
+
+You can use this preview to show users key transaction details before they confirm by including it in your transaction flow UI.
+
+<Note>
+  For a reference implementation, check the [Universal Accounts with Ethers](https://github.com/soos3d/ethers-universal-accounts/blob/main/ethers-universal-accounts/app/components/TransactionFeePreview.tsx) repository, or [live Demo](https://ethers-universal-accounts.vercel.app/).
+</Note>
+
+## Transaction Preview Overview
+
+When you call `createBuyTransaction()` or similar methods, the SDK returns a structured preview object with key transaction details.
+
+Here’s a breakdown of the main fields included in this preview:
+
+```ts TypeScript [expandable]
+interface UniversalTransaction {
+  type: "universal";                   
+  mode: "mainnet";         // Current environment
+
+  sender: string;                     
+  receiver: string;                    
+
+  transactionId: string;              
+  smartAccountOptions: {
+    name: string;                    
+    version: string;                  
+    ownerAddress: string;             
+    smartAccountAddress: string;      
+    solanaSmartAccountAddress: string; 
+    senderAddress: string;           
+    senderSolanaAddress: string;     
+  };
+
+  depositTokens: TokenTransfer[];     // Tokens *being deposited* (decreasing from sender)
+  lendingTokens: TokenTransfer[];     // Tokens *being received* via lending or conversion
+  tokenChanges: {
+    from: string;                     
+    fromChains: number[];            
+    to: string;                      
+    toChains: number[];               
+    decr: TokenTransfer[];           
+    incr: TokenTransfer[];           
+  };
+
+  feeQuotes: {
+    fees: {
+      totals: {
+        feeTokenAmountInUSD: string;
+        gasFeeTokenAmountInUSD: string;
+        transactionFeeTokenAmountInUSD: string;
+        transactionServiceFeeTokenAmountInUSD: string;
+        transactionLPFeeTokenAmountInUSD: string;
+        solanaRentFeeAmountInUSD: string;
+      };
+      feeTokens: TokenTransfer[];
+      freeGasFee: boolean;
+      freeServiceFee: boolean;
+    };
+    userOps: UserOpExecution[];
+  }[];
+
+  transactionFees: {
+    freeGasFee: boolean;
+    freeServiceFee: boolean;
+    transactionServiceFeeAmountInUSD: string;
+    transactionLPFeeAmountInUSD: string;
+  };
+
+  tag: string;                       
+  gasless: boolean | null;           
+  fallback: boolean;                 
+
+  data: MerkleProof[];               
+  rootHash: string;                  
+  userOps: UserOpExecution[]; 
+}
+```
+
+### Previewing a Transaction (Example)
+
+To see a real example, here’s how you can create and log a buy transaction for \$1 worth of **\$PARTI**:
+
+```tsx page.tsx
+const transaction = await universalAccount.createBuyTransaction({
+  token: {
+    chainId: CHAIN_ID.BSC_MAINNET,
+    address: "0x59264f02D301281f3393e1385c0aEFd446Eb0F00", // PARTI token on BNB Chain
+  },
+  amountInUSD: "1",
+});
+
+console.log(JSON.stringify(transaction, null, 2));
+```
+
+<Info>
+  This example uses `createBuyTransaction`, but the same approach will apply to any transaction method supported by the SDK.
+</Info>
+
+### Displaying Estimated Fees
+
+The returned transaction object includes **metadata** such as **sender** and **recipient** addresses, **tokens** used, and **estimated fees**.
+
+Here’s how to extract and display the estimated fees:
+
+```ts page.tsx
+import { formatUnits } from "ethers";
+
+const feeQuote = transaction.feeQuotes[0];
+const fee = feeQuote.fees.totals;
+
+console.log("Total fee (USD):", `$${formatUnits(fee.feeTokenAmountInUSD, 18)}`);
+console.log("Gas fee (USD):", `$${formatUnits(fee.gasFeeTokenAmountInUSD, 18)}`);
+console.log("Service fee (USD):", `$${formatUnits(fee.transactionServiceFeeTokenAmountInUSD, 18)}`);
+console.log("LP fee (USD):", `$${formatUnits(fee.transactionLPFeeTokenAmountInUSD, 18)}`);
+```
+
+<Info>
+  We use `formatUnits` from `ethers.js`, but feel free to use any formatting utility that fits your stack.
+</Info>
+
+### Integrating the Transaction Preview
+
+You can integrate the transaction preview however you like in your dApp. In the demo repository below, estimated fees are shown before the user confirms the transaction.
+
+<Card title="Demo Repository" icon="code" href="https://github.com/soos3d/ethers-universal-accounts">
+  Check out the demo repository for a working example.
+</Card>
+
+## Full Transaction Preview Widget
+
+The guide and demo app above focus on a minimal example that previews estimated fees only.
+
+For a more complete implementation—including sender and receiver addresses, token transfers, and detailed metadata—refer to the extended widget below:
+
+```tsx TransactionDetailsWidget.tsx [expandable]
+import { formatUnits } from "ethers";
+
+interface Token {
+  name: string;
+  symbol: string;
+  chainId: number;
+  decimals: number;
+  realDecimals: number;
+  address: string;
+  assetId: string;
+  type: string;
+  slotIndex: number;
+  image: string;
+  rank: number;
+  price: number;
+}
+
+interface TokenAmount {
+  token: Token;
+  amount: bigint;
+}
+
+interface FeeToken {
+  token: Token;
+  amount: bigint;
+}
+
+interface FeeTotals {
+  feeTokenAmountInUSD: string;
+  gasFeeTokenAmountInUSD: string;
+  transactionFeeTokenAmountInUSD: string;
+  transactionServiceFeeTokenAmountInUSD: string;
+  transactionLPFeeTokenAmountInUSD: string;
+  solanaRentFeeAmountInUSD: string;
+}
+
+interface FeeQuote {
+  feeTokens: FeeToken[];
+  freeGasFee: boolean;
+  freeServiceFee: boolean;
+  totals: FeeTotals;
+}
+
+interface TransactionDetails {
+  sender: string;
+  receiver: string;
+  depositTokens?: TokenAmount[];
+  lendingTokens?: TokenAmount[];
+  feeQuotes?: { fees: FeeQuote }[];
+}
+
+const TokenList = ({
+  tokens,
+  title,
+  emoji,
+}: {
+  tokens: TokenAmount[];
+  title: string;
+  emoji: string;
+}) => {
+  if (!tokens?.length) return null;
+
+  return (
+    <div className="mb-4">
+      <h3 className="text-lg font-semibold mb-2">
+        {emoji} {title}:
+      </h3>
+      <div className="space-y-2 pl-4">
+        {tokens.map((item, i) => {
+          const t = item.token;
+          return (
+            <div key={i} className="bg-gray-50 p-3 rounded-lg">
+              <div className="font-medium">
+                [{i + 1}] {t.name} ({t.symbol})
+              </div>
+              <div className="text-sm text-gray-600 pl-2">
+                <div>Chain ID: {t.chainId}</div>
+                <div>Amount: {formatUnits(item.amount, t.decimals)}</div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+};
+
+const FeeSection = ({ feeQuote }: { feeQuote: FeeQuote }) => {
+  if (!feeQuote?.feeTokens?.length) return null;
+  console.log(JSON.stringify(feeQuote));
+  return (
+    <div className="mb-4">
+      <h3 className="text-lg font-semibold mb-2">💸 Fee Tokens:</h3>
+      <div className="space-y-2 pl-4">
+        {feeQuote.feeTokens.map((fee, i) => {
+          const t = fee.token;
+          return (
+            <div key={i} className="bg-gray-50 p-3 rounded-lg">
+              <div className="font-medium">
+                [{i + 1}] {t.name} ({t.symbol})
+              </div>
+              <div className="text-sm text-gray-600 pl-2">
+                <div>Chain ID: {t.chainId}</div>
+                <div>Amount: {formatUnits(fee.amount, t.decimals)}</div>
+              </div>
+            </div>
+          );
+        })}
+        <div className="text-sm text-gray-600 mt-2 space-y-1">
+          <div>Free Gas Fee: {feeQuote.freeGasFee ? "✅" : "❌"}</div>
+          <div>Free Service Fee: {feeQuote.freeServiceFee ? "✅" : "❌"}</div>
+          <div className="pt-2 space-y-1 border-t border-gray-200">
+            <div>
+              Total Fee:{" "}
+              <span className="font-medium">
+                ${formatUnits(BigInt(feeQuote.totals.feeTokenAmountInUSD), 18)}
+              </span>
+            </div>
+            <div>
+              Gas Fee:{" "}
+              <span className="font-medium">
+                ${formatUnits(BigInt(feeQuote.totals.gasFeeTokenAmountInUSD), 18)}
+              </span>
+            </div>
+            <div>
+              Transaction Fee:{" "}
+              <span className="font-medium">
+                ${formatUnits(BigInt(feeQuote.totals.transactionFeeTokenAmountInUSD), 18)}
+              </span>
+            </div>
+            <div>
+              Service Fee:{" "}
+              <span className="font-medium">
+                ${formatUnits(BigInt(feeQuote.totals.transactionServiceFeeTokenAmountInUSD), 18)}
+              </span>
+            </div>
+            <div>
+              LP Fee:{" "}
+              <span className="font-medium">
+                ${formatUnits(BigInt(feeQuote.totals.transactionLPFeeTokenAmountInUSD), 18)}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export function TransactionDetailsWidget({
+  transaction,
+}: {
+  transaction: TransactionDetails;
+}) {
+  const feeQuotePreview = transaction.feeQuotes?.[0]?.fees;
+
+  return (
+    <div className="bg-white p-6 rounded-xl shadow-sm border">
+      <h2 className="text-xl font-bold mb-4">Transaction Details</h2>
+
+      <div className="mb-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <span className="font-semibold">🔹 Sender: </span>
+            <span className="font-mono text-sm">{transaction.sender}</span>
+          </div>
+          <div>
+            <span className="font-semibold">🔹 Receiver: </span>
+            <span className="font-mono text-sm">{transaction.receiver}</span>
+          </div>
+        </div>
+      </div>
+
+      <TokenList
+        tokens={transaction.depositTokens || []}
+        title="Deposit Tokens"
+        emoji="📥"
+      />
+
+      <TokenList
+        tokens={transaction.lendingTokens || []}
+        title="Lending Tokens"
+        emoji="📤"
+      />
+
+      {feeQuotePreview && <FeeSection feeQuote={feeQuotePreview} />}
+    </div>
+  );
+}
+```
+
+## What’s Next?
+
+Explore the SDK reference for more details:
+
+<CardGroup cols={2}>
+  <Card title="SDK Reference" icon="code" href="/universal-accounts/ua-reference/desktop/web">
+    See more methods and usage patterns.
+  </Card>
+  <Card title="Supported Chains" icon="link" href="/universal-accounts/cha/chains">
+    View which chains are available.
+  </Card>
+</CardGroup>

@@ -1,0 +1,326 @@
+---
+title: "iOS Quickstart"
+---
+
+# Quickstart: Implementing Particle Connect within iOS Applications
+
+Getting started with Particle Connect on iOS only takes a few minutes.
+
+Below is a quick, step-by-step rundown on installing, configuring, and utilizing Particle Connect on iOS.
+
+<Note>
+  For complete documentation covering the implementation of Particle Connect on iOS in more depth, head over to the [iOS SDK reference](/api-reference/connect/mobile-sdks/ios).
+</Note>
+
+---
+
+To begin, you'll need to ensure that your project meets the following requirements (if it doesn't, you may encounter compatibility issues).
+
+### Prerequisites
+
+- **Xcode 15.0** or higher.
+- **CocoaPods 1.14.3** or higher.
+- **iOS 14** or higher.
+
+---
+
+<Steps>
+
+<Step title="Installing Particle Connect">
+
+Once you've ensured that your project meets the aforementioned prerequisites, you'll need to install Particle Connect and various associated SDKs, including:
+- `ParticleConnectKit`
+- `ParticleConnect`
+- `ConnectCommon`
+- `ParticleAuthCore`
+- `ParticleMPCCore`
+- `Thresh`
+- `AuthCoreAdapter`
+- For EVM, `ConnectWalletConnectAdapter`
+- For Solana, `ConnectPhantomAdapter`
+- Optionally, `ParticleWalletAPI`
+- Optionally, `ParticleWalletGUI`
+- Optionally, `ParticleWalletConnect`
+
+The following snippet should be included within your Podfile (with or without the optional libraries).
+
+```ruby Podfile
+pod `ParticleConnectKit`
+pod 'ParticleConnect'
+pod 'ConnectPhantomAdapter'
+pod 'ConnectWalletConnectAdapter'
+pod 'ConnectCommon'
+pod `ParticleAuthCore`
+pod 'ParticleMPCCore'
+pod 'Thresh'
+pod 'AuthCoreAdapter'
+
+pod 'ParticleWalletAPI' #Optional, for create transaciton
+pod `ParticleWalletGUI` #Optional, for wallet
+pod 'ParticleWalletConnect' #Optional, for wallet
+```
+</Step>
+
+<Step title="Configuring Particle Connect">
+
+Once installed, you're ready to configure the SDK.
+
+To configure, and eventually initialize Particle Connect, you'll need three key values from the [Particle dashboard](https://dashboard.particle.network): your project ID, client key, and app ID. These authenticate your instance of Particle Connect and connect your project to the dashboard.
+
+To retrieve these values, follow the steps below:
+
+<AccordionGroup>
+  <Accordion title="Access the Particle Dashboard">
+
+Sign up or Log in into the [Particle dashboard](https://dashboard.particle.network)
+
+<div className="flex justify-center">
+<img
+  className="block h-64 dark:hidden"
+  src="/guides/wallet-as-a-service/waas/images/login.png"
+  alt="Login into Particle."
+/>
+<img
+  className="hidden h-64 dark:block"
+  src="/guides/wallet-as-a-service/waas/images/login.png"
+  alt="Login into Particle."
+/>
+</div>
+ </Accordion>
+<Accordion title="Create a new project or enter an existing project">
+<div className="flex justify-center">
+<img
+  className="block h-64 dark:hidden"
+  src="/guides/wallet-as-a-service/waas/images/project.png"
+  alt="Create Particle project."
+/>
+<img
+  className="hidden h-64 dark:block"
+  src="/guides/wallet-as-a-service/waas/images/project.png"
+  alt="Create Particle project."
+/>
+</div>
+</Accordion>
+
+<Accordion title="Create a new iOS application, or skip this step if you already have one">
+<div className="flex justify-center">
+<img
+  className="block h-64 dark:hidden"
+  src="/guides/wallet-as-a-service/waas/images/ios-app.svg"
+  alt="Create iOS app."
+/>
+<img
+  className="hidden h-64 dark:block"
+  src="/guides/wallet-as-a-service/waas/images/ios-app.svg"
+  alt="Create iOS app."
+/>
+</div>
+</Accordion>
+
+<Accordion title="Retrieve the project ID, the client key, and the application ID">
+<div className="flex justify-center">
+<img
+  className="block h-64 dark:hidden"
+  src="/guides/wallet-as-a-service/waas/images/credentials.png"
+  alt="Find app's credentials."
+/>
+<img
+  className="hidden h-64 dark:block"
+  src="/guides/wallet-as-a-service/waas/images/credentials.png"
+  alt="Find app's credentials."
+/>
+</div>
+</Accordion>
+
+</AccordionGroup>
+
+For more information on the Particle dashboard, take a look at the [dashboard quickstart](/guides/dashboard).
+
+With your project ID, client key, and app ID retrieved, you'll add a file named `ParticleNetwork-Info.plist` to your project, then insert these values as is shown below.
+
+```xml ParticleNetwork-Info.plist
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+  <dict>
+    <key>PROJECT_UUID</key>
+    <string>YOUR_PROJECT_UUID</string> <!-- Replace this with your project ID -->
+    <key>PROJECT_CLIENT_KEY</key>
+    <string>YOUR_PROJECT_CLIENT_KEY</string> <!-- Replace this with your client key -->
+    <key>PROJECT_APP_UUID</key>
+    <string>YOUR_PROJECT_APP_UUID</string> <!-- Replace this with your app ID -->
+</dict>
+</plist>
+```
+
+</Step>
+
+<Step title="Configuring Xcode">
+
+Finally, before initializing and using the SDK, you'll need to configure your `Info.plist` file; this file should contain an array of strings representing the wallets you intend to support, alongside a number of permissions, as is shown below.
+
+```xml Info.plist
+<key>LSApplicationQueriesSchemes</key>
+<array>
+<string>metamask</string>
+<string>phantom</string>
+<string>bitkeep</string>
+<string>imtokenv2</string>
+<string>rainbow</string>
+<string>trust</string>
+<string>zerion</string>
+<string>mathwallet</string>
+<string>oneinch</string>
+<string>awallet</string>
+<string>okex</string>
+<string>bnc</string>
+</array>
+<key>NSPhotoLibraryUsageDescription</key>
+<string>We need access in order to open photos of barcodes</string>
+<key>NSCameraUsageDescription</key>
+<string>We use the camera to scan barcodes</string>
+<key>NSFaceIDUsageDescription</key>
+<string>We use Face ID for secure access to the app.</string>
+```
+
+Additionally, you'll need to add your scheme URL to your Xcode project.
+
+For example, if your `appId` is `63bfa427-cf5f-4742-9ff1-e8f5a1b9828f`, then the scheme URL would be `pn63bfa427-cf5f-4742-9ff1-e8f5a1b9828f`, simply adding `pn` to the beginning of the `appId`.
+
+</Step>
+
+<Step title="Initialize SDK">
+
+Before using Particle Connect, you'll need to initialize the SDK through the `initialize` method on `ParticleConnect`, which takes the following parameters:
+- `env`, representing the mode in which you'd like your environment to be in, such as `.debug`, `.staging`, or `.production`. This primarily affects the amount of information logged during usage.
+- `chainInfo`, specifying the primary chain you intend to use within your application.
+- `dAppData`, the metadata used for WalletConnect.
+- `adapters`, an array of adapters representing the wallets you'd like to support within your application.
+
+Additionally, you can set specific chains to be used within WalletConnect (`chainInfo` structures) with `setWalletConnectV2SupportChainInfos`. An example of this can be found below.
+
+```swift
+var adapters: [ConnectAdapter] = [
+    AuthCoreAdaper(),
+    // Select the third-party wallet you want from the options below. 
+    WalletConnectAdapter(),
+    MetaMaskConnectAdapter(),
+    PhantomConnectAdapter(),
+    ImtokenConnectAdapter(),
+    BitgetConnectAdapter(),
+    RainbowConnectAdapter(),
+    TrustConnectAdapter(),
+    ZerionConnectAdapter(),
+    MathConnectAdapter(),
+    Inch1ConnectAdapter(),
+    ZengoConnectAdapter(),
+    AlphaConnectAdapter(),
+    OKXConnectAdapter()
+    ]
+
+// You can retrieve chainInfo from ChainInfo, the initialize works for the first time open.
+// If you support more than one chain, you can use ParticleNetwork.setChainInfo to switch.
+ParticleConnect.initialize(env: .debug, chainInfo: ChainInfo.ethereumSepolia, dAppData: .standard, adapters: adapters)
+
+// Optional, for usage of Particle Wallet
+ParticleWalletConnect.initialize(
+        WalletMetaData(name: "Particle Wallet",
+                        icon: URL(string: "https://connect.particle.network/icons/512.png")!,
+                        url: URL(string: "https://particle.network")!,
+                        description: "Particle Connect is a decentralized wallet connection protocol that makes it easy for users to connect their wallets to your DApp.", redirectUniversalLink: nil)
+    )
+ParticleWalletGUI.setAdapters(adapters)
+
+ParticleWalletGUI.setShowTestNetwork(true)
+
+// Set walletConnect connection chains, but metamask doesn't support more than one chain one connection.
+ParticleConnect.setWalletConnectV2SupportChainInfos([.ethereum, .bnbChain])
+```
+
+</Step>
+
+<Step title="Facilitating connection">
+
+Now that Particle Connect has been installed, configured, and initialized, you're ready to facilitate connection through the Particle Connect modal.
+
+To do this, you'll need to establish a `config` specifying the:
+- Onboarding mechanisms you'd like to support, through `connectOptions` (such as `.email`, `.phone`).
+- Social login providers you'd like to support, through `socialProviders` (such as `.google`, `.apple`).
+- Wallets you'd like to be included as options within the modal, through `walletProviders` (specified through an instance of `EnableWalletProvider`, as shown below).
+- (Optionally), layout options altering the format of the connection modal through `additionalLayoutOptions`.
+- (Optionally), additional customizations, such as a custom icon, through `designOptions`.
+
+Upon generating this config (with `ConnectKitConfig`), you'll be able to call `ParticleConnectUI.connect`, initiating the resulting connection modal.
+
+```swift
+let connectOptions: [ConnectOption] = [.email, .phone, .social, .wallet]
+let socialProviders: [EnableSocialProvider] = [.google, .apple]
+let walletProviders: [EnableWalletProvider] = [EnableWalletProvider(name: "metamask", state: .recommended), EnableWalletProvider(name: "okx", state: .popular), EnableWalletProvider(name: "walletConnect", state: .none)]
+let additionalLayoutOptions = AdditionalLayoutOptions(isCollapseWalletList: false, isSplitEmailAndSocial: false, isSplitEmailAndPhone: false, isHideContinueButton: false)
+// If you'd like to specify an icon, you can do so through a local image, base64 string or url.
+let designOptions: DesignOptions = .init(icon: ImagePath.local(UIImage(named: "icon")!))
+let config = ConnectKitConfig(connectOptions: connectOptions, socialProviders: socialProviders, walletProviders: walletProviders, additionalLayoutOptions: additionalLayoutOptions, designOptions: designOptions)
+
+let account = try await ParticleConnectUI.connect(config: config).value 
+```
+</Step>
+
+</Steps>
+
+## Examples of Utilization
+
+### Retrieving User Information
+
+Upon wallet connection (or social login), you'll be able to retrieve information about the resulting account.
+
+Basic account information can be found through the result of `ParticleConnectUI.connect`, in this case, that was saved to `account`, which contains properties such as `publicAddress` and `walletType`.
+
+To explicitly retrieve `userInfo` (a collection of information regarding the login mechanism, attached addresses, and so on; more information can be found within its [API reference](/api-reference/auth/server/getuserinfo)), you'll need to call `auth.getUserInfo`.
+
+An example of both approaches can be found below.
+
+```swift
+let publicAddress = account.publicAddress
+let walletType = account.walletType
+
+// If you're using account abstraction (through ParticleAA), you'll need to retrieve the user's address through the following:
+let smartAccountAddress = account.smartAccount?.smartAccountAddress
+
+if account.walletType == WalletType.authCore {
+    let auth = Auth()
+    let userInfo = auth.getUserInfo()
+}
+```
+
+### Send a Transaction
+
+Sending a transaction using the resulting account follows a similar process to other mobile SDKs. A basic transaction will need to be constructed using `ParticleWalletAPI.evm().createTransaction`, this takes basic parameters such as `from`, `to`, `value`, and (optionally) `data` and returns a machine-readable transaction object.
+
+To execute the resulting transaction, you'll need to initialize an instance of the active connected wallet; an example of doing this has been included in the snippet below.
+
+Finally, using this instance, the transaction can be executed through `{adapter}.signAndSendTransaction`, taking the sender's address alongside the previously constructed transaction object.
+
+```swift
+let adapter = ParticleConnect.getAllAdapters().first {
+      $0.walletType == account.walletType
+}
+
+let receiverAddress = "0x0000000000000000000000000000000000000000"
+let value = BDouble(0.000000001 * pow(10, 18)).rounded().toHexString()
+let transaction = try await ParticleWalletAPI.evm().createTransaction(from: account.publicAddress, to: receiverAddress, value: value, data: "0x").value
+
+// Got this transaction hash                
+let txHash = try await adapter!.signAndSendTransaction(publicAddress: account.publicAddress, transaction: transaction).value
+```
+
+### Open Wallet
+
+If you included `ParticleWalletGUI` within your Podfile, you can open the (optional) embedded wallet interface at any time after a user connects, use `ParticleWalletGUI.setSupportChain` to set supported chains, then `PNRouter` to open the interface.
+
+```swift
+ParticleWalletGUI.setSupportChain(Set<[ChainInfo.ethereum, ChainInfo.bnbChain]>)
+PNRouter.navigatorWallet(hiddenBackButton: false)
+```
+
+
+<Tip> To implement account abstraction within your iOS project, integrate the `ParticleAA` SDK and refer to this [documentation](/api-reference/aa/sdks/mobile/ios). Additionally, a demo repository can be found [here](https://github.com/Particle-Network/particle-connect-ios/tree/master/ConnectKitDemo). </Tip>

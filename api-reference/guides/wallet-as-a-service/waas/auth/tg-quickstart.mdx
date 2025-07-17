@@ -1,0 +1,308 @@
+---
+title: "Telegram Mini-App Quickstart"
+---
+
+## Quickstart: Implementing Particle Auth within Telegram Mini-Apps
+
+Particle Network's Smart Wallet-as-a-Service (MPC-based wallets alongside account abstraction) natively supports integration within Telegram Mini-apps, using a users Telegram account to create and use an embedded wallet.
+
+Getting up and running with Particle Network's Smart Wallet-as-a-Service within your Telegram Mini-app takes less than 5-minutes.
+
+This guide provides a step-by-step walkthrough on setting up [Particle Auth](/guides/wallet-as-a-service/waas/auth) in a Telegram Mini-app, enabling you to leverage features like social logins, smart accounts, and gasless transactions. 
+
+<Note>Note that due to limitations of Telegram's in-app browser (WebView), only email login, SMS login, and embedded wallets are supported within Telegram mini-apps.</Note>
+
+For detailed documentation on Particle's various SDKs, refer to the ["SDKs and APIs" pages](/api-reference/introduction).
+
+
+## Guide 1: Using the starter repository
+
+<Tip>This is the fastest and recommended way to start.</Tip>
+
+<Steps>
+
+<Step title="Set up a Telegram Bot and Mini-app">
+
+
+Before you begin, you must create a Telegram Bot and Mini-app.
+
+Follow this [comprehensive guide](https://docs.telegram-mini-apps.com/platform/creating-new-app) to set them up. You can pause at [the step where a URL is required](https://docs.telegram-mini-apps.com/platform/creating-new-app#web-application-link), as you'll need to deploy your app first.
+
+
+</Step>
+
+<Step title="Clone and set up the TG Mini-app starter">
+
+The fastest way to set up a Telegram Mini-app with Particle is to use the [starter repository](https://github.com/Particle-Network/tg-miniapp-particle-starter). This repository provides a pre-configured Telegram Mini-app that already includes the Particle Wallet and Account Abstraction functionality, providing a straightforward foundation for building your own Mini-app.
+
+To get started, clone the repository:
+
+```sh
+git clone https://github.com/Particle-Network/tg-miniapp-particle-starter.git
+```
+
+Then install the dependencies:
+
+```sh Terminal
+yarn
+```
+
+This will initialize a Telegram Mini-app with the following features:
+
+- **Technology Stack**:
+  - [@telegram-apps/create-mini-app](https://docs.telegram-mini-apps.com/packages/telegram-apps-create-mini-app)
+  - Next.js
+  - TypeScript
+  - Tailwind CSS
+  - [Particle Auth SDK](/docs/building-with-particle-auth)
+  - [Particle AA SDK](/reference/introduction-to-smart-waas)
+  - ethers.js
+
+- **Main Features**:
+  - **User Authentication**: Seamless login using Telegram through Particle Auth.
+  - **Wallet Information Display**: Wallet information is loaded and displayed in-app.
+  - **Gasless Transactions**: To exemplify the possible functionality here between Particle Auth and its AA SDK, users can send gasless transactions of native tokens to any address.
+
+</Step>
+
+<Step title="Mini-app development">
+
+To start developing your Telegram Mini-app, it's essential to understand the key files in the project. These files form the backbone of the app's structure and are where you will make customizations and add new features:
+
+- **[/src/components/Root/index.tsx](https://github.com/Particle-Network/tg-miniapp-particle-starter/blob/main/src/components/Root/index.tsx)**: The `Root` component establishes the main environment for the app by configuring Particle Auth, binding theme and viewport CSS variables, and managing application states through nested providers and hooks. 
+    <Tip>Edit this file to customize the Particle Auth configuration and modify global app settings.</Tip>
+
+- **[/src/app/layout.tsx](https://github.com/Particle-Network/tg-miniapp-particle-starter/blob/main/src/app/layout.tsx)**: This file defines the root layout of the Telegram Mini-app, setting global metadata, applying styles, and ensuring a responsive design by wrapping the app's content in the `Root` component with proper viewport configuration.
+
+- **[/src/components/Home/index.tsx](https://github.com/Particle-Network/tg-miniapp-particle-starter/blob/main/src/components/Home/index.tsx)**: The `Home` component manages the user interface, handling wallet connections, initializing smart accounts, and navigating through tabs.
+    <Tip>This is where you configure the Smart Account settings (such as the type of account contract, [the supported chains](/guides/network-coverage), and so on), customize the app's header, and manage interactive components within the tabs.</Tip>
+
+- **[/src/components/EVMDemo/index.tsx](https://github.com/Particle-Network/tg-miniapp-particle-starter/blob/main/src/components/EVMDemo/index.tsx)**: In this demo, the `EVMDemo` component enables users to interact with EVM-compatible blockchains via a smart account, making gasless native token transfers ([Solana is also supported](https://github.com/Particle-Network/auth-tg-miniapp/blob/main/src/components/SolanaDemo/index.tsx), just not by default within this starter).
+    <Tip> Modify this file to add new features or change how blockchain interactions are displayed, as it is imported into the `Home` component's tabs.</Tip>
+
+</Step>
+
+<Step title="Configuring Particle Auth">
+
+Particle Auth requires three key values to be initiated: `projectId`, `clientKey`, and `appId`. These values link your Telegram Mini-app with the [Particle dashboard](https://dashboard.particle.network/).
+
+To retrieve these values for configuration within your application, follow these steps:
+
+<AccordionGroup>
+  <Accordion title="Access the Particle Dashboard">
+
+Sign up or Log in into the [Particle dashboard](https://dashboard.particle.network/)
+
+<div className="flex justify-center">
+<img
+  className="block h-64 dark:hidden"
+  src="/guides/wallet-as-a-service/waas/images/login.png"
+  alt="Login into Particle."
+/>
+<img
+  className="hidden h-64 dark:block"
+  src="/guides/wallet-as-a-service/waas/images/login.png"
+  alt="Login into Particle."
+/>
+</div>
+ </Accordion>
+<Accordion title="Create a new project or enter an existing project">
+<div className="flex justify-center">
+<img
+  className="block h-64 dark:hidden"
+  src="/guides/wallet-as-a-service/waas/images/project.png"
+  alt="Create Particle project."
+/>
+<img
+  className="hidden h-64 dark:block"
+  src="/guides/wallet-as-a-service/waas/images/project.png"
+  alt="Create Particle project."
+/>
+</div>
+</Accordion>
+
+<Accordion title="Create a new Telegram application, or skip this step if you already have one">
+<div className="flex justify-center">
+<img
+  className="block h-64 dark:hidden"
+  src="/guides/wallet-as-a-service/waas/images/tg-project.png"
+  alt="Create Telegram app."
+/>
+<img
+  className="hidden h-64 dark:block"
+  src="/guides/wallet-as-a-service/waas/images/tg-project.png"
+  alt="Create Telegram app."
+/>
+</div>
+
+Here you will add the TG Bot Username and Telegram Bot API Token you received from the previous set up using [@BotFather](https://t.me/botfather).
+
+</Accordion>
+
+<Accordion title="Retrieve the project ID (`projectId`), the client key (`clientKey`), and the application ID (`appId`)">
+<div className="flex justify-center">
+<img
+  className="block h-64 dark:hidden"
+  src="/guides/wallet-as-a-service/waas/images/credentials.png"
+  alt="Find app's credentials."
+/>
+<img
+  className="hidden h-64 dark:block"
+  src="/guides/wallet-as-a-service/waas/images/credentials.png"
+  alt="Find app's credentials."
+/>
+</div>
+</Accordion>
+</AccordionGroup>
+
+<Tip>For more information on the Particle dashboard, take a look at [this video](https://www.youtube.com/watch?v=d7DYCMNDmjo&ab_channel=ParticleNetwork) or visit the [dashboard quickstart](/guides/dashboard)</Tip>
+
+Once you have retrieved your `projectId`, `clientKey`, and `appId`, add them to a `.env` file located in the root of your project with the following content:
+
+```sh .env
+NEXT_PUBLIC_PROJECT_ID='PROJECT_ID'
+NEXT_PUBLIC_CLIENT_KEY='CLIENT_KEY'
+NEXT_PUBLIC_APP_ID='APP_ID'
+```
+
+</Step>
+
+<Step title="Run the Mini-app">
+
+Although it is possible to run the application outside of Telegram, it is recommended to develop it within Telegram for the most accurate representation of its real-world functionality.
+
+To run the application inside Telegram, [@BotFather](https://t.me/botfather) requires an exposed link. Deploy the app in Vercel or expose your HTTP development server using [Ngrok](https://ngrok.com).
+
+If you use Ngrok, run the application locally with:
+
+```sh
+yarn dev
+```
+
+Now you can use the URL of your app to complete the configuration from [@BotFather](https://t.me/botfather) (as a reminder, you can now return to [this step](https://docs.telegram-mini-apps.com/platform/creating-new-app#web-application-link) from the Telegram documentation).
+
+</Step>
+</Steps>
+
+## Guide 2: Start from scratch
+
+This section provides guidance on how to start building your own Telegram Mini-app from scratch.
+
+### Create a Mini-app
+
+To create a new Mini-app, use the [@telegram-apps/create-mini-app](https://docs.telegram-mini-apps.com/packages/telegram-apps-create-mini-app) package. This starter project is built with the default options along with Next.js integration.
+
+### Install Additional Packages
+
+Install the required packages using Yarn:
+
+```bash
+yarn add @particle-network/aa @particle-network/auth-core-modal blo ethers framer-motion sonner eruda
+```
+
+### Add Context Directory
+
+Create a `context` directory in the `src` folder and add an `index.tsx` file. You can find the code for this file in the [starter repository](https://github.com/Particle-Network/tg-miniapp-particle-starter/blob/main/src/context/index.tsx).
+
+### Configure Particle Auth
+
+In the `components/Root` directory, rename your main component file to `index.tsx`. Configure the `AuthCoreContextProvider` to wrap the `AppProvider` as follows:
+
+```tsx
+<AuthCoreContextProvider
+  options={{
+    projectId: process.env.NEXT_PUBLIC_PROJECT_ID as string,
+    clientKey: process.env.NEXT_PUBLIC_CLIENT_KEY as string,
+    appId: process.env.NEXT_PUBLIC_APP_ID as string,
+    themeType: "dark",
+    // Define UI elements for the smart account
+    erc4337: {
+      name: "SIMPLE",
+      version: "2.0.0",
+    },
+    wallet: {
+      themeType: "dark",
+      customStyle: {
+        // Locks the chain selector to IoTeX mainnet and testnet
+        supportChains: [EthereumSepolia, BaseSepolia],
+        dark: {
+          colorAccent: "#7DD5F9",
+          colorPrimary: "#21213a",
+          colorOnPrimary: "#171728",
+          primaryButtonBackgroundColors: ["#5ED7FF", "#E89DE7"],
+          primaryIconButtonBackgroundColors: ["#5ED7FF", "#E89DE7"],
+          primaryIconTextColor: "#FFFFFF",
+          primaryButtonTextColor: "#0A1161",
+          cancelButtonBackgroundColor: "#666666",
+          backgroundColors: [
+            "#14152e",
+            [
+              ["#e6b1f766", "#e6b1f700"],
+              ["#7dd5f94d", "#7dd5f900"],
+            ],
+          ],
+          messageColors: ["#7DD5F9", "#ed5d51"],
+          borderGlowColors: ["#7bd5f940", "#323233"],
+          modalMaskBackgroundColor: "#141430b3",
+        },
+      },
+    },
+  }}
+>
+  <Toaster
+    /* This component displays notifications. */
+    richColors
+    position="top-left"
+    expand={false}
+    closeButton
+    duration={2000}
+  />
+  <AppProvider>
+    <div className="box-border w-screen">{props.children}</div>
+  </AppProvider>
+</AuthCoreContextProvider>
+```
+
+<Note>You can find the complete implementation of the `Root` component in the [starter repository](https://github.com/Particle-Network/tg-miniapp-particle-starter/blob/main/src/components/Root/index.tsx).</Note>
+
+### Build the Mini-app
+
+Edit the `layout.tsx` and `page.tsx` files in the `src/app` directory to reflect the reference files in the [starter repository](https://github.com/Particle-Network/tg-miniapp-particle-starter/tree/main/src/app).
+
+Once configured, create a `Home` component to implement your Mini-app.
+
+#### Example Implementation (AA)
+
+The Particle Network AA SDK allows you to set up and configure smart accounts. Here's an example:
+
+```tsx
+import { SmartAccount } from '@particle-network/aa';
+import { useEthereum } from "@particle-network/auth-core-modal";
+import { BaseSepolia } from '@particle-network/chains';
+
+const { provider } = useEthereum();
+
+// Set up and configure the smart account
+const smartAccount = new SmartAccount(provider, {
+  projectId: process.env.NEXT_PUBLIC_PROJECT_ID!,
+  clientKey: process.env.NEXT_PUBLIC_CLIENT_KEY!,
+  appId: process.env.NEXT_PUBLIC_APP_ID!,
+  aaOptions: {
+    accountContracts: {
+      SIMPLE: [
+        {
+          version: '2.0.0',
+          chainIds: [BaseSepolia.id],
+        },
+      ],
+    },
+  },
+});
+```
+
+In this setup:
+
+- **SmartAccount**: This class is used to create a smart account utilizing an instance of `SimpleAccount`.
+- **aaOptions**: This field specifies the version and chain IDs for the account contracts, allowing you to configure the smart account with specific blockchain settings. Here, we're using version `2.0.0` of SimpleAccount and targeting the `Base` testnet (Sepolia) chain.
+
+<Note>Find the full implementation of the `Home` component and set up in the [starter repository](https://github.com/Particle-Network/tg-miniapp-particle-starter/blob/main/src/components/Home/index.tsx).</Note>

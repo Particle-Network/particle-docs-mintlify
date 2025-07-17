@@ -1,0 +1,39 @@
+---
+title: "Particle Bundler"
+description: "Particle Network's Bundler is now fully open-source!"
+---
+
+***
+
+An ERC-4337 Bundler acts as a transaction aggregator that collects individual ``UserOperations`` from a specialized mempool, bundles them, and submits them as a single transaction to the network. This enables enhanced account abstraction on Ethereum and other EVM networks. It is a core infrastructure component for account abstraction on Ethereum Virtual Machine (EVM) networks.
+
+The Particle Bundler is a specialized tool designed to make smart contracts and transactions work smoothly using the ERC-4337 standard. It is a fully compliant, feature-rich, high-performance, infinitely scalable 4337 Bundler implementation.
+
+## Advantages of the Particle Bundler
+
+Particle's Bundler offers several compelling advantages:
+
+- **Seamless `UserOperations`:** We have implemented the persistence of `UserOperations`, Smart Account Nonce management, and automatic batch sending of `UserOperations`, among other features. The Particle Bundler simplifies the transaction process for users, streamlining the submission of `UserOperations`. This enhances the accessibility of ERC-4337, making it more user-friendly and approachable for a broader audience.
+- **Smart Ops:** We know the importance of stable and reliable operational features for developers, so we have implemented functionalities like Bundler Signer configuration, automatic recharging, automatic blocking and recovery, and automatic monitoring alerts, enabling easy management and automatic expansion. The era of multi-chain Web3 is still unfolding, so we have simplified the deployment process to new chains down to executing a single command with minimum additional configurations. Thanks to this, support for a new chain can be completed within 5 minutes.
+- **High Performance:** Particle's Bundler is engineered for optimal performance and can efficiently handle demanding workloads. Leveraging proprietary technology and optimization techniques, the Bundler ensures transactions are processed swiftly and effectively.
+- **High Stability:** Stability is a hallmark feature of Particle's Bundler. Built with reliability in mind, it operates seamlessly, even under challenging conditions. Its robust architecture and adherence to best practices in infrastructure management contribute to its exceptional stability, providing users and developers with a dependable platform to solve their needs.
+
+As a high-performance, highly stable Bundler implementation, the Bundler also features:
+
+## Features
+
+- All standard RPCs supported.
+- Configurable RPCs, Signers, etc.
+- Support for any chain.
+- `UserOp` Persistence.
+- `UserOp` Concurrent Handling.
+- Built-in Gas Price Oracle.
+- Multi-Bundler Signers Manager.
+- Auto-fulfill bundler Signers’ balance.
+- Auto-retry for failed transactions from a Bundler Signer account.
+- Returns the correct transaction even when affected by MEV.
+- Deploy new chains with one command.
+
+<Tip> 
+Learn more through the [open-source repository](https://github.com/Particle-Network/particle-bundler-server).
+</Tip>

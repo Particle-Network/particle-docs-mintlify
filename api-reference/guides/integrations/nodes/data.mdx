@@ -1,0 +1,23 @@
+---
+title: "Data APIs (Enhanced RPC)"
+---
+
+## Using Particle Network Enhanced RPC (Data API)
+
+In addition to standard RPC methods, Particle Network RPC nodes also support specific data API endpoints, named the "Enhanced RPC endpoints" offering advanced functionalities such as transaction history retrieval, token ownership data, etc. These methods are included directly within the same endpoints covered within [RPC Nodes](/guides/integrations/nodes/nodes), entirely for free, through a large number of EVM chains and Solana.
+
+Standard RPC methods fail to return core blockchain data that requires indexing; enhanced RPC endpoints are meant to bridge this gap and directly embed indexer-sourced methods within Particle Network RPC nodes. For a full list of the available methods within Particle Network's Enhanced RPC, including interactive examples for each method, choose one of the cards below.
+
+***
+
+<CardGroup cols={3}>
+  <Card title="Enhanced RPC (Data API)" href="/api-reference/web3/data/getlatestblock">
+    RPC endpoint natively integrating a realtime blockchain data API.
+  </Card>
+  <Card title="Enhanced RPC (Swap API)" href="/api-reference/web3/swap/getswap">
+    RPC endpoint for the construction and retrieval of swaps.
+  </Card>
+   <Card title="Enhanced RPC (Solana)" href="/api-reference/web3/solana/enhancedgetprice">
+    Solana-specific RPC endpoint leveraging a built-in blockchain data API.
+  </Card>
+</CardGroup>

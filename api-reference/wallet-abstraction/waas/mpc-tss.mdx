@@ -1,0 +1,56 @@
+---
+title: "Security (MPC-TSS)"
+description: "Particle's Modular Smart WaaS relies on MPC-TSS to protect users' private keys while enabling non-custodial social logins."
+---
+
+***
+
+<Frame caption="Particle Auth TSS - 2 key shares model">
+<img
+  className="block dark:hidden"
+  src="/api-reference/wallet-abstraction/waas/images/mpc-tss.png"
+/>
+<img
+  className="hidden dark:block"
+  src="/api-reference/wallet-abstraction/waas/images/mpc-tss.png"
+/>
+</Frame>
+
+Private keys are the most valuable possessions in the blockchain space. As such, the most important part of a WaaS solution is the secure management of private keys.
+
+Particle Network approaches this sensitive process by emphasizing the following principles:
+
+- No one except for the user should have full control of their keys. 
+- Only the user should be able to initiate the signing process. Other parties, including Particle Network and developers, can never access users' funds.
+- Accounts need to be restored safely. Users may delete their apps or lose their phones, so the system needs to provide a way for them to recover their funds.
+- No single point of failure should exist.
+
+With these in mind, we’ve replaced the traditional private key with two independently created mathematical secret shares, implementing Multi-Party Computation with Threshold Signature Schemes.
+
+## Particle Network's MPC-TSS mechanism
+
+Threshold Secret Sharing (TSS) is a cryptographic method where a secret is simultaneously generated and separated into multiple shares. As such, the secret as a whole is never fully present, even at generation. With TSS, a given number of shares (a threshold, e.g., 3/5) can be computed together to generate a signature without the secret ever being reconstructed. 
+
+MPC-TSS ensures that the secret is never present at a single location nor held by any entity. TSS is also flexible, as the threshold can be adjusted based on the desired level of security and trust. Keys can also be refreshed in a distributed manner. Combining MPC and TSS enhances the security and privacy of the computation process. It is particularly useful wherever data sharing and privacy-preserving computations are critical, making it ideal for managing cryptographic keys. MPC-TSS provides essential features for managing private keys securely and flexibly.
+
+Particle Network provides a 2/2 advanced TSS approach that ensures that the private keys’ security is never concentrated in a single location or entity throughout its lifecycle. This method involves distributedly generating two independent shares, stored separately, ensuring that each share reveals nothing about the full key, even upon signature generation. Of these shares, one is stored locally by the user, and the other by Particle’s Trusted Execution Environment. All cryptographic operations are executed without combining these shares, maintaining key integrity. 
+
+Particle also allows the user to create a Master Password, used to encrypt their local key fragment, thereby further increasing security by introducing an encryption layer on top of the initial social login. This allows users to safely restore their wallets across devices with full security. The system's robustness is also reinforced by a continuous key share refresh mechanism, enhancing security and making an attack virtually impossible.
+
+
+Particle Network includes a secure MPC implementation of the following algorithms:
+
+- 2-Party EdDSA - Solana
+- 2-Party ECDSA - Ethereum, Binance Smart Chain, Polygon, Avalanche, and more
+
+As a result, Particle Network provides a secure, easy-to-use, and trusted key management system that is chain agnostic, robust, and non-custodial.
+
+## Infrastructure Security Architecture
+
+We adopt the best industry standards to implement our infrastructure. From public/private network segregation to intrusion detection monitoring, we ensure we spend time constructing and bootstrapping the foundation of our infrastructure so that it is secure for our engineers to build on. As a result, we have:
+
+- End-to-end encryption with TLS.
+- A Trustee Particle Network TSS Party-2 Server.
+- A Hardware Security module.
+
+<Tip>For a comparison between Particle Network's solution and others present in the market, like Shamir's Secret Sharing, visit "[Key Differentiators](/landing/wallet-abstraction/waas/differentiators)".</Tip>

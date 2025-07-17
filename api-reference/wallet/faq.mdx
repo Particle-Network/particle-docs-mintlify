@@ -7,25 +7,7 @@ description: 'Find Frequently Asked Questions about Particle Wallet.'
 <AccordionGroup>
 
 <Accordion title="How can I track my tokens in the embedded wallet?" icon="wallet">
-  **Answer:** 
-
-You can use the fields in the `wallet` property within the Particle Auth or Particle Connect configuration object to track tokens in the embedded wallet. Specifically, the `customStyle` object provides two properties for managing token tracking:
-
-1. **`displayTokenAddresses`**: This property allows you to specify which token addresses should be tracked in the wallet interface.
-
-2. **`priorityTokenAddresses`**: This property enables you to define priorities when displaying tokens.
-
-```tsx Connectkit.tsx
-    wallet({
-      customStyle: {
-        displayTokenAddresses: ["0x4d224452801ACEd8B2F0aebE155379bb5D594381"],
-        priorityTokenAddresses: ["0x4d224452801ACEd8B2F0aebE155379bb5D594381"],
-      },
-    }),
-```
-
-If the icon is undetected, our team must manually add it. Please [contact us](https://t.me/particle_developer_bot) to update it.
-
+  **Answer:** To enable tracking of specific tokens in the embedded wallet, you need to provide us with the relevant token information. Once we receive this data, our team will manually add the tokens to your wallet, ensuring they are properly tracked and displayed.
 </Accordion>
 
 <Accordion title="How can I configure the name and icon of the embedded wallet?" icon="image">

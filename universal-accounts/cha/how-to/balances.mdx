@@ -1,0 +1,280 @@
+---
+title: "Build a Balance Breakdown Widget"
+sidebarTitle: "Build a Balance Widget"
+description: "Build a visual wallet dashboard pulling data from a Universal Account."
+---
+
+This guide explains how to **build a balance widget** that displays an account's multi-chain asset balances and their USD value, using the Universal Accounts SDK as its data source.
+
+<Note>
+  To see a live example of this, head to the [Universal Accounts demo](https://auth-universal-accounts.vercel.app/).
+</Note>
+
+<Frame>
+  <img
+    src="https://i.imgur.com/Ti5urZ7.gif"
+    alt="Balance Widget"
+    style={{ width:"100%",maxWidth:"100%" }}
+  />
+</Frame>
+
+You’ll learn:
+
+- What data to fetch from a Universal Account.
+- How UAs' asset structure is organized.
+- How to render a portfolio overview in a React component.
+
+<Card title="Get started with Universal Accounts" icon="rocket" href="/universal-accounts/cha/web-quickstart">
+  Check out our **Quickstart guide** to learn how to build an app leveraging Universal Accounts.
+</Card>
+
+---
+
+## Fetching Primary Assets from a Universal Account
+
+Once a Universal Account is initialized, you can retrieve the user’s cross-chain Primary Assets balances with:
+
+```ts
+const assets = await universalAccount.getAssets();
+```
+
+This returns a list of tokens and their aggregated balances across all supported chains.
+
+### Primary Assets Response Structure
+
+Each entry in the response above represents a single token type (e.g. ETH, USDT, USDC), including its price, total balance, and per-chain breakdown.
+
+<Note>
+  This unified balance only includes Primary Assets, **_across_** [_any_](/universal-accounts/cha/chains) _chain_ **_the UA holds them on_**. The SDK will then automatically select the most efficient payment source and route assets to execute the transaction.
+</Note>
+
+You can find an example of the `JSON` structure below:
+
+```json JSON [expandable]
+{
+  "assets": [
+    {
+      "tokenType": "eth",                         // Token symbol
+      "price": 1583.89,                           // Current price in USD
+      "amount": 0.002555304503076061,             // Total across all chains
+      "amountInUSD": 4.047321249377142,           // Total USD value
+
+      "chainAggregation": [
+        {
+          "token": {
+            "assetId": "eth",
+            "type": "eth",
+            "chainId": 59144,                     
+            "address": "0x000000...0000",
+            "decimals": 18,
+            "realDecimals": 18,
+            "isMultiChain": true,
+            "isMultiChainDefault": false
+          },
+          "amount": 0.002555304503076061,         
+          "amountInUSD": 4.047321249377142,
+          "rawAmount": 2555304503076061
+        },
+        {
+          "token": {
+            "assetId": "eth",
+            "type": "eth",
+            "chainId": 1,                        
+            "address": "0x000000...0000",
+            "decimals": 18,
+            "realDecimals": 18,
+            "isMultiChain": true,
+            "isMultiChainDefault": false
+          },
+          "amount": 0,
+          "amountInUSD": 0,
+          "rawAmount": 0
+        }
+      ]
+    }
+  ],
+  "totalAmountInUSD": 4.047321249377142
+}
+```
+
+<Info>
+  Use the `chainAggregation` field to display balances per chain.
+</Info>
+
+## Complete Example: Universal Account Balance Widget
+
+Below is a ready-to-use React component that displays a user’s Universal Account portfolio. It aggregates balances and USD values for each supported asset, sorts them by value, and renders a modern dashboard UI.
+
+This widget makes it simple to show users an at-a-glance overview of their holdings—unified across all chains and token types—with just a single API call to `universalAccount.getAssets()`.
+
+You can use or customize this component as a starting point for a wallet dashboard or portfolio summary. 
+
+<Note>
+  This example uses:
+
+  - **ShadCN UI components** (Card, CardContent). Ensure they are [set up in your project](https://ui.shadcn.com/docs/installation).
+  - **Lucide Icons**—specifically the Wallet icon.
+  - **Token icons** must be available at `/public/tokens/[symbol].png` (e.g., `/tokens/eth.png`, `/tokens/usdc.png`). You can customize or replace these as needed.
+</Note>
+
+Below you will find the complete code for the `BalanceWidget` component:
+
+```tsx BalanceWidget.tsx [expandable]
+"use client";
+
+import { Card, CardContent } from "@/components/ui/card";
+import { Wallet } from "lucide-react";
+
+type ChainInfo = {
+  token: {
+    assetId?: string;
+    chainId: number;
+    address: string;
+  };
+  amount: number;
+  amountInUSD: number;
+};
+
+type Asset = {
+  tokenType: string;
+  price: number;
+  amount: number;
+  amountInUSD: number;
+  chainAggregation: ChainInfo[];
+};
+
+type WalletWidgetProps = {
+  assets: Asset[];
+  totalAmountInUSD: number;
+};
+
+/**
+ * Formats a number as currency with appropriate precision
+ */
+const formatCurrency = (value: number, decimals = 2): string => {
+  return value.toLocaleString(undefined, {
+    minimumFractionDigits: decimals,
+    maximumFractionDigits: decimals,
+  });
+};
+
+/**
+ * Formats a crypto amount with appropriate precision
+ */
+const formatCryptoAmount = (value: number): string => {
+  return value.toLocaleString(undefined, {
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 4,
+  });
+};
+
+/**
+ * WalletWidget component displays a user's crypto asset portfolio
+ */
+export default function WalletWidget({
+  assets,
+  totalAmountInUSD,
+}: WalletWidgetProps) {
+  // Filter valid assets with positive USD values
+  const validAssets = assets
+    .filter(
+      (asset) =>
+        asset &&
+        typeof asset.tokenType === "string" &&
+        typeof asset.amount === "number" &&
+        typeof asset.amountInUSD === "number" &&
+        !isNaN(asset.amount) &&
+        !isNaN(asset.amountInUSD) &&
+        asset.amountInUSD > 0
+    )
+    // Sort by USD value (highest first)
+    .sort((a, b) => b.amountInUSD - a.amountInUSD);
+
+  return (
+    <div className="w-full max-w-[800px] mx-auto">
+      <Card className="bg-gradient-to-br from-purple-700 to-purple-900 text-white border-none rounded-xl shadow-xl overflow-hidden relative">
+        <CardContent className="p-8">
+          <div className="absolute top-4 right-4 text-white/70 text-sm font-medium">
+            Universal Account Overview
+          </div>
+
+          {/* Asset list in top right corner */}
+          <div className="absolute top-10 right-4 w-[220px] max-h-[240px] overflow-y-auto bg-purple-800/50 backdrop-blur-sm rounded-xl p-4 space-y-2 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+            {validAssets.map((asset) => (
+              <div
+                key={asset.tokenType}
+                className="flex items-center justify-between p-2"
+              >
+                <div className="flex items-center gap-3">
+                  <div className="h-10 w-10 rounded-full bg-purple-700/50 flex items-center justify-center overflow-hidden">
+                    <img
+                      src={`/tokens/${asset.tokenType.toLowerCase()}.png`}
+                      alt={`${asset.tokenType} logo`}
+                      className="w-8 h-8 object-contain"
+                    />
+                  </div>
+                  <div>
+                    <div className="font-medium text-xs uppercase">
+                      {asset.tokenType}
+                    </div>
+                    <div className="text-xs text-purple-200">
+                      {formatCryptoAmount(asset.amount)}
+                    </div>
+                  </div>
+                </div>
+                <div className="text-right">
+                  <div className="font-medium text-sm">
+                    ${formatCurrency(asset.amountInUSD)}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Main content */}
+          <div className="max-w-xs">
+            <h2 className="text-3xl font-bold mb-1">Your Universal Account</h2>
+            <p className="text-purple-200 mb-6">
+              Track your crypto assets across multiple chains in one place.
+            </p>
+            <div className="flex items-center text-3xl font-bold mt-8">
+              <Wallet className="mr-2 h-6 w-6" />$
+              {formatCurrency(totalAmountInUSD)}
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
+```
+
+You can then pass the data from the Primary Assets response to the `WalletWidget` component:
+
+```tsx
+const primaryAssets = await universalAccount.getPrimaryAssets();
+
+<WalletWidget
+  assets={primaryAssets.assets}
+  totalAmountInUSD={primaryAssets.totalAmountInUSD}
+/>
+```
+
+<Note>
+  This component provides a basic summary of the user's assets. To show more details—including a full chain-by-chain breakdown—you can customize it as needed.
+
+  For a full breakdown example, refer to the [Universal Accounts with Ethers demo](https://github.com/soos3d/ethers-universal-accounts/blob/main/ethers-universal-accounts/app/components/Portfolio.tsx), or see it [live here](https://ethers-universal-accounts.vercel.app/).
+</Note>
+
+## What's Next?
+
+Explore the SDK reference for more advanced capabilities.
+
+<CardGroup cols="2">
+  <Card title="SDK Reference" icon="code" href="/universal-accounts/ua-reference/desktop/web">
+    Learn more about the SDK APIs.
+  </Card>
+  <Card title="Supported Chains" icon="link" href="/universal-accounts/cha/chains">
+    See the different chains supported by the SDK.
+  </Card>
+</CardGroup>

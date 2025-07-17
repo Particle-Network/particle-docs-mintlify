@@ -1,0 +1,14 @@
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px; /* Adjust the gap between items as needed */
+    padding: 20px;
+  }
+  .grid-container a {
+    display: block;
+    text-align: center; /* Center align the images */
+  }
+  .grid-container img {
+    width: 100%;
+    height: auto;
+  }

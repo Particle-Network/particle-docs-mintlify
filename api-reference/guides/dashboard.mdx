@@ -1,0 +1,238 @@
+---
+title: "Particle Network's Dashboard"
+sidebarTitle: "Dashboard"
+description: "Overview of the Particle Network Dashboard."
+---
+
+Central to the implementation of Particle Network's Smart Wallet-as-a-Service and BTC Connect SDKs, the Particle Network [Dashboard](https://dashboard.particle.network) acts as a central source for authenticating your project, tracking users, managing your paymaster instance, customizing the authentication interface, and more.
+
+This page will provide an overview of each major functionality offered by the Particle Network Dashboard.
+
+***
+
+<Frame caption="Particle Network dashboard.">
+<iframe 
+width="800"
+height="600" 
+src="https://dashboard.particle.network"> 
+</iframe>
+</Frame>
+
+***
+
+## Project Management
+
+Every SDK provided by Particle Network requires the usage of three key values for authentication; your **Project ID**, **Client Key**, and **App ID**. These values can only be retrieved through the creation of a project and associated application through the Particle dashboard.
+
+The Particle dashboard's main purpose is to manage specific instances of Particle's Wallet Abstraction stack; this is done through two types of containers:
+
+1. **Project**, a collection of multiple applications.  
+   A project contains data and configurations relevant to the applications it contains.
+
+<div className="flex justify-center">
+<img
+  className="block h-64 dark:hidden"
+  src="/guides/wallet-as-a-service/images/project.png"
+  alt="Particle Network project."
+/>
+<img
+  className="hidden h-64 dark:block"
+  src="/guides/wallet-as-a-service/images/project.png"
+  alt="Particle Network project."
+/>
+</div>
+
+
+2. **Application**, a specific instance of Particle Auth or BTC Connect on either iOS, Android, or Web.  
+   An application, denominated by the **App ID**, acts as the identifier for a given instance of Particle Network. During construction, applications have two options to consider:
+   - Multi-device login, determining whether or not a user will maintain the same account across multiple devices (as it pertains to social logins, if applicable).
+   - Login Redirect Link, the ability to add externally define redirect links to implement custom onboarding flows post-login.
+
+<div className="flex justify-center">
+<img
+  className="block h-64 dark:hidden"
+  src="/guides/wallet-as-a-service/images/application.png"
+  alt="Particle Network application."
+/>
+<img
+  className="hidden h-64 dark:block"
+  src="/guides/wallet-as-a-service/images/application.png"
+  alt="Particle Network application."
+/>
+</div>
+
+## User Activity
+
+With an application defined and active, the Particle dashboard will measure and reflect the activity of your application(s) through the "Activity" tab. This will track the following data points:
+
+- Total users, as indicated through the total number of **wallet connections** or **social logins** done through Particle.
+- New users, those who recently onboarded to your application(s).
+- Active users, those who frequently connect to your application(s).
+
+<div className="flex justify-center">
+<img
+  className="block h-64 dark:hidden"
+  src="/guides/wallet-as-a-service/images/user-activity.png"
+  alt="Particle Network user activity."
+/>
+<img
+  className="hidden h-64 dark:block"
+  src="/guides/wallet-as-a-service/images/user-activity.png"
+  alt="Particle Network user activity."
+/>
+</div>
+
+- Verification messages (total, SMS, and email), tracking the number of verification messages sent to users through the email or phone login process.
+
+<div className="flex justify-center">
+<img
+  className="block h-64 dark:hidden"
+  src="/guides/wallet-as-a-service/images/verification-sms.png"
+  alt="Particle Network verification."
+/>
+<img
+  className="hidden h-64 dark:block"
+  src="/guides/wallet-as-a-service/images/verification-sms.png"
+  alt="Particle Network verification."
+/>
+</div>
+
+## Team
+
+In scenarios where multiple individuals need access to a given project and the applications within it on the Particle dashboard, the "Team" tab can be used to manage these access controls.
+
+New team members can be added as either an "Administrator" with write permissions (the ability to add and edit applications, change branding, manage custom authentication, etc.) or a "Viewer" with exclusively read permissions (for viewing the contents of the dashboard).
+
+This is handled on a per-project basis; giving someone access to your project will include access to all of the applications within it.
+
+<div className="flex justify-center">
+<img
+  className="block h-64 dark:hidden"
+  src="/guides/wallet-as-a-service/images/team.png"
+  alt="Particle Network team."
+/>
+<img
+  className="hidden h-64 dark:block"
+  src="/guides/wallet-as-a-service/images/team.png"
+  alt="Particle Network team."
+/>
+</div>
+
+## Users
+
+Offering a more granular view of the users represented within the "Activity" tab, the "Users" tab provides a list of every user who has either connected to your application through Particle Connect (or BTC Connect), or logged in through social login.
+
+Each user entry includes their social account (if applicable), their EVM address, and their Solana address (if a user has only ever used an EVM or Solana address within your application, the other will remain blank). Additionally, timestamps for the date in which the user signed up and was last active are also provided. Similar information is found through the `UserInfo` object attached to each user (see [getUserInfo](/api-reference/auth/server/getuserinfo) for more information).
+
+For users who have connected a wallet, only an address and associated timestamps will be available.
+
+<div className="flex justify-center">
+<img
+  className="block h-64 dark:hidden"
+  src="/guides/wallet-as-a-service/images/users.png"
+  alt="Particle Network users."
+/>
+<img
+  className="hidden h-64 dark:block"
+  src="/guides/wallet-as-a-service/images/users.png"
+  alt="Particle Network users."
+/>
+</div>
+
+## Custom
+
+Particle Network supports custom authentication flows through JWT. For developers who need a more customizable, self-hosted approach to authentication (existing outside of Particle's built-in OAuth methods), JWT-based authentication is available, allowing for the implementation of a custom OAuth provider or account flow. Currently, we support RS256.
+
+The "Custom" page allows you to establish your custom JWT configuration through the following parameters:
+
+- JWKs URI (JWKs can be made through a tool like [this](https://russelldavies.github.io/jwk-creator/)), see the [attached example](https://dev-qr6-59ee.us.auth0.com/.well-known/jwks.json) as a reference point.
+- Custom ID Key.
+- Optionally, Values Validation Rules.
+- JWT to Verify.
+
+<div className="flex justify-center">
+<img
+  className="block h-64 dark:hidden"
+  src="/guides/wallet-as-a-service/images/custom.png"
+  alt="Particle Network custom."
+/>
+<img
+  className="hidden h-64 dark:block"
+  src="/guides/wallet-as-a-service/images/custom.png"
+  alt="Particle Network custom."
+/>
+</div>
+
+## Paymaster
+
+The Particle dashboard is also used to fund and monitor Particle's [Omnichain Paymaster](/guides/integrations/aa/paymaster), used for sponsoring transactions across 35+ chains. Particle's Omnichain Paymaster takes stablecoin deposits from one chain (such as Ethereum or BNB Chain) and automatically converts it to cover transaction fees on any other chain on which the paymaster is queried ([sponsorUserOperation](/api-reference/aa/paymaster/sponsoruseroperation)).
+
+Thus, the "Paymaster" page is used to deposit stablecoins, manage sponsorship conditions, and view data such as deposit and consumption records.
+
+To learn more about the process of configuring Particle's Omnichain Paymaster, take a look at [Setting up the Particle Omnichain Paymaster](/guides/integrations/aa/paymaster).
+
+<div className="flex justify-center">
+<img
+  className="block h-64 dark:hidden"
+  src="/guides/wallet-as-a-service/images/paymaster.png"
+  alt="Particle Network paymaster."
+/>
+<img
+  className="hidden h-64 dark:block"
+  src="/guides/wallet-as-a-service/images/paymaster.png"
+  alt="Particle Network paymaster."
+/>
+</div>
+
+## (Node RPC) Endpoint
+
+Particle Network provides access to authenticated RPC endpoints for the majority of chains it supports; these are free-to-use through either HTTPS or WSS. The "Endpoint" page allows you to retrieve an authenticated HTTPS/WSS URL for a given chain selected through the dropdown menu.
+
+To learn more about Particle Network's RPC nodes, head to [RPC Nodes](/guides/integrations/nodes/nodes).
+
+<div className="flex justify-center">
+<img
+  className="block h-64 dark:hidden"
+  src="/guides/wallet-as-a-service/images/endpoint.png"
+  alt="Particle Network endpoint."
+/>
+<img
+  className="hidden h-64 dark:block"
+  src="/guides/wallet-as-a-service/images/endpoint.png"
+  alt="Particle Network endpoint."
+/>
+</div>
+
+## (Node RPC) Stats
+
+Tying in with the previous page, the "Stats" tab allows you to view details analytics for requests sent to endpoints authenticated by your `projectId`, `clientKey`, and `serverKey`. This will update with information like your distribution of methods (for example, `eth_getBalance`), response success rate, total request count, etc.
+
+<div className="flex justify-center">
+<img
+  className="block h-64 dark:hidden"
+  src="/guides/wallet-as-a-service/images/stats.png"
+  alt="Particle Network stats."
+/>
+<img
+  className="hidden h-64 dark:block"
+  src="/guides/wallet-as-a-service/images/stats.png"
+  alt="Particle Network stats."
+/>
+</div>
+
+***
+
+<Note>📹 A dashboard walkthrough video is available.</Note>
+
+<Frame>
+<iframe 
+width="600"
+height="400" 
+src="https://www.youtube.com/embed/d7DYCMNDmjo" 
+title="Particle Dashboard Setup in Just 3 Minutes" 
+alt="Particle Dashboard Setup in Just 3 Minutes"
+frameborder="0"
+allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+allowfullscreen
+></iframe>
+</Frame>

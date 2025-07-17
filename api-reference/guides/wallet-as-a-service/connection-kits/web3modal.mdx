@@ -1,0 +1,148 @@
+---
+title: "Web3Modal"
+description: "Integrate social logins within Web3Modal through Particle Auth."
+---
+
+## Implementing Particle Auth Core within Web3Modal
+
+WalletConnect's Web3Modal is one of the most widely used connection kits to date, acting as a seamless, lightweight solution to facilitate wallet connection and utilization within applications built on EVM-compatible blockchains. Particle Auth Core, materialized as "Particle Wallet", is directly compatible with Web3Modal, resulting in the introduction of social logins natively to the Web3Modal interface. For developers already using Web3Modal, Particle Auth Core can be added in just a few lines of code, as this page will cover.
+
+<div className="flex justify-center">
+<img
+  className="block h-64 dark:hidden"
+  src="/guides/wallet-as-a-service/connection-kits/images/web3modal.png"
+  alt="Particle Network Web3modal."
+/>
+<img
+  className="hidden h-64 dark:block"
+  src="/guides/wallet-as-a-service/connection-kits/images/web3modal.png"
+  alt="Particle Network Web3modal."
+/>
+</div>
+
+***
+
+## Particle Auth Core within Web3Modal (via `@web3modal/ethers`)
+
+To begin, we'll be walking through the process of implementing Particle Auth Core within Web3Modal through `@web3modal/ethers`. A complete demo repository for this example can be found [here](https://github.com/TABASCOatw/particle-web3modal-boilerplate).
+
+Starting with the first example, Particle Auth Core can be added as an option within Web3Modal by simply configuring and initializing the SDK through `createWeb3Modal`, then placing the resulting instance within Particle Auth Core's `AuthCoreContextProvider` React component, which will then wrap your core application component containing wallet connection and handling logic (by using `<w3m-button>`, for example).
+
+This can be achieved through the following steps:
+
+1. **Configuration of supported chains within Web3Modal**. Required to initialize Web3Modal through `createWeb3Modal`, you'll first need to configure one or multiple chains to be supported within your application. This can be done by simply defining objects containing the following values:
+
+   - `chainId`
+   - `name`
+   - `currency`
+   - `explorerUrl`
+   - `rpcUrl`
+
+   For example, configuring Ethereum Mainnet and Ethereum Goerli would be done by defining the objects outlined below: 
+
+   ```typescript typescript
+   const mainnet = {
+       chainId: 1,
+       name: 'Ethereum',
+       currency: 'ETH',
+       explorerUrl: 'https://etherscan.io',
+       rpcUrl: 'https://cloudflare-eth.com',
+   };
+
+   const goerli = {
+       chainId: 5,
+       name: 'Ethereum Goerli',
+       currency: 'ETH',
+       explorerUrl: 'https://goerli.etherscan.io',
+       rpcUrl: 'https://ethereum-goerli.publicnode.com',
+   };
+   ```
+2. **Defining application metadata**. In addition to configuring the chains you'll be using with Web3Modal, you also have the opportunity to define application-specific metadata, including:
+   - `name`, the name of your application.
+   - `description`, a description of your application.
+   - `url`, the expected origin URL of your application (which will be using Web3Modal).
+   - `icons`, one or multiple icons representing your project.  
+     An example of this that uses placeholder data (which is still valid) can be found below:
+
+   ```typescript typescript
+   const metadata = {
+       name: 'My Website',
+       description: 'My Website description',
+       url: 'https://mywebsite.com', // origin must match your domain & subdomain
+       icons: ['https://avatars.mywebsite.com/'],
+   };
+   ```
+3. **Configuring and initializing Web3Modal**. Using `createWeb3Modal` from `@web3modal/ethers/react`, an instance of Web3Modal can be created. `createWeb3Modal` will take various parameters, including those we defined above. The three key required parameters are the following:
+   - `ethersConfig`, which in this example is `defaultConfig` loaded with `metadata`.
+   - `chains`, an array of supported chains you intend to use.
+   - `projectId`, your WalletConnect project ID (retrieved from the [WalletConnect dashboard](https://cloud.walletconnect.com)).  
+     Additional parameters to further customize Web3Modal can be included, such as `enableOnramp`, `enableAnalytics`, etc. See the example below for a standard implementation of `createWeb3Modal`.
+  
+   ```typescript typescript
+   const web3Modal = createWeb3Modal({
+       ethersConfig: defaultConfig({ metadata }),
+       chains: [mainnet, goerli],
+       projectId // Retrieved from https://cloud.walletconnect.com
+   });
+   ```
+4. **Initiating AuthCoreContextProvider**. With `web3Modal` (or the equivalent within your application) defined, you'll need to place it within the `web3Modal` property when configuring `AuthCoreContextProvider` (the primary React component used for initializing Particle Auth Core). `AuthCoreContextProvider`, with `web3Modal` defined, should wrap your core application component containing your "Connect Wallet" button (through `<w3m-button>`).
+
+As a result of the four steps outlined above, your implementation of Web3Modal through `AuthCoreContextProvider` may look similar to the snippet shown below.
+
+```typescript typescript
+import { AuthCoreContextProvider } from '@particle-network/auth-core-modal';
+import { createWeb3Modal, defaultConfig } from '@web3modal/ethers/react';
+import { type ReactNode } from 'react';
+
+// 1. Get projectId at https://cloud.walletconnect.com
+const projectId = process.env.REACT_APP_WALLETCONNECT_PROJECT_ID;
+
+// 2. Set chains
+const mainnet = {
+    chainId: 1,
+    name: 'Ethereum',
+    currency: 'ETH',
+    explorerUrl: 'https://etherscan.io',
+    rpcUrl: 'https://cloudflare-eth.com',
+};
+
+const goerli = {
+    chainId: 5,
+    name: 'Ethereum Goerli',
+    currency: 'ETH',
+    explorerUrl: 'https://goerli.etherscan.io',
+    rpcUrl: 'https://ethereum-goerli.publicnode.com',
+};
+
+// 3. Create modal
+const metadata = {
+    name: 'My Website',
+    description: 'My Website description',
+    url: 'https://mywebsite.com', // origin must match your domain & subdomain
+    icons: ['https://avatars.mywebsite.com/'],
+};
+
+const web3Modal = createWeb3Modal({
+    ethersConfig: defaultConfig({ metadata }),
+    chains: [mainnet, goerli],
+    projectId,
+    enableAnalytics: true,
+});
+
+const ParticleProvider = ({ children }: { children: ReactNode }) => {
+    return (
+        <AuthCoreContextProvider
+            options={{
+                projectId: process.env.REACT_APP_PROJECT_ID,
+                clientKey: process.env.REACT_APP_CLIENT_KEY,
+                appId: process.env.REACT_APP_APP_ID,
+                web3Modal,
+            }}
+        >
+            {children}
+        </AuthCoreContextProvider>
+    );
+};
+
+export default ParticleProvider;
+```

@@ -1,0 +1,89 @@
+---
+title: "Lesson 1: Initialize the UA"
+description: "Learn how to create and configure a Universal Account for your dApp."
+sidebarTitle: "Lesson 1: Initialize the UA"
+---
+
+In this lesson, you'll learn how to set up a Universal Account after a user connects their wallet. By the end, you'll be able to initialize a UA instance that works across multiple blockchains.
+
+Before getting started, make sure you understand the following concepts:
+
+<CardGroup cols={2}>
+<Card title="Familarize with Chain Abstraction" icon="layer-group" href="/intro/what-is-cha"> Understand the concept of [Chain Abstraction](/intro/what-is-cha)</Card>
+<Card title="Familarize with Universal Accounts" icon="user" href="/intro/universal-accounts"> Understand the concept of [Universal Accounts](/intro/universal-accounts)</Card>
+</CardGroup>
+
+## Lesson Overview
+
+This lesson covers:
+1. Setting up wallet connection with Ethers.js
+2. Importing and configuring the Universal Account SDK
+3. Initializing a Universal Account instance
+4. Configuring advanced features like slippage tolerance and gas abstraction
+
+## Prerequisites
+
+Before starting, make sure you have:
+
+- Cloned the [starter app repository](https://github.com/soos3d/ua-learn-series)
+- Obtained a Universal Account Project ID (Contact the Particle team to get an Access Key)
+- Basic familiarity with React and Ethers.js
+
+## Lesson 1 Video
+
+The video below walks you through the first lesson:
+
+<iframe
+  width="100%"
+  height="500"
+  src="https://www.youtube.com/embed/xHSepSlrRf8"
+  title="Lesson 1: Initialize the UA"
+  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+  allowfullscreen="true"
+></iframe>
+
+<Note>
+  The Universal Accounts SDK is currently in private beta. Contact the Particle team to request access and get your Project ID.
+</Note>
+
+## TL;DR
+
+The video covers setting up a basic Web3 dApp using `ethers.js` as the provider and then initializing a Universal Account. Here's a quick recap:
+
+You can access and import the `UniversalAccount` class in your app as follows:
+
+```tsx
+import { UniversalAccount } from "@GDdark/universal-account";
+```
+
+Then, initialize the UA instance once a user has connected like in the following example:
+
+```tsx  
+const ua = new UniversalAccount({
+  projectId: process.env.NEXT_PUBLIC_UA_PROJECT_ID || "",  // Your UA Project ID
+  ownerAddress: address,  // User's connected wallet address
+  
+  // Optional configuration
+  tradeConfig: {
+    slippageBps: 100,        // 1% slippage tolerance
+    universalGas: true,      // Enable gas abstraction
+  },
+});
+```
+
+<Tip>
+  The `slippageBps` value is in basis points: 100 = 1% slippage tolerance.
+  Setting `universalGas: true` allows users to pay transaction fees with PARTI tokens on any blockchain.
+</Tip>
+
+You can find more details in the full [Universal Accounts SDK Reference](/universal-accounts/ua-reference/desktop/web).
+
+You can now use the `ua` instance to fetch data (addresses and balances) and send transactions across multiple blockchains, which we'll cover in the next lessons.
+
+<Card title="Lesson 2: Fetch Addresses and Balances" icon="coins" href="./lesson-2">
+**Ready to continue?** Head over to Lesson 2: Fetch Addresses and Balances.
+</Card>
+
+<Info>
+**Having issues?** Contact us via the [Support Telegram Bot](https://t.me/particle_developer_bot).
+</Info>

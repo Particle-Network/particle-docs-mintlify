@@ -1,0 +1,108 @@
+---
+title: "Omnichain Paymaster"
+description: "Our proprietary Paymaster allows developers to recharge and spend across different chains."
+---
+
+***
+
+Particle Network’s Paymaster is a specialized tool designed to make gas payments easier and friendlier for end users across chains, leveraging Particle Network's Omnichain Account Abstraction design. This service, which has helped us sponsor over 500k UserOperations across different networks in the previous month, is already fully integrated with Particle’s [Modular Smart WaaS](/landing/wallet-abstraction/waas/overview) (Wallet-as-a-Service).
+
+## Advantages of the Particle Paymaster
+
+Particle's Paymaster offers several compelling advantages, making it a powerful component of the Omnichain AA ecosystem:
+
+- **Multi-chain usage:** Once developers deposit USDT, they can sponsor UserOps on every EVM-compatible chain.
+- **Adaptable sponsorship logic using Webhooks:** Configuring webhooks allows developers to accurately control which UserOP can be accepted by the cross-chain Paymaster
+- **Monitoring:** Developers are able to monitor every UserOp they sponsored.
+- **Expiration times:** Developers can define an expiration time for the Paymaster signature. Once the UserOperation reaches its expiration, the Paymaster signature will automatically lapse.
+
+## How to use
+
+1. Use [Particle Network's AA SDKs](/api-reference/aa/sdks/desktop/web.mdx), Particle's Paymaster will be automatically included, and no extra configuration is needed;
+2. Use [Particle Paymaster's RPC](/api-reference/aa/paymaster) directly to plug the multi-chain paymaster in your AA project.
+
+## Webhooks
+
+Configuring webhooks allows developers to accurately control which UserOP can be accepted by the Paymaster. We use two types of webhooks:
+
+1. Before the Paymaster signs— `before_paymaster_sign`.
+2. After the Paymaster signs— `after_paymaster_sign`.
+
+Every time a Webhook request is made, a signature for the body is generated, which developers can verify to determine whether the request was sent by Particle Network. A unique public and private key (RSA-2048) is generated for each project. This key can be downloaded from the users’ [Particle dashboard page](https://dashboard.particle.network/#/login) for verification.
+
+<Frame caption="Webhooks in the Particle Network dashboard.">
+<div className="flex justify-center">
+<img
+  className="block h-64 dark:hidden"
+  src="/api-reference/wallet-abstraction/waas/images/webhooks.png"
+  alt="Webhooks in the Particle Network dashboard."
+/>
+<img
+  className="hidden h-64 dark:block"
+  src="/api-reference/wallet-abstraction/waas/images/webhooks.png"
+  alt="Webhooks in the Particle Network dashboard."
+/>
+</div>
+</Frame>
+
+### Webhook: `before_paymaster_sign`
+
+This hook will be triggered before the Paymaster signs. The Paymaster will determine whether to sign the UserOP based on the status code returned by the Hook. It includes:
+
+- Body
+  - `chainId`
+  - `UserOp` - UserOperation struct.
+  - `entryPoint` - The entryPoint address.
+  - `parsed` - Transaction struct. The Paymaster will attempt to parse the calldata of the UserOP. If it cannot be parsed, this field may not exist.
+- Response  
+  If the status code of the response returned is 200, then the Paymaster will accept the UserOP and sign it.
+
+### Webhook: `after_paymaster_sign`
+
+This hook will trigger after the Paymaster signs. It includes:
+
+- Body
+  - `chainId`
+  - `UserOp` - UserOperation struct.
+  - `entryPoint` - The entryPoint address.
+  - `parsed` - Transaction struct. The Paymaster will attempt to parse the calldata of the `UserOP`. If it cannot be parsed, this field may not exist.
+
+### Whitelist Smart Contract
+
+Developers can configure a whitelist of contract methods they want to sponsor in the backend. This means that after configuration, our server will only provide the Paymaster’s signature for the specified contract methods.
+
+<Frame caption="Whitelist Smart Contracts for Paymaster on Dashbaord">
+![Whitelist Smart Contracts for Paymaster on Dashbaord](/landing/wallet-abstraction/waas/images/paymaster-whitelist.png)
+</Frame>
+
+## Sponsorship Policy
+
+The simplest way is to configure a whitelist of contract methods to sponsor. However, using Webhooks provides more flexibility, allowing for unlimited sponsorship strategies through any programmatic logic.
+
+Developers can use Webhooks to implement any sponsorship logic they wish in conjunction with the Paymaster.
+
+For the `before_paymaster_sign` webhook, we return all the data necessary:
+
+- projectUuid
+- chainId
+- `UserOp`
+- and parsed data:
+  - accountType: BICONOMY, CYBERCONNECT, SIMPLE
+  - txs
+- Any policy
+  - You can use chainId to decide which chains you want to sponsor.
+  - You can use `UserOp` to decide which user address(sender) you want to sponsor.
+  - You can use `UserOp` to calculate the gas fee and decide whether to sponsor or not.
+  - You can use the accountType and txs to use them as a smart contract whitelist or blacklist.
+
+This allows, for example, for the following business scenarios:
+
+- A GameFi project to allow every new user to mint a game NFT gaslessly.
+- A financial platform can sponsor gas for every deposit, so their users don't need to learn the concept of gas.
+- An NFT platform can enable users to trade NFTs without gas, using their own fees to cover gas.
+
+In many cases, programmatic sponsorship policies can be used and adapted to create a friendly experience and simplify experiences where it matters most.
+
+<Tip> 
+To learn more about Particle's Account Abstraction Stack, head over to the relevant [SDK reference pages](/api-reference/aa/introduction).
+</Tip>

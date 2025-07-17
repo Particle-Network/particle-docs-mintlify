@@ -1,0 +1,120 @@
+---
+title: "Web (Desktop) Quickstart - AA"
+description: "Quickstart guide for leveraging Particle’s AA stack in web applications."
+sidebarTitle: "Web (Desktop) Quickstart"
+---
+
+# Implementing Particle's Modular AA Stack within Web Applications
+
+Although Wallet-as-a-Service extends the flexibility of EOAs, Particle Network recently decided to focus on account abstraction as the primary means of interaction within applications, facilitated by Wallet-as-a-Service. Thus, Particle has recently released its modular AA stack, a collection of technologies and SDKs natively compatible with Wallet-as-a-Service. This release happened alongside any other wallet that exposes an EIP-1193 provider, or any application leveraged account abstraction through alternative means.
+
+Specifically, this stack includes:
+
+- **The Particle Bundler:** Particle Network's in-house, open-source Bundler, responsible for almost 1 million UserOperations.
+- **Particle's Omnichain Paymaster:** Facilitates multi-chain USDT-based gas sponsorships from a single deposit.
+- **Particle's AA SDKs:** These streamline the implementation of AA  natively with Particle's Wallet-as-a-Service.
+
+Within this page, you'll find a quick rundown on installing, configuring, and using Particle's AA SDK (tying in directly with its Bundler and Paymaster). For information on Particle Network's Modular Smart Wallet-as-a-Service, take a look at [Modular Smart Wallet-as-a-Service](/landing/wallet-abstraction/waas/overview), or if you'd like to dive into the technical details a bit more, head over to [Introduction to Smart Wallet-as-a-Service](/api-reference/aa/introduction).
+
+***
+
+## Installing and configuring the AA SDK
+
+Particle currently categorizes its various AA SDKs by platform. Thus, for desktop, everything is unified into a single SDK, `@particle-network/aa`.
+
+<Note>The AA SDK is open-source on [Particle Network's GitHub](https://github.com/Particle-Network/aa-sdk).</Note>
+
+As mentioned, the Particle AA SDK can be installed through commands such as:
+
+```shell
+npm install @particle-network/aa
+```
+
+Or
+
+```shell
+yarn add @particle-network/aa
+```
+
+Upon installation, you can immediately configure a smart account to use, derived from (owned by) a wallet connected to a provided EIP-1193 provider object. Within this configuration, you'll have the ability to choose between either a Biconomy (`BICONOMY`), CyberConnect (`CYBERCONNECT`), or SimpleAccount (`SIMPLE`) instance. In this same configuration, you'll be able to define the usage of either Particle Network's native Paymaster (will be active if `paymasterApiKeys` is left blank), or Biconomy's paymaster (only active if `paymasterApiKeys` is defined). An example of this configuration is below:
+
+```typescript TypeScript
+import { SmartAccount } from '@particle-network/aa';
+  
+const smartAccount = new SmartAccount(provider, {
+    projectId: 'Particle Network project ID',
+    clientKey: 'Particle Network client key',
+    appId: 'Particle Network app ID',
+    aaOptions: {
+        accountContracts: {  // 'BICONOMY', 'CYBERCONNECT', 'SIMPLE'
+            BICONOMY: [
+                {
+                    version: '1.0.0',  
+                    chainIds: [x, xx],
+                },
+                {  
+                    version: '2.0.0',
+                    chainIds: [x, xx],
+                }
+            ],
+            CYBERCONNECT: [
+                {
+                    version: '1.0.0',
+                    chainIds: [x, xx], 
+                }
+            ],
+            SIMPLE: [
+                {
+                    version: '1.0.0',
+                    chainIds: [x, xx],
+                }
+            ],
+        },
+        paymasterApiKeys: [{
+            chainId: 1,  
+            apiKey: 'Biconomy Paymaster API Key',
+        }]
+    }, 
+});
+
+smartAccount.setSmartAccountContract({ name: 'BICONOMY', version: '2.0.0' });
+```
+
+From this point, you can either directly construct, sponsor, and send UserOperations (alongside the initialization of session keys and whatnot if you'd like) through the newly initialized `smartAccount` object, or through a traditional Web3 library such as ethers or Web3.js; the latter is done through the construction of an 1193 provider object, `AAWrapProvider`.
+
+```typescript TypeScript
+import { AAWrapProvider, SendTransactionMode } from '@particle-network/aa';
+import Web3 from "web3";
+
+// .UserPaidNative, .Gasless, or .UserSelect
+const wrapProvider = new AAWrapProvider(smartAccount, SendTransactionMode.UserPaidNative); 
+const web3 = new Web3(wrapProvider); 
+```
+
+***
+
+## Master reference
+
+For a complete reference of each method available on `smartAccount`, see the table below, or for more usage information, take a look at the AA Web SDK rundown at [AA Web SDK](/api-reference/aa/sdks/desktop/web).
+
+| Class        | Methods                 | Parameters (\* indicates optional)  |
+| ------------ | ----------------------- | ----------------------------------- |
+| SmartAccount | constructor             | provider, config                    |
+| SmartAccount | setSmartAccountContract | contract                            |
+| SmartAccount | getChainId              |                                     |
+| SmartAccount | getAccountConfig        |                                     |
+| SmartAccount | getPaymasterApiKey      |                                     |
+| SmartAccount | getFeeQuotes            | tx                                  |
+| SmartAccount | buildUserOperation      | tx, feeQuote, tokenPaymasterAddress |
+| SmartAccount | signUserOperation       | userOpHash, userOp                  |
+| SmartAccount | sendUserOperation       | userOpHash, userOp                  |
+| SmartAccount | sendSignedUserOperation | userOp, sessionDataParams\*         |
+| SmartAccount | sendTransaction         | tx, feeQuote, tokenPaymasterAddress |
+| SmartAccount | getAccount              |                                     |
+| SmartAccount | getAddress              |                                     |
+| SmartAccount | getOwner                |                                     |
+| SmartAccount | isDeployed              |                                     |
+| SmartAccount | deployWalletContract    |                                     |
+| SmartAccount | sendRpc                 | arg                                 |
+| SmartAccount | createSessions          | options                             |
+| SmartAccount | validateSession         | targetSession, sessions             |

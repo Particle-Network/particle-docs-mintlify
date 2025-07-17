@@ -1,0 +1,171 @@
+---
+title: "Setting up the Particle Omnichain Paymaster"
+sidebarTitle: "Omnichain Paymaster"
+---
+
+## Particle Network's Omnichain Paymaster
+
+Particle Network hosts a proprietary Paymaster capable of omnichain gas sponsorships from a single USDT deposit. This allows developers to deposit on one chain and have it automatically converted to the native token of EVM chains in which the request transaction has to be sponsored. In addition to this, Particle's Omnichain Paymaster allows for complete programmatic customization of sponsorship logic through webhooks. While our AA SDK supports any Paymaster (including Biconomy's, natively), Particle Network's Omnichain Paymaster presents a built-in, seamless mechanism for gas sponsorship.
+
+***
+
+## Funding the Paymaster
+
+To fund your instance of the Paymaster and thus begin sponsoring gas, you'll need to head over to the [Particle Network dashboard](https://dashboard.particle.network) and navigate to the "Paymaster" menu. Upon entering this menu, you can deposit USDT on either Ethereum or BNB Chain. The chain you chose does not affect the functionality of the Paymaster, only the origin of your deposit. 
+
+Upon sponsorship request, your USDT will be converted into the native token of the chain in question. You'll need to connect a wallet (or social login through Particle Auth) to deposit, tying the funds directly with your project (specified by your `projectId`, `clientKey`, and `appId`--you'll need to use these values within Particle's AA SDK or the [Paymaster RPC](/api-reference/aa/paymaster/paymasterbalance) to authenticate it).
+
+Once you've deposited USDT, you're can define sponsorship conditions and sponsoring transactions on any supported EVM chain (see [Network Coverage](/guides/network-coverage)).
+
+<Note>USDT does not need to be deposited for sponsorship on testnets.</Note>
+
+<div className="flex justify-center">
+<img
+  className="block h-64 dark:hidden"
+  src="/guides/integrations/aa/images/paymaster.png"
+  alt="Particle Paymaster."
+/>
+<img
+  className="hidden h-64 dark:block"
+  src="/guides/integrations/aa/images/paymaster.png"
+  alt="Particle Paymaster."
+/>
+</div>
+
+***
+
+## Configuring webhooks (sponsorship conditions)
+
+To set the conditions for the Paymaster to sponsor transactions, you'll need to use two different webhooks: `before_paymaster_sign` and `after_paymaster_sign`. The combination of these hooks, expressed through a webhook URL, set the sponsorship conditions (`true`,`200` or `false`, `400`) on whether or not a specific UserOperation should be sponsored).
+
+### `before_paymaster_sign`
+
+`before_paymaster_sign` is hit before the Paymaster signs a given user operation (qualifies it as sponsored), thus `before_paymaster_sign` will set the core logic behind whether or not a UserOperation should be signed by the Paymaster. This hook should take, as a request body:
+
+- `projectUuid` - the project ID associated with your application (retrieved from the [Particle dashboard](https://dashboard.particle.network)).
+- `chainId` - the specific chain that sponsorship is requested on.
+- `userOp` - a UserOperation object.
+  - `sender`
+  - `nonce`
+  - `initCode`
+  - `callData`
+  - `callGasLimit`
+  - `paymasterAndData`
+  - `signature`
+  - `verificationGasLimit`
+  - `maxFeePerGas`
+  - `maxPriorityFeePerGas`
+  - `preVerificationGas`
+- `entryPoint` - the Entry Point address to be used, this should be `0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789`.
+- `parsed` - the UserOperation deconstructed into a standard transaction object.
+  - `accountType` - the smart account implementation being used, `SIMPLE`, `BICONOMY`, or `CYBERCONNECT`.
+  - `txs` - an array of transaction objects.
+    - `to`
+    - `value`
+    - `data`
+
+Upon receiving this request, logic should be ran and return either `200` for a confirmed sponsorship, or `400` for a rejected sponsorship. See the below snippet for an example of what this request would look like:
+
+```json JSON
+POST https://your-domain/hook-before-paymaster-sign
+
+Header
+x-particle-signature: WH/6YifcF2dad3qbS4HkjQ7EboDXNTcIfCH4cCW0lfOWJsQR1GPoHZpqtqr3XedAG3bi+RlTUGmetJiaiCqflr1+dWuXFsvrML7LNu2wWNDzlGAEM3iLwrdHl1vIZx6ftlbYyyQD4CHEBpDhbnrDn2IGj64dF8nmho4gc/PNQQUTBJL+Xy0MEHVLSNSDeRMA5/BhwFjiufvDqmW3verX/ynvUAVLnLiAWkVnN2aBF4TncsqV37W8EN3q2SILpdnbG2UWzeawg+0owtw9xgo4QXgqi8PfYrd3ta5PxjoenbUA7OBJtXt4R/TwYs8Vb+mggJ+ZbrJrVd45F8U9hNt7bQ==
+
+BODY
+{
+    "type": "before_paymaster_sign",
+    "chainId": 80001,
+    "projectUuid": "ef6c29f5-ad2b-545c-ad0c-54441068b71d",
+    "userOp": {
+        "sender": "0x2e9661BDA6201F97430dcc1541A1579b83980DD1",
+        "nonce": "0x05",
+        "initCode": "0x",
+        "callData": "0xb61d27f6000000000000000000000000ac6a87c681a5ed4cb58bc4fa7bf81a83b928c83c00000000000000000000000000000000000000000000000000005af3107a400000000000000000000000000000000000000000000000000000000000000000600000000000000000000000000000000000000000000000000000000000000000",
+        "callGasLimit": "0x9acc",
+        "paymasterAndData": "0x",
+        "signature": "0x",
+        "verificationGasLimit": "0x0186a0",
+        "maxFeePerGas": "0xa79dd02a",
+        "maxPriorityFeePerGas": "0xa79dd015",
+        "preVerificationGas": "0xc5dc"
+    },
+    "entryPoint": "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789",
+    "parsed": {
+        "accountType": "SIMPLE",
+        "txs": [
+            {
+                "to": "0xaC6A87c681A5Ed4cb58bC4fa7bF81a83b928C83C",
+                "value": "0x5af3107a4000",
+                "data": "0x"
+            }
+        ]
+    }
+}
+
+```
+
+### `after_paymaster_sign`
+
+`after_paymaster_sign` will be hit after a signature occurs post-qualification from `before_paymaster_sign`, allowing you to define logic to be executed after a confirmed sponsorship. `after_paymaster_sign` takes the same parameters as `before_paymaster_sign`; a request to an `after_paymaster_sign` hook will look similar to the example included below:
+
+```json JSON
+POST https://your-domain/hook-after-paymaster-sign
+
+Header
+x-particle-signature: WH/6YifcF2dad3qbS4HkjQ7EboDXNTcIfCH4cCW0lfOWJsQR1GPoHZpqtqr3XedAG3bi+RlTUGmetJiaiCqflr1+dWuXFsvrML7LNu2wWNDzlGAEM3iLwrdHl1vIZx6ftlbYyyQD4CHEBpDhbnrDn2IGj64dF8nmho4gc/PNQQUTBJL+Xy0MEHVLSNSDeRMA5/BhwFjiufvDqmW3verX/ynvUAVLnLiAWkVnN2aBF4TncsqV37W8EN3q2SILpdnbG2UWzeawg+0owtw9xgo4QXgqi8PfYrd3ta5PxjoenbUA7OBJtXt4R/TwYs8Vb+mggJ+ZbrJrVd45F8U9hNt7bQ==
+
+BODY
+{
+    "type": "after_paymaster_sign",
+    "chainId": 80001,
+    "projectUuid": "ef6c29f5-ad2b-545c-ad0c-54441068b71d",
+    "userOp": {
+        "sender": "0x2e9661BDA6201F97430dcc1541A1579b83980DD1",
+        "nonce": "0x05",
+        "initCode": "0x",
+        "callData": "0xb61d27f6000000000000000000000000ac6a87c681a5ed4cb58bc4fa7bf81a83b928c83c00000000000000000000000000000000000000000000000000005af3107a400000000000000000000000000000000000000000000000000000000000000000600000000000000000000000000000000000000000000000000000000000000000",
+        "callGasLimit": "0x9acc",
+        "paymasterAndData": "0xc89b723809598d0ebf821e89087dc8e1a6ee04990000000000000000000000000000000000000000000000000000000065520368000000000000000000000000000000000000000000000000000000000000000053264ff4c95bfc05d0635b8745f698911a103d11e4995f2d532e931807800aa0313d269ef5824ea5d122af0b08e70c0777898add80e70fffbd81154760eac0991b",
+        "signature": "0x",
+        "verificationGasLimit": "0x0186a0",
+        "maxFeePerGas": "0xa79dd02a",
+        "maxPriorityFeePerGas": "0xa79dd015",
+        "preVerificationGas": "0xc5dc"
+    },
+    "entryPoint": "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789",
+    "userOpHash": "0x45d4f5bb4114907a09426000e152eea5511576924d58700f7f2561f32a552476",
+    "parsed": {
+        "accountType": "SIMPLE",
+        "txs": [
+            {
+                "to": "0xaC6A87c681A5Ed4cb58bC4fa7bF81a83b928C83C",
+                "value": "0x5af3107a4000",
+                "data": "0x"
+            }
+        ]
+    }
+}
+
+```
+
+### Request verification
+
+To ensure you can validate where the source of the request is coming from (to make sure it's from Particle Network and not a third party), Particle Network generates a signature for the hook request body that can be verified to ensure the request originated from Particle. This is done through a unique RSA-2048 public and private key combination generated and used for each project, which you can download through the [Particle dashboard](https://dashboard.particle.network).
+
+<div className="flex justify-center">
+<img
+  className="block h-64 dark:hidden"
+  src="/guides/integrations/aa/images/validate.png"
+  alt="Request verification."
+/>
+<img
+  className="hidden h-64 dark:block"
+  src="/guides/integrations/aa/images/validate.png"
+  alt="Request verification."
+/>
+</div>
+
+***
+
+<Tip>Particle Network's Omnichain Paymaster can be leveraged either through Particle's AA SDK ([Web (Desktop) Quickstart](/guides/aa/web-aa) & [Mobile (Android/iOS) Quickstart](/guides/aa/mobile-aa)) or the [Paymaster RPC](/api-reference/aa/paymaster/paymasterbalance).</Tip>

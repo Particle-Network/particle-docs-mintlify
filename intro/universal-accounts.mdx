@@ -1,0 +1,82 @@
+---
+title: "Introduction to Universal Accounts"
+description: "One account, one balance, any chain."
+---
+
+**Universal Accounts** give users one account, balance, and interaction point to use across any chain—EVM or not.
+
+Instead of managing different wallets and bridging tokens to interact with dApps on different chains, users interact through a Universal Account as if the entire Web3 ecosystem were one network. This is possible because Particle Network's underlying infrastructure automatically routes liquidity, bridges assets, and manages cross-chain logic using [Universal Liquidity](/intro/universal-liquidity).
+
+Developers can integrate Universal Accounts easily into their dApps using the [Universal SDK](/universal-accounts/ua-reference/overview). UAs are compatible with both social logins and wallet connections and support gasless, cross-chain operations out of the box.
+
+<Frame caption="User flow of Particle Network's Universal Accounts.">
+  <img
+    className="block dark:hidden"
+    src="/intro/images/universal-accounts.jpg"
+    alt="Universal Accounts"
+  />
+
+  <img
+    className="hidden dark:block"
+    src="/intro/images/universal-accounts.jpg"
+    alt="Universal Accounts"
+  />
+</Frame>
+
+---
+
+# Understanding Universal Accounts
+
+From a technical standpoint, Universal Accounts are smart contract account deployments unified and coordinated by Particle Network's [Universal Liquidity](/intro/universal-liquidity) technology across chains. This enables seamless cross-chain transactions and interactions.
+
+## Key Features
+
+### Chain abstraction
+
+- One account, one balance, any chain.
+- Automatic bridging and cross-chain interactions on a per-transaction basis.
+- Ability to use multiple gas tokens for different operations.
+- Seamless asset transfers across chains.
+
+### Smart Account implementation
+
+- Built on the ERC-4337 standard.
+- Compatible with existing EOA wallets.
+- Support social login integration.
+
+<Frame caption="Composition of Universal Accounts.">
+  <img
+    className="block dark:hidden"
+    src="/intro/images/composition.png"
+    alt="Universal Accounts"
+  />
+
+  <img
+    className="hidden dark:block"
+    src="/intro/images/composition.png"
+    alt="Universal Accounts"
+  />
+</Frame>
+
+## How It Works
+
+1. **Integration**
+   - Simple SDK implementation, using any EOA as signer.
+   - Compatible with existing dApp infrastructure.
+2. **Account Creation**
+   - Created via social logins or wallet connection.
+   - Automatically assigned to a user's EOA.
+3. **Cross-Chain Operations**
+   - Transactions submitted are funded using a user's collective onchain balance, automatically bridging as needed to fulfill their intent.
+   - Gas can be paid using different available tokens.
+   - Gasless transactions are available.
+
+<Card title="Try the Universal SDK" icon="code" href="/universal-accounts/cha/web-quickstart">
+  Start building with Universal Accounts.
+</Card>
+
+<Tip>
+  **Try out Universal Accounts**
+
+  Particle Network has built the first chain-agnostic trading app based on Universal Accounts: [UniversalX](https://universalx.app/). Try it out to experience the power of chain abstraction\!
+</Tip>
