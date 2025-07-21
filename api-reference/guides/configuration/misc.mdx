@@ -1,0 +1,43 @@
+---
+title: "Misc & FAQ"
+---
+
+### Why does Google login prompt me that I do not comply with the policy?
+
+Google does not allow usage within Webview. https://support.google.com/accounts/answer/12917337?hl=en#zippy=%2Cdisallowed-useragent
+
+### How to add a new EVM chain?
+
+For Particle Auth, we need to support it first before developers can use it.
+
+### What are the options for chain_name returned by the backend api?
+
+`evm_chain` and `solana`; For Tron, we also use `evm_chain` as the chain_name.
+
+### How to ensure the signature result is consistent each time?
+
+Due to the characteristics of MPC, the signature result for the same message is different each time, which is different from private key wallets like MetaMask. Therefore, for scenarios that rely on a consistent signature result, we provide the `uniq` parameter, which ensures the consistency of the signature result each time.
+
+### How to determine if the account is a new user?
+
+We have `isNewUser` in the user info returned.
+
+### How to determine the status of the master password and payment password settings?
+
+In the user info, we have `security_account.has_set_master_password` and `security_account.has_set_payment_password`.
+
+### How to make the embedded wallet track my tokens?
+
+You need to provide the token information to us, and we will manually add it.
+
+### How to configure the name and icon of the embedded wallet?
+
+You need to provide the name and icon to us, and we will manually add it.
+
+### Why are the transaction records in the wallet incomplete?
+
+Due to the large number of supported chains, many testnets do not provide detailed transaction records. However, for mainnets, we strive to provide support. If you find a chain that requires complete support, you can contact us, and we will evaluate whether to add it.
+
+### Why is the token balance in the wallet not synchronized?
+
+Sometimes, there may be indexing delays. If the delay is significant, contact us and we will locate and resolve the issue.

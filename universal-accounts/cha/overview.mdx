@@ -1,0 +1,86 @@
+---
+title: "Introduction"
+description: "Learn about the Universal Accounts SDK—your entry point to integrating chain abstraction."
+---
+
+![Universal Accounts within UniversalX](/images/v22.gif)
+
+## What is the Universal SDK?
+
+**Universal Accounts** give your users a **single address and balance** across all [supported chains](/universal-accounts/cha/chains).
+
+The **Universal Accounts SDK** allows you to integrate Universal Accounts into your dApp, allowing you to onboard users from any ecosystem without requiring them to bridge—**regardless of where your dApp is deployed**.
+
+---
+
+## Integration Flow
+
+The **Universal Accounts SDK** is designed for fast, minimum-lift integrations with common wallet connection mechanisms.
+
+Under the hood, it utilizes any wallet provider object (e.g., social logins, MetaMask, WalletConnect) and routes all transactions through the user's Universal Account, an ERC-4337 smart account implementation.
+
+In short, the integration flow requires you to:
+
+1. **Configure** the account using a single _config_ object.
+2. **Use** your existing _provider_ object (from RainbowKit or any other connection mechanism) using the SDK.
+3. Push transactions as usual—no other codebase changes needed. A user's balance of any token will be treated as a collective of these tokens across any chain they're on.
+
+Once integrated, all transactions, balance reads, and gas handling will automatically use the Universal Account—**no additional code for bridging or gas logic required**.
+
+<Note>
+  The Universal Accounts SDK uses wallet connection mechanisms. As such, if a user creates a Universal Account by connecting an existing wallet, their assets will not be automatically transferred into the UA. Users can transfer assets into their Universal Account from any supported chain via in-app flows. You may also make Universal Accounts an optional toggle within your dApp if you prefer to maintain EOAs as the default account mechanism.
+</Note>
+
+---
+
+## Quickstart: Universal Accounts
+
+Get a live integration ready in under 5 minutes by learning the basics of Universal Accounts and implementing the SDK.
+
+<CardGroup cols="3">
+  <Card title="Introduction to Universal Accounts" icon="user" href="/intro/universal-accounts">
+    What are Universal Accounts, how do they work, and what problems do they solve?
+  </Card>
+  <Card title="Getting Started" icon="rocket" href="/universal-accounts/cha/web-quickstart">
+    A step-by-step setup guide for integrating the UAs SDK into your application.
+  </Card>
+  <Card title="UA SDK Reference" icon="code" href="/universal-accounts/ua-reference/desktop/web">
+    SDK and API reference for the Universal Accounts SDK.
+  </Card>
+</CardGroup>
+
+---
+
+## How-To Guides
+
+Learn to implement specific Universal Account features in your app.
+
+<CardGroup cols="1">
+  <Card title="Getting A Unified Balance" icon="dollar-sign" href="/guides/cha/how-to/balance">
+    Learn how to fetch and display the unified balance of a Universal Account.
+  </Card>
+  <Card title="Sending Cross-Chain Transactions" icon="paper-plane-top" href="/guides/cha/how-to/transactions">
+    Learn how to send transactions across different blockchain networks using Universal Accounts.
+  </Card>
+  <Card title="Displaying An Assets Breakdown" icon="paper-plane-top" href="/guides/cha/how-to/balance-breakdown">
+    Learn how to display the assets breakdown of a Universal Account.
+  </Card>
+  <Card title="Toggling Universal Accounts On/Off" icon="paper-plane-top" href="/guides/cha/how-to/toggle">
+    Implement a system to toggle between using Universal Accounts and regular EOAs.
+  </Card>
+</CardGroup>
+
+---
+
+## Understanding Chain Abstraction
+
+Explore the foundational concepts behind Universal Accounts and how they power chain abstraction.
+
+<CardGroup cols="1">
+  <Card title="What Is Chain Abstraction?" icon="layer-group" href="/intro/what-is-cha">
+    Breakdown of chain abstraction, Universal Accounts, and Universal Liquidity.
+  </Card>
+  <Card title="Supported Chains" icon="network-wired" href="/universal-accounts/cha/chains">
+    List of chains supported by Universal Accounts.
+  </Card>
+</CardGroup>

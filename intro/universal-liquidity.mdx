@@ -1,0 +1,30 @@
+---
+title: "Introduction to Universal Liquidity"
+description: "Unifying users' assets across all chains."
+---
+
+**Universal Liquidity** is the mechanism powering [Universal Accounts](/intro/universal-accounts)' cross-chain transactions. It allows for the automatic and atomic routing of liquidity across chains on a per-transaction basis—without the need for users to manually bridge, swap, or move tokens between networks.
+
+This functionality is built into **Particle's Universal SDK**, enabling developers to give users a single, unified balance across all supported chains. The SDK handles everything: sourcing funds, executing cross-chain logic, and coordinating network settlement.
+
+For example, if a user wants to transact with a Universal Account on a chain where they don’t hold funds, **Universal Liquidity** automatically pulls the required tokens from their balances on other chains. The process is invisible to the user, and they can pay gas in **any token**, on any chain.
+
+<Frame caption="Example of cross-chain transaction execution with Particle Network.">
+  <img
+    className="block dark:hidden"
+    src="/intro/images/universal-liquidity.png"
+    alt="Universal Liquidity"
+  />
+
+  <img
+    className="hidden dark:block"
+    src="/intro/images/universal-liquidity.png"
+    alt="Universal Liquidity"
+  />
+</Frame>
+
+---
+
+## How Is This Possible?
+
+Universal Liquidity is made possible through the **Particle Chain**'s Modular Nodes and Decentralized Messaging Network. These, alongside Bundler Nodes, allow Universal Liquidity to automate the execution of operations across chains, enabling a universal balance capable of being consumed on any blockchain.

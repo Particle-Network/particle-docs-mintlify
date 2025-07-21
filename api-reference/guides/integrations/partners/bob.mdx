@@ -1,0 +1,396 @@
+---
+title: "Connecting Bitcoin Wallets to BOB using BTC Connect"
+description: "Configuring and implementing BTC Connect within an application built on BOB."
+---
+
+[BTC Connect](/api-reference/btc/introduction)  is the first account abstraction protocol for the Bitcoin ecosystem. It unifies smart accounts on Bitcoin Layer-2s and standard BTC accounts through native wallet interfaces. To achieve this, Particle Network has deployed ERC-4337 AA infrastructure natively on BOB (Build on Bitcoin), which developers can tap into to leverage Bitcoin-specific smart accounts.
+
+BTC Connect achieves this by, firstly, allowing users to connect to your dApp with their UniSat, OKX, TokenPocket, Bybit, Wizz, Xverse, or Bitget wallet. Upon connecting, a smart account is generated on BitLayer and assigned to their BTC account. This smart account can then be used and authenticated directly through their BTC wallet, providing native Bitcoin users a simple interface to interact with applications on BOB, a leading Bitcoin Layer-2.
+
+BTC Connect natively supports BOB within its flagship SDK, `@particle-network/btc-connectkit`, and has been deployed on Testnet. This document will provide an initial introduction and step-by-step guide to working with BTC Connect on BOB through this SDK.
+
+<img
+  className="block dark:hidden"
+  src="/guides/integrations/partners/images/bob.gif"
+  alt="Particle Network and BOB."
+/>
+<img
+  className="hidden dark:block"
+  src="/guides/integrations/partners/images/bob.gif"
+  alt="Particle Network and BOB."
+/>
+
+***
+
+## Overview
+
+This document will provide a step-by-step guide to configuring and implementing BTC Connect within an application built on BOB. The snippets placed throughout this page will be from a `create-react-app` demo application, which can be found [here](https://github.com/TABASCOatw/particle-bob-demo). This application primarily leverages `@particle-network/btc-connectkit`, Particle Network's flagship React-based SDK for BTC Connect.
+
+## Prerequisites
+
+As mentioned, BTC Connect is primarily implemented through its React-based SDK, `@particle-network/btc-connectkit`. Therefore, ensure your project meets the following conditions before starting an integration:
+
+- React-based or compatible through `create-react-app`, `Next.js`, etc. application structure, with core dependencies installed such as `react` and `ethers` (or `web3`, `viem`, and so on).
+- Prepared to authenticate BTC Connect through a configured project on the [Particle dashboard](https://dashboard.particle.network). If this is not yet done, continue to the section below.
+- Has `@particle-network/btc-connectkit` version 1.0.0-alpha.20 or higher installed, alongside, optionally, version 1.4.3 of `@particle-network/chains`.
+
+***
+
+## Integration Guide
+
+### Step 1: Dashboard Configuration
+
+Before diving into the programmatic implementation of BTC Connect, you'll first need to retrieve three key values from the [Particle dashboard](https://dashboard.particle.network) to authenticate the SDK (`@particle-network/btc-connectkit`).  
+To do this, follow the steps listed below.
+
+1. Register or log in to the [Particle dashboard](https://dashboard.particle.network).
+
+    <img
+    className="block dark:hidden"
+    src="/guides/integrations/partners/images/login.png"
+    alt="Particle Network login."
+    />
+    <img
+    className="hidden dark:block"
+    src="/guides/integrations/partners/images/login.png"
+    alt="Particle Network login."
+    />
+
+2. Create a new project or enter an existing project.
+
+        <img
+    className="block dark:hidden"
+    src="/guides/integrations/partners/images/project.png"
+    alt="Particle Network project."
+    />
+    <img
+    className="hidden dark:block"
+    src="/guides/integrations/partners/images/project.png"
+    alt="Particle Network project."
+    />
+
+1. Create a new web application (or skip this step if you already have one).
+
+            <img
+    className="block dark:hidden"
+    src="/guides/integrations/partners/images/app.png"
+    alt="Particle Network app."
+    />
+    <img
+    className="hidden dark:block"
+    src="/guides/integrations/partners/images/app.png"
+    alt="Particle Network app."
+    />
+
+2. Retrieve the aforementioned values (your **Project ID**, **Client Key**, and **App ID**); if applicable, save these to environment variables within your application.
+
+                <img
+    className="block dark:hidden"
+    src="/guides/integrations/partners/images/credentials.png"
+    alt="Particle Network app credentials."
+    />
+    <img
+    className="hidden dark:block"
+    src="/guides/integrations/partners/images/credentials.png"
+    alt="Particle Network app credentials."
+    />
+
+### Step 2: Configuring BTC Connect
+
+BTC Connect is configured and initialized through its central React component, `ConnectProvider` (similar to `AuthCoreContextProvider` from Particle Network's other SDKs if you've used them before).  
+`ConnectProvider` will wrap the application component (for example, `App`) where you intend to use BTC Connect, handling customization, API authentication, and wallet selection (such as UniSat, OKX, and so on).  
+Within a standard `create-react-app` structure, this configuration will take place within the `index.tsx` file. In this file (or the equivalent for your project), import the following objects from `@particle-network/btc-connectkit`:
+
+- `ConnectProvider`, the React component used for configuration.
+- One, or multiple of the following wallets:  
+      - `OKXConnector`  
+      - `UnisatConnector`  
+      - `BitgetConnector`  
+      - `TokenPocketConnector`  
+      - `BybitConnector`  
+      - `WizzConnector`
+
+Once these are imported, you'll need to define two collection of values through `ConnectProvider` as you render your application. 
+
+The first of these will be `options`, used to handle customizations for the smart account implementation, chain, and embedded wallet modal, and will be followed by `connectors` for establishing the supported wallets within your application.
+
+To configure `options`, you'll need to define the following properties:
+
+- `projectId`, `clientKey`, and `appId`. These were previously retrieved from the [Particle dashboard](https://dashboard.particle.network).
+- `aaOptions`, which contains `accountContracts`, taking:
+  - `BTC`, the smart account implementation you'll be leveraging.
+    - `chainIds`, one or multiple chains that your application will support. In this case, you can either use BOB's chain ID, `111`, or `BOBTestnet.id` from `@particle-network/chains`.
+    - `version`, the version of the BTC smart account you intend to use. For BOB, this should be **`2.0.0`**. If you intend to use more than just BOB, you may need to define another instance of `BTC` using `version` `1.0.0`. For more information on which chains support `1.0.0` and which support `2.0.0`, head over to [Particle Network's documentation](/guides/network-coverage#btc-connect).
+- `walletOptions`, which contains:  
+      - `visible`, a Boolean determining whether or not Particle Network's embedded wallet modal will be shown after a user connects their Bitcoin wallet. If set to `true`, users will have direct access to their associated smart accounts through this embedded interface. Otherwise, if `false`, developers will need to retrieve and reflect wallet information, such as balances, independently.
+
+Second to `options`, you'll also need to define `connectors`, which should contain an array of initialized wallet connector objects (for example, `new UnisatConnector()`) indicating the native Bitcoin wallets you'd like to be supported within your application.
+
+Wrapping this all up, your `index.tsx` file, or the equivalent within your project, should look similar in principle to the snippet shown below:
+
+```ts TypeScript
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import {
+  ConnectProvider,
+  OKXConnector, //
+  UnisatConnector, //
+  BitgetConnector, // -- Only one connector is required, although any combination of these five may be used.
+  TokenPocketConnector, //
+  BybitConnector // 
+} from '@particle-network/btc-connectkit';
+import { BOBTestnet } from '@particle-network/chains';
+// The component in which you're using BTC Connect
+import App from './App';
+ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
+  <React.StrictMode>
+    <ConnectProvider
+      options={{
+        projectId: process.env.REACT_APP_PROJECT_ID, //
+        clientKey: process.env.REACT_APP_CLIENT_KEY, // -- Retrieved from https://dashboard.particle.network
+        appId: process.env.REACT_APP_APP_ID, //
+        aaOptions: {
+          accountContracts: {
+            BTC: [
+              {
+                chainIds: [BOBTestnet.id],
+                version: '2.0.0',
+              }
+            ]
+          }
+        },
+        walletOptions: {
+          visible: true
+        }
+      }}
+      connectors={[new UnisatConnector(), new OKXConnector(), new BitgetConnector(), new TokenPocketConnector(), new BybitConnector()]}
+    >
+      <App />
+    </ConnectProvider>
+  </React.StrictMode>
+)
+```
+
+## Step 3: Wallet Connectivity
+
+Moving on from configuration and to application implementation, you'll need to decide on a mechanism in which you'll drive wallet connectivity through BTC Connect.  
+To this end, you have two options:
+
+1. Using BTC Connect's built-in wallet connection interface, aggregating the wallets previously defined through `ConnectProvider`.
+2. Building your own wallet connection interface using connection shortcuts to specific wallets.
+
+### Option 1, Leveraging BTC Connect's Native Interface
+
+As a simple way to facilitate wallet connection through a "Connect Wallet" button or similar point of interaction, BTC Connect has a built-in connection interface handling everything for you. Visually, this looks like the screenshot below, deviating depending on the specific wallets you're supporting.  
+
+                <img
+    className="block dark:hidden"
+    src="/guides/integrations/partners/images/wallet.png"
+    alt="Particle Network wallet."
+    />
+    <img
+    className="hidden dark:block"
+    src="/guides/integrations/partners/images/wallet.png"
+    alt="Particle Network wallet."
+    />
+
+This modal can be displayed on-screen through BTC Connect's `useConnectModal` React hook, imported from `@particle-network/btc-connectkit`.
+
+From `useConnectModal`, you'll need to define `openConnectModal`. Upon (synchronously) calling `openConnectModal`, the above interface will be opened for the user, prompting wallet connection.
+
+In most cases, `openConnectModal` should be bound to a "Connect Wallet" button.  
+Below is a snippet showcasing this approach.
+
+```ts TypeScript
+import { useETHProvider, useBTCProvider, useConnectModal, useConnector } from '@particle-network/btc-connectkit';
+const App = () => {
+  const { openConnectModal } = useConnectModal();
+    
+  ...
+  
+  openConnectModal();
+  ...
+}
+```
+
+### Option 2, Building a Custom Interface through Shortcuts
+
+Alternatively, if you intend to include Bitcoin wallet connectivity from BTC Connect in your existing custom connection interface, or if you'd like to build a new one from scratch, you'll need to facilitate wallet connection through shortcuts.
+
+Wallet shortcuts can be executed through the `useConnector` React hook from `@particle-network/btc-connectkit`, allowing you to prompt an individual wallet for connection, rather than opening the aforementioned BTC Connect interface.
+
+From `useConnector`, you'll need the `connect` function. `connect` simply takes a string representing the wallet you'd like to connect to, such as `'unisat'` or `'okx'`. An example of this can be found below.
+
+```ts TypeScript
+import { useETHProvider, useBTCProvider, useConnector, useConnector } from '@particle-network/btc-connectkit';
+const App = () => {
+  const { connect } = useConnector();
+    
+  connect('unisat');
+  // Or 'okx', 'bybit', etc.
+    
+}
+```
+
+Calls to `connect` can be plugged into any interface or UI element to circumvent the BTC Connect modal.
+
+## Step 4: Application Implementation
+
+Once a user has connected with their Bitcoin wallet, you're ready to leverage the resulting EVM account (a smart contract wallet) for transactions within your application.
+
+Implementing and leveraging the attached EVM account can be achieved through one of two ways:
+
+1. By using BTC Connect's built in `sendUserOp`, `buildUserOp`, and `getFeeQuotes` methods.
+2. Through an external library such as Ethers or Web3.js. 
+
+Both will achieve the same goal (executing transactions using the user's EVM account), although vary in terms of complexity depending on your existing setup. If you're already using Ethers, Web3.js, or viem, you'll want to go for option 2. Otherwise, if you're building an application exclusively around BTC Connect, option 1 may be more suitable.
+
+### Option 1: Built-in Functions
+
+Interaction with BOB, regardless of the option you choose, will start with the `useETHProvider` hook from `@particle-network/btc-connectkit`.
+
+In the context of using BTC Connect's built-in transaction execution functions, you'll need to leverage one of or multiple of the following:
+
+- `sendUserOp`, the standard function for transaction execution (in the case of ERC-4337, also known as a UserOperation).
+- `buildUserOp`, for constructing a complete UserOperation object; only needed if you intend to use external paymasters, bundlers, or alter granular UserOperation details.
+- `getFeeQuotes`, used for the construction of UserOperations with deviating fee payment mechanisms, such as gasless transactions. This will be needed if you intend to sponsor transactions.
+
+`sendUserOp` can be used to either execute a standard transaction following a traditional structure, including fields such as `to,` `value,` and `data,` or a UserOperation (from `buildUserOp`) can be passed in.
+
+A snippet showcasing an example of traditional transaction execution with `sendUserOp` has been included below.
+
+```ts TypeScript
+import { useETHProvider, useBTCProvider, useConnector, useConnector } from '@particle-network/btc-connectkit';
+const App = () => {
+  const { sendUserOp, getFeeQuotes, buildUserOp } = useETHProvider();
+    
+  
+  const tx = {
+      to: '0xe8fc0baE43aA2640.......d0f6630E692e73',
+      value: '100000000000',
+      data: '0x', // Optional
+  };
+  const hash = await sendUserOp({ tx });
+    
+}
+```
+
+In the case that you'd like to send a gasless (sponsored) transaction, you'll need to first use the `getFeeQuotes` function before calling `sendUserOp`.
+
+`getFeeQuotes` takes the same transaction structure as is shown above and returns two types of UserOperations:
+
+- `verifyingPaymasterGasless.userOp` and `verifyingPaymasterGasless.userOpHash` for gasless transactions.
+- `verifyingPaymasterNative.userOp` and `verifyingPaymasterNative.userOpHash` for standard transactions with gas paid for by the user (the same as if you were to use `sendUserOp` in standalone). 
+
+To leverage the objects returned within `verifyingPaymasterGasless` and, therefore, send a gasless transaction, the aforementioned snippet will change slightly to rather pass in a `userOp` and `userOpHash` instead of a `tx` object directly, as shown below.
+
+```ts TypeScript
+import { useETHProvider, useBTCProvider, useConnector, useConnector } from '@particle-network/btc-connectkit';
+const App = () => {
+  const { sendUserOp, getFeeQuotes, buildUserOp } = useETHProvider();
+    
+  ...
+  
+  const tx = {
+      to: '0xe8fc0baE43aA2640.......d0f6630E692e73',
+      value: '100000000000',
+      data: '0x', // Optional
+  };
+    
+  const feeQuotes = await getFeeQuotes(tx);
+  const hash = await sendUserOp({ userOp: feeQuotes.verifyingPaymasterGasless.userOp, userOpHash: feeQuotes.verifyingPaymasterGasless.userOpHash });
+    
+  ...
+}
+```
+
+#### Option 2: External Library (Ethers, Web3.js, etc.)
+
+Often as an easier path, an external library such as Ethers can be used directly with BTC Connect to facilitate transaction construction and execution.
+
+The aforementioned `useETHProvider` hook includes an EIP-1193 provider object, `provider`, which can be plugged directly into Ethers to construct an instance tied to the user's BOB/EVM account, as shown below.
+
+```ts TypeScript
+import { useETHProvider, useBTCProvider, useConnectModal, useConnector } from '@particle-network/btc-connectkit';
+import { ethers } from 'ethers';
+const App = () => {
+    const { provider } = useETHProvider();
+    
+    const customProvider = new ethers.providers.Web3Provider(provider, "any");
+    
+};
+```
+
+With an instance of Ethers (or another equivalent library) constructed, transactions can be executed as they would normally be; signatures will be automatically routed to the user's Bitcoin wallet.
+
+Thus, if your application already uses Ethers or a related library, BTC Connect can be plugged in directly to an existing or parallel provider object, working with your pre-established transaction flow.
+
+Below is an example of this through a sample function, `executeTxEvm`, which burns 0.01 ETH on BOB.
+
+```ts TypeScript
+const executeTxEvm = async () => {
+    const signer = customProvider.getSigner();
+    const tx = {
+      to: "0x000000000000000000000000000000000000dEaD", // Burn address
+      value: ethers.utils.parseEther('0.01'), // 0.01 ETH
+      data: "0x" // Optional, only define for contract interaction or related operations
+    };
+    const txResponse = await signer.sendTransaction(tx);
+    const txReceipt = await txResponse.wait();
+    
+    return txReceipt;
+};
+```
+
+### Step 5: (Optional), Executing Transactions on Bitcoin
+
+Due to the nature of a user connecting their native Bitcoin wallet to your application on BOB, you have the added flexibility of executing transactions on Bitcoin. This includes standard P2P BTC transfers alongside inscription transfers.
+
+Bitcoin functionality can be accessed through the `useBTCProvider` hook from `@particle-network/btc-connectkit`, providing the following objects:
+
+- `sendBitcoin`
+- `provider`
+- `getNetwork`
+- `switchNetwork`
+- `signMessage`
+- `getPublicKey`
+- `accounts`
+
+As an example, let's use `sendBitcoin` to send 1 satoshi back to the sending address.
+
+To achieve this, `sendBitcoin` can be called with the following parameters:
+
+- `toAddress`, the recipient address; in this case, we'll use `accounts[0]` (the sender).
+- `satoshis`, the value of the transaction in satoshis; this will be `1` here.
+- `options`, an optional object containing:  
+      - `feeRate`, for adjusting transaction fees; we'll leave this as default.  
+  Upon executing `sendBitcoin`, the user will be prompted to confirm the transaction, just as they would the EVM transactions previously covered on this document.
+
+As a parallel to `executeTxEvm`, the execution of a transaction on Bitcoin may look adjacent to the snippet below:
+
+```ts TypeScript
+import { useETHProvider, useBTCProvider, useConnector, useConnector } from '@particle-network/btc-connectkit';
+import './App.css';
+const App = () => {
+    const { sendBitcoin, accounts } = useBTCProvider();
+    
+    const executeTxBtc = async () => {    
+        // Sends 1 satoshi back to the sender
+        const hash = await sendBitcoin(accounts[0], 1);
+        return hash;
+    };
+};
+```
+
+## Conclusion
+
+At this point, you've gone through the process of:
+
+1. Configuring a project on the [Particle Network dashboard](https://dashboard.particle.network).
+2. Initializing `@particle-network/btc-connectkit`.
+3. Facilitating wallet connection.
+4. Executing a transaction on BOB alongside native Bitcoin.
+
+To dive in further and continue exploring the process of leveraging BTC Connect, take a look at Particle Network's [5-minute startup guide](https://twitter.com/TABASCOweb3/status/1782609523812778289).
+
+Additionally, a complete demo repository showcasing the usage of BTC Connect on BOB is available [here](https://github.com/TABASCOatw/particle-bob-demo), and you can try it in your own browser [here](https://particle-bob-demo.replit.app).

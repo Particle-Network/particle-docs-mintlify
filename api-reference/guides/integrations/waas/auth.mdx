@@ -1,0 +1,64 @@
+---
+title: "Particle Auth"
+description: "An SDK facilitating wallet generation and interactions via social logins."
+---
+
+## Understanding Particle Auth
+
+Particle Auth is the **core infrastructure component powering social logins** within Particle's Wallet Abstraction stack.
+
+While Particle Auth is a standalone service, meaning it can be used solely as an isolated product for implementing social logins. It's also commonly used as **an infrastructural component driving social login within other Particle Network products** such as [Particle Connect](/guides/integrations/waas/connect), Particle's [RainbowKit](/guides/wallet-as-a-service/connection-kits/rainbow) integration, etc.
+
+Particle Auth uses **MPC-TSS** (Multi-Party Computation with Threshold-Signature-Schemes) to generate non-custodial wallets derived from social accounts. Upon logging in with a given social login mechanism, a key pair is generated and secured through MPC-TSS, splitting it into multiple shares to be used for distributed signature generation. Upon using the key pair for a signature, each share (for most implementations, these will be two, one accessible locally/through a backup system, the second within a TEE) participates in the generation of a signature, thus resulting in the ability to authenticate signatures without the unification of a whole private key. For more information on MPC-TSS, look at [Security (MPC-TSS)](/landing/wallet-abstraction/waas/mpc-tss).
+
+Particle Auth enables a **natural** (and customizable) flow from social login to account generation and, ultimately, authentication (signature generation), allowing for a **Web2-adjacent user experience**, abstracting away the typical seed-phrase management convention.
+
+<Frame>
+<img src="https://static.particle.network/mintlify/videos/01-Email-Phone-Socials-Login.gif" alt="Customizing authentication methods on the login screen." style={{ width: '100%', maxWidth: '600px' }} />
+</Frame>
+
+---
+
+## Integrating Particle Auth
+
+Adding Particle Auth to an application can happen through various mechanisms, largely dependent on your specific platform. Particle Auth has SDKs spanning **three desktop and seven mobile platforms**. This means that, regardless of where or how your application is built, you're likely using a stack compatible with Particle Auth.
+
+To begin diving into the specifics of integrating Particle Auth within your platform of choice, choose the corresponding SDK reference from the cards below, or take a look at [Web (Desktop) Quickstart](/guides/wallet-as-a-service/waas/auth/web-quickstart) and [Mobile (Android/iOS) Quickstart](/guides/wallet-as-a-service/waas/mobile-quickstart) for technical overviews of the integration process.
+
+To learn more about the degree to which you can customize Particle Auth, go to [Particle Auth](/guides/configuration/appearance/auth).
+
+<Note> 
+Most commonly, Particle Auth will be used through the means of Particle Connect and its all-in-one onboarding modal (aggregating both social logins through Particle Auth and standard wallet connection); you can learn more about this approach [here](/guides/integrations/waas/connect).
+</Note>
+
+---
+
+<CardGroup cols={3}>
+  <Card title="Web SDK" href="/api-reference/auth/desktop-sdks/web">
+    Interacting with Particle Auth within web applications using either JavaScript or TypeScript.
+  </Card>
+    <Card title="Unity (Desktop) SDK" href="/api-reference/auth/desktop-sdks/unity">
+    Interacting with Particle Auth within Desktop games built on Unity using C#.
+  </Card>
+  <Card title="Unity (Mobile) SDK" href="/api-reference/auth/mobile-sdks/unity">
+    Interacting with Particle Auth within Mobile games built on Unity using C#.
+  </Card>
+   <Card title="Android SDK" href="/api-reference/auth/mobile-sdks/android">
+    Interacting with Particle Auth on Android using Kotlin.
+  </Card>
+    <Card title="iOS SDK" href="/api-reference/auth/mobile-sdks/ios">
+    Interacting with Particle Auth on iOS using Swift or Objective-C.
+  </Card>
+     <Card title="Flutter SDK" href="/api-reference/auth/mobile-sdks/flutter">
+    Interacting with Particle Auth within applications built using Flutter.
+  </Card>
+  <Card title="React Native SDK" href="/api-reference/auth/mobile-sdks/react">
+    Interacting with Particle Auth within applications built using React Native.
+  </Card>
+  <Card title="Unreal Engine SDK" href="/api-reference/auth/multi/unreal">
+    Interacting with Particle Auth within applications built using Unreal Engine.
+  </Card>
+  <Card title="Cocos SDK" href="/api-reference/auth/mobile-sdks/cocos">
+    Interacting with Particle Auth within applications built using Cocos.
+  </Card>
+</CardGroup>

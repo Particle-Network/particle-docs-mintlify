@@ -1,0 +1,128 @@
+---
+title: "Paymaster"
+description: "Using Particle Network's Omnichain Paymaster for cross-chain gas sponsorships."
+---
+
+# Leveraging Particle's Omnichain Paymaster
+
+Natively used by Particle's Smart Wallet-as-a-Service and openly available for use, Particle Network offers an Omnichain Paymaster for **cross-chain gas sponsorships derived from a single USDT deposit**. Specifically, Particle's Omnichain Paymaster allows a developer to deposit USDT on a given host chain, currently either Ethereum or BNB Chain, to then be **automatically converted to the native token of the EVM chain on which the user is requesting a sponsorship**. This significantly simplifies the experience of using Paymasters and is available for free through the Particle dashboard.
+
+This page will dive into an overview of funding and using Particle's Omnichain Paymaster.
+
+***
+
+## Using Particle's Omnichain Paymaster
+
+There are two different ways in which you may use Particle's Paymaster.
+
+**The first** is natively through one of the many AA SDKs Particle Network offers. If you intend to go this route, Particle's Paymaster is automatically enabled, and thus no additional configuration is needed. If you're using it on Testnets, it will automatically sponsor transactions for free.
+
+**Alternatively,** if you'd like to use the RPC directly within a separate account abstraction interaction flow, then this is possible via  **https://paymaster.particle.network**, which has both standard Paymaster methods:
+
+- `pm_sponsorUserOperation`
+- `pm_paymasterBalance`
+
+To learn more about these methods and see an interactive API example, head over to [Paymaster RPC](/api-reference/aa/paymaster/paymasterbalance). 
+
+Regardless of which scenario you fall into, if you intend on using the Paymaster to sponsor Mainnet transactions, you'll need to deposit USDT and define the logic under which you'll sponsor transactions through a Webhook. 
+
+To begin with the former, you'll need to head to the [Particle dashboard](https://dashboard.particle.network) and sign up if you haven't already. From there, create a new project and navigate to the "Paymaster" menu.
+
+<div className="flex justify-center">
+<img
+  className="block h-64 dark:hidden"
+  src="/guides/aa/images/paymaster.png"
+  alt="Paymaster menu."
+/>
+<img
+  className="hidden h-64 dark:block"
+  src="/guides/aa/images/paymaster.png"
+  alt="Paymaster menu."
+/>
+</div>
+
+Within here, you can deposit USDT on Ethereum or BNB Chain (mainnet). The USDT deposited on either of these chains will be automatically converted to the native token of the EVM chain you're requesting sponsorship on, thus the "Omnichain" component of the Paymaster. One deposit will cover gas fees for any supported chain on which a sponsorship is requested.
+
+Additionally, you can define conditions to sponsor transactions through a provided Webhook under the "Webhook" card beside the balance; the two available Webhook types here are `before_paymaster_sign` and `after_paymaster_sign`. An example of both can be seen below:
+
+```json JSON
+// before_paymaster_sign
+
+POST https://your-domain/hook-before-paymaster-sign
+
+Header // Derived from the provided public key on the dashboard
+x-particle-signature: WH/6YifcF2dad3qbS4HkjQ7EboDXNTcIfCH4cCW0lfOWJsQR1GPoHZpqtqr3XedAG3bi+RlTUGmetJiaiCqflr1+dWuXFsvrML7LNu2wWNDzlGAEM3iLwrdHl1vIZx6ftlbYyyQD4CHEBpDhbnrDn2IGj64dF8nmho4gc/PNQQUTBJL+Xy0MEHVLSNSDeRMA5/BhwFjiufvDqmW3verX/ynvUAVLnLiAWkVnN2aBF4TncsqV37W8EN3q2SILpdnbG2UWzeawg+0owtw9xgo4QXgqi8PfYrd3ta5PxjoenbUA7OBJtXt4R/TwYs8Vb+mggJ+ZbrJrVd45F8U9hNt7bQ==
+
+BODY
+{
+    "type": "before_paymaster_sign",
+    "chainId": 80001,
+    "projectUuid": "ef6c29f5-ad2b-545c-ad0c-54441068b71d",
+    "userOp": {
+        "sender": "0x2e9661BDA6201F97430dcc1541A1579b83980DD1",
+        "nonce": "0x05",
+        "initCode": "0x",
+        "callData": "0xb61d27f6000000000000000000000000ac6a87c681a5ed4cb58bc4fa7bf81a83b928c83c00000000000000000000000000000000000000000000000000005af3107a400000000000000000000000000000000000000000000000000000000000000000600000000000000000000000000000000000000000000000000000000000000000",
+        "callGasLimit": "0x9acc",
+        "paymasterAndData": "0x",
+        "signature": "0x",
+        "verificationGasLimit": "0x0186a0",
+        "maxFeePerGas": "0xa79dd02a",
+        "maxPriorityFeePerGas": "0xa79dd015",
+        "preVerificationGas": "0xc5dc"
+    },
+    "entryPoint": "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789",
+    "parsed": {
+        "accountType": "SIMPLE",
+        "txs": [
+            {
+                "to": "0xaC6A87c681A5Ed4cb58bC4fa7bF81a83b928C83C",
+                "value": "0x5af3107a4000",
+                "data": "0x"
+            }
+        ]
+    }
+}
+
+
+// after_paymaster_sign
+POST https://your-domain/hook-after-paymaster-sign
+
+Header // Derived from the provided public key on the dashboard
+x-particle-signature: WH/6YifcF2dad3qbS4HkjQ7EboDXNTcIfCH4cCW0lfOWJsQR1GPoHZpqtqr3XedAG3bi+RlTUGmetJiaiCqflr1+dWuXFsvrML7LNu2wWNDzlGAEM3iLwrdHl1vIZx6ftlbYyyQD4CHEBpDhbnrDn2IGj64dF8nmho4gc/PNQQUTBJL+Xy0MEHVLSNSDeRMA5/BhwFjiufvDqmW3verX/ynvUAVLnLiAWkVnN2aBF4TncsqV37W8EN3q2SILpdnbG2UWzeawg+0owtw9xgo4QXgqi8PfYrd3ta5PxjoenbUA7OBJtXt4R/TwYs8Vb+mggJ+ZbrJrVd45F8U9hNt7bQ==
+
+BODY
+{
+    "type": "after_paymaster_sign",
+    "chainId": 80001,
+    "projectUuid": "ef6c29f5-ad2b-545c-ad0c-54441068b71d",
+    "userOp": {
+        "sender": "0x2e9661BDA6201F97430dcc1541A1579b83980DD1",
+        "nonce": "0x05",
+        "initCode": "0x",
+        "callData": "0xb61d27f6000000000000000000000000ac6a87c681a5ed4cb58bc4fa7bf81a83b928c83c00000000000000000000000000000000000000000000000000005af3107a400000000000000000000000000000000000000000000000000000000000000000600000000000000000000000000000000000000000000000000000000000000000",
+        "callGasLimit": "0x9acc",
+        "paymasterAndData": "0xc89b723809598d0ebf821e89087dc8e1a6ee04990000000000000000000000000000000000000000000000000000000065520368000000000000000000000000000000000000000000000000000000000000000053264ff4c95bfc05d0635b8745f698911a103d11e4995f2d532e931807800aa0313d269ef5824ea5d122af0b08e70c0777898add80e70fffbd81154760eac0991b",
+        "signature": "0x",
+        "verificationGasLimit": "0x0186a0",
+        "maxFeePerGas": "0xa79dd02a",
+        "maxPriorityFeePerGas": "0xa79dd015",
+        "preVerificationGas": "0xc5dc"
+    },
+    "entryPoint": "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789",
+    "userOpHash": "0x45d4f5bb4114907a09426000e152eea5511576924d58700f7f2561f32a552476",
+    "parsed": {
+        "accountType": "SIMPLE",
+        "txs": [
+            {
+                "to": "0xaC6A87c681A5Ed4cb58bC4fa7bF81a83b928C83C",
+                "value": "0x5af3107a4000",
+                "data": "0x"
+            }
+        ]
+    }
+}
+
+```
+
+To dive further into setting up a sponsorship Webhook and requesting gas sponsorship on a user operation, take a look at [Setting up a Paymaster](/guides/integrations/aa/paymaster), or to learn more about our Omnichain Paymaster's architecture, head over to [Omnichain Paymaster](/guides/integrations/aa/paymaster).

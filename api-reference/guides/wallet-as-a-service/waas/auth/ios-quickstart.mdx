@@ -1,0 +1,227 @@
+---
+title: "iOS Quickstart"
+---
+
+# Quickstart: Implementing Particle Auth within iOS Applications
+
+Particle Auth, the core SDK responsible for driving social logins, has various iOS SDKs; implementation only takes a few steps.
+
+This document will go through the step-by-step process of configuring, initializing, and using Particle Auth on iOS.
+
+<Note>
+  For complete documentation covering the implementation of Particle Auth on iOS in more depth, head over to the [iOS SDK reference](/api-reference/auth/mobile-sdks/ios).
+</Note>
+
+Before jumping into it, ensure your project meets the following minimum requirements (otherwise, you may encounter compatibility issues).
+
+### Prerequisites
+
+- **Xcode 15.0** or higher.
+- **CocoaPods 1.14.3** or higher.
+- **iOS 14** or higher.
+
+***
+
+<Steps>
+
+<Step title="Installing Particle Auth">
+
+To begin, you'll need to install Particle Auth through your Podfile; specifically, you'll need (at a minimum) the following libraries:
+- `ParticleAuthCore`
+- `ParticleMPCCore`
+- `Thresh`
+- Optionally, `ParticleWalletAPI` for transaction construction.
+- Optionally, `ParticleWallerGUI` to enable an embedded wallet interface.
+
+Below is a snippet representing the installation of the aforementioned libraries.
+
+```ruby Podfile
+pod `ParticleAuthCore`
+pod 'ParticleMPCCore'
+pod 'Thresh'
+
+pod 'ParticleWalletAPI' # Optional
+pod `ParticleWalletGUI` # Optional
+```
+</Step>
+
+<Step title="Configuring Particle Auth">
+
+Once installed, you're ready to configure Particle Auth and initialize the SDK.
+
+To do this, you'll need three key values from the [Particle dashboard](https://dashboard.particle.network): your project ID, client key, and app ID. These are used to authenticate your instance of Particle Auth and connect your project to the dashboard; these are required to properly initialize the SDK.
+
+To retrieve these keys, follow the steps outlined below:
+
+<AccordionGroup>
+  <Accordion title="Access the Particle Dashboard">
+
+Sign up or Log in into the [Particle dashboard](https://dashboard.particle.network)
+
+<div className="flex justify-center">
+<img
+  className="block h-64 dark:hidden"
+  src="/guides/wallet-as-a-service/waas/images/login.png"
+  alt="Login into Particle."
+/>
+<img
+  className="hidden h-64 dark:block"
+  src="/guides/wallet-as-a-service/waas/images/login.png"
+  alt="Login into Particle."
+/>
+</div>
+ </Accordion>
+<Accordion title="Create a new project or enter an existing project">
+<div className="flex justify-center">
+<img
+  className="block h-64 dark:hidden"
+  src="/guides/wallet-as-a-service/waas/images/project.png"
+  alt="Create Particle project."
+/>
+<img
+  className="hidden h-64 dark:block"
+  src="/guides/wallet-as-a-service/waas/images/project.png"
+  alt="Create Particle project."
+/>
+</div>
+</Accordion>
+
+<Accordion title="Create a new iOS application, or skip this step if you already have one">
+<div className="flex justify-center">
+<img
+  className="block h-64 dark:hidden"
+  src="/guides/wallet-as-a-service/waas/images/ios-app.svg"
+  alt="Create iOS app."
+/>
+<img
+  className="hidden h-64 dark:block"
+  src="/guides/wallet-as-a-service/waas/images/ios-app.svg"
+  alt="Create iOS app."
+/>
+</div>
+</Accordion>
+
+<Accordion title="Retrieve the project ID, client key, and application ID">
+<div className="flex justify-center">
+<img
+  className="block h-64 dark:hidden"
+  src="/guides/wallet-as-a-service/waas/images/credentials.png"
+  alt="Find app's credentials."
+/>
+<img
+  className="hidden h-64 dark:block"
+  src="/guides/wallet-as-a-service/waas/images/credentials.png"
+  alt="Find app's credentials."
+/>
+</div>
+</Accordion>
+</AccordionGroup>
+
+For more information on the Particle dashboard, take a look at the [dashboard quickstart](/guides/dashboard).
+
+With your project ID, client key, and app ID retrieved, you'll need to add a file named `ParticleNetwork-Info.plist` to your project, then insert the aforementioned keys as is exemplified below.
+
+```xml ParticleNetwork-Info.plist
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>PROJECT_UUID</key>
+	<string>YOUR_PROJECT_UUID</string> <!-- Replace this with your project ID -->
+	<key>PROJECT_CLIENT_KEY</key>
+	<string>YOUR_PROJECT_CLIENT_KEY</string> <!-- Replace this with your client key -->
+	<key>PROJECT_APP_UUID</key>
+	<string>YOUR_PROJECT_APP_UUID</string> <!-- Replace this with your app ID -->
+</dict>
+</plist>
+```
+
+</Step>
+
+
+<Step title="Initialize Particle Auth">
+
+At this point, you've installed and configured Particle Auth; the only step remaining before the SDK can be used is initialization.
+
+Particle Auth can be initialized by simply calling the `initialize` method on `ParticleNetwork`. This takes the following parameters:
+- `config`, which takes:
+  - `chainInfo`, representing the primary chain you intend to use (for example, `.ethereum`, `.polygon`).
+  - `devEnv`, affecting the information logged within your environment (`.debug`, `.production`, or `.staging`).
+
+The snippet below is an example of this.
+
+```swift
+// You can retrieve chainInfo from ChainInfo, the initialize works for the first time open.
+// If you support more than one chain, you can use ParticleNetwork.setChainInfo to switch.
+ParticleNetwork.initialize(config: .init(chainInfo: .ethereum, devEnv: .debug))
+```
+
+</Step>
+
+<Step title="Facilitating social login">
+
+You're ready to facilitate social login and interacting with the resulting accounts.
+
+As shown below, you'll need to call `auth.connect` to initiate social login, passing in the specific login type you'd like the user to use (`.google`, `.twitter`, `.discord`, etc.) alongside, if applicable, the type of account prompt used by the OAuth provider (`.selectAccount`, `.consent`, `.none`).
+
+<Tip>When a user logs in for the first time, if there is no account, we will create one. Based on the current chainInfo, a new address will be generated. For example, if the current chain is EVM-compatible, only an EVM address will be generated; if it's the Solana chain, only a Solana address will be generated. If you want to obtain both addresses, you can use `auth.switchChain` to switch chains, and after waiting for 2 seconds, a new address for the selected chain will be generated for you.</Tip>
+
+```swift
+let userInfo = try await auth.connect(type: .google, socialLoginPrompt: .selectAccount)
+
+// Additionally, you can implement custom authentication through JWT.
+// Learn more: https://developers.particle.network/guides/configuration/auth/jwt
+let userInfo = try await auth.connect(type: .jwt, account: "the JWT")
+```
+</Step>
+
+</Steps>
+
+## Examples of Utilization
+
+### Retrieve User Information
+
+With a user logged in, you'll be able to retrieve information about their account (such as their address, or specific details regarding the social login mechanism they used) through methods such as `auth.evm.getAddress` and `auth.getUserInfo` (`getUserInfo` returns an object with numerous points of information; to learn more, head over to its [API reference](/api-reference/auth/server/getuserinfo)).
+
+The following snippet is an example of retrieving a user's address on both EVM and Solana alongside pulling their broader account information.
+
+```swift
+let evmAddress = auth.evm.getAddress()
+let solanaAddress = auth.solana.getAddress()
+
+let flag = try await self.auth.switchChain(chainInfo: .solana)
+if flag {
+    let userInfo = self.auth.getUserInfo()
+}
+
+// If you're using account abstraction through ParticleAA, you'll need to retrieve their address through the following:
+let smartAccountAddress = self.auth.getUserInfo()?.smartAccountAddress
+```
+
+### Send a Transaction
+
+Now, as a final example, you can send a transaction, such as burning 0.000000001 ETH.
+
+To do this, you'll need to construct a transaction with `ParticleWalletAPI.createTransaction` using standard parameters such as `from`, `to`, `value`, and (optionally) `data`.
+
+Upon construction, the transaction can be sent through `auth.evm.sendTransaction`; once the user signs/confirms, it'll be pushed to the network; an example of this is shown below.
+
+```swift
+let evmAddress = auth.evm.getAddress()
+let receiverAddress = "0x0000000000000000000000000000000000000000"
+let value = BDouble(0.000000001 * pow(10, 18)).rounded().toHexString()
+let transaction = try await ParticleWalletAPI.evm().createTransaction(from: evmAddress, to: receiverAddress, value: value, data: "0x").value
+              
+let txHash = try await self.auth.evm.sendTransaction(transaction, chainInfo: nil)
+```
+
+### Open Wallet
+
+If you included `ParticleWalletGUI` within your Podfile, you can open the (optional) embedded wallet interface at any time after a user connects, use `ParticleWalletGUI.setSupportChain` to set supported chains, then `PNRouter` to open the interface.
+
+```swift
+ParticleWalletGUI.setSupportChain(Set<[ChainInfo.ethereum, ChainInfo.bnbChain]>)
+PNRouter.navigatorWallet(hiddenBackButton: false)
+```
+
+<Tip>Take a look at the complete demo project [here](https://github.com/Particle-Network/particle-mpc-core-ios).</Tip>

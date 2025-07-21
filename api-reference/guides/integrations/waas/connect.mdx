@@ -1,0 +1,64 @@
+---
+title: "Particle Connect"
+description: "Particle's main connection kit, allowing developers to integrate Web2 and Web3 logins."
+---
+
+## Understanding Particle Connect
+
+<Frame>
+<img src="https://static.particle.network/mintlify/videos/02-Web3-wallets-login.gif" alt="Customizing authentication methods on the login screen."style={{ width: '100%', maxWidth: '600px' }} />
+</Frame>
+
+<Tip>
+If you're looking for the best SDK to use for a general implementation of Particle Network, you're in the right place.
+</Tip>
+
+Particle Connect exists as the all-in-one SDK driving implementation of Particle Network's Wallet Abstraction stack, aggregating both social logins through [Particle Auth](/guides/integrations/waas/auth) and standard wallet connection.
+
+Particle Connect is an in-house connection modal and component enabling users to connect with dApps through either Web2-based accounts or Web3-native wallets (such as MetaMask, Phantom, etc.). Whether a user would like to login through a social account, or through their MetaMask wallet, Particle Connect exists to be the singular interface facilitating both of these methods of connecting to a dApp.
+
+In this sense, Particle Connect can be best described as an SSO for Web3, offering a strong method of onboarding users regardless of their comfort level or personal integration within Web3. This ultimately lowers the entry barrier within applications without resulting in a clunky experience for Web3-native users; instead, the experience is standardized across both mediums.
+
+***
+
+<Frame caption="Particle Connect's breakdown.">
+<img
+  className="block dark:hidden"
+  src="/guides/integrations/waas/images/connect.png"
+  alt="Particle Connect breakdown."
+/>
+<img
+  className="hidden dark:block"
+  src="/guides/integrations/waas/images/connect.png"
+  alt="Particle Connect breakdown."
+/>
+</Frame>
+
+***
+
+## Integrating Particle Connect
+
+Using Particle Connect as a means of wallet connection within your application is quite straightforward and supported across several different platforms and frameworks. Whether you're building a web or mobile application or a game, Particle Connect has over seven SDKs to enable this integration. To understand the basics of working with Particle Connect programmatically, go to the [Particle Connect](/guides/wallet-as-a-service/waas/connect/web-quickstart) quickstart guide. Otherwise, choose a platform to see its SDK guides from the menu below:
+
+***
+
+<CardGroup cols={2}>
+  <Card title="Web SDK" href="/api-reference/connect/desktop/web">
+    Integrating Particle Connect within web applications using either JavaScript or TypeScript.
+  </Card>
+  <Card title="Unity (Mobile) SDK" href="/api-reference/connect/mobile/unity">
+    Integrating Particle Connect within mobile games built on Unity using C#.
+  </Card>
+   <Card title="Android SDK" href="/api-reference/connect/mobile/android">
+    Integrating Particle Connect on Android using Kotlin.
+  </Card>
+    <Card title="iOS SDK" href="/api-reference/connect/mobile/ios">
+    Integrating Particle Connect on iOS using Swift.
+  </Card>
+     <Card title="Flutter SDK" href="/api-reference/connect/mobile/flutter">
+    Integrating Particle Connect within applications built using Flutter.
+  </Card>
+    <Card title="React Native SDK" href="/api-reference/connect/mobile/react">
+    Integrating Particle Connect within applications built using React Native.
+  </Card>
+</CardGroup>

@@ -1,0 +1,82 @@
+---
+title: "Solana wallet-adapter"
+---
+
+The official Solana `wallet-adapter` is among the most popular means of facilitating wallet connection within your Solana application. `wallet-adapter`  implements a common wallet standard for generalized extension-based wallet connection. It has also directly integrated various SDK-based wallet solutions, such as Particle Network through the `ParticleAdapter`.
+
+<div className="flex justify-center">
+<img
+  className="block h-64 dark:hidden"
+  src="/guides/wallet-as-a-service/connection-kits/images/solana.png"
+  alt="Particle Network Solana wallet adapter."
+/>
+<img
+  className="hidden dark:block"
+  src="/guides/wallet-as-a-service/connection-kits/images/solana.png"
+  alt="Particle Network Solana wallet adapter."
+/>
+</div>
+
+## `ParticleAdapter`
+
+Officially available through `wallet-adapter` is `ParticleAdapter`, a direct port of `@particle-network/solana-wallet`, enabling full stack implementation of Particle's Wallet-as-a-Service natively within your Solana application without the need for external libraries.
+
+`ParticleAdapter` can be imported within applications leveraging `wallet-adapter` through the following:
+
+```typescript
+import { ParticleAdapter } from '@solana/wallet-adapter-wallets';
+```
+
+This adapter was built to mimic the full extent of the functionality offered within typical implementations of Particle Auth, including exposure of `.auth`, standard configuration, and more. Specifically, `ParticleAdapter` can be configured through the `config` object, as shown below:
+
+```typescript
+new ParticleAdapter({
+	config: {
+  	projectId: process.env.REACT_APP_PROJECT_ID,
+  	clientKey: process.env.REACT_APP_CLIENT_KEY,
+		appId: process.env.REACT_APP_APP_ID,
+	},
+});
+```
+
+***
+
+## `wallet-adapter-ext`
+
+While Particle's Wallet-as-a-Service is officially available through `wallet-adapter`, Particle Network also offers a custom adapter through `@particle-network/wallet-adapter-ext`. This adapter is nearly identical to `ParticleAdapter`, with the difference that it allows you to set the adapter to be represented as a social login within the connection menu, rather than just "Particle."
+
+```typescript
+import { ParticleAdapter } from '@particle-network/wallet-adapter-ext';
+
+new ParticleAdapter({
+	config: {
+  	projectId: process.env.REACT_APP_PROJECT_ID,
+  	clientKey: process.env.REACT_APP_CLIENT_KEY,
+		appId: process.env.REACT_APP_APP_ID,
+	},
+  // Extended functionality
+  preferredAuthType: {
+  	type: 'google', setAsDisplay: true
+  }
+});
+```
+
+<div className="flex justify-center">
+<img
+  className="block h-64 dark:hidden"
+  src="/guides/wallet-as-a-service/connection-kits/images/solana-adapter.png"
+  alt="Particle Network Solana wallet adapter."
+/>
+<img
+  className="hidden dark:block"
+  src="/guides/wallet-as-a-service/connection-kits/images/solana-adapter.png"
+  alt="Particle Network Solana wallet adapter."
+/>
+</div>
+
+
+***
+
+
+
+<Tip>A demo showcasing the extended functionality provided by `@particle-network/wallet-adapter-ext` is [deployed on Replit](https://particle-adapter-proposition.replit.app).</Tip>

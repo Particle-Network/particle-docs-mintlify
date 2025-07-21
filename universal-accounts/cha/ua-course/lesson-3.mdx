@@ -1,0 +1,125 @@
+---
+title: "Lesson 3: Send Transactions"
+description: "Learn how to send transactions using the Universal Accounts SDK."
+sidebarTitle: "Lesson 3: Send Transactions"
+---
+
+In this lesson, you'll learn how to send transactions using the Universal Accounts SDK. This is the final step in building a fully functional chain-agnostic application, enabling seamless cross-chain transfers without the need for bridging or complex liquidity management.
+
+<Note>
+Before getting started, make sure you followed [Lesson 2](./lesson-2) and have your Universal Account instance initialized.
+</Note>
+
+## Lesson Overview
+
+This lesson covers:
+1. Creating a convert assets across chains transaction
+2. Signing the transaction
+3. Broadcasting the transaction to the blockchain
+
+## Prerequisites
+
+Before starting, make sure you have:
+
+- Initialized a Universal Account (see [Lesson 1](./lesson-1))
+- Display the unified balance of your Universal Account (see [Lesson 2](./lesson-2))
+- Basic familiarity with TypeScript and blockchain transaction concepts
+
+## Lesson 3 Video
+
+The video below walks you through the process of creating and sending transactions:
+
+<iframe
+  width="100%"
+  height="500"
+  src="https://www.youtube.com/embed/0W_VbKKJfW4"
+  title="Lesson 3: Send Transactions"
+  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+  allowfullscreen="true"
+></iframe>
+
+<Note>
+  Get your Universal Accounts project ID from the [Particle Dashboard](https://dashboard.particle.network/).
+</Note>
+
+## TL;DR
+
+This lesson covers:
+- Creating a convert assets across chains transaction using the `createConvertTransaction()` method
+- Signing the transaction using a connected wallet
+- Broadcasting the transaction using `sendTransaction()`
+
+### Creating a Convert Assets Across Chains Transaction
+
+The Universal Accounts SDK allows you to create convert assets across chains transactions that convert any Primary Asset into a target token (e.g., USDT on Solana) without requiring the user to hold funds on the destination chain. 
+
+<Note>
+The Universal Account SDK allows for various types of transactions, find more details in the [Universal Accounts SDK reference](/universal-accounts/ua-reference/desktop/web).
+</Note>
+
+Here’s a basic example:
+
+```tsx
+import { CHAIN_ID, UniversalAccount, SUPPORTED_TOKEN_TYPE } from "@GDdark/universal-account";
+
+// Create a convert assets across chains transaction
+const transaction = await universalAccount.createConvertTransaction({
+    expectToken: { type: SUPPORTED_TOKEN_TYPE.USDC, amount: "1" },
+    chainId: CHAIN_ID.SOLANA_MAINNET,
+});
+
+console.log("Transaction Payload:", transaction);
+```
+
+### Signing the Transaction
+
+Once the transaction is created, the object returned includes a `rootHash` that must be signed by the user. Use the `signMessage()` method from your connected provider:
+
+Here is an example:
+
+```tsx
+const provider = new ethers.BrowserProvider(window.ethereum);
+const signer = await provider.getSigner();
+const signature = await signer.signMessage(getBytes(transaction.rootHash));
+```
+
+### Sending the Transaction
+
+After signing the transaction, you can broadcast it to the network as follows:
+
+```tsx
+const sendResults = await universalAccount.sendTransaction(
+    transaction,
+    signature
+);
+```
+
+The `sendTransaction()` method returns a `TransactionResult` object, which includes the transaction ID and other metadata. You can link directly to the transaction details on **UniversalX**:
+
+```tsx
+console.log(
+  "Explorer URL:",
+  `https://universalx.app/activity/details?id=${result.transactionId}`
+);
+```
+
+<Note>
+This approach abstracts away the complexities of chain-specific gas fees and liquidity routing, making it possible to send transactions without requiring the user to hold funds on the destination chain.
+</Note>
+
+---
+
+## Next Steps
+
+This marks the end of this course on the fundamentals of developing chain agnostic applications using Universal Accounts. 
+
+You now have the foundational skills to create seamless, multi-chain dApps using the **Universal Accounts SDK**. 
+
+To level up your Chain Abstraction skills, explore the [**How-to** section](/universal-accounts/cha/how-to/provider) for more advanced use cases, including:
+
+- How to [preview transactions details](/universal-accounts/cha/how-to/tx-preview)
+- How to [use Universal Accounts as a deposit flow](/universal-accounts/cha/how-to/deposit-flow) in existing apps
+
+<Note>
+You can also join the [ChADs (Chain Abstracted Developers) Telegram Group](https://t.me/chainabstracteddevs/1) to ask questions, share knowledge, and connect with Chain Abstracted developers.
+</Note>

@@ -1,0 +1,114 @@
+---
+title: "Universal Accounts SDK FAQ"
+sidebarTitle: "FAQ"
+description: "Frequently Asked Questions about the Universal Accounts SDK."
+---
+
+<AccordionGroup>
+  <Accordion title="What is the Universal Accounts SDK?" icon="browser">
+    The Universal Accounts SDK lets you integrate Particle Network's chain abstraction into your dApp. It provides your users with a unified address and balance across EVM chains and Solana.
+
+    You can use this SDK to:
+
+    - Allow users with assets on any chain to access your dApp.
+    - Give your users a unified assets balance and identity across chains and ecosystems.
+    - Execute transactions across chains without bridging or transferring assets.
+  </Accordion>
+  <Accordion title="Which platforms are supported by the SDK?" icon="desktop">
+    The SDK is currently only available for Web.
+
+    <Tip>
+      Check out our [SDK Reference](/universal-accounts/ua-reference/desktop/web) for detailed platform-specific docs.
+    </Tip>
+  </Accordion>
+  <Accordion title="What are Primary Assets, and how do they work?" icon="coins">
+    Primary Assets are tokens with deep liquidity, used by the Universal Accounts SDK as sources for cross-chain transactions. These assets are used for gas, swaps, and liquidity routing across chains.
+
+    <Info>
+    Find a list of the supported Primary Assets in the [Supported Chains & Primary Assets](/universal-accounts/cha/chains#primary-assets) page.
+    </Info>
+
+    Users can hold Primary assets on any [supported chain](/universal-accounts/cha/chains). When a transaction (like a swap or transfer) is initiated, the SDK will:
+
+    - Identify the most optimal Primary Asset from the user’s portfolio. For example, it may select USD on Polygon to allow a user to purchase a memecoin on Solana.
+    - Route liquidity across all the chains the user holds this Primary Asset using Universal Liquidity.
+    - Complete the transaction on the destination chain, even if the user holds **no assets on that chain.**
+  </Accordion>
+  <Accordion title="Do users need to deposit assets into their Universal Account?" icon="vault">
+    Yes. Universal Accounts are ERC-4337 smart account implementations, which means users must deposit assets into them before they can be used.
+
+    However, if a user already holds funds on another app leveraging Universal Accounts, like [UniversalX](https://universalx.app), those balances will be already available and usable within your dApp
+
+    To enable swaps, transfers, or contract calls:
+
+    - Users must hold **at least one [Primary Asset](/universal-accounts/cha/chains#primary-assets)** on their Universal Account.
+    - Once deposited, the SDK can route liquidity across supported chains.
+  </Accordion>
+  <Accordion title="Do Universal Accounts have private keys?" icon="lock-open">
+    No. Universal Accounts are ERC-4337 smart accounts—they don’t have private keys like traditional EOAs (Externally Owned Accounts).
+
+    Instead, ownership and permissions are managed via a signer (such as a user's wallet or social login) that authorizes transactions.
+  </Accordion>
+  <Accordion title="What are the transaction fees?" icon="file-invoice-dollar">
+
+
+Each Universal Account (UA) transaction may include the following fees:
+	- **Gas fees**: Required to execute the transaction on the destination chain.
+	- **Liquidity provider (LP) fee**: A 0.20% fee applied *only* to cross-chain transactions, paid to the LP handling the transfer.
+	- **Swap fee**: Applied *only* when swapping tokens, and varies based on token popularity:
+		- **0.1%** for tokens ranked in the top 500 on CoinGecko.
+		- **1%** for tokens ranked above 500.
+
+These fees are automatically calculated and included in the transaction quote returned by the SDK. Users don’t need to manage gas tokens—**Universal Liquidity handles routing and fee payments behind the scenes**.
+
+Fees can be edited on a *per-project* basis. Reach out to [Particle Support](https://t.me/particle_developer_bot) for assistance.
+  </Accordion>
+  <Accordion title="How to fix the 'Buffer is not defined' error in Vite" icon="bug">
+    This error happens because Vite doesn't polyfill Node.js globals like `Buffer` in the browser. However, some SDK dependencies (like `ethers`) may expect it to be available.
+
+    To fix this, follow these steps:
+
+    ### 1. Install required packages
+
+    ```bash
+    npm install buffer
+    npm install --save-dev @esbuild-plugins/node-globals-polyfill @esbuild-plugins/node-modules-polyfill
+    ```
+
+    1. Update your `vite.config.ts`
+
+    ```ts vite.config.ts
+    import { defineConfig } from 'vite'
+    import react from '@vitejs/plugin-react'
+    import { NodeGlobalsPolyfillPlugin } from '@esbuild-plugins/node-globals-polyfill'
+    import { NodeModulesPolyfillPlugin } from '@esbuild-plugins/node-modules-polyfill'
+    
+    export default defineConfig({
+      plugins: [react()],
+      optimizeDeps: {
+        esbuildOptions: {
+          define: {
+            global: 'globalThis'
+          },
+          plugins: [
+            NodeGlobalsPolyfillPlugin({
+              buffer: true
+            }),
+            NodeModulesPolyfillPlugin()
+          ]
+        }
+      },
+      resolve: {
+        alias: {
+          buffer: 'buffer'
+        }
+      }
+    })
+    ```
+  </Accordion>
+</AccordionGroup>
+
+<Note>
+  **Still need help?** \
+  Reach out via our[ Telegram](https://t.me/particle_developer_bot) **support channel** to get direct help from Particle’s Developer Relations team.
+</Note>

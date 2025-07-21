@@ -1,0 +1,51 @@
+---
+title: "Set Social Authentication Prompt"
+description: "Customizing social login prompts for Google, Discord, and Microsoft accounts."
+---
+
+
+For some social platforms, specifically Google, Discord, and Microsoft, you can configure the timing of the consent page displayed to users during the login process. Generally, three options are provided:
+
+    1.	`none`: Do not display any authentication or consent screens. Must not be specified with other values.
+    2.	`consent`: Prompt the user for consent.
+    3.	`select_account`: Prompt the user to select an account.
+
+Our SDK does not pass this parameter by default, which corresponds to the `none` process above. After the user authorizes, they won’t need to choose next time; if you want the user to choose each time, you need to configure it to `select_account`. The configuration items for the SDK on different platforms are as follows:
+
+    1.	Web
+
+```typescript
+// connect with social type.
+
+const userInfo = await connect({
+  socialType: "google",
+  prompt: "select_account", //optional, only google, discord and microsoft support it.
+});
+```
+
+    2. Android: `prompt` parameter
+   
+```kotlin
+AuthCore.connect(LoginType.GOOGLE, prompt = LoginPrompt.SelectAccount, loginCallback)
+```
+   3. iOS: `socialLoginPrompt` parameter
+   
+```swift
+let userInfo = try await auth.connect(type: .google, socialLoginPrompt: .selectAccount) 
+```
+
+   4. ReactNative: `socialLoginPrompt` parameter
+```typeScript
+const userInfo = await particleAuthCore.connect(LoginType.Google, null, [], SocialLoginPrompt.SelectAccount);
+```
+
+   5. Unity: `socialLoginPrompt` parameter
+```csharp
+await ParticleAuthCore.Instance.Connect(LoginType.GOOGLE, null, [], SocialLoginPrompt.SelectAccount, null);
+```
+   6. Flutter: `socialLoginPrompt` parameter
+   
+```dart
+final userInfo = ParticleAuthCore.connect(LoginType.google, prompt: SocialLoginPrompt.select_account);
+```
+

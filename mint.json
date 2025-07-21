@@ -29,10 +29,6 @@
   },
   "topbarLinks": [
     {
-      "name": "Demo",
-      "url": "https://demo.particle.network/"
-    },
-    {
       "name": "Blog",
       "url": "https://blog.particle.network/"
     },
@@ -46,24 +42,20 @@
     }
   ],
   "primaryTab": {
-    "name": "Introduction"
+    "name": "What is Particle Network?"
   },
   "tabs": [
     {
-      "name": "Guides",
-      "url": "guides"
+      "name": "Universal Accounts SDK",
+      "url": "universal-accounts"
     },
     {
-      "name": "APIs & SDKs",
+      "name": "Social Login/AA SDKs",
       "url": "api-reference"
     },
     {
       "name": "Changelog",
       "url": "changelog"
-    },
-    {
-      "name": "Schedule a Demo",
-      "url": "https://calendly.com/particle-network/30min"
     }
   ],
   "anchors": [
@@ -72,6 +64,7 @@
       "icon": "house-chimney-window",
       "url": "https://particle.network/"
     },
+
     {
       "name": "Discord",
       "icon": "discord",
@@ -83,200 +76,156 @@
       "url": "https://github.com/Particle-Network"
     },
     {
-      "name": "Demo",
-      "icon": "window",
-      "url": "https://demo.particle.network/"
+      "name": "Universal Accounts Demo",
+      "icon": "browser",
+      "url": "https://auth-universal-accounts.vercel.app/"
     }
   ],
   "navigation": [
     {
       "group": "OVERVIEW",
       "pages": [
-        "landing/introduction",
-        "landing/what-is-particle-network",
-        "landing/realized-vision"
+        "intro/introduction",
+        "intro/what-is-particle-network",
+        "intro/what-is-cha"
       ]
     },
     {
-      "group": "TECHNOLOGY",
+      "group": "UNIVERSAL ACCOUNTS",
       "pages": [
-        {
-          "group": "Wallet Abstraction",
-          "pages": [
-            {
-              "group": "Smart Wallet-as-a-Service",
-              "pages": [
-                "landing/wallet-abstraction/waas/overview",
-                "landing/wallet-abstraction/waas/differentiators",
-                "landing/wallet-abstraction/waas/mpc-tss",
-                "landing/wallet-abstraction/waas/bundler",
-                "landing/wallet-abstraction/waas/omni-paymaster"
-              ]
-            },
-            "landing/wallet-abstraction/btc-connect"
-          ]
-        },
-        {
-          "group": "Coming Soon: Particle Chain",
-          "pages": [
-            "landing/modular-l1/introduction",
-            "landing/modular-l1/universal-accounts",
-            "landing/modular-l1/universal-liquidity",
-            "landing/modular-l1/universal-gas"
-          ]
-        }
+        "intro/universal-accounts",
+        "intro/universal-liquidity",
+        "intro/universal-gas"
       ]
     },
     {
-      "group": "TUTORIALS & DEMOS",
+      "group": "MORE RESOURCES",
       "pages": [
-        "landing/tutorials-and-demos/list",
-        "landing/tutorials-and-demos/repositories",
-        "landing/tutorials-and-demos/videos"
-      ]
-    },
-    {
-      "group": "MISCELLANEOUS",
-      "pages": [
-        "landing/more/audits",
-        "landing/more/assets"
+        "intro/more/audits",
+        "intro/more/assets"
       ]
     },
     {
       "group": "LEGAL",
       "pages": [
-        "landing/tos/license-agreement",
-        "landing/tos/privacy-policy",
-        "landing/tos/terms-of-use"
+        "intro/tos/license-agreement",
+        "intro/tos/privacy-policy",
+        "intro/tos/terms-of-use"
       ]
     },
     {
-      "group": "GETTING STARTED",
+      "group": "OVERVIEW",
       "pages": [
-        "guides/overview",
-        "guides/network-coverage",
-        "guides/dashboard",
+        "universal-accounts/cha/overview",
+        "universal-accounts/cha/chains",
         {
-          "group": "Platform Coverage",
+          "group": "Quickstart",
           "pages": [
-            "guides/integrations/platform/web",
-            "guides/integrations/platform/android",
-            "guides/integrations/platform/ios",
-            "guides/integrations/platform/unity",
-            "guides/integrations/platform/unreal",
-            "guides/integrations/platform/cocos",
-            "guides/integrations/platform/flutter",
-            "guides/integrations/platform/react"
+            "universal-accounts/cha/web-quickstart"
+          ]
+        },
+        {
+          "group": "How-to",
+          "pages": [
+            "universal-accounts/cha/how-to/provider",
+            "universal-accounts/cha/how-to/balances",
+            "universal-accounts/cha/how-to/deposit-flow",
+            "universal-accounts/cha/how-to/tx-preview",
+            "universal-accounts/cha/how-to/conversions"
           ]
         }
+
       ]
+      
     },
     {
-      "group": "WALLET-AS-A-SERVICE",
+      "group": "LEARN",
       "pages": [
-        "guides/wallet-as-a-service/waas/understanding-waas",
+
+
         {
-          "group": "Quickstarts (Connect)",
+          "group": "Chain Abstracted Apps Development Course",
           "pages": [
-            "guides/wallet-as-a-service/waas/connect/web-quickstart",
-            "guides/wallet-as-a-service/waas/connect/ios-quickstart",
-            "guides/wallet-as-a-service/waas/connect/android-quickstart",
-            "guides/wallet-as-a-service/waas/connect/flutter-quickstart",
-            "guides/wallet-as-a-service/waas/connect/react-native-quickstart"
-          ]
-        },
-        {
-          "group": "Quickstarts (Auth)",
-          "pages": [
-            "guides/wallet-as-a-service/waas/auth/web-quickstart",
-            "guides/wallet-as-a-service/waas/auth/tg-quickstart",
-            "guides/wallet-as-a-service/waas/auth/ios-quickstart",
-            "guides/wallet-as-a-service/waas/auth/android-quickstart",
-            "guides/wallet-as-a-service/waas/auth/flutter-quickstart",
-            "guides/wallet-as-a-service/waas/auth/react-native-quickstart"
-          ]
-        },
-        {
-          "group": "SDKs Overview",
-          "pages": [
-            "guides/integrations/waas/auth",
-            "guides/integrations/waas/wallet",
-            "guides/integrations/waas/connect"
-          ]
-        },
-        {
-          "group": "Connection Kits",
-          "pages": [
-            "guides/wallet-as-a-service/connection-kits/rainbow",
-            "guides/wallet-as-a-service/connection-kits/web3modal",
-            "guides/wallet-as-a-service/connection-kits/web3-onboard"
-          ]
-        },
-        {
-          "group": "Building with Particle's Partners",
-          "pages": [
-            "guides/integrations/partners/zetachain",
-            "guides/integrations/partners/alchemy",
-            "guides/integrations/partners/openfort",
-            "guides/integrations/partners/biconomy",
-            "guides/integrations/partners/bob"
+            "universal-accounts/cha/ua-course/intro",
+            "universal-accounts/cha/ua-course/lesson-1",
+            "universal-accounts/cha/ua-course/lesson-2",
+            "universal-accounts/cha/ua-course/lesson-3"
           ]
         }
+
       ]
+      
     },
     {
-      "group": "ACCOUNT ABSTRACTION",
-      "pages": [
-        {
-          "group": "Quickstarts",
-          "pages": [
-            "guides/aa/web-aa",
-            "guides/aa/mobile-aa",
-            "guides/aa/bundler",
-            "guides/aa/paymaster"
-          ]
-        },
-        {
-          "group": "Product Overviews",
-          "pages": [
-            "guides/integrations/aa/bundler",
-            "guides/integrations/aa/paymaster",
-            "guides/integrations/aa/keys"
-          ]
-        }
-      ]
-    },
-    {
-      "group": "CONFIGURATION",
-      "pages": [
-        {
-          "group": "Appearance",
-          "pages": [
-            "guides/configuration/appearance/auth",
-            "guides/configuration/appearance/wallet"
-          ]
-        },
-        {
-          "group": "Authentication",
-          "pages": [
-            "guides/configuration/auth/jwt",
-            "guides/configuration/auth/social-prompt",
-            "guides/configuration/auth/session-duration",
-            "guides/configuration/auth/password"
-          ]
-        }
-      ]
-    },
-    {
-      "group": "APIs & SDKs",
-      "pages": [
-        "api-reference/introduction"
-      ]
-    },
+      "group": "SDK Reference",
+            "pages": [
+            "universal-accounts/ua-reference/desktop/web",
+            "universal-accounts/ua-reference/faq"
+         
+              
+            ]
+            
+          },
+    
+    
+          {
+            "group": "OVERVIEW",
+            "pages": [
+              "api-reference/guides/overview",
+              "api-reference/guides/network-coverage",
+              "api-reference/guides/dashboard",
+              "api-reference/wallet-abstraction/waas/mpc-tss",
+              {
+                "group": "Platform Coverage",
+                "pages": [
+                  "api-reference/guides/integrations/platform/web",
+                  "api-reference/guides/integrations/platform/android",
+                  "api-reference/guides/integrations/platform/ios",
+                  "api-reference/guides/integrations/platform/unity",
+                  "api-reference/guides/integrations/platform/unreal",
+                  "api-reference/guides/integrations/platform/cocos",
+                  "api-reference/guides/integrations/platform/flutter",
+                  "api-reference/guides/integrations/platform/react"
+                ]
+              },   
+              {
+                "group": "Configuration",
+                "pages": [
+                  {
+                    "group": "Appearance",
+                    "pages": [
+                      "api-reference/guides/configuration/appearance/auth",
+                      "api-reference/guides/configuration/appearance/wallet"
+                    ]
+                  },
+                  {
+                    "group": "Authentication",
+                    "pages": [
+                      "api-reference/guides/configuration/auth/jwt",
+                      "api-reference/guides/configuration/auth/social-prompt",
+                      "api-reference/guides/configuration/auth/session-duration",
+                      "api-reference/guides/configuration/auth/password"
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          
     {
       "group": "PARTICLE CONNECT",
       "pages": [
         "api-reference/connect/introduction",
+        {
+          "group": "Quickstart",
+          "pages": [
+            "api-reference/guides/wallet-as-a-service/waas/connect/web-quickstart",
+            "api-reference/guides/wallet-as-a-service/waas/connect/ios-quickstart",
+            "api-reference/guides/wallet-as-a-service/waas/connect/android-quickstart",
+            "api-reference/guides/wallet-as-a-service/waas/connect/flutter-quickstart",
+            "api-reference/guides/wallet-as-a-service/waas/connect/react-native-quickstart"
+          ]
+        },
         {
           "group": "SDKs (Desktop)",
           "pages": [
@@ -300,6 +249,17 @@
       "group": "PARTICLE AUTH",
       "pages": [
         "api-reference/auth/introduction",
+        {
+          "group": "Quickstart",
+          "pages": [
+            "api-reference/guides/wallet-as-a-service/waas/auth/web-quickstart",
+            "api-reference/guides/wallet-as-a-service/waas/auth/tg-quickstart",
+            "api-reference/guides/wallet-as-a-service/waas/auth/ios-quickstart",
+            "api-reference/guides/wallet-as-a-service/waas/auth/android-quickstart",
+            "api-reference/guides/wallet-as-a-service/waas/auth/flutter-quickstart",
+            "api-reference/guides/wallet-as-a-service/waas/auth/react-native-quickstart"
+          ]
+        },
         {
           "group": "Server API",
           "pages": [
@@ -336,33 +296,19 @@
       ]
     },
     {
-      "group": "PARTICLE WALLET",
-      "pages": [
-        "api-reference/wallet/introduction",
-        "api-reference/wallet/on-ramp",
-        {
-          "group": "SDKs (Desktop)",
-          "pages": [
-            "api-reference/wallet/desktop/web"
-          ]
-        },
-        {
-          "group": "SDKs (Mobile)",
-          "pages": [
-            "api-reference/wallet/mobile/android",
-            "api-reference/wallet/mobile/ios",
-            "api-reference/wallet/mobile/unity",
-            "api-reference/wallet/mobile/flutter",
-            "api-reference/wallet/mobile/react"
-          ]
-        },
-        "api-reference/wallet/faq"
-      ]
-    },
-    {
       "group": "ACCOUNT ABSTRACTION",
       "pages": [
         "api-reference/aa/introduction",
+        {
+          "group": "Quickstarts",
+          "pages": [
+            "api-reference/guides/aa/web-aa",
+            "api-reference/guides/aa/mobile-aa",
+            "api-reference/guides/aa/bundler",
+            "api-reference/guides/aa/paymaster",
+            "api-reference/guides/aa/keys"
+          ]
+        },
         {
           "group": "SDKs (Desktop)",
           "pages": [
@@ -379,6 +325,14 @@
             "api-reference/aa/sdks/mobile/react"
           ]
         },
+        {
+          "group": "Architecture",
+          "pages": [
+            "api-reference/wallet-abstraction/waas/bundler",
+            "api-reference/wallet-abstraction/waas/omni-paymaster",
+            "api-reference/wallet-abstraction/btc-connect"
+          ]
+        } ,
         {
           "group": "Account Abstraction RPC",
           "pages": [
@@ -411,6 +365,31 @@
       ]
     },
     {
+      "group": "PARTICLE WALLET",
+      "pages": [
+        "api-reference/wallet/introduction",
+        "api-reference/wallet/on-ramp",
+        {
+          "group": "SDKs (Desktop)",
+          "pages": [
+            "api-reference/wallet/desktop/web"
+          ]
+        },
+        {
+          "group": "SDKs (Mobile)",
+          "pages": [
+            "api-reference/wallet/mobile/android",
+            "api-reference/wallet/mobile/ios",
+            "api-reference/wallet/mobile/unity",
+            "api-reference/wallet/mobile/flutter",
+            "api-reference/wallet/mobile/react"
+          ]
+        },
+        "api-reference/wallet/faq"
+      ]
+    },
+    
+    {
       "group": "BTC CONNECT",
       "pages": [
         "api-reference/btc/introduction",
@@ -431,7 +410,7 @@
       ]
     },
     {
-      "group": "EHNANCED",
+      "group": "EHNANCED RPC",
       "pages": [
         "api-reference/enhanced/introduction",
         {
@@ -493,59 +472,59 @@
   "redirects": [
     {
       "source": "/docs/what-is-particle-network",
-      "destination": "/landing/what-is-particle-network"
+      "destination": "/intro/what-is-particle-network"
     },
     {
       "source": "/docs/particle-vision-and-ecosystem",
-      "destination": "/landing/realized-vision"
+      "destination": "/intro/realized-vision"
     },
     {
       "source": "/docs/particle-chain",
-      "destination": "/landing/modular-l1/introduction"
+      "destination": "/intro/intro/introduction"
     },
     {
       "source": "/docs/universal-accounts",
-      "destination": "/landing/modular-l1/universal-accounts"
+      "destination": "/intro/intro/universal-accounts"
     },
     {
       "source": "/docs/universal-liquidity",
-      "destination": "/landing/modular-l1/universal-liquidity"
+      "destination": "/intro/intro/universal-liquidity"
     },
     {
       "source": "/docs/universal-gas",
-      "destination": "/landing/modular-l1/universal-gas"
+      "destination": "/intro/intro/universal-gas"
     },
     {
       "source": "/docs/btc-connect",
-      "destination": "/landing/wallet-abstraction/btc-connect"
+      "destination": "/intro/wallet-abstraction/btc-connect"
     },
     {
       "source": "/docs/security-mpc-tss",
-      "destination": "/landing/wallet-abstraction/waas/mpc-tss"
+      "destination": "/intro/wallet-abstraction/waas/mpc-tss"
     },
     {
       "source": "/docs/modular-smart-waas",
-      "destination": "/landing/wallet-abstraction/waas/overview"
+      "destination": "/intro/wallet-abstraction/waas/overview"
     },
     {
       "source": "/docs/particle-bundler",
-      "destination": "/landing/wallet-abstraction/waas/bundler"
+      "destination": "/intro/wallet-abstraction/waas/bundler"
     },
     {
       "source": "/docs/omnichain-paymaster",
-      "destination": "/landing/wallet-abstraction/waas/omni-paymaster"
+      "destination": "/intro/wallet-abstraction/waas/omni-paymaster"
     },
     {
       "source": "/docs/particle-vs-alternatives",
-      "destination": "/landing/wallet-abstraction/waas/differentiators"
+      "destination": "/intro/wallet-abstraction/waas/differentiators"
     },
     {
       "source": "/docs/security-audits",
-      "destination": "/landing/more/audits"
+      "destination": "/intro/more/audits"
     },
     {
       "source": "/docs/brand-assets",
-      "destination": "/landing/more/assets"
+      "destination": "/intro/more/assets"
     },
     {
       "source": "/docs/network-coverage",
@@ -749,15 +728,15 @@
     },
     {
       "source": "/resources/terms-and-conditions/privacy-policy",
-      "destination": "/landing/tos/privacy-policy"
+      "destination": "/intro/tos/privacy-policy"
     },
     {
       "source": "/resources/terms-and-conditions/terms-of-use",
-      "destination": "/landing/tos/terms-of-use"
+      "destination": "/intro/tos/terms-of-use"
     },
     {
       "source": "/resources/terms-and-conditions/api-and-sdk-license-agreement",
-      "destination": "/landing/tos/license-agreement"
+      "destination": "/intro/tos/license-agreement"
     }
   ]
 }

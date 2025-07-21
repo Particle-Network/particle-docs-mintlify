@@ -14,30 +14,39 @@ Although, a custom wallet can be added given it supports application injection (
 An example of this has been included below.
 ```ts
 import { createConfig } from '@particle-network/connectkit';
-import { evmWalletConnectors, injected, walletConnect, coinbaseWallet } from '@particle-network/connectkit/evm';
+import {
+  evmWalletConnectors,
+  injected,
+  walletConnect,
+  coinbaseWallet,
+} from '@particle-network/connectkit/evm';
 
 const config = createConfig({
-    walletConnectors: [
-        evmWalletConnectors({
+  walletConnectors: [
+    evmWalletConnectors(
+      {
+        // You can pass options here if needed
+      },
+      {
+        connectorFns: [
+          injected({
+            // Replace the placeholders with information reflecting the wallet you're including.
+            target: {
+              icon: 'https://...',
+              id: 'xxx', // Wallet Unique ID
+              name: 'XXX Wallet',
+              provider: (window) => {
+                return window?.xxx?.ethereum;
+              },
             },
-            connectorFns: [
-                injected({
-                    // Replace the placeholders with information reflecting the wallet you're including.
-                    target: {
-                        icon: 'https://...',
-                        id: 'xxx', // Wallet Unique ID
-                        name: 'XXX Wallet',
-                        provider: (window) => {
-                            return window?.xxx.ethereum;
-                        },
-                    },
-                }),
-            ],
-            // EIP-6963: Multi Injected Provider Discovery, default true.
-            multiInjectedProviderDiscovery: true,
-        }),
-    ],
-    // Other connectors...
+          }),
+        ],
+        // EIP-6963: Multi Injected Provider Discovery, default true.
+        multiInjectedProviderDiscovery: true,
+      }
+    ),
+    // Add more connectors like walletConnect(), coinbaseWallet(), etc., here if needed
+  ],
 });
 ```
 </Accordion>

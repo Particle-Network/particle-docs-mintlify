@@ -1,0 +1,251 @@
+---
+title: "Biconomy and Particle Network"
+---
+
+Biconomy is a long-standing partner of Particle Network within the ERC-4337 account abstraction infrastructure vertical. Particle Network's initial natively-integrated AA stack was driven almost entirely by Biconomy. While today Particle Network has its [Omnichain Paymaster](/guides/integrations/aa/paymaster) and [Particle Bundler](/guides/integrations/aa/bundler), Biconomy is still directly compatible with Particle Network's tech stack. Furthermore, Biconomy even features a custom SDK, `@biconomy/particle-auth` for leveraging Biconomy with Particle Auth.
+
+This document will go through the specifics of using Biconomy either natively within Particle Network's AA SDK for gasless (and token-paid) transactions or using Particle Network within the aforementioned SDK to achieve the same goal, just through different means.
+
+***
+
+<iframe 
+width="100%"
+height="800" 
+src="https://particle-biconomy-demo.replit.app"
+href="https://particle-biconomy-demo.replit.app">
+</iframe>
+
+***
+
+## Part 1: Leveraging Biconomy through `@particle-network/aa`
+
+In an effort to ensure developers have multiple options to choose from when using the Particle Network AA SDK, built-in compatibility with Biconomy's Paymaster has been included within `@particle-network/aa`. Therefore when leveraging Particle's AA SDK for sponsoring transactions, you're given the choice between Particle Network's [Omnichain Paymaster](/guides/integrations/aa/paymaster) and [Biconomy's Paymaster](https://docs.biconomy.io/paymaster). If you're leveraging ERC20-paid transactions with `@particle-network/aa`, then [Biconomy's Token Paymaster ](https://docs.biconomy.io/paymaster#token-paymaster) is used by default, as Particle Network does not currently have its own Token Paymaster. Below, we'll run through the basics of leveraging Biconomy's Verifying Paymaster within `SmartAccount` from `@particle-network/aa`.
+
+### Getting Started
+
+For this example, we'll be putting together a basic demo application that onboards a user through social login, assigns a smart account (Biconomy V2 in this case), and facilitates a gasless transaction sponsored by Biconomy's Paymaster. To begin, you'll need to install the following core libraries (mostly from Particle Network):
+
+- `@particle-network/auth-core-modal`, for facilitating social logins and powering the resulting embedded wallet.
+- `@particle-network/chains`, optional, but a convenient way to retrieve chain information quickly (such as chain ID).
+- `@particle-network/aa`, to configure and interact with the assigned smart account.
+- `ethers`, for sending transactions and doing unit conversions.
+- Additionally, any extra libraries you'll need for the application itself (such as `react`).
+
+To install these libraries, run one of the two following commands at the root of your project:
+
+```shell Terminal
+yarn add @particle-network/auth-core-modal @particle-network/chains @particle-network/aa ethers
+
+# OR
+
+npm install @particle-network/auth-core-modal @particle-network/chains @particle-network/aa ethers
+```
+
+### Configuration
+
+Once you've installed these libraries, you'll need to configure Particle Auth Core within your `index` file (or its equivalent). Without configuring Particle Auth Core, you won't be able to implement the social login functionality we'll cover in a moment. Particle's AA SDK works with any EIP-1193 provider, not just Particle Auth Core, so feel free to skip this if you intend on using a different wallet. 
+
+Particle Auth Core is configured exclusively through `AuthCoreContextProvider`, an object that wraps your primary `App` component (or its equivalent) within your `index` file. Specifically, `AuthCoreContextProvider` takes the following parameters (relevant to this walkthrough):
+
+- `projectId`, `clientKey`, and `appId`. Each of these are required values retrieved from the [Particle dashboard](https://dashboard.particle.network). Without them, your application will throw an error. Your project ID, client key, and app ID essentially link your application with the dashboard, thereby authenticating API requests, allowing you to track users, etc. Retrieve these values even if you aren't configuring `AuthCoreContextProvider`, as you'll be using them for `SmartAccount` in a moment.
+- `erc4337`, containing `name` and `version`. In this example, we're using a Biconomy V2 smart account, thus `name` can be set to "BICONOMY" and `version` can be set to "2.0.0."
+
+Beyond these parameters, there are numerous other (mostly visual) customizations that can be made, including determining whether the embedded wallet modal is visible or not (and if so, what chains it supports). An example of the constructed `index` file used for this example isincluded below:
+
+```typescript TypeScript
+import React from 'react'
+import ReactDOM from 'react-dom/client'
+import { EthereumGoerli } from '@particle-network/chains';
+import { AuthCoreContextProvider } from '@particle-network/auth-core-modal';
+import App from './App'
+
+ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
+  <React.StrictMode>
+    <AuthCoreContextProvider
+      options={{
+        projectId: process.env.REACT_APP_PROJECT_ID,
+        clientKey: process.env.REACT_APP_CLIENT_KEY,
+        appId: process.env.REACT_APP_APP_ID,
+        erc4337: {
+          name: 'BICONOMY',
+          version: '2.0.0',
+        },
+        wallet: {
+          visible: true,
+          customStyle: {
+              supportChains: [EthereumGoerli],
+          }
+        }
+      }}
+    >
+    <App />
+      </AuthCoreContextProvider>
+  </React.StrictMode>
+)
+```
+
+With Particle Auth Core initialized, you're ready to set up and begin using Particle's AA SDK, `@particle-network/aa` with Biconomy's Paymaster (and smart account in this case). To do this, we'll navigate to the primary `App` component mentioned earlier. Within this file, you'll need to import the following objects to facilitate social logins alongside account abstraction:
+
+- `useEthereum`, `useConnect`, and `useAuthCore` from `@particle-network/auth-core-modal`. These are the hooks that drive social login, user information retrieval, and 1193 provider construction for Particle Auth Core.
+- `AAWrapProvider`, `SendTransactionMode`, and `SmartAccount` from `@particle-network/aa`. Each of these objects is key for configuring our smart account (`SmartAccount`), ensuring transactions are gasless (`SendTransactionMode`), and sending standard transactions as UserOperations with Ethers (`AAWrapProvider`).
+- `ethers` from `ethers`, to be used with the aforementioned `AAWrapProvider` object.
+
+The key point of focus here will be with the three objects imported from `@particle-network/aa`, allowing us to configure a Biconomy smart account and Paymaster to be used within this demo application. To do this, we'll need to begin by configuring `SmartAccount`, the core object for initializing and controlling the smart account assigned to a specified Signer (an account generated by Particle Auth Core in this case). `SmartAccount` takes the following parameters:
+
+- `provider`, an EIP-1193 provider representing the wallet Signer you'd like to use and assign to the smart account (in our case, this will be `provider` from `useEthereum`).
+- An object containing:
+  - `projectId`, `clientKey`, and `appId`. Covered earlier, these connect your project to the [Particle dashboard](https://dashboard.particle.network) (can also be retrieved from the dashboard).
+  - `aaOptions`, which contains:
+    - `biconomy`, the parameter representing our choice of a Biconomy smart account. This takes an array of objects, each containing `chainId` and `version`.
+    - **`paymasterApiKeys`**, the focal point here. `paymasterApiKeys` allows you to override the default usage of Particle's [Omnichain Paymaster](/guides/integrations/aa/paymaster) in place of Biconomy's Paymaster. Within `paymasterApiKeys`, you need to define:
+      - `chainId`, ID for the chain in which you've deployed your Paymaster through the [Biconomy dashboard](https://dashboard.biconomy.io).
+      - `apiKey`, the API key of a Paymaster deployed through the [Biconomy dashboard](https://dashboard.biconomy.io).
+
+With each of these parameters defined, especially `paymasterApiKeys`, you'll be ready to go with a constructed and assigned smart account. While it's possible to directly send UserOperations through this instance of `SmartAccount`, it's often easier to instead use the `SmartAccount` instance within a custom Ethers object, leveraging `AAWrapProvider` and `SendTransactionMode` to construct a EIP-1193 provider. In this example, we'll be creating `customProvider`, a custom Ethers object made through the aforementioned process.
+
+An example of a completed `SmartAccount` instance alongside an associated custom Ethers provider can be found below:
+
+```typescript TypeScript
+const smartAccount = new SmartAccount(provider, {
+    projectId: process.env.REACT_APP_PROJECT_ID, // -
+    clientKey: process.env.REACT_APP_CLIENT_KEY, // Retrieved from https://dashboard.particle.network
+    appId: process.env.REACT_APP_APP_ID, // -
+    aaOptions: {
+      biconomy: [{ chainId: EthereumGoerli.id, version: '2.0.0' }],
+      paymasterApiKeys: [{
+        chainId: EthereumGoerli.id,
+        apiKey: process.env.REACT_APP_BICONOMY_KEY // Retrieved from https://dashboard.biconomy.io
+      }]
+    },
+  });
+
+  const customProvider = new ethers.providers.Web3Provider(new AAWrapProvider(smartAccount, SendTransactionMode.Gasless), "any");
+```
+
+### Using the Smart Account
+
+With `smartAccount` and `customProvider` now initialized, we can facilitate social login with Particle Auth Core and begin using the underlying smart account for a gasless transaction sponsored by Biconomy's Paymaster. To begin with the former (handling social login), we'll need to pull the `connect` function from the `useConnect` hook (imported from `@particle-network/aa`). `connect` can be called on its own, or by a specific function to ensure it can only be called through specific conditions. In this example, this function is called `handleLogin`, and it checks that a user hasn't logged in with Particle Auth Core before allowing `connect` to be called. Upon calling `connect`, either a standardized social login modal will be thrown or, if `socialType` is defined (on `connect`), it'll shortcut to the OAuth page of a specified social login provider, as shown below:
+
+```typescript TypeScript
+const handleLogin = async (authType) => {
+	if (!userInfo) {
+		await connect({
+			socialType: authType,
+			chain: EthereumGoerli,
+		});
+	}
+};
+```
+
+Once a user has undergone social login and thus an EOA has been generated and set as the Signer for the previously configured smart account, we're ready to send a gasless transaction powered by Biconomy. To do this, we can set up a function called `executeUserOp`, in which we'll use our custom Ethers object (`customProvider`) to execute a standard burn transaction. This will be automatically routed as a UserOperation due to the usage of `AAWrapProvider` in the construction of `customProvider`.
+
+`executeUserOp` should first retrieve a Signer object with `customProvider.getSigner`, which can then be used to execute a standard transaction object containing parameters such as `to`, `value`, `data`, etc. For this walkthrough, we'll stick to a burn transaction of 0.0001 ETH (burn referring to the recipient being a dead address, `0x000000000000000000000000000000000000dEaD`). Upon passing this transaction into `signer.sendTransaction`, you can wait for the transaction to be confirmed with `{your transaction response object}.wait()`. Thus, your `executeUserOp` function (or its equivalent) should look similar to the following:
+
+```typescript TypeScript
+const executeUserOp = async () => {
+	const signer = customProvider.getSigner();
+  const tx = {
+		to: "0x000000000000000000000000000000000000dEaD",
+    value: ethers.utils.parseEther("0.0001"),
+  };
+  const txResponse = await signer.sendTransaction(tx);
+  const txReceipt = await txResponse.wait();
+  notification.success({
+		message: 'Transaction Successful',
+    description: `Transaction Hash: ${txReceipt.transactionHash}`
+	});
+};
+```
+
+This will then send 0.0001 ETH from a Biconomy V2 smart account to `0x000000000000000000000000000000000000dEaD`, sponsored by Biconomy's Paymaster.
+
+## Part 2: Implementing Particle Auth with Biconomy through `@biconomy/particle-auth`
+
+Outside of Particle Network's AA SDK, cross-functionality between social logins from Particle and account abstraction infrastructure from Biconomy can also be achieved through Biconomy's own SDK, `@biconomy/particle-auth`. This SDK leverages Particle Auth (not Particle Auth Core) directly with Biconomy's Paymaster, Bundler, and smart account to facilitate a natural integration of Particle Network's Wallet-as-a-Service with Biconomy.
+
+Essentially, `@biconomy/particle-auth` integrates a 1:1 copy of the standard Particle Auth SDK (`@particle-network/auth`), allowing you to configure Particle Auth create a custom 1193 provider, and use said provider to initialize a Biconomy smart account. The transactions from this account will be sponsored by Biconomy's Paymaster.
+
+### Configuration
+
+To begin using `@biconomy/particle-auth`, you'll need to install it through one of the two following commands at the root of your project:
+
+```shell Terminal
+yarn add @biconomy/particle-auth
+
+# OR
+
+npm install @biconomy/particle-auth
+```
+
+The entire range of functionality covered within this example can be achieved solely through this SDK due to its aforementioned wrapping of `@particle-network/auth`, `@particle-network/provider`, etc. Unlike the former Particle Auth Core example, each component of this SDK can be configured within your primary `App` component (or its equivalent). Specifically, you'll need to configure `ParticleAuthModule` and `BiconomyAccountModule`. Thus, to do this, you'll need to start by defining a new instance of `ParticleAuthModule.ParticleNetwork`, which takes an object containing the following:
+
+- `projectId`, `clientKey`, and `appId`. As was covered in part 1, these are universally required values when working with Particle, as they allow your API requests to be authenticated. If you don't have them already, retrieve these values from the [Particle dashboard](https://dashboard.particle.network).
+- `chainName` and `chainId`, the name and ID for the specific chain you intend on using within your application.
+
+The resulting instance (defined in a variable of your choice) will be equivalent to a constructed instance of `ParticleNetwork` (see the recipe below for more information on this).
+
+***
+
+You'll also need to configure the `BiconomyAccountModule` object, which will allow you to spin up a smart account instance and tie it to the EOA generated during the social login process with Particle Auth. This should be done through a new instance of `BiconomyAccountModule.SmartAccount`, which takes:
+
+- `provider`, an EIP-1193 provider object. In this case, that should be `new ParticleProvider(particle.auth)`, with `ParticleProvider` imported from `@biconomy/particle-auth`.
+- An object containing:
+  - `projectId`, `clientKey`, and `appId`. These are pulled from the [Particle dashboard](https://dashboard.particle.network), as mentioned above.
+  - `networkConfig`, an array of objects. Each object should contain:
+    - `dappAPIKey`, the API key of your Paymaster made on the [Biconomy dashboard](https://dashboard.biconomy.io).
+    - `chainId`, the ID of the chain the Paymaster associated with `dappAPIKey` is deployed on.
+
+This object can then be used directly for the construction of a custom Ethers provider, similarly to part 1. Specifically, you'll need to construct this Ethers object (`ethers.providers.Web3Provider` for V5, or `ethers.BrowserProvider` for V6) with a new instance of `BiconomyAccountModule.BiconomyWrapProvider` (like `AAWrapProvider` from part 1), passing in:
+
+- `smartAccount`, the object previously initialized through `BiconomyAccountModule.SmartAccount`.
+- `sendTxMode`, the method by which gas fees will be paid. This is optional and will be the standard method by default (where gas fees are paid by native tokens on the user smart account). If you'd like transactions to be gasless or paid for with ERC-20 tokens, you'll need to set this as `BiconomyAccountModule.SendTransactionMode.Gasless` or `BiconomyAccountModule.SendTransactionMode.UserSelect`.
+
+For an example of the full configuration process covered above, see the code snippet below:
+
+```typescript TypeScript
+import {
+  ParticleAuthModule,
+  ParticleProvider,
+  BiconomyAccountModule,
+} from "@biconomy/particle-auth";
+
+const config = {
+  projectId: process.env.REACT_APP_PROJECT_ID!,
+  clientKey: process.env.REACT_APP_CLIENT_KEY!,
+	appId: process.env.REACT_APP_APP_ID!,
+}
+
+const particle = new ParticleAuthModule.ParticleNetwork({
+  ...config,
+  chainName: "Ethereum",
+	chainId: 5,
+});
+
+const smartAccount = new BiconomyAccountModule.SmartAccount(new ParticleProvider(particle.auth), {
+	...config,
+	networkConfig: [
+		{
+			dappAPIKey: "ezg0CQxYc.472e7fbb-dd45-49ff-8ffd-f453c3add16a",
+      chainId: 5,
+		},
+	],
+});
+
+const customProvider = new ethers.providers.Web3Provider(new BiconomyAccountModule.BiconomyWrapProvider(smartAccount, BiconomyAccountModule.SendTransactionMode.Gasless), "any");
+```
+
+### Utilization
+
+With your custom Ethers object created, you can send transactions normally (routed as UserOperations), replicating the same functionality covered within Part 1, but through Biconomy's native Particle Auth SDK rather than Particle Auth Core.
+
+Thus, executing transactions involves retrieving the Signer object (`{your custom provider object}.getSigner`), constructing a transaction (not a UserOperation), then sending it with `{your signer object}.sendTransaction`. 
+
+As in Particle Network's AA SDK, the `smartAccount` object built earlier can also be used directly for the construction and execution of transactions. Specifically, `smartAccount` has methods such as `createGaslessTransaction` and `createUserPaidTransaction` which take a standard transaction object and automatically create a corresponding UserOperation. This can then be sent with the `sendGaslessTransaction` or `sendUserPaidTransaction` methods (alongside their counterparts for UserOperations that are already signed, such as `sendGaslessSignedTransaction`). 
+
+To learn more about the utilization process of `@biconomy/particle-auth` (with a custom provider, not `smartAccount`), take a look at the recipe below:
+
+## Conclusion
+
+Particle Network aims to provide developers with a modular, open account abstraction stack where any infrastructure provider can be used directly with Particle Auth or Particle Auth Core to facilitate AA-enabled social logins. With Biconomy being one of these core providers, there are various options for using its infrastructure with Particle, specifically when it comes to a native integration (as Biconomy is the only natively supported Paymaster provider outside of Particle’s own [Omnichain Paymaster](/guides/integrations/aa/paymaster)).
+
+To dive into the example shown within part 1, see its [`particle-biconomy-example` demo repository](https://github.com/TABASCOatw/particle-biconomy-example). Additionally, the full repository for the `@biconomy/particle-auth` example shown here is also available through [`particle-biconomy-sdk-demo`](https://github.com/TABASCOatw/particle-biconomy-sdk-demo).

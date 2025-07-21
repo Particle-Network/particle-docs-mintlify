@@ -1,0 +1,7 @@
+---
+title: "Silent Authentication & Sign"
+---
+
+For comprehensive security reasons, we do not support Headless mode for the built-in login system of Particle Auth. However, if a project uses its own login system and links to Particle Auth using JWT, it can operate entirely without UI, meaning users will not see the login and signature authorization pages provided by Particle. The master password and payment password functions we provide need to be configured to show no prompts (this is explained in the SDK documentation for different platforms).
+
+It is important to note that even if all prompts are disabled, if the user has set them up before, our pages will still be involved.

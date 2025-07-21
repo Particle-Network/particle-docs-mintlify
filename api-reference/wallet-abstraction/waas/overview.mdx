@@ -1,0 +1,90 @@
+---
+title: Social Logins Overview
+description: "An overview of Particle Network's Onboarding suite and how it connects social login, wallet creation, and account abstraction."
+---
+
+***
+
+<Frame caption="Visual representation of Particle Network's Smart Wallet-as-a-Service.">
+  <img src="https://static.particle.network/mintlify/videos/05-Account-Abstraction.gif" alt="Visual representation of Particle Network's Smart Wallet-as-a-Service." style={{ width: '100%', maxWidth: '600px' }} />
+</Frame>
+
+Particle Network’s **Onboarding suite** enables developers to easily integrate wallet creation and login flows for end users — especially those unfamiliar with crypto — by combining **Web2-style social logins with Web3-native account creation**.
+
+Under the hood, Onboarding is a **Wallet-as-a-Service product** that creates **non-custodial EOAs**, and optionally pairs them with **smart contract accounts** to support Account Abstraction (AA). This modular system ensures that every app can provide:
+- A familiar login UX (email, social, phone)
+- Application-embedded wallet access
+- Optional advanced functionality via AA (like gasless transactions or custom security)
+
+This suite is tightly integrated with the rest of the Particle stack, especially **Account Abstraction and Smart Wallet infrastructure**.
+
+Particle Network offers two main packages for integrating Web3 functionalities into your dApp:
+
+### Particle Connect
+An all-in-one solution that provides:
+- Social login integration
+- Traditional wallet connections
+- Account Abstraction capabilities
+- Unified interface for all authentication methods
+
+<Card title="Get started with Particle Connect" icon="wallet" href="/api-reference/guides/wallet-as-a-service/waas/connect/web-quickstart">
+Integrate Particle Connect into your web application.
+</Card>
+
+### Particle Auth
+- Focused solution for social login integration
+- Can be enhanced with AA capabilities when used with the AA SDK
+- Ideal for projects requiring custom wallet implementations
+
+<Card title="Get started with Particle Auth" icon="wallet" href="/api-reference/guides/wallet-as-a-service/waas/auth/web-quickstart">
+Integrate Particle Auth into your web application.
+</Card>
+
+***
+
+## Account Abstraction (AA) Overview
+
+Account Abstraction enhances user experience by:
+
+1. **Smart Contract Wallets**: Replaces traditional EOAs with programmable accounts
+2. **Flexible Authentication**: Supports logins beyond private key management
+3. **Programmable Security**: Add recovery options, session limits, and custom rules
+4. **Gas Abstraction**: Enables gasless transactions via paymasters
+
+***
+
+## Modular Implementation
+
+Particle’s AA stack is built to be **modular and configurable**, allowing developers to:
+- Use their preferred smart account implementation
+- Choose custom bundlers and paymasters
+- Integrate with any frontend or auth flow
+- Build on existing Web2 infrastructure
+
+<Frame caption="Particle Network's AA Stack Ecosystem.">
+  <img
+    className="block dark:hidden"
+    src="/intro/wallet-abstraction/waas/images/aa-stack.png"
+    alt="Account abstraction stack"
+  />
+  <img
+    className="hidden dark:block"
+    src="/intro/wallet-abstraction/waas/images/aa-stack.png"
+    alt="Account abstraction stack"
+  />
+</Frame>
+
+Whether using Particle’s native smart account tooling or your own, the modularity of the stack supports **native ERC-4337** usage across platforms — especially helpful for **mobile and embedded applications**.
+
+<Frame caption="Native and external implementations within our AA stack.">
+  <img
+    className="block dark:hidden"
+    src="/intro/wallet-abstraction/waas/images/implementations.png"
+    alt="Native and external implementations within our AA stack."
+  />
+  <img
+    className="hidden dark:block"
+    src="/intro/wallet-abstraction/waas/images/implementations.png"
+    alt="Native and external implementations within our AA stack."
+  />
+</Frame>

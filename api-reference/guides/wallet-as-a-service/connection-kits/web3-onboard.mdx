@@ -1,0 +1,96 @@
+---
+title: "Web3-Onboard"
+description: "Integrate social logins within Web3-Onboard through Particle Auth."
+---
+
+## Particle Auth within Web3-Onboard
+
+Built by Blocknative, Web3-Onboard is a widely used framework-agnostic connection kit providing rich account interfaces, transaction data, and diverse wallet support. Particle Auth is natively supported within Web3-Onboard through `@web3-onboard/particle-network`, allowing social logins to be seamlessly included within an instance of Web3-Onboard, as is shown in the embedded demo below.
+
+***
+
+<iframe 
+width="800"
+height="600" 
+src="https://particle-web3-onboard-demo.replit.app/"> 
+</iframe>
+
+***
+
+## Leveraging `@web3-onboard/particle-network`
+
+Web3-Onboard's native Particle Auth integration allows a derivative of `ParticleNetwork` from `@particle-network/auth` to be configured and defined within `Onboard` from `@web3-onboard/core`.
+
+Therefore, implementation of Particle Auth is straightforward, following the same configuration and initialization process as `@particle-network/auth`. The following steps facilitate this process:
+
+1. **Configure `particleModule` from `@web3-onboard/particle-network`**. After installing `@web3-onboard/particle-network` and importing `particleModule`, you'll need to define an instance using an object containing the following properties.
+   - `projectId`, `clientKey`, and `appId`. These are required values representing a project and application made through the [Particle dashboard](https://dashboard.particle.network).
+   - Optionally, `wallet` can be defined, which contains:
+     - `displayWalletEntry`, a Boolean determining whether or not the embedded wallet modal is shown upon login (`true` by default).
+     - `defaultWalletEntryPosition`, a string defining the position in which the embedded wallet modal will initially appear if `displayWalletEntry` is `true`.
+   - Optionally, `preferredAuthType` can be defined to shortcut your instance of Particle Auth to a specific social login mechanism. This parameter contains:
+     - `type`, the specific social login type you'd like to be used. This should be one of the following:
+       - `'email'`
+       - `'phone'`
+       - `'facebook'`
+       - `'google'`
+       - `'apple'`
+       - `'twitter'`
+       - `'discord'`
+       - `'github'`
+       - `'twitch'`
+       - `'microsoft'`
+       - `'linkedin'`
+       - `'jwt'`
+         - Alternatively, the above can be represented through `AuthType.google`, `AuthType.email`, etc., which can be imported from `@particle-network/auth-core`.
+     - `setAsDisplay`, a Boolean determining if the social login mechanism chosen within `type` will be represented within the Web3-Onboard interface (for example, changing the wallet option to "Google" rather than the default value of "Particle Network").  
+       Below is an example of what a configured instance of `particleModule` may look like:
+   ```typescript typescript
+   const particle = particleModule({
+       projectId: process.env.REACT_APP_PROJECT_ID!,
+       clientKey: process.env.REACT_APP_CLIENT_KEY!,
+       appId: process.env.REACT_APP_APP_ID!,
+       preferredAuthType: { type: 'google', setAsDisplay: true },
+   })
+   ```
+2. **Initialize Web3-Onboard through `Onboard`**. With an instance of `particleModule` prepared, you're ready to configure `Onboard` from `@web3-onboard/core`. `Onboard` takes the following parameters.
+   - `wallets`, an array of initialized wallet modules. Your instance of `particleModule` should go here. For a complete list of compatible wallet modules, head over to the [Web3-Onboard documentation](https://onboard.blocknative.com/docs/overview/introduction).
+   - `chains`, an array of chain objects representing the blockchains you intend to use within your application. Each of these objects should contain:
+     - `id`, (chain ID).
+     - `token` (ticker).
+     - `label` (name).
+     - `rpcUrl`  
+       Thus, initializing Web3-Onboard (`Onboard`) may look like the following snippet.
+   ```typescript typescript
+   const onboard = Onboard({
+       wallets: [particle],
+       chains: [
+         {
+           id: '0x1',
+           token: 'ETH',
+           label: 'Ethereum Mainnet',
+           rpcUrl: 'https://eth.llamarpc.com'
+         },
+         {
+           id: '0x2105',
+           token: 'ETH',
+           label: 'Base',
+           rpcUrl: 'https://mainnet.base.org'
+         }
+       ]
+   })
+   ```
+3. **Initiate wallet connection and EIP-1193 provider extraction**. Opening the Web3-Onboard connection modal can be done by simply calling `{your Onboard instance}.connectWallet()`. This will return an object containing an associated EIP-1193 provider, which can then be used for configuration within a library such as Ethers, Web3.js, viem, etc. An example of this has been included below:
+
+   ```typescript typescript
+   const wallet = await onboard.connectWallet()
+
+   const customProvider = new ethers.providers.Web3Provider(wallet[0].provider, "any");
+   ```
+
+***
+
+<Tip>
+<p>Additional resources available</p>
+<p>Web3-Onboard has [native documentation](https://onboard.blocknative.com/docs/wallets/particlenetwork) available for `@web3-onboard/particle-network`, which includes additional code snippets and implementation details.</p>
+</Tip>

@@ -1,0 +1,154 @@
+---
+title: "Key Differentiators"
+description: "Why and how Particle stands out within its field."
+---
+
+***
+
+<Note>Note: This chapter refers only to Particle's live [Modular Smart WaaS](/landing/wallet-abstraction/waas/overview) stack. As we release additional components, it'll be expanded to cover their unique aspects too. As a first-of-its-kind product, [BTC Connect](/landing/wallet-abstraction/btc-connect) is not covered here either.</Note>
+
+Particle Network is designed to stand out in areas that we consider critical for developer and end-user experience, as well as security. These are:
+
+## Area #1: Private key management
+
+WaaS tools make the process of using dApps and creating wallets linked to them very practical through social logins and embedded wallets, particularly for mobile products. However, this needs to align with user autonomy and decentralization. Depending on the implementation, it can result in either custodial or non-custodial wallets and different processes for user signatures, and ultimately depends on the treatment of users’ private keys. 
+
+There are different mechanisms for private key management, all with different strengths and trade-offs in security, reliability/efficiency, and custodianship. As a developer, your goal should be to understand these mechanics to protect your users’ data and assets while adapting to your unique needs. These are:
+
+- **KMS:** A solution for storing and managing cryptographic keys. In this environment, encrypted private keys are stored (in whole usually). Their implementation results in a straightforward operation, albeit subject to trade-offs, such as:  
+  * **_Custodial risks_:** If the KMS is configured to be custodial, users might not have full control over their keys. Solutions that use KMS might advertise their solutions as non-custodial but, by using services like AWS to store keys, these ultimately retain control over them. This technically allows a provider to decrypt keys by changing their key policy.  
+  * **_Centralization risks_:** Reliance on a KMS provider could result in a single point of failure, creating issues should a provider stop working for any reason. The nature of the business relationship between a solution and a KMS provider (e.g., AWS) also results in the WaaS solution retaining full access to keys. Importantly, KMS providers could also choose to end support to a given service for whatever reason
+- **Shamir's secret sharing (SSS):** This algorithm for distributing private information (a "secret") operates by breaking it into shares and spreading them among a group of participants. SSS ensures that a signature cannot happen unless a quorum of the group provides their shares to be computed, reconstructing the secret. This last part is key: With SSS, the secret must exist in whole at its generation and again every time it is reassembled. This opens attack vectors, as an attacker could focus on the reconstruction points to take possession of the secret or attempt to attack the storage entity. Activities such as signatures require frequent usage, increasing the attack opportunities and potential reward for an attacker, who could obtain a user’s private key, even unbeknownst to them, resulting in high risk. Because of the way the secrets are generated and reconstructed, SSS also makes it very easy for the developers themselves to access the users’ keys.
+- **MPC-SSS:** Multi-Party Computation with Shamir's Secret Sharing combines distributed computations and secret splitting. It allows multiple parties to jointly compute functions over inputs, distributing the secret (key) into shares. This setup enhances security by requiring a threshold of shares to perform actions without revealing the original secret to any single party. However, it’s essential to consider that MPC-SSS still recovers private keys on the client side. As such, while the MPC part of the equation is safe as an overall solution, its combination with SSS does not result in any additional benefits for users, who are still exposed to SSS's risks.
+- **MPC-TSS** : Multi-Party Computation with Threshold Signature Scheme) enables multiple parties to collaboratively sign transactions or compute functions, distributing the responsibility among them. This enhances security and ensures no single party has full control over the secret, and that it does not ever exist in full in any one place. In WaaS, this also ensures that no third party ever can spend users’ assets, providing the highest security when properly implemented while avoiding the complexities or custodianship of a hybrid approach. This makes most MPC-TSS implementations non-custodial while retaining efficiency. Since Particle Network uses this solution, we'll further explore our specific implementation below.
+- **KMS+SSS:** Another commonly seen mechanism for private key management is using a KMS along with SSS. This results in a convenient implementation at the cost of the custodial and centralization risks associated with KMS. As such, KMS+SSS can be seen as even riskier than typical SSS implementations.
+
+The information above is summarized in the following table:
+
+<Frame caption="Comparison of the performance of different key management solutions in critical areas.">
+<img
+  className="block dark:hidden"
+  src="/landing/wallet-abstraction/waas/images/comparison.png"
+  alt="Comparison of the performance of different key management solutions in critical areas."
+/>
+<img
+  className="hidden dark:block"
+  src="/landing/wallet-abstraction/waas/images/comparison.png"
+  alt="Comparison of the performance of different key management solutions in critical areas."
+/>
+</Frame>
+
+### Particle Network's solution
+
+<Tip>For a deeper dive into Particle's MPC-TSS solution, [click here](/landing/wallet-abstraction/waas/mpc-tss).</Tip>
+
+Particle Network provides a 2/2 advanced TSS approach that ensures that the private key's security is never concentrated in a single location or entity throughout its lifecycle. This method involves splitting the key into two independent shares, stored separately, ensuring that each share reveals nothing about the full key. One of these shares is stored locally by the user, and the other by Particle’s Trusted Execution Environment. All cryptographic operations are executed without combining these shares, maintaining key integrity. 
+
+Particle also allows the user to create a Master Password, which is used to encrypt their local key fragment, which can then be stored safely. This allows users to restore their wallets across devices with full security. A continuous key share refresh mechanism also reinforces the system's robustness, enhancing security and making an attack virtually impossible.
+
+<Frame caption="Particle Network's MPC-TSS private key management solution.">
+<img
+  className="block dark:hidden"
+  src="/landing/wallet-abstraction/waas/images/mpc-tss.png"
+  alt="Particle Network's MPC-TSS private key management solution."
+/>
+<img
+  className="hidden dark:block"
+  src="/landing/wallet-abstraction/waas/images/mpc-tss.png"
+  alt="Particle Network's MPC-TSS private key management solution."
+/>
+</Frame>
+
+## Area #2: Native support for Account Abstraction (AA)
+
+Whether this happens via dedicated modules (see below) or not, a WaaS stack's native compatibility with AA through direct SDKs and partnerships is crucial. Integrating AA signifies the ability to mesh with various use cases and ensure a smooth user experience. Diversity and depth of integrations is vital, as this can ensure that developers have the necessary tools and support to create intuitive and user-friendly dApps.
+
+For developers, a WaaS natively implementing AA can create a better foundation for using different AA stack components without manually configuring third-party components. This results in a streamlined experience and higher implementation efficiency.
+
+Particle Network has a vertically integrated solution, offering a self-developed WaaS and AA stack, integrating AA directly into its WaaS offering. Particle also supports the usage of Biconomy’s AA stack while also providing cross-compatibility with [Openfort](https://www.openfort.xyz/), [Pimlico](https://www.pimlico.io/), [Alchemy](https://www.alchemy.com/account-abstraction-infrastructure), and others. Via AA support, WaaS providers can turn the current rigid wallet interaction experience into a more flexible one through programmability.
+
+When it comes to WaaS, some AA tools and components critical to making dApps friendlier through AA implementation are:
+
+- **Smart contract wallets:** AA enables the creation of programmable smart contracts acting as non-custodial wallets for advanced automation capabilities. This can allow for a more flexible and user-centric approach to managing digital assets​.
+- **Session keys:** This facilitates transactions that do not require signatures, simplifying the transaction process and enhancing user experience​. This feature also allows transactions to be pre-approved, streamlining the transaction process and making the system more user-friendly​.
+- **Paymasters:** One of the prominent use cases of AA is the ability for dApps to sponsor gas fees for users, which Paymasters enable. This makes particular sense in solutions hosted in L2s, which typically have low costs for users. Paymasters can allow your dApp to accept gas fee payments in any native (not bridged) token, preventing users from constantly needing to acquire gas tokens. Particle has built a dedicated [Omnichain Paymaster](/landing/wallet-abstraction/waas/omni-paymaster) as a part of its AA stack. 
+- **Bundlers:** Bundlers aggregate user actions for efficient blockchain interactions, potentially leading to reduced transaction fees and faster transaction confirmations​. Bundlers can result in better cost-efficiency for end-users and better performance for developers. Particle has also developed [an open-source Bundler](/landing/wallet-abstraction/waas/bundler), natively integrated into our AA stack.
+- **Social recovery:** AA can enable social recovery features, allowing users to recover their wallets with the help of whitelisted accounts instead of seed phrases, potentially improving security and user experience​.
+
+ Particle is also working on an Omnichain implementation of account abstraction, aiming to create a unified framework between AA solutions deployed in different chains, a feature currently overlooked by the Web3 ecosystem due to the nascent nature of the AA field. 
+
+### Modularity in AA support
+
+As we'll explore below, modularity is also a much-needed feature for Smart WaaS tools. In a nascent AA field with multiple smart account implementation options, introducing a comprehensive modular stack ensures even greater flexibility for developers. A modular approach means they can also plug into their preferred components while staying friendly for builders who do not demand much customization.
+
+Particle introduces modular compatibility with different self-developed and third-party components to enable maximum flexibility, as represented below:
+
+<Frame caption="Native and external implementations in Modular Smart WaaS.">
+<img
+  className="block dark:hidden"
+  src="/landing/wallet-abstraction/waas/images/implementations.png"
+  alt="Native and external implementations in Modular Smart WaaS."
+/>
+<img
+  className="hidden dark:block"
+  src="/landing/wallet-abstraction/waas/images/implementations.png"
+  alt="Native and external implementations in Modular Smart WaaS."
+/>
+</Frame>
+
+## Area #3: Modularity
+
+A modular system empowers developers to choose and implement the tools they need, tailoring the solution to their unique requirements. 
+
+Well-designed modular approaches result in flexibility and scalability, allowing developers to easily replace or update individual modules as needed without affecting other parts of the system. Developers should look for systems with standalone modules that serve their intended use cases and are designed to support maximum flexibility and ease of integration. Some examples of use cases supported by modules can be:
+
+- **Authentication:** A modular system might offer various authentication modules, such as multi-factor authentication, biometric authentication, or social login. This goes hand-in-hand with the project’s ability to manage users’ info and link it to their wallet, a point addressed above.
+- **Cross-compatibility:** The easier it is to plug into different networks or switch from one to another, the more flexible and developer-friendly the service. The Web3 wallet service can also support cross-chain and interoperability modules.
+- **Account abstraction:** Above, we detailed the importance of implementing AA. Modular WaaS platforms might offer an Account Abstraction module that can be easily integrated to handle this ability, separating AA from the main product and making it optional to implement. AA modules can be modular themselves, supporting different functionalities within a stack. Particle Network's WaaS supports a modular AA Stack, allowing developers to choose the AA Stack developed by Particle Network, including Bundler, Smart Account, etc. Developers also have the option to develop their own or integrate SDKs from other providers, such as [Biconomy](https://www.biconomy.io/), [ZeroDev](https://zerodev.app/), [StackUp](https://www.stackup.sh/), etc. The design schematic of Particle Network's Modular AA WaaS is shown below:
+
+<Frame caption="Particle Network's modular infrastructure.">
+<img
+  className="block dark:hidden"
+  src="/landing/wallet-abstraction/waas/images/modular-waas.png"
+  alt="Particle Network's modular infrastructure."
+/>
+<img
+  className="hidden dark:block"
+  src="/landing/wallet-abstraction/waas/images/modular-waas.png"
+  alt="Particle Network's modular infrastructure."
+/>
+</Frame>
+
+- **Product customization:** Through a custom UI module, developers can ensure brand consistency by integrating their brand's color scheme, logos, and other graphic elements. However, this is not necessarily limited to design components, as it can also impact functional product aspects, such as transaction limits, custom transaction fees, or special approval workflows as per the business needs.
+- **Interoperability with other services: **A modular WaaS platform could have a module that facilitates easy integration with other third-party services or platforms. For instance, it could enable the interaction with swapping and bridging platforms or even allow you to customize your own integrations.
+
+## Area #4: Feature richness
+
+Besides Account Abstraction, when assessing the merits of a Wallet-as-a-Service (WaaS) platform, the richness of feature integration upstream and downstream is a significant factor. This indicates the platform's capacity to provide a robust, versatile, and user-centric service. It’s also important to understand which integrations happen directly in the wallet and which, if any, require users to leave the dApp. 
+
+Some important features that Particle integrates are:
+
+- **Fiat ramps:** Fiat onboarding and offboarding solutions can allow users to acquire USDC/USDT directly. This, combined with AA, might mean they never have to buy native crypto tokens or rely on CEXs. It's essential to investigate whether these integrations are native or require additional third-party services and whether users need to leave the dApp to use them.
+- **Cross-chain bridging**: Facilitating cross-chain bridging speaks of a WaaS platform's versatility. Assessing the underlying services (in Particle’s case, [li.fi](https://li.fi/)) and integrations in place for enabling cross-chain interactions is essential.  Cross-chain bridging capabilities can open doors to more functionalities and reduce friction as the blockchain ecosystem develops towards a multi-chain, scalability-centric roadmap.
+- **Swaps: **Some wallets might integrate the ability to support swaps directly within their wallets’ UI. Whether through native functionalities or via partnerships and integrations, swaps are one of the most basic Web3 features. It's crucial to look into the types of swaps supported, underlying services (Particle uses [1inch](https://1inch.io)), ease of execution, and user experience involved in these. 
+- **Additional API endpoints**: Different WaaS platforms use different endpoints to interact with Web3 or influence the user experience. You may also look into the level of customization these endpoints offer. For example, they may provide access to contract locking, retrieving logs, token management, analytics, managing certain DeFi interactions, interaction with various marketplaces, etc.
+- **Support for multiple chains:** The capability to support multiple blockchain networks is a hallmark of a robust WaaS platform. It signifies the platform's adaptability and readiness for an expanding ecosystem. Developers should examine the number of chains supported, the ease of transitioning between these chains, and the level of support provided for each chain.
+
+## Area #5: Performance
+
+When it comes to WaaS tools, different providers might perform differently in different areas. Two key areas to analyze are the time to generate a wallet (from the time a user clicks “Connect” to the wallet being usable), and the time for repeating users to log in. The underlying management systems of each solution can impact these performance metrics.
+
+To showcase this, we measured the time that different WaaS tools take to create a Web3 wallet using authentication through Google:
+
+<iframe 
+width="600"
+height="400" 
+src="https://www.youtube.com/embed/45F-hxtw4K0" 
+title="Particle vs. MetaMask vs. Other WaaS Tools" 
+alt="Particle vs. MetaMask vs. Other WaaS Tools"
+frameborder="0"
+allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+allowfullscreen
+></iframe>
+
+<Tip>For a dedicated dive on how to choose a WaaS tool with competing products examples, [see our dedicated article on the Particle Network blog](https://blog.particle.network/embedded-web3-wallets-how-to-choose-a-wallet-service/#multi-party-computation-threshold-signature-schemes-mpc-tss).</Tip>

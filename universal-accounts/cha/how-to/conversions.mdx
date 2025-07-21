@@ -1,0 +1,301 @@
+---
+title: "Convert Assets with Universal Accounts"
+sidebarTitle: "Convert Primary Assets"
+description: "This guide explains how to use Universal Accounts to convert existing Primary Assets across chains."
+---
+
+The Universal Accounts SDK supports powerful cross-chain execution through `createUniversalTransaction()`. 
+
+<Info>
+This method ensures that a specified **Primary Asset** is made available on a destination chain—by sourcing and converting any supported Primary Asset from the user’s Universal Account, regardless of where they’re held.
+</Info>
+
+In this example, we use it to convert any Primary Asset into a specific Primary Asset on any supported chain—with no bridges or manual steps, essentially creating a conversion transaction.
+
+This is ideal for use cases like topping up gas on a new chain, funding transactions in a required token, or consolidating assets into a preferred currency.
+
+## Creating a Custom Universal Transaction
+
+To initiate a cross-chain transaction, use `createUniversalTransaction()` with the following parameters:
+
+- `chainId`: the destination chain where the asset should be made available
+- `expectTokens`: a list of expected tokens and amounts you want to receive on the destination chain
+- `transactions` (optional): an array of follow-up actions to execute after the conversion (e.g., contract interactions). When empty, the converted tokens are sent back to the Universal Account.
+
+<Note>
+Check out the [Quickstart](/universal-accounts/cha/web-quickstart) to learn how to set up Universal Accounts in your app.
+</Note>
+
+
+The following snippet shows how to create a conversion transaction:
+
+```tsx page.tsx
+import { CHAIN_ID, SUPPORTED_TOKEN_TYPE } from "@particle-network/universal-account-sdk";
+
+const transaction = await universalAccount.createUniversalTransaction({
+  chainId: CHAIN_ID.BASE_MAINNET,
+  expectTokens: [
+    {
+      type: SUPPORTED_TOKEN_TYPE.USDC,
+      amount: "1",
+    },
+  ],
+  transactions: [],
+});
+```
+
+This method constructs a cross-chain execution plan that:
+- Detects available assets across all chains within the Universal Account
+- Calculates the optimal conversion path to fulfill the expectTokens requirement
+
+<Info>
+  If the user doesn’t have the expected token on the destination chain, the SDK will automatically convert and route value from other chains or tokens they hold—fully abstracted from the user.
+</Info>
+
+<Card title="Find more details about custom Universal Transactions" icon="code" href="/universal-accounts/ua-reference/desktop/web#sending-a-custom-payable-transaction">
+  See full SDK reference for `createUniversalTransaction`
+</Card>
+
+### Sending the Transaction
+
+Once the transaction object is built, the next step is to have the user sign it and submit it for execution.
+
+The returned transaction object includes important metadata, including the **rootHash**, which the user must sign to authorize the transaction.
+
+Here’s how you can sign and send the transaction using a browser wallet with `ethers.js`:
+
+```tsx
+import { ethers, getBytes } from "ethers";
+
+// Initialize the provider and signer
+const provider = new ethers.BrowserProvider(window.ethereum);
+const signer = await provider.getSigner();
+
+// Sign the root hash
+const signature = await signer.signMessage(
+  getBytes(transaction.rootHash)
+);
+
+// Send the signed transaction
+const result = await universalAccount.sendTransaction(
+  transaction,
+  signature
+);
+```
+
+Once signed and submitted, the transaction will execute on the destination chain, completing any asset conversions. The resulting tokens will be available in the user’s Universal Account balance.
+
+<Note>
+To learn how to display transaction previews before user confirmation, see the [Previewing Transaction Details](/universal-accounts/cha/how-to/tx-preview) guide.  
+<p></p>
+For handling the response after sending a transaction, refer to the [Send Transaction Response Structure](/universal-accounts/ua-reference/desktop/web#sendtransaction-response-structure) in the SDK reference.
+</Note>
+
+## Full Conversion Widget
+
+The following is a complete `TSX` component that implements the conversion flow. 
+
+This is a simple version and allows the user to convert any **Primary Asset** they hold into **USDC** on **Base** or **Arbitrum**.
+
+```tsx SimpleConversionWidget.tsx [expandable]
+"use client";
+
+import { useState } from "react";
+import { ethers, getBytes } from "ethers";
+import {
+  UniversalAccount,
+  CHAIN_ID,
+  SUPPORTED_TOKEN_TYPE,
+} from "@particle-network/universal-account-sdk";
+
+const networks = [
+  { id: "arbitrum", name: "Arbitrum" },
+  { id: "base", name: "Base" },
+];
+
+// Network mapping to chain IDs
+const networkToChainId = {
+  arbitrum: CHAIN_ID.ARBITRUM_MAINNET_ONE,
+  base: CHAIN_ID.BASE_MAINNET,
+};
+
+/**
+ * SimpleConversionWidget
+ *
+ * A self-contained component for converting tokens to USDC using Universal Accounts
+ * This component handles both UI and transaction logic
+ */
+export function SimpleConversionWidget({
+  universalAccount,
+  onSuccess,
+  onError,
+}: {
+  universalAccount: UniversalAccount;
+  onSuccess?: (txId: string) => void;
+  onError?: (error: string) => void;
+}) {
+  // State for form inputs
+  const [amount, setAmount] = useState("");
+  const [selectedNetwork, setSelectedNetwork] = useState(networks[0].id);
+
+  // Transaction states
+  const [isLoading, setIsLoading] = useState(false);
+  const [txHash, setTxHash] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+
+  /**
+   * Handle the conversion transaction
+   */
+  const handleConvert = async () => {
+    if (!amount || !selectedNetwork || !universalAccount) return;
+
+    setIsLoading(true);
+    setErrorMessage("");
+
+    try {
+      // 1. Create the transaction
+      const chainId =
+        networkToChainId[selectedNetwork as keyof typeof networkToChainId];
+
+      const transaction = await universalAccount.createUniversalTransaction({
+        chainId: chainId,
+        expectTokens: [
+          {
+            type: SUPPORTED_TOKEN_TYPE.USDC,
+            amount: String(amount),
+          },
+        ],
+        transactions: [],
+      });
+
+      // 2. Sign the transaction with the owner wallet
+      if (!window.ethereum) {
+        throw new Error("MetaMask not found");
+      }
+
+      const provider = new ethers.BrowserProvider(window.ethereum);
+      const signer = await provider.getSigner();
+      const signature = await signer.signMessage(
+        getBytes(transaction.rootHash)
+      );
+
+      // 3. Send the transaction
+      const result = await universalAccount.sendTransaction(
+        transaction,
+        signature
+      );
+
+      setTxHash(result.transactionId);
+
+      // 4. Call onSuccess callback if provided
+      if (onSuccess) {
+        onSuccess(result.transactionId);
+      }
+    } catch (error) {
+      console.error("Error executing transaction:", error);
+      const errorMsg =
+        error instanceof Error ? error.message : "Unknown error occurred";
+      setErrorMessage(errorMsg);
+
+      // Call onError callback if provided
+      if (onError) {
+        onError(errorMsg);
+      }
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  return (
+    <div className="conversion-widget border border-gray-700 rounded-lg p-4 w-full">
+      {/* Header */}
+      <div className="mb-4">
+        <h2 className="text-xl font-bold mb-1">Convert to USDC</h2>
+        <p className="text-sm text-gray-400">
+          Convert your tokens to USDC on Arbitrum or Base
+        </p>
+      </div>
+
+      {/* Form Content */}
+      <div className="space-y-4">
+        {/* Amount Input */}
+        <div>
+          <label
+            htmlFor="amount"
+            className="block text-sm font-medium text-gray-200 mb-1"
+          >
+            Amount
+          </label>
+          <input
+            id="amount"
+            type="number"
+            placeholder="Enter amount"
+            value={amount}
+            onChange={(e) => setAmount(e.target.value)}
+            className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+        </div>
+
+        {/* Network Select */}
+        <div>
+          <label
+            htmlFor="network"
+            className="block text-sm font-medium text-gray-200 mb-1"
+          >
+            Network
+          </label>
+          <select
+            id="network"
+            value={selectedNetwork}
+            onChange={(e) => setSelectedNetwork(e.target.value)}
+            className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          >
+            {networks.map((network) => (
+              <option key={network.id} value={network.id}>
+                {network.name}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        {/* Convert Button */}
+        <button
+          onClick={handleConvert}
+          disabled={!amount || isLoading}
+          className="w-full py-2 px-4 bg-blue-600 hover:bg-blue-700 rounded-md text-white font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          {isLoading ? "Converting..." : "Convert to USDC"}
+        </button>
+
+        {/* Transaction Result */}
+        {txHash && (
+          <div className="mt-4 p-3 bg-green-800 bg-opacity-20 border border-green-700 rounded-md">
+            <p className="text-sm text-green-400">
+              Transaction successful! ID: {txHash.substring(0, 10)}...
+              {txHash.slice(-6)}
+            </p>
+          </div>
+        )}
+
+        {/* Error Message */}
+        {errorMessage && (
+          <div className="mt-4 p-3 bg-red-800 bg-opacity-20 border border-red-700 rounded-md">
+            <p className="text-sm text-red-400">Error: {errorMessage}</p>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+```
+
+## What’s Next?
+
+<CardGroup cols={2}>
+  <Card title="SDK Reference" icon="code" href="/universal-accounts/ua-reference/desktop/web">
+    See full API for `createUniversalTransaction`
+  </Card>
+  <Card title="Supported Primary Assets" icon="coins" href="/universal-accounts/cha/chains#primary-assets">
+    View all Primary Assets and chains supported for conversion
+  </Card>
+</CardGroup>

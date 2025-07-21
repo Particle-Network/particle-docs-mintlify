@@ -1,0 +1,102 @@
+---
+title: "Lesson 2: Fetch Addresses and Balances"
+description: "Learn how to retrieve Universal Account addresses and check balances across multiple blockchains."
+sidebarTitle: "Lesson 2: Fetch Addresses and Balances"
+---
+
+In this lesson, you'll learn how to fetch addresses and balances from a Universal Account. This is a critical step in building chain-agnostic applications, as it enables users to interact with their assets across different blockchains through a single interface.
+
+<Note>
+Before getting started, make sure you followed [Lesson 1](./lesson-1) and initialized a Universal Account instance.
+</Note>
+
+## Lesson Overview
+
+This lesson covers:
+1. Retrieving addresses associated with a Universal Account
+2. Understanding the different address types (EOA, EVM UA, Solana UA)
+3. Fetching Primary Asset balances across multiple chains
+
+## Prerequisites
+
+Before starting, make sure you have:
+
+- Initialized a Universal Account (see [Lesson 1](./lesson-1))
+- Basic familiarity with JavaScript and blockchain concepts
+
+## Lesson 2 Video
+
+The video below walks you through the process of fetching addresses and balances:
+
+<iframe
+  width="100%"
+  height="500"
+  src="https://www.youtube.com/embed/1q8EQfMM2Rs"
+  title="Lesson 2: Fetch Addresses and Balances"
+  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+  allowfullscreen="true"
+></iframe>
+
+<Note>
+  Get your Universal Accounts project ID from the [Particle Dashboard](https://dashboard.particle.network/).
+</Note>
+
+## TL;DR
+
+This lesson covered:
+- Retrieving Universal Account addresses (Owner, EVM UA, Solana UA)
+- Fetching Primary Asset balances
+- Understanding how assets are managed across different blockchains
+
+
+### Addresses
+
+A **Universal Account** references multiple address types:
+
+- **Owner Address**: The EOA that owns the Universal Account and signs transactions.
+- **EVM Universal Address**: The address used for interactions on EVM-compatible chains.
+- **Solana Universal Address**: The address used for interactions on Solana.
+
+You can retrieve all relevant addresses from an initialized Universal Account instance as follows:
+
+```tsx
+const smartAccountOptions = await ua.getSmartAccountOptions();
+
+const accountInfo = {
+  ownerAddress: smartAccountOptions.ownerAddress, // EOA that owns the Universal Account
+  evmUaAddress: smartAccountOptions.smartAccountAddress!, // EVM UA
+  solanaUaAddress: smartAccountOptions.solanaSmartAccountAddress!, // SOL UA
+};
+
+console.log("Smart Account info:", accountInfo);
+```
+
+<Note>
+The EVM and Solana Universal Addresses are distinct due to the way deposits work on each network. EVM tokens should be sent to the EVM UA, while Solana tokens should be sent to the Solana UA. However, the SDK abstracts this complexity, providing a unified balance view.
+</Note>
+
+### Fetching Primary Assets
+
+Universal Accounts can hold assets across multiple chains, but **Primary Assets** are the most critical as they are the assets spent across chains. 
+
+You can fetch the Primary Assets balance from a Universal Account instance with a single call:
+
+```tsx
+const primaryAssets = await ua.getPrimaryAssets();
+console.log("Primary Assets:", JSON.stringify(primaryAssets, null, 2));
+```
+
+<Note>
+Each asset includes metadata and a breakdown of holdings per chain. For a full list of supported Primary Assets, check the [Supported Chains and Primary Assets](/universal-accounts/cha/chains#primary-assets) page.
+
+You can find more details in the full [Universal Accounts SDK Reference](/universal-accounts/ua-reference/desktop/web).
+</Note>
+
+<Card title="Lesson 3: Send Transactions" icon="paper-plane" href="./lesson-3">
+**Ready to continue?** Head over to Lesson 3: Send Transactions.
+</Card>
+
+
+<Info>
+**Having issues?** Contact us via the [Support Telegram Bot](https://t.me/particle_developer_bot).
+</Info>

@@ -89,7 +89,7 @@ const smartAccount = new SmartAccount(provider, {
     clientKey: 'Particle Network client key',
     appId: 'Particle Network app ID',
     aaOptions: {
-        accountContracts: {  // 'BICONOMY', 'CYBERCONNECT', 'SIMPLE', 'LIGHT', 'XTERIO'
+        accountContracts: {  // 'BICONOMY', 'CYBERCONNECT', 'SIMPLE', 'LIGHT', 'COINBASE'
             BICONOMY: [
                 {
                     version: '1.0.0',  
@@ -120,6 +120,7 @@ const smartAccount = new SmartAccount(provider, {
     }, 
 });
 
+// Syntax to change the smart account implementation at any point
 smartAccount.setSmartAccountContract({ name: 'BICONOMY', version: '2.0.0' });
 ```
 
