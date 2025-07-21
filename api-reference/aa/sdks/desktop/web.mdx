@@ -72,8 +72,8 @@ Specifically, `SmartAccount` takes the following parameters:
       - `LIGHT`, a [Light Account implementation by Alchemy](https://github.com/alchemyplatform/light-account).
         - `version`, currently only `1.0.2` is supported for `LIGHT`.
         - `chainIds`
-      - `XTERIO`, a [Xterio smart account](https://xter.io/build).
-        - `version`, currently only `1.0.0` is supported for `XTERIO`.
+      - `COINBASE`, a [Coinbase smart account](https://www.coinbase.com/en-br/wallet/smart-wallet).
+        - `version`, currently only `1.0.0` is supported for `COINBASE`.
         - `chainIds`
   - `paymasterApiKeys`, an optional array (of objects) to be used when leveraging Biconomy's Paymaster.
     - `chainId`, the chain ID being used by the Paymaster.
@@ -89,7 +89,7 @@ const smartAccount = new SmartAccount(provider, {
     clientKey: 'Particle Network client key',
     appId: 'Particle Network app ID',
     aaOptions: {
-        accountContracts: {  // 'BICONOMY', 'CYBERCONNECT', 'SIMPLE', 'LIGHT', 'XTERIO'
+        accountContracts: {  // 'BICONOMY', 'CYBERCONNECT', 'SIMPLE', 'LIGHT', 'COINBASE'
             BICONOMY: [
                 {
                     version: '1.0.0',  
@@ -120,6 +120,7 @@ const smartAccount = new SmartAccount(provider, {
     }, 
 });
 
+// Syntax to change the smart account implementation at any point
 smartAccount.setSmartAccountContract({ name: 'BICONOMY', version: '2.0.0' });
 ```
 
