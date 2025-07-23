@@ -41,11 +41,12 @@ To start integrating Universal Accounts:
     NEXT_PUBLIC_PROJECT_ID=your_particle_project_id
     NEXT_PUBLIC_CLIENT_KEY=your_particle_client_key
     NEXT_PUBLIC_APP_ID=your_particle_app_id
-    NEXT_PUBLIC_UA_PROJECT_ID=your_universal_accounts_project_id
     ```
 
     <Note>
-      You can retrieve your Auth project credentials and UA access key from the [Particle Dashboard](https://dashboard.particle.network/).
+      You can retrieve your project credentials from the [Particle Dashboard](https://dashboard.particle.network/). 
+      
+      The project ID will work for both Auth and Universal Accounts.
       
       This example uses Particle Auth for simplicity, but Universal Accounts are compatible with any EOA-based provider or signer.
     </Note>
@@ -113,7 +114,7 @@ import { useEthereum } from "@particle-network/authkit";
 const { address } = useEthereum();
 
 const ua = new UniversalAccount({
-  projectId: process.env.NEXT_PUBLIC_UA_PROJECT_ID || "",
+  projectId: process.env.NEXT_PUBLIC_PROJECT_ID || "",
   ownerAddress: address,
   tradeConfig: {
     // If this is not set, it will use auto slippage
@@ -216,7 +217,7 @@ This method lets you define one or more contract calls while specifying which to
 ```tsx page.tsx
 import { useEthereum } from "@particle-network/authkit";
 const { provider } = useEthereum();
-import { CHAIN_ID, SUPPORTED_TOKEN_TYPE } from "@GDdark/universal-account";
+import { CHAIN_ID, SUPPORTED_TOKEN_TYPE } from "@particle-network/universal-account-sdk";
 
 
 // In the app
@@ -296,7 +297,7 @@ import {
   SUPPORTED_TOKEN_TYPE,
   IAssetsResponse,
   UniversalAccount,
-} from "@GDdark/universal-account";
+} from "@particle-network/universal-account-sdk";
 import { Interface, parseEther, toBeHex } from "ethers";
 import { useEffect, useState } from "react";
 import styles from "./styles.module.css";
