@@ -76,18 +76,88 @@ import { UniversalAccount } from "@particle-network/universal-account-sdk";
 Then, initialize the UA instance once a user has connected:
 
 <Note>
-  You need a **Universal Account Project ID (API key)** to initialize the SDK.
-
-  Get your Universal Accounts project ID from the [Particle Dashboard](https://dashboard.particle.network/).
+The Universal Account SDK requires Particle project credentials from the [Particle Dashboard](https://dashboard.particle.network/).
 </Note>
+
+To retrieve those values for configuration within your application, follow these steps:
+
+<AccordionGroup>
+  <Accordion title="Access the Particle Dashboard">
+
+Sign up or Log in into the [Particle dashboard](https://dashboard.particle.network/)
+
+<div className="flex justify-center">
+<img
+  className="block h-64 dark:hidden"
+  src="/api-reference/guides/wallet-as-a-service/waas/images/login.png"
+  alt="Login into Particle."
+/>
+<img
+  className="hidden h-64 dark:block"
+  src="/api-reference/guides/wallet-as-a-service/waas/images/login.png"
+  alt="Login into Particle."
+/>
+</div>
+ </Accordion>
+<Accordion title="Create a new project or enter an existing project">
+<div className="flex justify-center">
+<img
+  className="block h-64 dark:hidden"
+  src="/api-reference/guides/wallet-as-a-service/waas/images/project.png"
+  alt="Create Particle project."
+/>
+<img
+  className="hidden h-64 dark:block"
+  src="/api-reference/guides/wallet-as-a-service/waas/images/project.png"
+  alt="Create Particle project."
+/>
+</div>
+</Accordion>
+
+<Accordion title="Create a new web application, or skip this step if you already have one">
+    <div className="flex justify-center">
+        <img
+            className="block h-64 dark:hidden"
+            src="/api-reference/guides/wallet-as-a-service/waas/images/web-app.png"
+            alt="Create web app."
+        />
+        <img
+            className="hidden h-64 dark:block"
+            src="/api-reference/guides/wallet-as-a-service/waas/images/web-app.png"
+            alt="Create web app."
+        />
+    </div>
+</Accordion>
+
+<Accordion title="Retrieve the project credentials (project ID, client key, app ID)">
+<div className="flex justify-center">
+<img
+  className="block h-64 dark:hidden"
+  src="/api-reference/guides/wallet-as-a-service/waas/images/credentials.png"
+  alt="Find app's credentials."
+/>
+<img
+  className="hidden h-64 dark:block"
+  src="/api-reference/guides/wallet-as-a-service/waas/images/credentials.png"
+  alt="Find app's credentials."
+/>
+</div>
+</Accordion>
+</AccordionGroup>
+
+
 
 ```tsx
 const ua = new UniversalAccount({
-  projectId: "YOUR_UA_PROJECT_ID", // Replace with your actual key
-  ownerAddress: "USERS_EOA_ADDRESS",     // The user’s EOA address
+  projectId: process.env.NEXT_PUBLIC_PROJECT_ID!,
+  projectClientKey: process.env.NEXT_PUBLIC_CLIENT_KEY!,
+  projectAppUuid: process.env.NEXT_PUBLIC_APP_ID!,
+  ownerAddress: address,
+  // If not set it will use auto-slippage
   tradeConfig: {
-    slippageBps: 100,           // Optional: 100 = 1% slippage tolerance
-    universalGas: true          // Optional: let user pay gas in PARTI token
+    slippageBps: 100, // 1% slippage tolerance
+    universalGas: true, // Prioritize PARTI token to pay for gas
+    //usePrimaryTokens: [SUPPORTED_TOKEN_TYPE.SOL], // Specify token to use as source (only for swaps)
   },
 });
 ```
@@ -97,6 +167,25 @@ You can now use the `ua` instance to **fetch data** (a Universal Account's balan
 <Card title="Check Out UA Initialization in this Sample Repository" icon="link" href="https://github.com/soos3d/auth-universal-accounts/blob/117dc53daea1b2bc9017e595bc5337e204171f69/auth-universal-demo/app/page.tsx#L43">
   Repository of sample Next.js app with social logins via Particle Auth \+ UA.
 </Card>
+
+#### Control which tokens are used for swaps
+
+When initializing a **Universal Account**, you can control which tokens are eligible to be used as the source for swap operations.
+
+To do this, set the `usePrimaryTokens` field inside the `tradeConfig` object. This lets you restrict swap logic to specific tokens (e.g. only allow SOL to be spent, not USDT or ETH).
+
+Example:
+
+```ts
+tradeConfig: {
+  usePrimaryTokens: [SUPPORTED_TOKEN_TYPE.SOL],
+}
+```
+
+This is useful if you want to:
+- Ensure predictable token usage during swaps
+- Prevent certain tokens from being auto-selected as swap input
+- Customize the user experience around token prioritization
 
 ## Get a Universal Account's Addresses
 
@@ -328,6 +417,17 @@ The returned `TransactionResult` will include the transaction's ID and metadata 
 The Universal Accounts SDK supports initiating **buy/swap transactions** directly through the `createBuyTransaction()` method. This allows you to programmatically route an amount in **USD** into a target token (e.g., USDT on Arbitrum), without requiring the user to hold funds on the destination chain.
 
 Once the transaction is created, it returns a `rootHash` value representing the payload to be signed. You then use your **signer** (in this case, Particle Auth) to sign the message, and pass the result into sendTransaction() to broadcast it:
+
+<Note>
+You can specify the specific tokens you want to use as source for the swap by setting the `usePrimaryTokens` property in the `tradeConfig` object when initializing the Universal Account.
+
+```ts
+tradeConfig: {
+    usePrimaryTokens: [SUPPORTED_TOKEN_TYPE.SOL],
+  },
+```
+
+</Note>
 
 ```ts
 import { CHAIN_ID, UniversalAccount } from "@particle-network/universal-account-sdk";
