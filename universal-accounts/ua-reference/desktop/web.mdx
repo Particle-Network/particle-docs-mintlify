@@ -76,14 +76,80 @@ import { UniversalAccount } from "@particle-network/universal-account-sdk";
 Then, initialize the UA instance once a user has connected:
 
 <Note>
-  You need a **Universal Account Project ID (API key)** to initialize the SDK.
-
-  Get your Universal Accounts project ID from the [Particle Dashboard](https://dashboard.particle.network/).
+The Universal Account SDK requires a Project ID from the [Particle Dashboard](https://dashboard.particle.network/).
 </Note>
+
+To retrieve this value for configuration within your application, follow these steps:
+
+<AccordionGroup>
+  <Accordion title="Access the Particle Dashboard">
+
+Sign up or Log in into the [Particle dashboard](https://dashboard.particle.network/)
+
+<div className="flex justify-center">
+<img
+  className="block h-64 dark:hidden"
+  src="/api-reference/guides/wallet-as-a-service/waas/images/login.png"
+  alt="Login into Particle."
+/>
+<img
+  className="hidden h-64 dark:block"
+  src="/api-reference/guides/wallet-as-a-service/waas/images/login.png"
+  alt="Login into Particle."
+/>
+</div>
+ </Accordion>
+<Accordion title="Create a new project or enter an existing project">
+<div className="flex justify-center">
+<img
+  className="block h-64 dark:hidden"
+  src="/api-reference/guides/wallet-as-a-service/waas/images/project.png"
+  alt="Create Particle project."
+/>
+<img
+  className="hidden h-64 dark:block"
+  src="/api-reference/guides/wallet-as-a-service/waas/images/project.png"
+  alt="Create Particle project."
+/>
+</div>
+</Accordion>
+
+<Accordion title="Create a new web application, or skip this step if you already have one">
+    <div className="flex justify-center">
+        <img
+            className="block h-64 dark:hidden"
+            src="/api-reference/guides/wallet-as-a-service/waas/images/web-app.png"
+            alt="Create web app."
+        />
+        <img
+            className="hidden h-64 dark:block"
+            src="/api-reference/guides/wallet-as-a-service/waas/images/web-app.png"
+            alt="Create web app."
+        />
+    </div>
+</Accordion>
+
+<Accordion title="Retrieve the project ID (`projectId`). The other values are needed only if you plan to use other Particle SDKs for authentication">
+<div className="flex justify-center">
+<img
+  className="block h-64 dark:hidden"
+  src="/api-reference/guides/wallet-as-a-service/waas/images/credentials.png"
+  alt="Find app's credentials."
+/>
+<img
+  className="hidden h-64 dark:block"
+  src="/api-reference/guides/wallet-as-a-service/waas/images/credentials.png"
+  alt="Find app's credentials."
+/>
+</div>
+</Accordion>
+</AccordionGroup>
+
+
 
 ```tsx
 const ua = new UniversalAccount({
-  projectId: "YOUR_UA_PROJECT_ID", // Replace with your actual key
+  projectId: "YOUR_PROJECT_ID", // Replace with your actual key
   ownerAddress: "USERS_EOA_ADDRESS",     // The user’s EOA address
   tradeConfig: {
     slippageBps: 100,           // Optional: 100 = 1% slippage tolerance
