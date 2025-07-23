@@ -48,13 +48,83 @@ To start, ensure you have an app set up with a browser-injected EVM wallet like 
   <Step title="Set Environment Variables">
     Add your Universal Accounts project ID to `.env.local`:
 
+    <Note>
+The Universal Account SDK requires Particle project credentials from the [Particle Dashboard](https://dashboard.particle.network/).
+</Note>
+
+To retrieve those values for configuration within your application, follow these steps:
+
+<AccordionGroup>
+  <Accordion title="Access the Particle Dashboard">
+
+Sign up or Log in into the [Particle dashboard](https://dashboard.particle.network/)
+
+<div className="flex justify-center">
+<img
+  className="block h-64 dark:hidden"
+  src="/api-reference/guides/wallet-as-a-service/waas/images/login.png"
+  alt="Login into Particle."
+/>
+<img
+  className="hidden h-64 dark:block"
+  src="/api-reference/guides/wallet-as-a-service/waas/images/login.png"
+  alt="Login into Particle."
+/>
+</div>
+ </Accordion>
+<Accordion title="Create a new project or enter an existing project">
+<div className="flex justify-center">
+<img
+  className="block h-64 dark:hidden"
+  src="/api-reference/guides/wallet-as-a-service/waas/images/project.png"
+  alt="Create Particle project."
+/>
+<img
+  className="hidden h-64 dark:block"
+  src="/api-reference/guides/wallet-as-a-service/waas/images/project.png"
+  alt="Create Particle project."
+/>
+</div>
+</Accordion>
+
+<Accordion title="Create a new web application, or skip this step if you already have one">
+    <div className="flex justify-center">
+        <img
+            className="block h-64 dark:hidden"
+            src="/api-reference/guides/wallet-as-a-service/waas/images/web-app.png"
+            alt="Create web app."
+        />
+        <img
+            className="hidden h-64 dark:block"
+            src="/api-reference/guides/wallet-as-a-service/waas/images/web-app.png"
+            alt="Create web app."
+        />
+    </div>
+</Accordion>
+
+<Accordion title="Retrieve the project credentials (project ID, client key, app ID)">
+<div className="flex justify-center">
+<img
+  className="block h-64 dark:hidden"
+  src="/api-reference/guides/wallet-as-a-service/waas/images/credentials.png"
+  alt="Find app's credentials."
+/>
+<img
+  className="hidden h-64 dark:block"
+  src="/api-reference/guides/wallet-as-a-service/waas/images/credentials.png"
+  alt="Find app's credentials."
+/>
+</div>
+</Accordion>
+</AccordionGroup>
+
     ```env .env
-    NEXT_PUBLIC_UA_PROJECT_ID=your_universal_accounts_project_id
+    NEXT_PUBLIC_PROJECT_ID=""
+    NEXT_PUBLIC_CLIENT_KEY=""
+    NEXT_PUBLIC_APP_ID=""
     ```
 
-    <Info>
-      Get your Universal Accounts project ID from the [Particle Dashboard](https://dashboard.particle.network/).
-    </Info>
+
   </Step>
 </Steps>
 
@@ -95,16 +165,23 @@ This wallet address can now be passed into the Universal Account SDK as the `own
 
 Once the user connects their wallet and you obtain their EOA address, create a new Universal Account instance:
 
+
+
 ```ts
 import { UniversalAccount } from "@particle-network/universal-account-sdk";
 
 const universalAccount = new UniversalAccount({
-  projectId: process.env.NEXT_PUBLIC_UA_PROJECT_ID!,
-  ownerAddress: walletAddress,
-  tradeConfig: {
-    universalGas: false,
-  },
-});
+        projectId: process.env.NEXT_PUBLIC_PROJECT_ID!,
+        projectClientKey: process.env.NEXT_PUBLIC_CLIENT_KEY!,
+        projectAppUuid: process.env.NEXT_PUBLIC_APP_ID!,
+        ownerAddress: address,
+        // If not set it will use auto-slippage
+        tradeConfig: {
+          slippageBps: 100, // 1% slippage tolerance
+          universalGas: true, // Prioritize PARTI token to pay for gas
+          //usePrimaryTokens: [SUPPORTED_TOKEN_TYPE.SOL], // Specify token to use as source (only for swaps)
+        },
+    });
 ```
 
 <Info>
