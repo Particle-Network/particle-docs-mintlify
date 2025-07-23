@@ -28,9 +28,9 @@ Before starting, make sure you have:
 - Cloned the [starter app repository](https://github.com/soos3d/ua-learn-series)
 - Basic familiarity with React and Ethers.js
 
-The Universal Account SDK requires a Project ID from the [Particle Dashboard](https://dashboard.particle.network/).
+The Universal Account SDK requires a Particle project credentials from the [Particle Dashboard](https://dashboard.particle.network/).
 
-To retrieve this value for configuration within your application, follow these steps:
+To retrieve those values for configuration within your application, follow these steps:
 
 <AccordionGroup>
   <Accordion title="Access the Particle Dashboard">
@@ -80,7 +80,7 @@ Sign up or Log in into the [Particle dashboard](https://dashboard.particle.netwo
     </div>
 </Accordion>
 
-<Accordion title="Retrieve the project ID (`projectId`). The other values are needed only if you plan to use other Particle SDKs for authentication">
+<Accordion title="Retrieve the project credentials (project ID, client key, app ID)">
 <div className="flex justify-center">
 <img
   className="block h-64 dark:hidden"
@@ -125,13 +125,15 @@ Then, initialize the UA instance once a user has connected like in the following
 
 ```tsx  
 const ua = new UniversalAccount({
-  projectId: process.env.NEXT_PUBLIC_PROJECT_ID || "",  // Your Project ID
-  ownerAddress: address,  // User's connected wallet address
-  
-  // Optional configuration
+  projectId: process.env.NEXT_PUBLIC_PROJECT_ID!,
+  projectClientKey: process.env.NEXT_PUBLIC_CLIENT_KEY!,
+  projectAppUuid: process.env.NEXT_PUBLIC_APP_ID!,
+  ownerAddress: address,
+  // If not set it will use auto-slippage
   tradeConfig: {
-    slippageBps: 100,        // 1% slippage tolerance
-    universalGas: true,      // Enable gas abstraction
+    slippageBps: 100, // 1% slippage tolerance
+    universalGas: true, // Prioritize PARTI token to pay for gas
+    //usePrimaryTokens: [SUPPORTED_TOKEN_TYPE.SOL], // Specify token to use as source (only for swaps)
   },
 });
 ```
