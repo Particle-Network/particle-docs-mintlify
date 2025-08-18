@@ -91,11 +91,11 @@
       ]
     },
     {
-      "group": "UNIVERSAL ACCOUNTS",
+      "group": "PARTICLE PRODUCTS",
       "pages": [
         "intro/universal-accounts",
-        "intro/universal-liquidity",
-        "intro/universal-gas"
+        "intro/social-logins",
+        "intro/account-abstraction"
       ]
     },
     {

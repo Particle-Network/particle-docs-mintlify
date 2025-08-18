@@ -1,0 +1,42 @@
+---
+title: "Introduction to Social Logins"
+description: "Onboard users with familiar credentials and automatic wallet creation."
+---
+
+**Social Logins** let users sign in to dApps using credentials they already know — Google, Twitter, Discord, Apple, and more — while automatically generating a secure, non-custodial wallet in the background.
+
+This eliminates the friction of seed phrases and manual wallet setup, allowing developers to offer a **Web2-like onboarding experience** without sacrificing decentralization. Particle Network ensures keys are safely managed using [MPC (Multi-Party Computation)](/api-reference/wallet-abstraction/waas/mpc-tss), keeping control in the user’s hands.
+
+<Frame caption="Particle Connect Login Modal">
+  <img src="/api-reference/guides/images/connect-modal.png" alt="Particle Connect Login Modal" style={{ width: '100%', maxWidth: '600px', maxHeight: '400px' }} />
+</Frame>
+
+---
+
+# Understanding Social Logins
+
+From a technical standpoint, Social Logins work by binding a user’s Web2 identity (e.g., Google OAuth) to a non-custodial wallet. Particle’s infrastructure abstracts away key management, ensuring wallets can be recovered while staying decentralized.
+
+## Key Features
+
+### User Experience
+- One-click onboarding with familiar Web2 credentials.  
+- No need for seed phrases, extensions, or manual wallet creation.  
+- Fast, familiar login flow users already trust.
+
+### Developer Benefits
+- Easy SDK integration with minimal code changes.  
+- Works across web, mobile, and desktop environments.  
+- Fully compatible with other Particle products (Universal Accounts, Account Abstraction).  
+
+---
+
+<Card title="Get started with Social Logins" icon="address-card" href="/api-reference/guides/overview">
+  Add Social Logins to your dApp.
+</Card>
+
+<Tip>
+  **Best for onboarding retail users**  
+
+  Social Logins reduce drop-off by removing seed phrases and wallet setup barriers, making them ideal for consumer-ready dApps and mainstream audiences.  
+</Tip>
