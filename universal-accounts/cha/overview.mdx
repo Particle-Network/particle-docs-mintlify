@@ -33,9 +33,14 @@ Under the hood, it’s an ERC-4337 smart account implementation. Every transacti
 	- Send transactions without adding bridging logic.
 	- Gas abstraction automatically handled—no extra code required.
 
-<Note>
-  The Universal Accounts SDK uses wallet connection mechanisms. As such, if a user creates a Universal Account by connecting an existing wallet, their assets will not be automatically transferred into the UA. Users can transfer assets into their Universal Account from any supported chain via in-app flows. You may also make Universal Accounts an optional toggle within your dApp if you prefer to maintain EOAs as the default account mechanism.
-</Note>
+<Note>  
+Universal Accounts are **independent smart accounts**, not extensions of an existing wallet.  
+
+	- When a user creates a Universal Account with their existing wallet, their assets stay in the original wallet — nothing is moved automatically.
+	- Users can transfer assets into their Universal Account from any supported chain through in-app flows.
+	- As a developer, you can choose whether to make Universal Accounts the default experience or keep them as an optional toggle alongside EOAs.
+
+</Note>  
 
 ---
 
