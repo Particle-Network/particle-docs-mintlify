@@ -456,12 +456,6 @@
         "api-reference/debug/sdk",
         "api-reference/debug/api"
       ]
-    },
-    {
-      "group": "CHANGELOG",
-      "pages": [
-        "changelog/logs"
-      ]
     }
   ],
   "footerSocials": {
