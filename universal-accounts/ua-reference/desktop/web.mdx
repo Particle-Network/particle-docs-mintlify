@@ -412,7 +412,7 @@ console.log("Explorer URL:", `https://universalx.app/activity/details?id=${resul
 
 The returned `TransactionResult` will include the transaction's ID and metadata like token movements and fee breakdowns.
 
-## Sending a Swap Transaction
+## Sending a Buy Transaction
 
 The Universal Accounts SDK supports initiating **buy/swap transactions** directly through the `createBuyTransaction()` method. This allows you to programmatically route an amount in **USD** into a target token (e.g., USDT on Arbitrum), without requiring the user to hold funds on the destination chain.
 
@@ -456,6 +456,40 @@ The `sendTransaction` method will then return a `TransactionResult` object, whic
 <Card title="Sample Swap Transaction" icon="coin-front" href="https://github.com/soos3d/auth-universal-accounts/blob/main/auth-universal-demo/app/components/SendTransactionCard.tsx">
   See how to initiate a swap transaction in a demo Next.js app using both Particle Auth and Universal Accounts.
 </Card>
+
+## Sending a Sell Transaction
+
+The **Universal Accounts SDK** supports initiating **sell/swap transactions** through the `createSellTransaction()` method. This allows you to programmatically sell a token (e.g., ARB on Arbitrum) into a target primary asset, with the transaction routed through Particle’s Chain Abstraction layer.
+
+Once the transaction is created, it returns a `rootHash` payload that needs to be signed. You then use your signer (e.g., Particle Auth) to sign and pass it into `sendTransaction()` to broadcast.
+
+<Note>  
+The amount you specify is the raw token amount to be sold (no decimals adjustment needed). Ensure the **Universal Account** has enough balance of the token before calling `createSellTransaction()`.  
+</Note>  
+
+```ts
+import { CHAIN_ID, UniversalAccount } from "@particle-network/universal-account-sdk";
+import { useEthereum } from "@particle-network/authkit";
+
+// extract the provider from Particle Auth
+const { provider } = useEthereum();
+
+// In your app
+const transaction = await ua.createSellTransaction({
+  token: {
+    chainId: CHAIN_ID.ARBITRUM_MAINNET_ONE,
+    address: "0x912CE59144191C1204E64559FE8253a0e49E6548", // ARB on Arbitrum
+  },
+  amount: "0.1", // Amount of token to sell
+});
+
+const signature = await provider.signMessage(transaction.rootHash);
+const result = await ua.sendTransaction(transaction, signature);
+
+console.log("Explorer URL:", `https://universalx.app/activity/details?id=${result.transactionId}`);
+```
+
+The `sendTransaction(`) method returns a `TransactionResult` object with the transaction ID and other metadata.
 
 ## Sending a Conversion Transaction
 

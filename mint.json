@@ -54,8 +54,8 @@
       "url": "api-reference"
     },
     {
-      "name": "Changelog",
-      "url": "changelog"
+      "name": "Support",
+      "url": "https://t.me/particle_developer_bot"
     }
   ],
   "anchors": [
@@ -91,11 +91,11 @@
       ]
     },
     {
-      "group": "UNIVERSAL ACCOUNTS",
+      "group": "PARTICLE PRODUCTS",
       "pages": [
         "intro/universal-accounts",
-        "intro/universal-liquidity",
-        "intro/universal-gas"
+        "intro/social-logins",
+        "intro/account-abstraction"
       ]
     },
     {
@@ -455,12 +455,6 @@
       "pages": [
         "api-reference/debug/sdk",
         "api-reference/debug/api"
-      ]
-    },
-    {
-      "group": "CHANGELOG",
-      "pages": [
-        "changelog/logs"
       ]
     }
   ],

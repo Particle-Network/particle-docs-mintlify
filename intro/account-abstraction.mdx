@@ -1,0 +1,60 @@
+---
+title: "Introduction to Account Abstraction"
+description: "ERC-4337 smart accounts, powered by Particle Network’s SDK."
+---
+
+**Account Abstraction (AA)** brings smart account capabilities to users, enabling features like gasless transactions, batched operations, and programmable account logic.  
+
+Particle Network provides a full-stack **Account Abstraction SDK**, designed for developers who want to implement **ERC-4337 Smart Wallet-as-a-Service** with minimal effort. Whether paired with **Particle Auth** (MPC-secured EOAs) or integrated externally, the SDK handles the heavy lifting of smart account deployment and UserOperation management.
+
+<Frame caption="User flow of Particle Network’s Account Abstraction.">
+  <img
+    className="block dark:hidden"
+    src="/api-reference/aa/images/aa.png"
+    alt="Account Abstraction"
+  />
+
+  <img
+    className="hidden dark:block"
+    src="/api-reference/aa/images/aa.png"
+    alt="Account Abstraction"
+  />
+</Frame>
+
+---
+
+# Understanding Account Abstraction
+
+From a technical standpoint, Account Abstraction (ERC-4337) separates account logic from EOAs, replacing them with **Smart Accounts**. These programmable accounts allow for improved UX while staying fully decentralized.  
+
+The **Particle AA SDK** enables developers to:  
+- Deploy smart accounts bound to EOAs (MPC-secured via Particle Auth or external).  
+- Construct, sponsor, and send **UserOperations**.  
+- Retrieve fee quotes and handle gas sponsorship.  
+- Support recovery flows and custom logic.
+
+---
+
+## Key Features
+
+### User Experience
+- **Gasless transactions** through paymaster sponsorship.  
+- **Batched operations** (e.g., approve + swap in one click).  
+- **Programmable logic** for recovery, spending limits, or custom policies.  
+
+### Developer Benefits
+- **Full ERC-4337 support** out of the box.  
+- Works natively with Particle Auth (MPC EOAs) or external wallets.  
+- Simple SDK integration for constructing, simulating, and sending UserOperations.  
+
+---
+
+<Card title="Explore the AA SDK" icon="cogs" href="/api-reference/aa/introduction">
+  Start building with ERC-4337 smart accounts.
+</Card>
+
+<Tip>
+  **Smart Wallet-as-a-Service**  
+
+  Particle’s AA SDK provides the infrastructure to launch fully programmable smart wallets, with sponsorship, batching, and recovery built-in. Ideal for consumer-ready dApps.  
+</Tip>
