@@ -50,7 +50,11 @@
       "url": "universal-accounts"
     },
     {
-      "name": "Social Login/AA SDKs",
+      "name": "Social Logins",
+      "url": "social-logins"
+    },
+    {
+      "name": "Account Abstraction",
       "url": "api-reference"
     },
     {
@@ -171,40 +175,27 @@
           {
             "group": "OVERVIEW",
             "pages": [
-              "api-reference/guides/overview",
-              "api-reference/guides/network-coverage",
-              "api-reference/guides/dashboard",
-              "api-reference/wallet-abstraction/waas/mpc-tss",
-              {
-                "group": "Platform Coverage",
-                "pages": [
-                  "api-reference/guides/integrations/platform/web",
-                  "api-reference/guides/integrations/platform/android",
-                  "api-reference/guides/integrations/platform/ios",
-                  "api-reference/guides/integrations/platform/unity",
-                  "api-reference/guides/integrations/platform/unreal",
-                  "api-reference/guides/integrations/platform/cocos",
-                  "api-reference/guides/integrations/platform/flutter",
-                  "api-reference/guides/integrations/platform/react"
-                ]
-              },   
+              "social-logins/overview",
+              "social-logins/network-coverage",
+              "social-logins/dashboard",
+              "social-logins/mpc-tss",  
               {
                 "group": "Configuration",
                 "pages": [
                   {
                     "group": "Appearance",
                     "pages": [
-                      "api-reference/guides/configuration/appearance/auth",
-                      "api-reference/guides/configuration/appearance/wallet"
+                      "social-logins/configuration/appearance/auth",
+                      "social-logins/configuration/appearance/wallet"
                     ]
                   },
                   {
                     "group": "Authentication",
                     "pages": [
-                      "api-reference/guides/configuration/auth/jwt",
-                      "api-reference/guides/configuration/auth/social-prompt",
-                      "api-reference/guides/configuration/auth/session-duration",
-                      "api-reference/guides/configuration/auth/password"
+                      "social-logins/configuration/auth/jwt",
+                      "social-logins/configuration/auth/social-prompt",
+                      "social-logins/configuration/auth/session-duration",
+                      "social-logins/configuration/auth/password"
                     ]
                   }
                 ]
@@ -215,84 +206,126 @@
     {
       "group": "PARTICLE CONNECT",
       "pages": [
-        "api-reference/connect/introduction",
+        "social-logins/connect/introduction",
         {
           "group": "Quickstart",
           "pages": [
-            "api-reference/guides/wallet-as-a-service/waas/connect/web-quickstart",
-            "api-reference/guides/wallet-as-a-service/waas/connect/ios-quickstart",
-            "api-reference/guides/wallet-as-a-service/waas/connect/android-quickstart",
-            "api-reference/guides/wallet-as-a-service/waas/connect/flutter-quickstart",
-            "api-reference/guides/wallet-as-a-service/waas/connect/react-native-quickstart"
+            "social-logins/connect/web-quickstart",
+            "social-logins/connect/ios-quickstart",
+            "social-logins/connect/android-quickstart",
+            "social-logins/connect/flutter-quickstart",
+            "social-logins/connect/react-native-quickstart"
           ]
         },
         {
           "group": "SDKs (Desktop)",
           "pages": [
-            "api-reference/connect/desktop/web"
+            "social-logins/connect/desktop/web"
           ]
         },
         {
           "group": "SDKs (Mobile)",
           "pages": [
-            "api-reference/connect/mobile/android",
-            "api-reference/connect/mobile/ios",
-            "api-reference/connect/mobile/unity",
-            "api-reference/connect/mobile/flutter",
-            "api-reference/connect/mobile/react"
+            "social-logins/connect/mobile/android",
+            "social-logins/connect/mobile/ios",
+            "social-logins/connect/mobile/unity",
+            "social-logins/connect/mobile/flutter",
+            "social-logins/connect/mobile/react"
           ]
         },
-        "api-reference/connect/faq"
+        "social-logins/connect/faq"
       ]
     },
     {
       "group": "PARTICLE AUTH",
       "pages": [
-        "api-reference/auth/introduction",
+        "social-logins/auth/introduction",
         {
           "group": "Quickstart",
           "pages": [
-            "api-reference/guides/wallet-as-a-service/waas/auth/web-quickstart",
-            "api-reference/guides/wallet-as-a-service/waas/auth/tg-quickstart",
-            "api-reference/guides/wallet-as-a-service/waas/auth/ios-quickstart",
-            "api-reference/guides/wallet-as-a-service/waas/auth/android-quickstart",
-            "api-reference/guides/wallet-as-a-service/waas/auth/flutter-quickstart",
-            "api-reference/guides/wallet-as-a-service/waas/auth/react-native-quickstart"
-          ]
-        },
-        {
-          "group": "Server API",
-          "pages": [
-            "api-reference/auth/server/getuserinfo",
-            "api-reference/auth/server/getuserinfobyidentity",
-            "api-reference/auth/server/isprojectuser"
+            "social-logins/auth/web-quickstart",
+            "social-logins/auth/tg-quickstart",
+            "social-logins/auth/ios-quickstart",
+            "social-logins/auth/android-quickstart",
+            "social-logins/auth/flutter-quickstart",
+            "social-logins/auth/react-native-quickstart"
           ]
         },
         {
           "group": "SDKs (Desktop)",
           "pages": [
-            "api-reference/auth/desktop-sdks/web",
-            "api-reference/auth/desktop-sdks/unity"
+            "social-logins/auth/desktop-sdks/web",
+            "social-logins/auth/desktop-sdks/unity"
           ]
         },
         {
           "group": "SDKs (Mobile)",
           "pages": [
-            "api-reference/auth/mobile-sdks/android",
-            "api-reference/auth/mobile-sdks/ios",
-            "api-reference/auth/mobile-sdks/flutter",
-            "api-reference/auth/mobile-sdks/unity",
-            "api-reference/auth/mobile-sdks/react",
-            "api-reference/auth/mobile-sdks/cocos"
+            "social-logins/auth/mobile-sdks/android",
+            "social-logins/auth/mobile-sdks/ios",
+            "social-logins/auth/mobile-sdks/flutter",
+            "social-logins/auth/mobile-sdks/unity",
+            "social-logins/auth/mobile-sdks/react",
+            "social-logins/auth/mobile-sdks/cocos"
           ]
         },
         {
           "group": "SDKs (Multi-platform)",
           "pages": [
-            "api-reference/auth/multi/unreal"
+            "social-logins/auth/multi/unreal"
           ]
         },
-        "api-reference/auth/faq"
+        "social-logins/auth/faq"
+      ]
+    },
+    {
+      "group": "API",
+      "pages": [
+        "social-logins/api/introduction",
+        
+        { 
+          "group": "Auth Server API",
+          "pages": [
+            "social-logins/api/server/getuserinfo",
+            "social-logins/api/server/getuserinfobyidentity",
+            "social-logins/api/server/isprojectuser"
+          ]
+        },
+        { 
+          "group": "EVM Enhanced API",
+          "pages": [
+            "social-logins/api/evm/abi_encodefunctioncall",
+            "social-logins/api/evm/crosschain_getnfts",
+            "social-logins/api/evm/deserializetransaction",
+            "social-logins/api/evm/getcontractabi",
+            "social-logins/api/evm/getlatestblock",
+            "social-logins/api/evm/getnfts",
+            "social-logins/api/evm/getpendingtransactionsbyaddress",
+            "social-logins/api/evm/getprice",
+            "social-logins/api/evm/gettokens",
+            "social-logins/api/evm/gettokensandnfts",
+            "social-logins/api/evm/gettransactionsbyaddress",
+            "social-logins/api/evm/suggestedgasfees"
+          ]
+        },
+        {
+          "group": "Solana Enhanced API",
+          "pages": [
+            "social-logins/api/solana/enhancedgetprice",
+            "social-logins/api/solana/enhancedgettokensandnfts",
+            "social-logins/api/solana/enhancedgettransactionsbyaddress",
+            "social-logins/api/solana/solanaservice"
+          ]
+        },
+        {
+          "group": "Swap API",
+          "pages": [
+            "social-logins/api/swap/introduction",
+            "social-logins/api/swap/checkapprove",
+            "social-logins/api/swap/getquote",
+            "social-logins/api/swap/getswap"
+          ]
+        }
       ]
     },
     {
@@ -410,34 +443,16 @@
       ]
     },
     {
-      "group": "EHNANCED RPC",
+      "group": "ENHANCED RPC",
       "pages": [
         "api-reference/enhanced/introduction",
         {
           "group": "EVM Enhanced RPC",
-          "pages": [
-            "api-reference/enhanced/evm/abi_encodefunctioncall",
-            "api-reference/enhanced/evm/crosschain_getnfts",
-            "api-reference/enhanced/evm/deserializetransaction",
-            "api-reference/enhanced/evm/getcontractabi",
-            "api-reference/enhanced/evm/getlatestblock",
-            "api-reference/enhanced/evm/getnfts",
-            "api-reference/enhanced/evm/getpendingtransactionsbyaddress",
-            "api-reference/enhanced/evm/getprice",
-            "api-reference/enhanced/evm/gettokens",
-            "api-reference/enhanced/evm/gettokensandnfts",
-            "api-reference/enhanced/evm/gettransactionsbyaddress",
-            "api-reference/enhanced/evm/suggestedgasfees"
-          ]
+          "pages": [ "api-reference/btc/faq"]
         },
         {
           "group": "Solana Enhanced RPC",
-          "pages": [
-            "api-reference/enhanced/solana/enhancedgetprice",
-            "api-reference/enhanced/solana/enhancedgettokensandnfts",
-            "api-reference/enhanced/solana/enhancedgettransactionsbyaddress",
-            "api-reference/enhanced/solana/solanaservice"
-          ]
+"pages": [ "api-reference/btc/faq"]
         },
         {
           "group": "Swap RPC",
@@ -617,7 +632,7 @@
       "destination": "/guides/integrations/nodes/s"
     },
     {
-      "source": "/docs/data-apis",
+      "source": "/docs/data-api",
       "destination": "/guides/integrations/nodes/data"
     },
     {
