@@ -210,11 +210,11 @@
         {
           "group": "Quickstart",
           "pages": [
-            "social-logins/connect/web-quickstart",
-            "social-logins/connect/ios-quickstart",
-            "social-logins/connect/android-quickstart",
-            "social-logins/connect/flutter-quickstart",
-            "social-logins/connect/react-native-quickstart"
+            "social-logins/connect/quickstart/web-quickstart",
+            "social-logins/connect/quickstart/ios-quickstart",
+            "social-logins/connect/quickstart/android-quickstart",
+            "social-logins/connect/quickstart/flutter-quickstart",
+            "social-logins/connect/quickstart/react-native-quickstart"
           ]
         },
         {
@@ -243,12 +243,12 @@
         {
           "group": "Quickstart",
           "pages": [
-            "social-logins/auth/web-quickstart",
-            "social-logins/auth/tg-quickstart",
-            "social-logins/auth/ios-quickstart",
-            "social-logins/auth/android-quickstart",
-            "social-logins/auth/flutter-quickstart",
-            "social-logins/auth/react-native-quickstart"
+            "social-logins/auth/quickstart/web-quickstart",
+            "social-logins/auth/quickstart/tg-quickstart",
+            "social-logins/auth/quickstart/ios-quickstart",
+            "social-logins/auth/quickstart/android-quickstart",
+            "social-logins/auth/quickstart/flutter-quickstart",
+            "social-logins/auth/quickstart/react-native-quickstart"
           ]
         },
         {
