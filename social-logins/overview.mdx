@@ -12,20 +12,23 @@ description: "Overview of the Social Logins SDKs in Particle Network."
 
 ## Particle’s Onboarding SDKs
 
-Particle Network provides two onboarding SDKs designed for different use cases:
-	- Particle Connect → Unified modal for Web3 wallets + social logins, with built-in Account Abstraction (AA) support.
-	- Particle Auth → Social login only, binding a Web2 identity (Google, Apple, Twitter, etc.) to an EOA wallet, with customizable UI.
+Particle offers two SDKs for user onboarding:
 
-Both can integrate with the AA SDK for smart account features.
+- **Particle Connect**: A single modal for both Web3 wallets and social logins, with optional Account Abstraction (AA) built in.  
+- **Particle Auth**: Social login only, linking Web2 identities (Google, Apple, Twitter, etc.) to an EOA wallet, with full UI customization.  
+
+<Note>Both SDKs can work alongside the AA SDK for smart account features.</Note>
 
 ***
 
-Which one should I pick?
-	- Use Connect if:
+### Which one should I pick?
+
+**Particle Connect**
 	- You want one modal that covers both wallet connections and social logins.
-	- You need AA features ready out of the box via the built-in viem provider.
+	- Account Abstraction (AA) features available out of the box if needed.
 	- You’re fine with a standardized modal UI (limited customization).
-	- Use Auth if:
+
+**Particle Auth**
 	- You only need social logins and want to provide users with an instant wallet.
 	- You want full control over the UI and the ability to embed login directly into your app’s flow.
 	- You’re building a Web2-style onboarding with a branded experience.
