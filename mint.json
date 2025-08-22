@@ -325,8 +325,16 @@
             "social-logins/api/swap/getswap"
           ]
         }
+
       ]
     },
+    {
+      "group": "DEBUGGING",
+      "pages": [
+        "social-logins/api/debug/sdk",
+        "social-logins/api/debug/api"
+      ]
+    } ,
     {
       "group": "ACCOUNT ABSTRACTION",
       "pages": [
@@ -395,82 +403,8 @@
         },
         "api-reference/aa/faq"
       ]
-    },
-    {
-      "group": "PARTICLE WALLET",
-      "pages": [
-        "api-reference/wallet/introduction",
-        "api-reference/wallet/on-ramp",
-        {
-          "group": "SDKs (Desktop)",
-          "pages": [
-            "api-reference/wallet/desktop/web"
-          ]
-        },
-        {
-          "group": "SDKs (Mobile)",
-          "pages": [
-            "api-reference/wallet/mobile/android",
-            "api-reference/wallet/mobile/ios",
-            "api-reference/wallet/mobile/unity",
-            "api-reference/wallet/mobile/flutter",
-            "api-reference/wallet/mobile/react"
-          ]
-        },
-        "api-reference/wallet/faq"
-      ]
-    },
-    
-    {
-      "group": "BTC CONNECT",
-      "pages": [
-        "api-reference/btc/introduction",
-        {
-          "group": "SDKs (Desktop)",
-          "pages": [
-            "api-reference/btc/desktop/web"
-          ]
-        },
-        {
-          "group": "BTC Connect RPC",
-          "pages": [
-            "api-reference/btc/rpc/getbtcaccount",
-            "api-reference/btc/rpc/getbtcaccountsbyaddress"
-          ]
-        },
-        "api-reference/btc/faq"
-      ]
-    },
-    {
-      "group": "ENHANCED RPC",
-      "pages": [
-        "api-reference/enhanced/introduction",
-        {
-          "group": "EVM Enhanced RPC",
-          "pages": [ "api-reference/btc/faq"]
-        },
-        {
-          "group": "Solana Enhanced RPC",
-"pages": [ "api-reference/btc/faq"]
-        },
-        {
-          "group": "Swap RPC",
-          "pages": [
-            "api-reference/enhanced/swap/introduction",
-            "api-reference/enhanced/swap/checkapprove",
-            "api-reference/enhanced/swap/getquote",
-            "api-reference/enhanced/swap/getswap"
-          ]
-        }
-      ]
-    },
-    {
-      "group": "DEBUGGING",
-      "pages": [
-        "api-reference/debug/sdk",
-        "api-reference/debug/api"
-      ]
     }
+  
   ],
   "footerSocials": {
     "x": "https://twitter.com/ParticleNtwrk",
