@@ -244,7 +244,6 @@
           "group": "Quickstart",
           "pages": [
             "social-logins/auth/quickstart/web-quickstart",
-            "social-logins/auth/quickstart/tg-quickstart",
             "social-logins/auth/quickstart/ios-quickstart",
             "social-logins/auth/quickstart/android-quickstart",
             "social-logins/auth/quickstart/flutter-quickstart",
