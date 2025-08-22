@@ -37,8 +37,8 @@
       "url": "https://github.com/Particle-Network"
     },
     {
-      "name": "Support",
-      "url": "https://t.me/particle_developer_bot"
+      "name": "Slack",
+      "url": "https://join.slack.com/t/particlenetworkhq/shared_invite/zt-3blxdzcd2-7skD8MNWUn_20eOrp9SICA"
     }
   ],
   "primaryTab": {
@@ -70,9 +70,9 @@
     },
 
     {
-      "name": "Discord",
-      "icon": "discord",
-      "url": "https://discord.com/invite/2y44qr6CR2"
+      "name": "Slack",
+      "icon": "slack",
+      "url": "https://join.slack.com/t/particlenetworkhq/shared_invite/zt-3blxdzcd2-7skD8MNWUn_20eOrp9SICA"
     },
     {
       "name": "GitHub",
