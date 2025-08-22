@@ -1,0 +1,80 @@
+---
+title: "Social Logins Overview"
+sidebarTitle: "Introduction"
+description: "Overview of the Social Logins SDKs in Particle Network."
+---
+
+
+<Frame>
+  <img src="https://static.particle.network/mintlify/images/06.gif" alt="Particle Network Onboarding SDKs" style={{ width: '100%', maxWidth: '600px' }} />
+</Frame>
+
+
+## Particle’s Onboarding SDKs
+
+Particle offers two SDKs for user onboarding:
+
+- **Particle Connect**: A single modal for both Web3 wallets and social logins, with optional Account Abstraction (AA) built in.  
+- **Particle Auth**: Social login only, linking Web2 identities (Google, Apple, Twitter, etc.) to an EOA wallet, with full UI customization.  
+
+<Note>Both SDKs can work alongside the AA SDK for smart account features.</Note>
+
+***
+
+### Which one should I pick?
+
+**Particle Connect**
+	- You want one modal that covers both wallet connections and social logins.
+	- Account Abstraction (AA) features available out of the box if needed.
+	- You’re fine with a standardized modal UI (limited customization).
+
+**Particle Auth**
+	- You only need social logins and want to provide users with an instant wallet.
+	- You want full control over the UI and the ability to embed login directly into your app’s flow.
+	- You’re building a Web2-style onboarding with a branded experience.
+
+***
+
+### Particle Connect
+
+<Frame caption="Particle Connect Login Modal">
+  <img src="./images/connect-modal.png" alt="Particle Connect Login Modal" style={{ width: '100%', maxWidth: '600px', maxHeight: '400px' }} />
+</Frame>
+
+
+Particle Connect gives you a unified login modal where users can choose between Web3 wallets or social logins. It includes a built-in viem provider with AA features, making smart account transactions possible without extra setup.
+
+<CardGroup cols={3}>
+  <Card title="Particle Connect Introduction" icon="plug" href="/social-logins/connect/introduction" />
+  <Card title="Quickstart (Web)" icon="rocket" href="/social-logins/connect/quickstart/web-quickstart" />
+  <Card title="Web SDK Reference" icon="code" href="/social-logins/connect/desktop/web" />
+</CardGroup>
+
+
+
+***
+
+### Particle Auth
+
+<Frame caption="Particle Auth Login Modal">
+  <img src="./images/auth-modal.png" alt="Particle Auth Login Modal" style={{ width: '100%', maxWidth: '600px', maxHeight: '400px' }} />
+</Frame>
+
+
+Particle Auth focuses on social logins only, provisioning an EOA wallet for the user and abstracting key management. Unlike Connect, it allows deep UI customization so you can tailor the login flow and embed it directly in your app. Pair it with the AA SDK to enable smart accounts.
+
+<CardGroup cols={3}>
+  <Card title="Particle Auth Introduction" icon="user" href="/social-logins/auth/introduction" />
+  <Card title="Quickstart (Web)" icon="rocket" href="/social-logins/auth/quickstart/web-quickstart" />
+  <Card title="Web SDK Reference" icon="code" href="/social-logins/auth/desktop-sdks/web" />
+</CardGroup>
+
+***
+
+### Additional Resources
+
+<CardGroup cols={3}>
+  <Card title="Customization" icon="paintbrush" href="/social-logins/configuration/appearance/auth" />
+  <Card title="Dashboard" icon="table-columns" href="/social-logins/dashboard" />
+  <Card title="Network Coverage" icon="map" href="/social-logins/network-coverage" />
+</CardGroup>

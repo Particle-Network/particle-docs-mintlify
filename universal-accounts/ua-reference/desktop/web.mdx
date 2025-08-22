@@ -89,12 +89,12 @@ Sign up or Log in into the [Particle dashboard](https://dashboard.particle.netwo
 <div className="flex justify-center">
 <img
   className="block h-64 dark:hidden"
-  src="/api-reference/guides/wallet-as-a-service/waas/images/login.png"
+  src="/social-logins/images/login.png"
   alt="Login into Particle."
 />
 <img
   className="hidden h-64 dark:block"
-  src="/api-reference/guides/wallet-as-a-service/waas/images/login.png"
+  src="/social-logins/images/login.png"
   alt="Login into Particle."
 />
 </div>
@@ -103,12 +103,12 @@ Sign up or Log in into the [Particle dashboard](https://dashboard.particle.netwo
 <div className="flex justify-center">
 <img
   className="block h-64 dark:hidden"
-  src="/api-reference/guides/wallet-as-a-service/waas/images/project.png"
+  src="/social-logins/images/project.png"
   alt="Create Particle project."
 />
 <img
   className="hidden h-64 dark:block"
-  src="/api-reference/guides/wallet-as-a-service/waas/images/project.png"
+  src="/social-logins/images/project.png"
   alt="Create Particle project."
 />
 </div>
@@ -118,12 +118,12 @@ Sign up or Log in into the [Particle dashboard](https://dashboard.particle.netwo
     <div className="flex justify-center">
         <img
             className="block h-64 dark:hidden"
-            src="/api-reference/guides/wallet-as-a-service/waas/images/web-app.png"
+            src="/social-logins/images/web-app.png"
             alt="Create web app."
         />
         <img
             className="hidden h-64 dark:block"
-            src="/api-reference/guides/wallet-as-a-service/waas/images/web-app.png"
+            src="/social-logins/images/web-app.png"
             alt="Create web app."
         />
     </div>
@@ -133,12 +133,12 @@ Sign up or Log in into the [Particle dashboard](https://dashboard.particle.netwo
 <div className="flex justify-center">
 <img
   className="block h-64 dark:hidden"
-  src="/api-reference/guides/wallet-as-a-service/waas/images/credentials.png"
+  src="/social-logins/images/credentials.png"
   alt="Find app's credentials."
 />
 <img
   className="hidden h-64 dark:block"
-  src="/api-reference/guides/wallet-as-a-service/waas/images/credentials.png"
+  src="/social-logins/images/credentials.png"
   alt="Find app's credentials."
 />
 </div>
@@ -156,7 +156,6 @@ const ua = new UniversalAccount({
   // If not set it will use auto-slippage
   tradeConfig: {
     slippageBps: 100, // 1% slippage tolerance
-    universalGas: true, // Prioritize PARTI token to pay for gas
     //usePrimaryTokens: [SUPPORTED_TOKEN_TYPE.SOL], // Specify token to use as source (only for swaps)
   },
 });
@@ -761,7 +760,9 @@ import { UniversalAccount, createUnsignedMessage } from "@particle-network/unive
 import { randomUUID } from "crypto";
 
 const ua = new UniversalAccount({
-  projectId: process.env.PROJECT_ID || "",
+  projectId: process.env.NEXT_PUBLIC_PROJECT_ID!,
+  projectClientKey: process.env.NEXT_PUBLIC_CLIENT_KEY!,
+  projectAppUuid: process.env.NEXT_PUBLIC_APP_ID!,
   ownerAddress: 'USER_ADDRESS',
 });
 

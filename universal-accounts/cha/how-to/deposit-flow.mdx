@@ -61,14 +61,16 @@ The following instructions are a high-level overview of how to implement a depos
     Add your project ID to `.env.local`:
 
     ```env
-    NEXT_PUBLIC_UA_PROJECT_ID=your_universal_accounts_project_id
+    NEXT_PUBLIC_PROJECT_ID=your_project_id
+    NEXT_PUBLIC_CLIENT_KEY=your_client_key
+    NEXT_PUBLIC_APP_ID=your_app_id
     ```
   </Step>
 
 </Steps>
 
 <Info>
-  Get your Universal Accounts project ID from the [Particle Dashboard](https://dashboard.particle.network/).
+  Get your **project ID**, **client key**, and **app ID** from the [Particle Dashboard](https://dashboard.particle.network/).
 </Info>
 
 ---
@@ -81,10 +83,10 @@ The first step is to initialize the Universal Account instance using the project
 
 ```tsx page.tsx
 const ua = new UniversalAccount({
-  projectId: process.env.NEXT_PUBLIC_UA_PROJECT_ID,
+  projectId: process.env.NEXT_PUBLIC_PROJECT_ID!,
+  projectClientKey: process.env.NEXT_PUBLIC_CLIENT_KEY!,
+  projectAppUuid: process.env.NEXT_PUBLIC_APP_ID!,
   ownerAddress: walletAddress,
-  tradeConfig: {
-    universalGas: false,
 });
 ```
 

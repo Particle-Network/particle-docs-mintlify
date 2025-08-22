@@ -1,0 +1,455 @@
+---
+title: "Flutter (Dart) - Connect"
+description: "Leveraging Particle Connect within applications built using Flutter."
+---
+
+## Particle Connect for Flutter
+
+The **Particle Connect** Flutter SDK facilitates end-to-end integration of **Particle Connect** within applications built using Flutter on either iOS or Android. 
+
+**Particle Connect** acts as the "SSO for Web3," aggregating authentication mechanisms from both Web2 through MPC-TSS social logins and Web3 through traditional wallets with WalletConnect, Solana's `wallet-adapter`, and private key imports, thus reducing the barrier to entry within your application.
+
+Instructions and examples for implementing **Particle Connect** within Flutter applications **can be found below**.
+
+## Repository
+
+The **Particle Connect** Flutter SDK is largely open-source and available on [GitHub](https://github.com/Particle-Network/particle-flutter).
+
+Before proceeding with the setup, it’s beneficial to explore the underlying architecture and demos provided in the [repository](https://github.com/Particle-Network/particle-flutter) to build a solid foundation.
+
+<div className="flex justify-center">
+
+<img
+  style={{ width: '300px'}}
+  className="block dark:hidden"
+  src="/social-logins/connect/mobile/images/connectkit-mobile.svg"
+  alt="Particle Connect Wallet."
+/>
+<img
+  style={{ width: '300px'}}
+  className="hidden dark:block"
+  src="/social-logins/connect/mobile/images/connectkit-mobile.svg"
+  alt="Particle Connect Wallet."
+/>
+</div>
+
+<Warning>
+ Using a private key or the mnemonic
+ import/generate function is strongly discouraged. If you use it, you need to secure the data yourself,
+ as Particle doesn't have a relationship with the imported/generated mnemonic
+ or private key.
+</Warning>
+
+## Getting Started
+
+Configuring and setting up the **Particle Connect** Flutter SDK is relatively standard, although it differs significantly based on whether you're using **Flutter** on **Android** or **iOS**. However, the setup should be complete for both platforms in just a few minutes.
+
+Regardless of your platform, you must head to the [Particle dashboard](https://dashboard.particle.network) and retrieve your `projectId`, `clientKey`, and `appId`.
+
+These values tie a given implementation to the [Particle dashboard](https://dashboard.particle.network/), enabling configuration, analytics, tracking, etc.
+
+<Note>
+  Follow the quickstart tutorial to set up a project and find the required keys:
+  [Create a new
+  project](/guides/wallet-as-a-service/waas/mobile-quickstart#configuring-particle-auth).
+</Note>
+
+### Adding the Particle Connect Flutter SDK to your application
+
+Additionally, regardless of platform, you must add `particle_connect` to your Flutter application. This is a requirement before moving onto platform-specific configuration.
+
+```shell Terminal
+flutter pub add particle_connect
+```
+
+### Android configuration
+
+#### Prerequisites
+
+- minSdkVersion **23** or higher.
+- compileSdkVersion, targetSdkVersion **34** or higher.
+- JavaVersion **17**.
+- [Jetpack (AndroidX)](https://developer.android.com/jetpack/androidx/migrate?authuser=0).
+- Android Gradle Plugin Version : 8.5.1 or higher.
+- Gradle Version : 8.9 or higher.
+
+To configure **Particle Connect**, open your `build.gradle` file, typically at `${project_name}/android/app/build.gradle`.
+
+In your `build.gradle` file, add the following four lines to ensure **Particle Connect** is properly configured:
+
+1. `minSdkVersion`. In most cases, this will be set to `23`.
+2. `manifestPlaceholders["PN_PROJECT_ID"]`, the `projectId` previously retrieved from the Particle dashboard.
+3. `manifestPlaceholders["PN_PROJECT_CLIENT_KEY"]`, the `clientKey` previously retrieved from the Particle dashboard.
+4. `manifestPlaceholders["PN_APP_ID"]`, the `appId` previously retrieved from the Particle dashboard.
+
+```groovy build.gradle
+// Example
+defaultConfig {
+  applicationId "com.example.particle_auth_test"
+
+  minSdkVersion 23 // Required
+  targetSdkVersion flutter.targetSdkVersion
+  versionCode flutterVersionCode.toInteger()
+  versionName flutterVersionName
+
+  manifestPlaceholders["PN_PROJECT_ID"] = "EXAMPLE"
+  manifestPlaceholders["PN_PROJECT_CLIENT_KEY"] = "EXAMPLE"
+  manifestPlaceholders["PN_APP_ID"] = "EXAMPLE"
+}
+```
+
+Additionally, staying within your `build.gradle` file, you'll need to ensure that you're using version 17 of Java in both `compileOptions` and `kotlinOptions`, alongside enabling `dataBinding`.
+
+```groovy build.gradle
+// Example
+compileOptions {
+  sourceCompatibility JavaVersion.VERSION_17
+  targetCompatibility JavaVersion.VERSION_17
+}
+
+kotlinOptions {
+  jvmTarget = JavaVersion.VERSION_17.toString()
+}
+
+dataBinding {
+  enabled = true
+}
+```
+
+---
+
+### iOS configuration
+
+Before beginning, ensure your project meets the following prerequisites:
+
+- **Xcode 15.0** or later.
+
+- **iOS 14** or later.
+
+With these requirements set, you'll need to open an exported iOS project and find `ios/{project name}.xcworkspace`.
+
+At the root of your Xcode project, create a new file, `ParticleNetwork-Info.plist` . Ensure this is marked under "Target Membership."
+
+From here, with a fresh `ParticleNetwork-Info.plist` file, go ahead and fill it in with the following:
+
+```xml ParticleNetwork-Info.plist
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>PROJECT_UUID</key>
+	<string>YOUR_PROJECT_UUID</string>
+	<key>PROJECT_CLIENT_KEY</key>
+	<string>YOUR_PROJECT_CLIENT_KEY</string>
+	<key>PROJECT_APP_UUID</key>
+	<string>YOUR_PROJECT_APP_UUID</string>
+</dict>
+</plist>
+```
+
+Similar to the Android configuration, you'll need to fill in `PROJECT_UUID` (`projectId`), `PROJECT_CLIENT_KEY`, and `PROJECT_APP_UUID` (`appId`) with the corresponding values retrieved from the [Particle dashboard](https://dashboard.particle.network).
+
+Next, you'll need to head over to your `AppDelegate.swift` file to add an import of `ParticleConnect`.
+
+```swift
+import ParticleConnect
+```
+
+Within your application's `application` method (as shown below), you'll need to include a handler condition derived from `ParticleConnect.handleUrl`. 
+
+This should be as simple as a `true` return upon a truthy value of `ParticleConnect.handleUrl`, and a `super.application(app, open: url, options: options)` return upon a falsy value.
+
+```swift
+override func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
+  if ParticleConnect.handleUrl(url) {
+      return true
+  } else {
+      return super.application(app, open: url, options: options)
+  }
+}
+```
+
+To wrap up, you'll need to configure your application's scheme URL. To do so, select your application from "TARGETS" under the "Info" section, then click "+" to add a URL type.
+
+This should be set to "pn" + your `projectId` (retrieved and configured prior), resulting in a scheme URL that looks like the following:
+
+```text
+pn63bfa427-cf5f-4742-9ff1-e8f5a1b9828f
+```
+
+Then, head over to your `Info.plist` file and include the following snippet:
+
+```xml Info.plist
+<key>LSApplicationQueriesSchemes</key>
+<array>
+	<string>metamask</string>
+	<string>phantom</string>
+	<string>bitkeep</string>
+	<string>imtokenv2</string>
+	<string>rainbow</string>
+	<string>trust</string>
+	<string>zerion</string>
+  <string>mathwallet</string>
+  <string>oneinch</string>
+  <string>awallet</string>
+  <string>okex</string>
+  <string>bnc</string>
+</array>
+<key>NSPhotoLibraryUsageDescription</key>
+<string>We need access in order to open photos of barcodes</string>
+<key>NSCameraUsageDescription</key>
+<string>We use the camera to scan barcodes</string>
+<key>NSFaceIDUsageDescription</key>
+<string>We use Face ID for secure access to the app.</string>
+```
+
+Finally, you must edit your Podfile to ensure that `particle_connect` is correctly imported. 
+
+Head over to the [linked guide](https://github.com/Particle-Network/particle-flutter/blob/master/particle-connect/example/ios/Podfile) to complete this if you haven't already.
+
+## Examples of Utilization
+
+### Initialization
+
+Now that you've spun up a project on the [Particle dashboard]() and configured your application, you're ready to initialize the SDK itself. 
+
+This must happen before the other methods become functional. First, call `ParticleInfo.set` and pass in your `projectId` and client key (`clientK`). Next, initialization can happen through the `init` function on `ParticleConnect`, which can be imported from `package:particle_connect/particle_connect.dart`. 
+
+`init` takes the following parameters:
+
+| Field          | Type            | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| -------------- | --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `chainInfo`    | `ChainInfo`     |The primary blockchain and network (e.g., testnet) your application will use. For instance, you might choose `.Ethereum` or `.EthereumSepolia`, depending on the specific network required for your use case.                                                                                                                                                                                                                                                                                                                          |
+| `dAppData`     | `DAppMetadata`  | Metadata outlining the description of your application; this should be an instance of `DAppMetadata` with the following parameters: `name`, the name of your project. `icon`, a URL linking to the icon of your project; this should be 512x512, ideally. `url`, the URL of your project's website. `description`, the description of your project, `redirect`, optional, redirect universal link of you project, `verifyUrl`, optional. |
+| `env`          | `Env`           | The specific environmennt to be used. This can be either `.dev`, `.staging`, or `.production`.                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+| `rpcUrlConfig` | `RpcUrlConfig?` | Customize the RPC URL.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
+
+```dart
+ParticleInfo.set(projectId, clientKey);
+
+final dappInfo = DappMetaData(
+    "Particle Connect",
+    "https://connect.particle.network/icons/512.png",
+    "https://connect.particle.network",
+    "Particle Connect Flutter Demo");
+ParticleConnect.init(chainInfo, dappInfo, Env.dev);
+ParticleAuthCore.init()
+```
+
+Additionally, if you'd like to define multiple chains to be available through **WalletConnect**, you'll need to create an array of `ChainInfo` objects (`chainInfos` in this example) and use it within `ParticleConnect.setWalletConnectV2SupportChainInfos`. E.g.:
+
+```dart
+List<ChainInfo> chainInfos = <ChainInfo>[ChainInfo.Ethereum];
+ParticleConnect.setWalletConnectV2SupportChainInfos(chainInfos);
+```
+
+---
+### Connect Wallet V2
+
+`ParticleConnect.connectWithConnectKitConfig` is the core method driving **Particle Connect**'s customizable login modal, enabling one-click onboarding.
+
+As detailed below, the parameters available to configure this modal can be found through `ConnectKitConfig`.
+
+| Field                     | Type                          | Description                                                                                                              |
+| ------------------------- | ----------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
+| `connectOptions`          | `List<ConnectOption>`         | Methods supported for connection, `EMAIL`, `PHONE`, `SOCIAL` and `WALLET`; the order in which these are placed will be reflected within the modal.       |
+| `socialProviders`         | `List<EnableSocialProvider>?` | Supported social login methods, such as `GOOGLE`, `APPLE` and other social options; the order in which these are placed will be reflected within the modal.       |   |
+| `walletProviders`         | `List<EnableWalletProvider>?` | Supported wallet providers, such as `MetaMask`, `Trust` and other wallet options; the order in which these are placed will be reflected.  |
+| `additionalLayoutOptions` | `AdditionalLayoutOptions`     | Layout options.                                                                                                           |
+| `logo`                    | `String`                      | Image URL or base64 string representing the logo used within the modal.                                                                                                 |
+
+```dart
+final config = ConnectKitConfig(
+  logo: "", // base64 string or image URL
+  connectOptions: [
+    ConnectOption.EMAIL,
+    ConnectOption.PHONE,
+    ConnectOption.SOCIAL,
+    ConnectOption.WALLET,
+  ], // Changing the order will alter the interface
+  socialProviders: [
+    EnableSocialProvider.GOOGLE,
+    EnableSocialProvider.TWITCH,
+    EnableSocialProvider.APPLE,
+    EnableSocialProvider.DISCORD,
+    EnableSocialProvider.TWITTER,
+    EnableSocialProvider.FACEBOOK,
+    EnableSocialProvider.GITHUB,
+    EnableSocialProvider.MICROSOFT,
+    EnableSocialProvider.LINKEDIN,
+  ], // Changing the order will alter the interface
+  walletProviders: [
+    EnableWalletProvider(EnableWallet.MetaMask,
+        label: EnableWalletLabel.RECOMMENDED),
+    EnableWalletProvider(EnableWallet.OKX),
+    EnableWalletProvider(EnableWallet.Trust,
+        label: EnableWalletLabel.POPULAR),
+    EnableWalletProvider(EnableWallet.Bitget),
+    EnableWalletProvider(EnableWallet.WalletConnect),
+  ], // Changing the order will alter the interface
+  additionalLayoutOptions: AdditionalLayoutOptions(
+    isCollapseWalletList: false,
+    isSplitEmailAndSocial: true,
+    isSplitEmailAndPhone: false,
+    isHideContinueButton: false,
+  ),
+);
+
+final account = await ParticleConnect.connectWithConnectKitConfig(config);
+```
+
+---
+
+### Connect Wallet V1 (Legacy)
+
+Acting as the primary method of returning a connection menu for a specific `WalletType`, the `connect` method on `ParticleConnect` will be the primary mechanism for wallet connection within the **Particle Connect** SDK. `ParticleConnect.connect` takes one parameter, the `WalletType` to be requested for connection. Upon calling, the wallet specified in this field will throw an interface initiating the connection.
+`WalletType` is an `enum` containing the following:
+
+- `authCore`, social logins through Particle Auth.
+- `evmPrivateKey`, custom EVM wallet imports/exports.
+- `solanaPrivateKey`, custom Solana wallet imports/exports.
+- `metaMask`.
+- `rainbow`.
+- `trust`.
+- `imToken`.
+- `bitKeep`.
+- `walletConnect`.
+- `zerion`.
+- `math`.
+- `zengo`.
+- `alpha`.
+- `okx`.
+- `phantom`, intended for Solana.
+
+If you're using `authCore`, you'll also need to pass in a `ParticleConnectConfig` object containing:
+
+| Field               | Type                     | Description                                                                                                                                                                                                                                                                      |
+| ------------------- | ------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `loginType`         | `LoginType`              | The specific social login to be used. This can be either `.email`, `.phone`, `.google`, `.apple`, `.jwt`, `.facebook`, `.twitter`, `.discord`, `.github`, `.twitch`, `.microsoft` or `linkedin`.                                                                                 |
+| `account`           | `String?`                | (Optional) When `type` is set to either `.email`, `.phone`, or `.jwt`, you can use the `account` parameter to pass in an expected email, phone number, or JWT. This is optional for the former two, but required for `.jwt`. When passing a phone number, it must be in E.164 format.           |
+| `code`              | `String?`                | (Optional) When `type` is set to either `.email` or `.phone`, you can use the code parameter to pass the verification code.                                                                                                                                                      |
+| `supportAuthTypes`  | `List<SupportAuthType>?` | The methods of authentication visible on the authentication popup UI. By default, this will be exclusive to the chosen social login method, although by passing in additional types, you can expand the UI to include the ability to login with those as an alternative to type. |
+| `socialLoginPrompt` | `SocialLoginPrompt?`     | Changes what the OAuth provider prompts a user to do; either `.none`, `.consent`, or `.select_account`. Only Google, Discord and Microsoft support it.                                                                                                                                                                                                                 |
+| `loginPageConfig`   | `LoginPageConfig?`       | (Optional) To customize the UI page, contains project name, icon and description.                                                                                                                                                                                                |
+
+E.g:
+
+```dart
+// Use social login
+final loginPageConfig = LoginPageConfig(
+          "https://static.particle.network/wallet-icons/Particle-iOS.png",
+          "Flutter Example",
+          "Welcome to login");
+final config = ParticleConnectConfig(loginType, "user@example.com",
+          SupportAuthType.values, SocialLoginPrompt.select_account,
+          loginPageConfig: loginPageConfig);
+final account = await ParticleConnect.connect(WalletType.authCore, config: config);
+
+// Use MetaMask or other supported wallet
+final account = await ParticleConnect.connect(WalletType.metaMask)
+```
+
+---
+
+### Disconnect
+
+Once a user has been connected, entering an active session, you'll have the ability to disconnect them from your application programmatically through `ParticleConnect.disconnect`, which requires a targeted `WalletType` and `address` (`publicAddress` in this case). This pair dictates that the specific session (user) be disconnected. E.g.:
+
+```dart
+String result = await ParticleConnect.disconnect(WalletType.authCore, publicAddress);
+```
+
+---
+
+### Is Connected
+
+Another standard method is `ParticleConnect.isConnected`, returning a Boolean representing whether or not a user (defined by a paired `WalletType` and `address`) is currently connected to your application. E.g.:
+
+```dart
+bool isConnected = await ParticleConnect.isConnected(WalletType.authCore, publicAddress);
+```
+
+---
+
+### Get Accounts
+
+Within an active session, you can retrieve the accounts (addresses) that belong to a specific `WalletType` (connection mechanism). This is done through `getAccounts` and returns an array of addresses within the current session associated with a given `WalletType`. E.g.:
+
+```dart
+List<Account> accounts = await ParticleConnect.getAccounts(walletType);
+```
+
+---
+
+### Sign Message (EIP191)
+
+A simple message (UTF-8 string) can be signed on both EVM & Solana through `ParticleConnect.signMessage`, passing in the `WalletType`, `address` (`publicAddress` in this example), and the `message` in question. `message` should either be a hex-encoded string for EVM, or a base58 string for Solana. E.g.:
+
+```dart
+String signature = await ParticleConnect.signMessage(WalletType.authCore, publicAddress, message);
+```
+
+---
+
+### Sign Transaction
+
+For **Solana**, as an alternative to `signAndSendTransaction`, you can sign a given transaction without pushing it to the network with `ParticleConnect.signTransaction`, taking `WalletType`, `address` (`publicAddress`), and a base58 `transaction` string representing a structured transaction object.
+
+Alternatively, the plural of this method is `ParticleConnect.signAllTransactions`, which instead takes an array of base58 `transaction` strings to be prompted for signature.
+
+```dart
+String signature = await ParticleConnect.signTransaction(WalletType.authCore, publicAddress, transaction);
+
+// Plural
+String signature = await ParticleConnect.signAllTransactions(WalletType.authCore, publicAddress, transactions);
+```
+
+---
+
+### Sign and Send Transaction
+
+Used as the primary mechanism of sending transactions, `ParticleConnect.signAndSendTransaction` takes in a transaction and prompts a user (through a UI corresponding with `WalletType`) for confirmation/signature. Specifically, `ParticleConnect.signAndSendTransaction` takes a `WalletType`, `address` (`publicAddress`), and `transaction` string. For EVM chains, this should be a hex-encoded string, or for Solana, this should be a base58 string. An example of this can be found below.
+
+```dart
+String txHash = await ParticleConnect.signAndSendTransaction(WalletType.authCore, publicAddress, transaction);
+```
+
+---
+
+### Sign Typed Data V4 (EIP712)
+
+Additionally, for **EVM chains**, if standard UTF-8 string signatures aren't enough, you can use `ParticleConnect.signTypedData` to prompt the signature of typed (structured) data adjacent to `eth_signTypedData`. `ParticleConnect.signTypedData` requires `WalletType`, `address` (`publicAddress`), and the `typedData` to be signed. `typedData` should be a hex-encoded string representing a data structure. E.g.:
+
+```dart
+String signature = await ParticleConnect.signTypedData(walletType, publicAddress, typedDataHex);
+```
+
+---
+
+### Import Wallet
+
+If you're using `evmPrivateKey` or `solanaPrivateKey` wallet types, you can import wallets through either a seed phrase or private key. These methods will associate an account instance derived from these keys, allowing utilization within your application. 
+
+These can be achieved through either `importPrivateKey` for importing a private key or `importMnemonic` for importing a mnemonic (seed phrase). These methods require the `WalletType` (either `evmPrivateKey` or `solanaPrivateKey`) and the private key/seed phrase to be imported.
+
+Additionally, you can export one of these wallets with `ParticleConnect.exportPrivateKey`, passing in the address (of the `evmPrivateKey` or `solanaPrivateKey` imported/generated wallet) that you'd like to export.
+
+```dart
+final account = await ParticleConnect.importPrivateKey(WalletType.evmPrivateKey, privateKey);
+
+final account = await ParticleConnect.importMnemonic(WalletType.evmPrivateKey, mnemonic);
+
+// Exportation
+String privateKey = await ParticleConnect.exportPrivateKey(WalletType.evmPrivateKey, publicAddress);
+```
+### (Optional) Custom WalletConnect Projcet ID
+```dart
+// Call before ParticleConnect.init
+ParticleConnect.setWalletConnectProjectId("Your WalletConnect Project ID, from https://cloud.walletconnect.com")
+```
+
+---
+
+## Dive Deeper
+
+`particle_connect` includes `particle_auth_core`. If you log in with a **Particle account**, you can access additional functions such as `getUserInfo`, `openAccountAndSecurity`, `hasMasterPassword` and `hasPaymentPassword` and `changeMasterPassword`, you can reference the docs from [Auth SDK reference](/api-reference/auth/mobile-sdks/flutter)
