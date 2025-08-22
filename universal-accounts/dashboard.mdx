@@ -20,7 +20,7 @@ Every SDK provided by Particle Network requires the usage of three key values fo
 
 The Particle dashboard's main purpose is to manage specific instances of Particle's Wallet Abstraction stack; this is done through two types of containers:
 
-1. **Project**, a collection of multiple applications.\
+1. **Project**, a collection of multiple applications.
    A project contains data and configurations relevant to the applications it contains.
 
 <div className="flex justify-center">
@@ -38,10 +38,12 @@ The Particle dashboard's main purpose is to manage specific instances of Particl
 
 </div>
 
-1. **Application**, a specific instance of Particle Auth or BTC Connect on either iOS, Android, or Web.\
-   An application, denominated by the **App ID**, acts as the identifier for a given instance of Particle Network. During construction, applications have two options to consider:
-   - Multi-device login, determining whether or not a user will maintain the same account across multiple devices (as it pertains to social logins, if applicable).
-   - Login Redirect Link, the ability to add externally define redirect links to implement custom onboarding flows post-login.
+1. **Application**, a specific instance of Particle Auth or BTC Connect on either iOS, Android, or Web.
+   An application, denominated by the **App ID**, acts as the identifier for a given instance of Particle Network. During construction, applications have a few options to consider:
+   - **Multi-device login**, determining whether or not a user will maintain the same account across multiple devices (as it pertains to social logins, if applicable).
+   - **Login Redirect Link**, the ability to add externally define redirect links to implement custom onboarding flows post-login.
+
+  <Note>When creating an app, you’ll need to specify a domain. This can be any domain, even a placeholder like `demo.com`.</Note>
 
 <div className="flex justify-center">
 <img
