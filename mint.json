@@ -46,7 +46,7 @@
   },
   "tabs": [
     {
-      "name": "Universal Accounts SDK",
+      "name": "Universal Accounts",
       "url": "universal-accounts"
     },
     {
@@ -55,7 +55,7 @@
     },
     {
       "name": "Account Abstraction",
-      "url": "api-reference"
+      "url": "aa"
     },
     {
       "name": "Support",
@@ -338,72 +338,76 @@
     {
       "group": "ACCOUNT ABSTRACTION",
       "pages": [
-        "api-reference/aa/introduction",
+        "/aa/introduction",
         {
           "group": "Quickstarts",
           "pages": [
-            "api-reference/guides/aa/web-aa",
-            "api-reference/guides/aa/mobile-aa",
-            "api-reference/guides/aa/bundler",
-            "api-reference/guides/aa/paymaster",
-            "api-reference/guides/aa/keys"
+            "/aa/quickstart/web-aa",
+            "/aa/quickstart/mobile-aa",
+            "/aa/quickstart/bundler",
+            "/aa/quickstart/paymaster",
+            "/aa/quickstart/keys"
           ]
         },
         {
           "group": "SDKs (Desktop)",
           "pages": [
-            "api-reference/aa/sdks/desktop/web"
+            "/aa/sdks/desktop/web"
           ]
         },
         {
           "group": "SDKs (Mobile)",
           "pages": [
-            "api-reference/aa/sdks/mobile/android",
-            "api-reference/aa/sdks/mobile/ios",
-            "api-reference/aa/sdks/mobile/flutter",
-            "api-reference/aa/sdks/mobile/unity",
-            "api-reference/aa/sdks/mobile/react"
+            "/aa/sdks/mobile/android",
+            "/aa/sdks/mobile/ios",
+            "/aa/sdks/mobile/flutter",
+            "/aa/sdks/mobile/unity",
+            "/aa/sdks/mobile/react"
           ]
         },
-        {
-          "group": "Architecture",
-          "pages": [
-            "api-reference/wallet-abstraction/waas/bundler",
-            "api-reference/wallet-abstraction/waas/omni-paymaster",
-            "api-reference/wallet-abstraction/btc-connect"
-          ]
-        } ,
-        {
-          "group": "Account Abstraction RPC",
-          "pages": [
-            "api-reference/aa/rpc/getsmartaccount",
-            "api-reference/aa/rpc/createuserop",
-            "api-reference/aa/rpc/senduserop",
-            "api-reference/aa/rpc/getfeequotes",
-            "api-reference/aa/rpc/validatesession",
-            "api-reference/aa/rpc/createsessions"
-          ]
-        },
-        {
-          "group": "Bundler RPC",
-          "pages": [
-            "api-reference/aa/bundler/getuseroperationreceipt",
-            "api-reference/aa/bundler/getuseroperationbyhash",
-            "api-reference/aa/bundler/senduseroperation",
-            "api-reference/aa/bundler/estimateuseroperationgas",
-            "api-reference/aa/bundler/supportedentrypoints"
-          ]
-        },
-        {
-          "group": "Paymaster RPC",
-          "pages": [
-            "api-reference/aa/paymaster/paymasterbalance",
-            "api-reference/aa/paymaster/sponsoruseroperation"
-          ]
-        },
-        "api-reference/aa/faq"
+        "/aa/faq"
       ]
-    }
+    },
+    {
+      "group": "Account Abstraction API",
+      "pages": [
+      {
+        "group": "Enhanced API",
+        "pages": [
+          "/aa/rpc/getsmartaccount",
+          "/aa/rpc/createuserop",
+          "/aa/rpc/senduserop",
+          "/aa/rpc/getfeequotes",
+          "/aa/rpc/validatesession",
+          "/aa/rpc/createsessions"
+        ]
+      },
+      {
+        "group": "Bundler API",
+        "pages": [
+          "/aa/bundler/getuseroperationreceipt",
+          "/aa/bundler/getuseroperationbyhash",
+          "/aa/bundler/senduseroperation",
+          "/aa/bundler/estimateuseroperationgas",
+          "/aa/bundler/supportedentrypoints"
+        ]
+      },
+      {
+        "group": "Paymaster API",
+        "pages": [
+          "/aa/paymaster/paymasterbalance",
+          "/aa/paymaster/sponsoruseroperation"
+        ]
+      }
+    ]
+  },
+  {
+    "group": "Architecture",
+    "pages": [
+      "/aa/architecture/bundler",
+      "/aa/architecture/omni-paymaster"
+    ]
+  }
   
   ],
   "footerSocials": {
