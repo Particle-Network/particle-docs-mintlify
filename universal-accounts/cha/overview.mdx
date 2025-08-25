@@ -9,7 +9,7 @@ description: "Learn about the Universal Accounts SDK—your entry point to integ
 
 **Universal Accounts** give your users a **single account and balance** across all [supported chains](/universal-accounts/cha/chains).
 
-The **Universal Accounts SDK** allows you to integrate Universal Accounts into your dApp, allowing you to onboard users from any ecosystem without requiring them to bridge—**regardless of where your dApp is deployed**.
+The **Universal Accounts SDK** allows you to integrate Universal Accounts into your dApp. This enables you to onboard users from any ecosystem without requiring them to bridge, **regardless of where your dApp is deployed**.
 
 ---
 
@@ -17,32 +17,33 @@ The **Universal Accounts SDK** allows you to integrate Universal Accounts into y
 
 The **Universal Accounts SDK** makes it simple to integrate chain abstraction into your app with minimal code changes.
 
-Under the hood, it’s an ERC-4337 smart account implementation. Every transaction routes through Particle’s **Chain Abstraction layer**, so balances and gas are handled across chains automatically.
+Every transaction is routed through Particle’s **Chain Abstraction layer**, so balances and gas are handled across chains automatically.
 
 ### Steps to integrate
-	1.	**Initialize** the Universal Account with a single config object.
-	2.	**Construct** and execute transactions using the SDK.
-	3.	**Sign** with your existing provider (e.g. RainbowKit, Particle Auth, or any wallet connector).
 
-That’s it — your current execution flow stays the same. No additional bridging or gas logic required.
+1. **Initialize** the Universal Account with a single config object.
+2. **Construct** and execute transactions using the SDK.
+3. **Sign** with your existing provider (e.g. RainbowKit, Particle Auth, or any wallet connector).
 
- <Info>
- The SDK treats the user’s [Primary Assets](/universal-accounts/cha/chains#primary-assets) as a unified balance across all supported chains.
- </Info>
+That’s it—your current execution flow stays the same. No additional bridging or gas logic required.
+
+<Info>
+  The SDK treats the user’s [Primary Assets](/universal-accounts/cha/chains#primary-assets) as a unified balance across all supported chains.
+</Info>
 
 ### What you get out of the box
-	- Read balances across chains as if they were one.
-	- Send transactions without adding bridging logic.
-	- Gas abstraction automatically handled—no extra code required.
 
-<Note>  
-Universal Accounts are **independent smart accounts**, not extensions of an existing wallet.  
+- Read balances across chains as if they were one.
+- Send transactions without adding bridging logic.
+- Gas abstraction automatically handled—no extra code required.
 
-	- When a user creates a Universal Account with their existing wallet, their assets stay in the original wallet — nothing is moved automatically.
-	- Users can transfer assets into their Universal Account from any supported chain through in-app flows.
-	- As a developer, you can choose whether to make Universal Accounts the default experience or keep them as an optional toggle alongside EOAs.
+<Note>
+  Universal Accounts are **independent smart accounts**, not extensions of an existing wallet.
 
-</Note>  
+  - When a user creates a Universal Account with their existing wallet, their assets stay in the original wallet. Nothing is moved automatically.
+  - Users can transfer assets into their Universal Account from any supported chain through in-app flows.
+  - As a developer, you can choose whether to make Universal Accounts the default experience or keep them as an optional toggle alongside EOAs.
+</Note>
 
 ---
 
