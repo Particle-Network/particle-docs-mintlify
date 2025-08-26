@@ -67,6 +67,8 @@ This hook will trigger after the Paymaster signs. It includes:
   - `entryPoint` - The entryPoint address.
   - `parsed` - Transaction struct. The Paymaster will attempt to parse the calldata of the `UserOP`. If it cannot be parsed, this field may not exist.
 
+<Note>Find a guide on how to implement webhooks in [Paymaster guidance](/aa/guides/paymaster#conditional-sponsorship-webhooks).</Note>
+
 ### Whitelist Smart Contract
 
 Developers can configure a whitelist of contract methods they want to sponsor in the backend. This means that after configuration, our server will only provide the Paymaster’s signature for the specified contract methods.
