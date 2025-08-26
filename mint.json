@@ -343,10 +343,7 @@
           "group": "Quickstarts",
           "pages": [
             "/aa/quickstart/web-aa",
-            "/aa/quickstart/mobile-aa",
-            "/aa/quickstart/bundler",
-            "/aa/quickstart/paymaster",
-            "/aa/quickstart/keys"
+            "/aa/quickstart/mobile-aa"
           ]
         },
         {
@@ -363,6 +360,14 @@
             "/aa/sdks/mobile/flutter",
             "/aa/sdks/mobile/unity",
             "/aa/sdks/mobile/react"
+          ]
+        },
+        {
+          "group": "Guides",
+          "pages": [
+            "/aa/guides/bundler",
+            "/aa/guides/paymaster",
+            "/aa/guides/keys"
           ]
         },
         "/aa/faq"

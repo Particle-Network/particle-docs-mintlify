@@ -17,7 +17,7 @@ description: 'Find Frequently Asked Questions about Particle Account Abstraction
   
   The choice of chain only affects the deposit origin, not the Paymaster’s functionality. Once deposited, USDT is converted to the native token of the target chain, enabling you to sponsor transactions on any supported EVM chain. 
 
-  To view the full list of supported EVM chains, head over to the [Network Coverage](/guides/network-coverage) page.
+  To view the full list of supported EVM chains, head over to the [Network Coverage](/social-logins/network-coverage) page.
   
   <Note>No USDT deposit is needed for testnet sponsorship.</Note>
 </Accordion>
@@ -31,19 +31,19 @@ description: 'Find Frequently Asked Questions about Particle Account Abstraction
   - **Light**: `LIGHT`
   - **Coinbase**: `COINBASE`
 
-  <Tip>For more information on supported smart accounts and how to initialize them, visit the [AA SDK documentation](/api-reference/aa/sdks/desktop/web#initialization).</Tip>
+  <Tip>For more information on supported smart accounts and how to initialize them, visit the [AA SDK documentation](/aa/sdks/desktop/web#initialization).</Tip>
 </Accordion>
 
 <Accordion title="Can I automate transactions and/or remove confirmation pop-ups?" icon="robot">
   **Answer:** Yes, with Biconomy V2, you can use **session keys** to grant users the ability to conditionally delegate signing authority. This allows for the automation of transactions and the elimination of confirmation pop-ups, providing a smoother user experience.
 
-  <Note>Learn more about implementing [Session Keys](/guides/integrations/aa/keys) in your application.</Note>
+  <Note>Learn more about implementing [Session Keys](/aa/guides/keys) in your application.</Note>
 </Accordion>
 
 <Accordion title="How do I use a custom Bundler?" icon="box">
   **Answer:** Although our SDK doesn't natively support custom Bundlers, you can still create a `UserOperation` object using the SDK. Once constructed, this object can be executed via a standard API call to your own Bundler endpoint.
 
-  <Tip>For detailed guidance on creating and using `UserOperation` objects, check out our [API reference](/api-reference/aa/rpc/createuserop).</Tip>
+  <Tip>For detailed guidance on creating and using `UserOperation` objects, check out our [API reference](/aa/rpc/createuserop).</Tip>
 </Accordion>
 
 <Accordion title="How do I use a custom Paymaster?" icon="money-bill">
@@ -51,7 +51,7 @@ description: 'Find Frequently Asked Questions about Particle Account Abstraction
   
  After that, using our SDK, you can execute the resulting `UserOperation` (including `paymasterAndData` from your Paymaster).
 
-  <Tip>For more details on the available endpoints, visit the [AA APIs documentation](/api-reference/aa/introduction).</Tip>
+  <Tip>For more details on the available endpoints, visit the [AA APIs documentation](/aa/rpc/getsmartaccount).</Tip>
 </Accordion>
 
 <Accordion title="What are the differences between the natively supported smart accounts?" icon="user">
@@ -68,7 +68,7 @@ description: 'Find Frequently Asked Questions about Particle Account Abstraction
 | CyberConnect  |      ✗        |    ✗                 |  ✗                     |              ✓        |
 | [SimpleAccount](https://github.com/eth-infinitism/account-abstraction/blob/develop/contracts/samples/SimpleAccount.sol) |      ✗        |    ✗                 |  ✗                     |            ✓          |
 
-<Tip>For more information on the chains supported by each account type, head over to the [Network Coverage page](/guides/network-coverage).</Tip>
+<Tip>For more information on the chains supported by each account type, head over to the [Network Coverage page](/social-logins/network-coverage).</Tip>
 </Accordion>
 
 </AccordionGroup>

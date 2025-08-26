@@ -4,117 +4,179 @@ description: "Quickstart guide for leveraging Particle’s AA stack in web appli
 sidebarTitle: "Web (Desktop) Quickstart"
 ---
 
-# Implementing Particle's Modular AA Stack within Web Applications
+# Using Particle's Web AA SDK
 
-Although Wallet-as-a-Service extends the flexibility of EOAs, Particle Network recently decided to focus on account abstraction as the primary means of interaction within applications, facilitated by Wallet-as-a-Service. Thus, Particle has recently released its modular AA stack, a collection of technologies and SDKs natively compatible with Wallet-as-a-Service. This release happened alongside any other wallet that exposes an EIP-1193 provider, or any application leveraged account abstraction through alternative means.
+The Particle Web **AA SDK** makes it simple to integrate account abstraction into your web apps. It streamlines smart account management, bundling transactions, and sponsoring gas fees—enhancing user experience and flexibility.
 
-Specifically, this stack includes:
-
-- **The Particle Bundler:** Particle Network's in-house, open-source Bundler, responsible for almost 1 million UserOperations.
-- **Particle's Omnichain Paymaster:** Facilitates multi-chain USDT-based gas sponsorships from a single deposit.
-- **Particle's AA SDKs:** These streamline the implementation of AA  natively with Particle's Wallet-as-a-Service.
-
-Within this page, you'll find a quick rundown on installing, configuring, and using Particle's AA SDK (tying in directly with its Bundler and Paymaster).
+<Note>
+This guide shows how to initialize and configure the AA SDK in a web app using **Particle Authkit** as the authentication layer.
+</Note>
 
 ***
 
-## Installing and configuring the AA SDK
+## Getting Started
 
-Particle currently categorizes its various AA SDKs by platform. Thus, for desktop, everything is unified into a single SDK, `@particle-network/aa`.
+1. Clone the [Particle Authkit starter](https://github.com/Particle-Network/particle-authkit-starter).  
+2. Follow the `README` instructions to set it up.  
 
-<Note>The AA SDK is open-source on [Particle Network's GitHub](https://github.com/Particle-Network/aa-sdk).</Note>
+<Info>This guide uses the **Next.js** version of the starter repo.</Info>
 
-As mentioned, the Particle AA SDK can be installed through commands such as:
+Once your Authkit project is running, install the **AA SDK**:
 
-```shell
-npm install @particle-network/aa
-```
+<CodeGroup>
 
-Or
-
-```shell
+```shell yarn
 yarn add @particle-network/aa
 ```
 
-Upon installation, you can immediately configure a smart account to use, derived from (owned by) a wallet connected to a provided EIP-1193 provider object. Within this configuration, you'll have the ability to choose between either a Biconomy (`BICONOMY`), CyberConnect (`CYBERCONNECT`), or SimpleAccount (`SIMPLE`) instance. In this same configuration, you'll be able to define the usage of either Particle Network's native Paymaster (will be active if `paymasterApiKeys` is left blank), or Biconomy's paymaster (only active if `paymasterApiKeys` is defined). An example of this configuration is below:
+```shell npm
+npm install @particle-network/aa
+```
+</CodeGroup>
 
-```typescript TypeScript
-import { SmartAccount } from '@particle-network/aa';
-  
-const smartAccount = new SmartAccount(provider, {
-    projectId: 'Particle Network project ID',
-    clientKey: 'Particle Network client key',
-    appId: 'Particle Network app ID',
-    aaOptions: {
-        accountContracts: {  // 'BICONOMY', 'CYBERCONNECT', 'SIMPLE'
-            BICONOMY: [
-                {
-                    version: '1.0.0',  
-                    chainIds: [x, xx],
-                },
-                {  
-                    version: '2.0.0',
-                    chainIds: [x, xx],
-                }
-            ],
-            CYBERCONNECT: [
-                {
-                    version: '1.0.0',
-                    chainIds: [x, xx], 
-                }
-            ],
-            SIMPLE: [
-                {
-                    version: '1.0.0',
-                    chainIds: [x, xx],
-                }
-            ],
+### Configuring the Smart Account
+
+If you’re using Authkit, you can enable smart accounts in the `authkit.tsx` file:
+```typescript authkit.tsx
+erc4337: {
+    name: "SIMPLE",
+    version: "2.0.0",
+},
+```
+
+- Contract options: `BICONOMY`, `CYBERCONNECT`, `SIMPLE`, `LIGHT`, `COINBASE`
+- Versions: `1.0.0` or `2.0.0` (recommended for better gas efficiency)
+
+Here is an example of the full configuration file:
+
+```tsx authkit.tsx [expandable]
+"use client";
+
+// Particle imports
+import {
+  AuthCoreContextProvider,
+  PromptSettingType,
+} from "@particle-network/authkit";
+import { AuthType } from "@particle-network/auth-core";
+import { baseSepolia, sepolia } from "@particle-network/authkit/chains";
+
+export const ParticleAuthkit = ({ children }: React.PropsWithChildren) => {
+  return (
+    <AuthCoreContextProvider
+      options={{
+        // All env variable must be defined at runtime
+        projectId: process.env.NEXT_PUBLIC_PROJECT_ID!,
+        clientKey: process.env.NEXT_PUBLIC_CLIENT_KEY!,
+        appId: process.env.NEXT_PUBLIC_APP_ID!,
+
+        // This is how you limit the options available.
+        // Remove the authTypes array to display all options available
+        authTypes: [
+          AuthType.email,
+          AuthType.google,
+          AuthType.twitter,
+          AuthType.github,
+          AuthType.discord,
+        ],
+        // Locks the chain selector to Base Sepolia and Ethereum Sepolia
+        chains: [baseSepolia, sepolia],
+
+        // Optionally, switches the embedded wallet modal to reflect a smart account
+        erc4337: {
+          name: "SIMPLE",
+          version: "2.0.0",
         },
-        paymasterApiKeys: [{
-            chainId: 1,  
-            apiKey: 'Biconomy Paymaster API Key',
-        }]
-    }, 
+        themeType: "dark",
+        // You can prompt the user to set up extra security measure upon login or other interactions
+        promptSettingConfig: {
+          promptPaymentPasswordSettingWhenSign: PromptSettingType.first,
+          promptMasterPasswordSettingWhenLogin: PromptSettingType.first,
+        },
+        wallet: {
+          // Set to false to remove the embedded wallet modal
+          visible: true,
+          customStyle: {
+            supportUIModeSwitch: true,
+            supportLanguageSwitch: false,
+          },
+        },
+      }}
+    >
+      {children}
+    </AuthCoreContextProvider>
+  );
+};
+```
+
+<Note>This is only a UI configuration for Authkit’s embedded wallet modal.</Note>
+
+Next, configure the smart account itself in your app, in this case in `page.tsx`:
+
+```typescript page.tsx
+import { SmartAccount } from '@particle-network/aa';
+import { baseSepolia, sepolia } from "@particle-network/authkit/chains";
+
+const smartAccount = new SmartAccount(provider, {
+  projectId: 'PROJECT_ID',
+  clientKey: 'CLIENT_KEY',
+  appId: 'APP_ID',
+  aaOptions: {
+    accountContracts: {
+      SIMPLE: [
+        {
+          version: '2.0.0',
+          chainIds: [baseSepolia.id, sepolia.id],
+        }
+      ],
+    }
+  },
 });
-
-smartAccount.setSmartAccountContract({ name: 'BICONOMY', version: '2.0.0' });
 ```
 
-From this point, you can either directly construct, sponsor, and send UserOperations (alongside the initialization of session keys and whatnot if you'd like) through the newly initialized `smartAccount` object, or through a traditional Web3 library such as ethers or Web3.js; the latter is done through the construction of an 1193 provider object, `AAWrapProvider`.
+Now the smart account is initialized and ready to be used.
 
-```typescript TypeScript
+### Using with ethers.js
+
+To use the smart account in ethers, wrap it with `AAWrapProvider` and select the transaction mode:
+
+<Note>In this example we use `ethers.js` as the provider, but you can also use the AA SDK directly like shown in the [AA SDK reference](/aa/sdks/desktop/web#examples-of-utilization).</Note>
+
+```typescript page.tsx
 import { AAWrapProvider, SendTransactionMode } from '@particle-network/aa';
-import Web3 from "web3";
+import { ethers, type Eip1193Provider } from "ethers";
 
-// .UserPaidNative, .Gasless, or .UserSelect
-const wrapProvider = new AAWrapProvider(smartAccount, SendTransactionMode.UserPaidNative); 
-const web3 = new Web3(wrapProvider); 
+const createEthersProvider = () => {
+  return new ethers.BrowserProvider(
+    new AAWrapProvider(smartAccount, SendTransactionMode.Gasless) as Eip1193Provider, // options: .gasless, .userPaidNative
+    "any"
+  );
+};
 ```
 
-***
+Here we use `Gasless` mode to sponsor the transaction. 
 
-## Master reference
+### Sending a Transaction
 
-For a complete reference of each method available on `smartAccount`, see the table below, or for more usage information, take a look at the AA Web SDK rundown at [AA Web SDK](/aa/sdks/desktop/web).
+Every transaction sent through the this ethers provider will automatically be gasless, and you can use the ethers.js API as usual.
 
-| Class        | Methods                 | Parameters (\* indicates optional)  |
-| ------------ | ----------------------- | ----------------------------------- |
-| SmartAccount | constructor             | provider, config                    |
-| SmartAccount | setSmartAccountContract | contract                            |
-| SmartAccount | getChainId              |                                     |
-| SmartAccount | getAccountConfig        |                                     |
-| SmartAccount | getPaymasterApiKey      |                                     |
-| SmartAccount | getFeeQuotes            | tx                                  |
-| SmartAccount | buildUserOperation      | tx, feeQuote, tokenPaymasterAddress |
-| SmartAccount | signUserOperation       | userOpHash, userOp                  |
-| SmartAccount | sendUserOperation       | userOpHash, userOp                  |
-| SmartAccount | sendSignedUserOperation | userOp, sessionDataParams\*         |
-| SmartAccount | sendTransaction         | tx, feeQuote, tokenPaymasterAddress |
-| SmartAccount | getAccount              |                                     |
-| SmartAccount | getAddress              |                                     |
-| SmartAccount | getOwner                |                                     |
-| SmartAccount | isDeployed              |                                     |
-| SmartAccount | deployWalletContract    |                                     |
-| SmartAccount | sendRpc                 | arg                                 |
-| SmartAccount | createSessions          | options                             |
-| SmartAccount | validateSession         | targetSession, sessions             |
+```typescript page.tsx
+const executeTxEthers = async () => {
+  const ethersProvider = createEthersProvider();
+  const signer = await ethersProvider.getSigner();
+  const tx = {
+    to: recipientAddress,
+    value: ethers.parseEther("0.1"), // 0.1 ETH
+  };
+  const txResponse = await signer.sendTransaction(tx);
+  const txReceipt = await txResponse.wait();
+  console.log("Transaction receipt:", txReceipt);
+};
+```
+
+Now you only need to wire this function to a button or UI element, and the transaction will be sent through the smart account. 
+
+The original EOA remains the onwer of the smart account and will be used to sign the `UserOperation`.
+
+<Note>
+See a complete demo in this [repository](https://github.com/Particle-Network/kakarot-auth-aa-demo/blob/main/kakarot-particle-aa-nextjs/src/app/page.tsx).
+</Note>

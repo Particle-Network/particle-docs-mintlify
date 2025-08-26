@@ -1,0 +1,102 @@
+---
+title: "Session Keys"
+description: "How to use session keys with Particle’s Account Abstraction SDKs and RPC."
+---
+
+# Session Keys
+
+**Session keys** let you delegate signing permissions under specific conditions to a temporary keypair.  
+
+With session keys, your app can:  
+- Allow users to interact without constant signature popups  
+- Enable short-term delegated permissions  
+- Automate transactions safely under defined rules  
+
+Particle Network supports session keys through both the [AA SDKs](/aa/introduction) and the [Account Abstraction RPC](/aa/rpc/getsmartaccount).
+
+<Note>Currently supported only on the **Biconomy v2.0.0 smart account implementation**. Other smart account types will throw errors.</Note>
+
+***
+
+## How It Works
+
+The session key flow has two main parts:
+
+1. **Create & register the session**  
+   - Generate a temporary keypair (session key).  
+   - Define metadata (`sessionKeyData`) including:  
+     - Session key address (temporary public key)  
+     - Linked user address  
+     - Permission parameters (limits, scope, etc.)  
+   - Deploy or configure a **`sessionValidationModule`** contract to validate `UserOps`.  
+   - Register the session on-chain.  
+
+2. **Use the session key**  
+   - `UserOps` can now be signed by the session key instead of the primary wallet.  
+   - The validation module ensures only authorized operations go through.  
+
+👉 Check out this [demo repo](https://github.com/TABASCOatw/particle-session-key-demo/blob/main/src/App.tsx) for a practical example.
+
+***
+
+## API & SDK Methods
+
+To work with session keys, use:
+
+- `createSessions` — create and register a new session  
+- `validateSession` — validate that a `UserOperation` is authorized under the session  
+
+Both are available in:  
+- **AA SDKs**  
+- **AA RPC** ([createSessions](/aa/rpc/createsessions), [validateSession](/aa/rpc/validatesession))
+
+***
+
+## Example Validation Contract
+
+Here’s an example `sessionValidationModule` contract that implements `validateSessionUserOp`:
+
+```solidity Solidity [expandable]
+// SPDX-License-Identifier: MIT
+pragma solidity 0.8.19;
+
+import {UserOperation} from "@account-abstraction/contracts/interfaces/UserOperation.sol";
+
+abstract contract ISessionValidationModule {
+    // execute(address,uint256,bytes)
+    bytes4 public constant EXECUTE_SELECTOR = 0xb61d27f6;
+    // execute_ncC(address,uint256,bytes)
+    bytes4 public constant EXECUTE_OPTIMIZED_SELECTOR = 0x0000189a;
+
+    /**
+     * @dev validates if the _op (UserOperation) matches the SessionKey permissions
+     * and that _op has been signed by this SessionKey
+     * @param _op User Operation to be validated.
+     * @param _userOpHash Hash of the User Operation to be validated.
+     * @param _sessionKeyData SessionKey data, that describes sessionKey permissions
+     * @param _sessionKeySignature Signature over the the _userOpHash.
+     * @return true if the _op is valid, false otherwise.
+     */
+    function validateSessionUserOp(
+        UserOperation calldata _op,
+        bytes32 _userOpHash,
+        bytes calldata _sessionKeyData,
+        bytes calldata _sessionKeySignature
+    ) external virtual returns (bool);
+}
+```
+
+## Tutorial Video
+
+<Frame caption="Session Keys in Particle Smart Wallet-as-a-Service">
+<iframe 
+width="600"
+height="400" 
+src="https://www.youtube.com/embed/euOahfA4Vec" 
+title="Session Keys in Particle Smart Wallet as a Service: A Technical Deep Dive" 
+alt="Session Keys in Particle Smart Wallet as a Service: A Technical Deep Dive"
+frameborder="0"
+allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+allowfullscreen
+></iframe>
+</Frame>
