@@ -4,258 +4,388 @@ description: "Leveraging Particle's AA SDK within web applications."
 sidebarTitle: "Web (JS/TS) - AA"
 ---
 
-## Account Abstraction for Web
+Particle’s **AA SDK** brings ERC-4337 to web apps: construct and send **UserOperations**, sponsor gas (gasless), pay in ERC-20 via token paymasters.
 
-Particle Network natively supports and facilitates end-to-end utilization of ERC-4337 account abstraction. This is primarily done through the account abstraction SDK, capable of constructing, sponsoring, and sending UserOperations, alongside deploying smart accounts, retrieving fee quotes, and other key functions. At the center of Particle Network's Modular Smart Wallet-as-a-Service is the AA SDK, which fully supports web applications.
+<Info>
+This guide assumes you already have an EIP-1193 provider (e.g., <code>window.ethereum</code> from a wallet extension, WalletConnect, or a custom provider).
 
-## Repository
+Check the [Quickstart](/aa/quickstart/web-aa) page for a step-by-step guide to integrate the AA SDK with [Particle Authkit](/social-logins/auth/introduction).
 
-The Particle Network `aa-sdk` has an open-source [GitHub repository](https://github.com/Particle-Network/aa-sdk) providing full transparency of the underlying architecture. It may be worthwhile to look at this repository to contextualize the information below, making it easier to digest.
+</Info>
 
-***
+---
 
-## Getting Started
+## General integration steps
 
-Configuring and initializing the Particle Network AA SDK is simple, although there are two key steps to consider beforehand: installing `@particle-network/aa` with either Yarn or npm and retrieving required core values from the [Particle dashboard](https://dashboard.particle.network).
+The following steps outline the general process for integrating the **AA SDK** into your web application:
+
+<Steps>
+  <Step title="Acquire a provider">
+    Connect to a user's existing wallet through `window.ethereum`, **WalletConnect**, or another compatible provider.
+  </Step>
+  <Step title="Create a Smart Account">
+    Initialize a Smart Account and configure your desired contract options.
+  </Step>
+  <Step title="Configure gas payment options">
+    Wrap your Smart Account with a provider adapter and choose how transaction gas will be paid - gasless (sponsored), user-paid with native tokens.
+  </Step>
+  <Step title="Use with your favorite web3 library">
+    The wrapper automatically converts regular transactions into `UserOperations`, allowing you to use familiar libraries like **ethers.js** or **viem** with Account Abstraction.
+  </Step>
+</Steps>
+
+
+
+<Note>
+The Particle AA SDK is open source, available at [Particle-Network/aa-sdk](https://github.com/Particle-Network/aa-sdk).
+</Note>
+
+
+
+## Prerequisites
+
+To integrate the Particle AA SDK into your web application, you'll need to:
+
+1. **Install the SDK packages** in your project
+2. **Configure your project credentials** from the Particle Dashboard
 
 ### Installation
 
-To begin with installation, you'll need to choose either Yarn or npm, then run the command detailed below within your shell:
+Install the SDK in your project:
 
-```shell Terminal
+<CodeGroup>
+
+```shell yarn
 yarn add @particle-network/aa
-
-// Or
-
-npm install @particle-network/aa
 ```
 
-### Setting up the Particle dashboard
+```shell npm
+npm install @particle-network/aa
+```
+</CodeGroup>
 
-You'll also need required values from the Particle dashboard: your `projectId`, `clientKey`, and `appId`. Each of these values will be used in the initial configuration/initialization of the SDK and directly link your instance of the SDK with the [Particle dashboard](https://dashboard.particle.network). Retrieving these values can be done by following the process below:
+### Project setup
 
-<Note>Find more info on how to create a project: [Create a new project](/social-logins/dashboard).</Note>
+The AA SDK requires Particle project credentials from the [Particle Dashboard](https://dashboard.particle.network/).
+
+To retrieve those values for configuration within your application, follow these steps:
+
+<AccordionGroup>
+  <Accordion title="Access the Particle Dashboard">
+
+Sign up or Log in into the [Particle dashboard](https://dashboard.particle.network/)
+
+<div className="flex justify-center">
+<img
+  className="block h-64 dark:hidden"
+  src="/social-logins/images/login.png"
+  alt="Login into Particle."
+/>
+<img
+  className="hidden h-64 dark:block"
+  src="/social-logins/images/login.png"
+  alt="Login into Particle."
+/>
+</div>
+ </Accordion>
+<Accordion title="Create a new project or enter an existing project">
+<div className="flex justify-center">
+<img
+  className="block h-64 dark:hidden"
+  src="/social-logins/images/project.png"
+  alt="Create Particle project."
+/>
+<img
+  className="hidden h-64 dark:block"
+  src="/social-logins/images/project.png"
+  alt="Create Particle project."
+/>
+</div>
+</Accordion>
+
+<Accordion title="Create a new web application, or skip this step if you already have one">
+    <div className="flex justify-center">
+        <img
+            className="block h-64 dark:hidden"
+            src="/social-logins/images/web-app.png"
+            alt="Create web app."
+        />
+        <img
+            className="hidden h-64 dark:block"
+            src="/social-logins/images/web-app.png"
+            alt="Create web app."
+        />
+    </div>
+</Accordion>
+
+<Accordion title="Retrieve the project credentials (project ID, client key, app ID)">
+<div className="flex justify-center">
+<img
+  className="block h-64 dark:hidden"
+  src="/social-logins/images/credentials.png"
+  alt="Find app's credentials."
+/>
+<img
+  className="hidden h-64 dark:block"
+  src="/social-logins/images/credentials.png"
+  alt="Find app's credentials."
+/>
+</div>
+</Accordion>
+</AccordionGroup>
+
+## Particle Paymaster
+
+Particle Network includes a **Verifying Omnichain Paymaster** to sponsor gas fees:
+
+- **Testnet use**: gasless transactions are automatically sponsored (no setup, no deposits).  
+- **Mainnet use**: deposit **USDT** on Ethereum or BNB in the [dashboard](/social-logins/dashboard#paymaster). The deposit is auto-converted into the native token of whichever chain your users transact on.
 
 <Tip>
-Important details before initialization.
-<p></p>
-<p>Before initializing the SDK, there are a few key points to keep in mind, specifically regarding the utilization of Paymasters (to sponsor gas fees, pay for gas in ERC-20 tokens, etc.)</p>
-<p></p>
-<p>- All Testnets automatically have the Verifying Particle Network Omnichain Paymaster enabled. Transactions that request it will automatically be sponsored and thus gasless.</p>
-<p>- On the occasion that you'd like to use the Particle Network Omnichain Paymaster for Mainnets, you'll need to deposit USDT on either Ethereum or BNB Chain within the <a href="https://dashboard.particle.network">Particle dashboard</a>. This USDT will then automatically be converted as needed into the native token of the network you're requesting (and qualifying for) sponsorship on.</p>
-<p>- Alternatively, if you'd like to instead use Biconomy's Verifying Paymaster, you can head over to the <a href="https://dashboard.biconomy.io">Biconomy dashboard</a>, create a new Paymaster, and fill in `paymasterApiKeys` within `aaOptions` on `SmartAccount`.</p>
-<p>- The Particle Network AA SDK automatically uses Biconomy's Token Paymaster (for paying gas in ERC20 tokens). Transactions that request it will be able to leverage it without additional configuration.</p>
+If you prefer to use **Biconomy’s Verifying Paymaster** instead, create one on the [Biconomy dashboard](https://dashboard.biconomy.io) and set its `paymasterApiKeys` in your `aaOptions`.  
 </Tip>
+
+
+- For **ERC-20 gas payments** (Token Paymaster), you can rely on Biconomy’s Token Paymaster. Simply pass the `feeQuote` you receive from `getFeeQuotes`, and the SDK will handle the ERC-20 settlement.
+
+
+---
 
 ## Initialization
 
-Initializing the Particle Network AA SDK is done primarily through the `SmartAccount` object, which can be imported directly from `@particle-network/aa`. A new instance of `SmartAccount` should be saved to a variable that'll later be used either to construct a custom 1193 provider, or on its own to build and send User Operations. 
+The first step is to initialize the Smart Account instance. 
 
-Specifically, `SmartAccount` takes the following parameters:
+You can do this by creating a new instance of the `SmartAccount` class and passing in the provider and configuration options.
 
-- `provider`, an 1193 provider to be called and used whenever specific functions are called (such as `sendTransaction`, `signMessage`, etc.); this can be `new ParticleProvider(particle.auth)` if you're using Particle Auth, otherwise, this can be any typical 1193 provider.
-- Within the body of `SmartAccount`:
-  - `projectId`, the `projectId` previously retrieved from the Particle dashboard.
-  - `clientKey`, the `clientKey` previously retrieved from the Particle dashboard.
-  - `appId`, the `appId` previously retrieved from the Particle dashboard.
-  - `aaOptions`, an object containing the following:
-    - `accountContracts`, an object dictating the smart account implementation(s) to be used. It can be:
-      - `BICONOMY`, a [Biconomy smart account](https://www.biconomy.io/smart-accounts).
-        - `version`, either `1.0.0` or `2.0.0`; both versions of Biconomy's smart account implementation are supported.
-        - `chainIds`
-      - `CYBERCONNECT`, a [CyberConnect smart account](https://wallet.cyber.co/).
-        - `version`, currently only `1.0.0` is supported for `CYBERCONNECT`.
-        - `chainIds`
-      - `SIMPLE`, a [SimpleAccount implementation](https://github.com/eth-infinitism/account-abstraction/blob/develop/contracts/samples/SimpleAccount.sol).
-        - `version`, either `1.0.0` or `2.0.0` is supported for `SIMPLE`.
-        - `chainIds`
-      - `LIGHT`, a [Light Account implementation by Alchemy](https://github.com/alchemyplatform/light-account).
-        - `version`, currently only `1.0.2` is supported for `LIGHT`.
-        - `chainIds`
-      - `COINBASE`, a [Coinbase smart account](https://www.coinbase.com/en-br/wallet/smart-wallet).
-        - `version`, currently only `1.0.0` is supported for `COINBASE`.
-        - `chainIds`
-  - `paymasterApiKeys`, an optional array (of objects) to be used when leveraging Biconomy's Paymaster.
-    - `chainId`, the chain ID being used by the Paymaster.
-    - `apiKey`, the Biconomy Paymaster API key.
+```ts
+import { SmartAccount } from "@particle-network/aa";
 
-Once `SmartAccount` has been initialized and assigned, you can use that assignment (`smartAccount` in this case) to call `setSmartAccountContract`, reiterating/selecting the smart account implementation choice by passing an object containing `name` (`BICONOMY`, `CYBERCONNECT`, or `SIMPLE`), and `version`.
+// Any EIP-1193 provider: injected wallet, WalletConnect, etc.
+const provider = window.ethereum;
 
-```javascript JavaScript
-import { SmartAccount } from '@particle-network/aa';
-  
 const smartAccount = new SmartAccount(provider, {
-    projectId: 'Particle Network project ID',
-    clientKey: 'Particle Network client key',
-    appId: 'Particle Network app ID',
-    aaOptions: {
-        accountContracts: {  // 'BICONOMY', 'CYBERCONNECT', 'SIMPLE', 'LIGHT', 'COINBASE'
-            BICONOMY: [
-                {
-                    version: '1.0.0',  
-                    chainIds: [x, xx],
-                },
-                {  
-                    version: '2.0.0',
-                    chainIds: [x, xx],
-                }
-            ],
-            CYBERCONNECT: [
-                {
-                    version: '1.0.0',
-                    chainIds: [x, xx], 
-                }
-            ],
-            SIMPLE: [
-                {
-                    version: '1.0.0',
-                    chainIds: [x, xx],
-                }
-            ],
-        },
-        paymasterApiKeys: [{ // Optional
-            chainId: 1,  
-            apiKey: 'Biconomy Paymaster API Key',
-        }]
-    }, 
+  projectId: "YOUR_PROJECT_ID",
+  clientKey: "YOUR_CLIENT_KEY",
+  appId: "YOUR_APP_ID",
+  aaOptions: {
+    accountContracts: {
+      // Choose one or more implementations and list all chains you'll transact on
+      SIMPLE: [{ version: "2.0.0", chainIds: [1, 8453, 11155111] }], // example: Ethereum, Base, Sepolia
+      // Other options if needed: BICONOMY, CYBERCONNECT, LIGHT, COINBASE
+    },
+    // Optional: Biconomy Verifying Paymaster keys per chain
+    // paymasterApiKeys: [{ chainId: 1, apiKey: "..." }]
+  },
 });
 
-// Syntax to change the smart account implementation at any point
-smartAccount.setSmartAccountContract({ name: 'BICONOMY', version: '2.0.0' });
+// Switch implementation at runtime if needed
+// smartAccount.setSmartAccountContract({ name: "BICONOMY", version: "2.0.0" });
 ```
 
-## Examples of Utilization
+Find an updated list of smart account available and their chain compatibility in [Network Coverage](/social-logins/network-coverage#smart-accounts).
 
-### Get Smart Account
+---
 
-Once you've initialized `SmartAccount` and connected your EOA (from Particle's Wallet-as-a-Service or another wallet provider), you can retrieve the linked smart account address (according to the implementation chosen during initialization) with `smartAccount.getAddress`, the owner of that smart account (your EOA) with `smartAccount.getOwner`, and an object containing smart account information using `smartAccount.getAccount`. E.g.:
+## Using an EIP-1193 provider
 
-```javascript JavaScript
-const address = await smartAccount.getAddress(); 
- 
-const address = await smartAccount.getOwner();
+You can easily use any EIP-1193 provider with the smart account by wrapping it with `AAWrapProvider` and choosing how gas is paid.
 
-const accountInfo = await smartAccount.getAccount();
+Gas modes
+- `SendTransactionMode.Gasless`: sponsored when eligible
+- `SendTransactionMode.UserPaidNative`: user pays native gas
+
+### ethers.js example
+
+The following example shows how to use the smart account with `ethers.js`.
+
+```ts ethers.js
+import { AAWrapProvider, SendTransactionMode } from "@particle-network/aa";
+import { ethers, type Eip1193Provider } from "ethers";
+
+const ethersProvider = new ethers.BrowserProvider(
+  new AAWrapProvider(smartAccount, SendTransactionMode.Gasless) as Eip1193Provider,
+  "any"
+);
+
+// Send transactions using the normal ethers API. 
+// Any transaction will be automatically wrapped into a UserOperation and sent using the gasless provider.
+const signer = await ethersProvider.getSigner();
+const txResp = await signer.sendTransaction({ to: "0x...", value: ethers.parseEther("0.01") });
+const txReceipt = await txResp.wait();
 ```
 
-### Get Fee Quotes
+You can find a more complete example in this [demo repository](https://github.com/Particle-Network/connectkit-aa-usage/blob/da9dc9eb0401560c697778eb4ae8ae14a6bf2fbf/app/page.tsx#L169).
 
-Before sending transactions, if you'd like to manually retrieve fee quotes for user-paid (in native tokens), gasless, and user-paid (in ERC-20 tokens) UserOperations, all with one method call, you can use `smartAccount.getFeeQuotes`, passing in either one standard transaction object or an array with multiple (if you'd like to batch transactions). This will return an object containing UserOperation objects (and hashes) for each of the three aforementioned fee payment mechanisms, alongside fee quotes for the token Paymaster, as shown below:
+---
 
-```javascript JavaScript
-const tx = {  
-    to: '0x...',
-    value: '0x...'
-}
+## Direct AA usage (no wrapper)
 
-const txs = [
-    {
-        to: '0x...',
-        value: '0x...' 
-    },
-    {
-        to: '0x...',
-        value: '0x...'
-    }  
-]
+If you want to manage `UserOps` yourself, you have various options using the smart account instance directly.
 
-const feeQuotesResult = await smartAccount.getFeeQuotes(tx);
-  
-const gaslessUserOp = feeQuotesResult.verifyingPaymasterGasless?.userOp;  
-const gaslessUserOpHash = feeQuotesResult.verifyingPaymasterGasless?.userOpHash;
-  
-const paidNativeUserOp = feeQuotesResult.verifyingPaymasterNative?.userOp;   
-const paidNativeUserOpHash = feeQuotesResult.verifyingPaymasterNative?.userOpHash;
-  
-const tokenPaymasterAddress = feeQuotesResult.tokenPaymaster.tokenPaymasterAddress;
-const tokenFeeQuotes = feeQuotesResult.tokenPaymaster.feeQuotes;
+### Smart account info
+
+Fetch the smart account address, owner, and account info.
+
+```ts
+const address = await smartAccount.getAddress();
+const owner = await smartAccount.getOwner();
+const info = await smartAccount.getAccount();
 ```
 
-### Build UserOperation
+### Quote fees (single tx or batch)
 
-To build a completed (ready for transaction) UserOperation object and corresponding hash, you can simply call `smartAccount.buildUserOperation`, passing in an object containing the following parameters:
+Fetch the fee quotes for a single transaction or batch of transactions.
 
-- `tx`, an object, or multiple objects (in an array) representing a standard transaction structure.
-- Optionally, `feeQuote`, which can be retrieved by `getFeeQuotes`, for utilizing a token Paymaster.
-- Optionally, `tokenPaymasterAddress`, the `tokenPaymasterAddress` property on a result from `getFeeQuotes`.
+```ts ts
+const tx = { to: "0x...", value: "0x..." };
+const feeQuotes = await smartAccount.getFeeQuotes(tx);
 
-```javascript JavaScript
-const userOpBundle = await smartAccount.buildUserOperation({ tx, feeQuote, tokenPaymasterAddress }) 
-const userOp = userOpBundle.userOp;  
-const userOpHash = userOpBundle.userOpHash;
+// Use one of the fee quotes to build a UserOperation depending on your use case
+const gaslessUserOp = feeQuotes.verifyingPaymasterGasless?.userOp;
+const nativeUserOp = feeQuotes.verifyingPaymasterNative?.userOp;
+const tokenPaymasterAddress = feeQuotes.tokenPaymaster.tokenPaymasterAddress;
+const tokenFeeQuotes = feeQuotes.tokenPaymaster.feeQuotes;
 ```
 
-### Send UserOperation
+### Build & send UserOperation
 
-You can send and push an (already built and complete) UserOperation to the network with `smartAccount.sendUserOperation`, which takes an object containing a `userOp` object and corresponding `userOpHash`. Both of these can be retrieved from passing a structured transaction into `buildUserOperation`, as was covered above. E.g.:
+Build and send a `UserOperation` for a single transaction or batch of transactions.
 
-```javascript JavaScript
-const txHash = await smartAccount.sendUserOperation({ userOp, userOpHash });  
-```
+Here's a complete example of sending a gasless transfer transaction using the SDK to build a `userOp`:
 
-### Wallet Deployment Flow
+```ts SDK example [expandable]
+async function sendGaslessTransaction(recipientAddress) {
 
-An undeployed smart account will automatically be deployed upon the first transaction (UserOperation) it sends through the SDK (the deployment transaction is bundled/batched with the other chosen transaction). If you'd like to initiate deployment manually, bypassing automatic deployment, then you can use `smartAccount.deployWalletContract`, which will create, request signature for, and send a deployment transaction. The status of deployment can be retrieved with `smartAccount.isDeployed`. E.g.:
+    // Prepare transaction parameters
+    const tx = {
+      to: recipientAddress,
+      value: ethers.parseEther("0.01").toString(),
+      data: "0x",
+    };
 
-```javascript JavaScript
-const isDeploy = await smartAccount.isDeployed(); 
-if (!isDeploy) {
-    const txHash = await smartAccount.deployWalletContract();
-}
-```
+    // Get fee quotes for gasless transaction
+    const feeQuotesResult = await smartAccount.getFeeQuotes(tx);
+    const gaslessQuote = feeQuotesResult?.verifyingPaymasterGasless;
+    
+    if (!gaslessQuote) {
+      throw new Error("Failed to get gasless fee quote");
+    }
 
-### Custom 1193 AA Provider
-
-Alternatively, if you'd like to plug the Particle Network AA SDK directly into Ethers or web3.js, you can do so by creating a custom 1193 provider; this will automatically route transactions through the provider and configuration defined within `SmartAccount`, converting typical transactions with Ethers, web3.js, and viem into UserOperations, handling everything on the backend.
-
-This can be achieved by creating a new instance of `AAWrapProvider`, imported from `@particle-network/aa`. `AAWrapProvider` takes two parameters:
-
-- `SmartAccount`, an instance of `SmartAccount`.
-- `SendTransactionMode`, optionally defining the mechanism to be used for paying gas fees.
-  - `SendTransactionMode` can be imported from `@particle-network/aa`, and includes:
-    - `SendTransactionMode.UserPaidNative`, traditional gas payments.
-    - `SendTransactionMode.Gasless`, sponsored. This will happen automatically for Testnets, and will pull from your previously defined (or configured) Paymaster for Mainnets.
-    - `SendTransactionMode.UserSelect`, lets the user select which mechanism they'd like to use, including ERC-20 payments.
-
-E.g.:
-
-```javascript JavaScript
-import { AAWrapProvider, SendTransactionMode, SendTransactionEvent } from '@particle-network/aa';
-import Web3 from "web3";
-
-const wrapProvider = new AAWrapProvider(smartAccount, SendTransactionMode.UserPaidNative);  
-const web3 = new Web3(wrapProvider);  
-
-await web3.eth.sendTransaction(tx);
-  
-  
-const wrapProvider = new AAWrapProvider(smartAccount, SendTransactionMode.Gasless);
-const web3 = new Web3(wrapProvider);
-await web3.eth.sendTransaction(tx);
-
-
-const wrapProvider = new AAWrapProvider(smartAccount, SendTransactionMode.UserSelect);
-const web3 = new Web3(wrapProvider);
-wrapProvider.once(SendTransactionEvent.Request, (feeQuotesResult) => {  
-    wrapProvider.resolveSendTransaction({
-        feeQuote: feeQuotesResult.tokenPaymaster.feeQuote[0],  
-        tokenPaymasterAddress: feeQuotesResult.tokenPaymaster.tokenPaymasterAddress
+    // Send the user operation
+    const hash = await smartAccount.sendUserOperation({
+      userOp: gaslessQuote.userOp,
+      userOpHash: gaslessQuote.userOpHash,
     });
 
-    wrapProvider.resolveSendTransaction(feeQuotesResult.verifyingPaymasterNative);
-    
-    if (feeQuotesResult.verifyingPaymasterGasless) {
-        wrapProvider.resolveSendTransaction(feeQuotesResult.verifyingPaymasterGasless); 
-    }   
-});
-await web3.eth.sendTransaction(tx);
+}
 ```
 
-***
+You can find a more complete example in this [demo repository](https://github.com/Particle-Network/connectkit-aa-usage/blob/da9dc9eb0401560c697778eb4ae8ae14a6bf2fbf/app/page.tsx#L132).
+
+### Deployment control
+
+Check if the smart account is deployed and deploy it if not.
+
+```ts
+if (!(await smartAccount.isDeployed())) {
+  const txHash = await smartAccount.deployWalletContract();
+}
+```
+
+---
+
+## Use the AA SDK in a backend environment (server-owned EOA)
+
+You can use the SDK in a backend environment to send transactions on behalf of the smart account.
+
+The following example shows how to use the SDK with **viem** to create a wallet client from a private key, expose it as an EIP-1193 provider to the AA SDK, then route writes through the AA wrapper.
+
+<Note>
+When using the SDK in a node environment, you need to import the package as follows:
+
+```ts Node Imports
+import { SmartAccount, AAWrapProvider, SendTransactionMode } from '@particle-network/aa/dist/esm/index.mjs';
+```
+
+</Note>
+
+```ts Node Example [expandable]
+import { SmartAccount, AAWrapProvider, SendTransactionMode } from '@particle-network/aa/dist/esm/index.mjs';
+import { createPublicClient, createWalletClient, custom, http, type Address } from "viem";
+import { privateKeyToAccount } from "viem/accounts";
+import { baseSepolia } from "viem/chains";
+
+// 0) Load secrets safely (env, KMS/HSM). Never hard-code.
+const RPC_URL = process.env.RPC_URL!;
+const PROJECT_ID = process.env.PARTICLE_PROJECT_ID!;
+const CLIENT_KEY = process.env.PARTICLE_CLIENT_KEY!;
+const APP_ID = process.env.PARTICLE_APP_ID!;
+const OWNER_PK = process.env.EOA_PRIVATE_KEY!; // hex string, "0x..."
+
+const chain = baseSepolia;
+
+// 1) Public client for reads
+const publicClient = createPublicClient({ chain, transport: http(RPC_URL) });
+
+// 2) Wallet client from private key (this is the Smart Account owner)
+const ownerAccount = privateKeyToAccount(OWNER_PK);
+const ownerWalletClient = createWalletClient({
+  account: ownerAccount,
+  chain,
+  transport: http(RPC_URL),
+});
+
+// 3) Expose the owner wallet as a minimal EIP-1193 provider for the AA SDK
+const ownerEip1193 = {
+  request: (args: any) => ownerWalletClient.request(args),
+} as any;
+
+// 4) Create the Smart Account (list all chains you’ll use)
+const smartAccount = new SmartAccount(ownerEip1193, {
+  projectId: PROJECT_ID,
+  clientKey: CLIENT_KEY,
+  appId: APP_ID,
+  aaOptions: {
+    accountContracts: {
+      SIMPLE: [{ version: "2.0.0", chainIds: [chain.id] }],
+      // You can add BICONOMY / CYBERCONNECT / LIGHT / COINBASE here if needed
+    },
+    // Optional: Verifying/Token Paymaster keys per chain
+    // paymasterApiKeys: [{ chainId: chain.id, apiKey: "..." }],
+  },
+});
+
+// 5) Wrap writes through AA; choose gas mode
+const aaProvider = new AAWrapProvider(smartAccount, SendTransactionMode.Gasless); // or UserPaidNative
+
+// 6) A wallet client for writes that routes requests to the AA provider
+const aaWalletClient = createWalletClient({
+  chain,
+  account: (await smartAccount.getAddress()) as Address, // the smart account address
+  transport: custom({
+    request: (args) => aaProvider.request(args as any),
+  }),
+});
+
+// Reads use the public client
+const saAddress = (await smartAccount.getAddress()) as Address;
+const balance = await publicClient.getBalance({ address: saAddress });
+
+// Writes are turned into UserOperations under the hood
+const txHash = await aaWalletClient.sendTransaction({
+  to: "0xRecipient...",
+  value: 0n, // viem uses bigint
+});
+console.log("sent via AA:", txHash);
+```
+
+You can find a complete implementation in this [demo repository using the AA SDK to interacti with Circle Gateway](https://github.com/Particle-Network/circle-gateway-particle-aa-demo).
 
 ## Master reference
 
-For a direct, raw view into every method provided through `SmartAccount`, below is a table containing every relevant one alongside specific parameters and a short description. For methods listed that weren't covered in the above examples, live implementation often mimics the common structure covered throughout this document.
+The following table is a **method-level reference** for the `SmartAccount` class. Use it when you need exact signatures or want to explore functionality beyond the common flows shown earlier (initialization, fee quotes, sending transactions).  
+
+Most methods follow the same input/output patterns as the examples above, so you can usually adapt them directly into your own code.  
 
 | Class        | Methods                 | Parameters (\* indicates optional)  |
 | ------------ | ----------------------- | ----------------------------------- |
