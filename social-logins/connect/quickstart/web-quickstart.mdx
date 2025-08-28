@@ -166,7 +166,7 @@ Wrap your primary application component (wherever you place and use `ConnectButt
 
 Here’s an example of what this looks like for a `layout.tsx` file:
 
-```tsx layout.tsx
+```tsx layout.tsx [expandable]
 import { ParticleConnectkit } from '@/connectkit'; // Export of a configured ConnectKitProvider instance
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
@@ -211,7 +211,7 @@ After logging in (connecting), users can access the embedded wallet modal provid
 
 To explore additional features like fetching and displaying user information, balances, on-ramp services, and sending transactions using either the native Particle Provider (Viem-based WalletClient) or ethers.js through an EIP-1193 provider, paste the following code into `app/page.tsx`.
 
-```tsx page.tsx
+```tsx page.tsx [expandable]
 "use client";
 
 import React, { useEffect, useState } from "react";
