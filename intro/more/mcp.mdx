@@ -1,0 +1,85 @@
+---
+title: "Model Context Protocol (MCP) Server"
+description: "Access Particle's documentation programmatically via an MCP server"
+---
+
+The Particle docs host a **Model Context Protocol (MCP) server** that lets AI applications query our documentation directly. This enables developers to build AI tools and assistants with first-class access to guides, API references, and implementation details.
+
+---
+
+## What is MCP?
+
+The **Model Context Protocol (MCP)** is a standard for connecting AI systems to external tools and data sources.  
+With MCP, AI models can extend their capabilities beyond static training data by retrieving real-time, contextual information.
+
+Particle Network’s MCP server bridges AI applications and our documentation, allowing AI systems to:
+
+- Search across the full documentation knowledge base
+- Retrieve relevant guides, API references, and code snippets
+- Provide contextual answers with direct links back to docs
+
+---
+
+That section can be clearer and more consistent with the rest of the doc. Right now it’s short and doesn’t set expectations for developers (what “MCP-compatible” means, why it matters, etc.). Here’s a tighter, more useful rewrite:
+
+⸻
+
+## Connecting to Particle Network’s MCP Server
+
+To use the Particle MCP server, your AI application must support the Model Context Protocol (MCP). Many modern AI tools and IDEs already provide native support.
+
+Some examples include:
+
+- **Windsurf IDE**: an AI-powered IDE with built-in MCP integration.
+- **Claude Code**: Anthropic’s coding assistant with MCP support.
+- **Any other MCP-compatible client**: custom tools or assistants that can connect to a streamable HTTP MCP endpoint.
+
+You’ll connect these clients to the following server URL:
+
+```sh URL
+https://developers.particle.network/mcp
+```
+
+## Available Tools
+
+Currently, the Particle MCP server exposes one tool:
+
+`SearchParticleNetworkDocs`
+
+A search endpoint for querying the entire Particle Network documentation knowledge base. It returns contextual content along with titles and direct links to the docs.
+
+Use this tool when you need to:
+- Answer technical questions about Particle Network features
+- Locate integration guides and API references
+- Retrieve implementation details and code samples
+- Provide contextual answers with links back to official docs
+
+## Integration Instructions
+
+### Using Windsurf IDE
+
+Windsurf is an AI-powered IDE with built-in MCP support. You can connect it to the Particle Network docs in a few steps:
+
+1. Navigate to `Advanced Settings → Cascade → Manage MCPs`.
+2. Click `View Raw Config` and paste the following snippet:
+
+```json mcp_config.json
+{
+  "mcpServers": {
+    "particle-docs": {
+      "serverUrl": "https://developers.particle.network/mcp"
+    }
+  }
+}
+```
+Once added, Windsurf will automatically use the MCP server to query Particle’s documentation inside Cascade — giving your IDE real context about Particle SDKs, APIs, and integration details.
+
+### Manual Configuration
+
+For other AI tools that support streamable HTTP MCP (the current MCP standard, replacing older SSE connections), you can connect directly using the following URL:
+
+```sh URL
+https://developers.particle.network/mcp
+```
+
+This provides full access to Particle Network’s documentation and developer resources via MCP.
