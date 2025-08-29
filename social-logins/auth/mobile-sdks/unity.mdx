@@ -81,7 +81,7 @@ You'll also need to configure your Podfile if you haven't already. If you don't 
   <p>Copy our example Podfile</p>
   <p></p>
   <p>
-    You can copy our examole
+    You can copy our example
     [Podfile](https://github.com/Particle-Network/particle-unity/blob/main/ios-build/Podfile),
     it will always use the latest version.
   </p>
@@ -294,7 +294,7 @@ List<SupportLoginType> allSupportLoginTypes =
 await ParticleAuthCore.Instance.Connect(LoginType.EMAIL, null, SupportAuthType.ALL, SocialLoginPrompt.SelectAccount, loginConfig);
 ```
 
-You can also costumize login page for email/phone, send code with method `ParticleAuthCore.Instance.SendPhoneCode` or `ParticleAuthCore.Instance.SendEmailCode`, connect with method `ParticleAuthCore.Instance.ConnectWithCode`
+You can also customize login page for email/phone, send code with method `ParticleAuthCore.Instance.SendPhoneCode` or `ParticleAuthCore.Instance.SendEmailCode`, connect with method `ParticleAuthCore.Instance.ConnectWithCode`
 
 <CodeGroup>
 
@@ -513,7 +513,7 @@ var result = (string)JObject.Parse(rpcResult)["result"];
 | `gasFeeLevel` | `GasFeeLevel` | (Optional) the gas fee level, `High`, `Medium` or `Low`, default is `High`. |
 
 ```csharp
-var transaction = await EvmService.CreateTransaction(from, data, value, reciver);
+var transaction = await EvmService.CreateTransaction(from, data, value, receiver);
 ```
 
 ### Estimate Gas

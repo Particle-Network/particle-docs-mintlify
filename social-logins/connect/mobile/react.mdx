@@ -321,7 +321,7 @@ const connectConfig = {
   loginType: LoginType.Google,
   supportAuthType: [SupportAuthType.Phone, SupportAuthType.Google, SupportAuthType.Apple],
   socialLoginPrompt: SocialLoginPrompt.SelectAccount,
-  loginPageConifg: {
+  loginPageConfig: {
     projectName: "React Native Example",
     description: "Welcome to login",
     imagePath: "https://connect.particle.network/icons/512.png"
@@ -431,7 +431,7 @@ Within an active session, you can retrieve the accounts (addresses) that belong 
 const accounts = await particleConnect.getAccounts(walletType);
 ```
 
-### (Optional) Custom WalletConnect Projcet ID
+### (Optional) Custom WalletConnect Project ID
 ```typeScript
 // Call before particleConnect.init
 particleConnect.setWalletConnectProjectId("Your WalletConnect Project ID")
@@ -441,6 +441,6 @@ particleConnect.setWalletConnectProjectId("Your WalletConnect Project ID")
 
 ## Dive Deeper
 
-`@particle-network/rn-connect` includes `@partcile-connect/rn-auth-core`. 
+`@particle-network/rn-connect` includes `@particle-connect/rn-auth-core`. 
 
 If you log in with a Particle account, you can access additional functions such as `getUserInfo`, `openAccountAndSecurity`, `hasMasterPassword` and `hasPaymentPassword` and `changeMasterPassword`. You can also reference the docs from [Auth SDK reference](/api-reference/auth/mobile-sdks/react).

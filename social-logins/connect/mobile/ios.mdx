@@ -77,7 +77,7 @@ Then, within your Podfile, you'll need to throw in a few different dependencies,
 Starting from version 2.0.0, you can quickly integrate the `ParticleConnectKit` SDK, which includes features such as social login, SNS login, third-party wallet login, and customizable login UI.
 
 ```ruby Podfile
-pod `ParticleConnectKit`
+pod 'ParticleConnectKit'
 pod 'AuthCoreAdapter'
 pod 'ParticleConnect'
 pod 'ConnectPhantomAdapter'
@@ -174,7 +174,7 @@ An **example** of initialization can be found below.
 
 ```swift
 var adapters: [ConnectAdapter] = [
-       AuthCoreAdaper(),
+       AuthCoreAdapter(),
        WalletConnectAdapter(),
        MetaMaskConnectAdapter(),
        PhantomConnectAdapter(),
@@ -195,7 +195,7 @@ ParticleConnect.initialize(env: .debug, chainInfo: .ethereumSepolia, dAppData: .
 
 ### Scheme Configuration
 
-The final step in setting up your iOS project is configuring a scheme URL and `LSAApplicationQueriesSchemes` within your application. Beginning with the scheme URL, add the following to your dApp's `application(_:open:options:)` method:
+The final step in setting up your iOS project is configuring a scheme URL and `LSApplicationQueriesSchemes` within your application. Beginning with the scheme URL, add the following to your dApp's `application(_:open:options:)` method:
 
 ```swift
 return ParticleConnect.handleUrl(url)
@@ -312,7 +312,7 @@ For `EVMConnectAdapter` and `SolanaConnectAdapter`, the 'connect' method will in
 
 | Field    | Type             | Description                                                                                                                                                                                                                                     |
 | -------- | ---------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `config` | `ConnectConifg?` | The `ConnectConfig` will only be effective when `adapter.walletType` is `.authCore`. You can construct a valid object using the subclass `ParticleAuthCoreConfig`. When `adapter.walletType` is another value, you can pass `ConnectConfig.none`. |
+| `config` | `ConnectConfig?` | The `ConnectConfig` will only be effective when `adapter.walletType` is `.authCore`. You can construct a valid object using the subclass `ParticleAuthCoreConfig`. When `adapter.walletType` is another value, you can pass `ConnectConfig.none`. |
 
 `ParticleAuthCoreConfig` construct method `init` support the following parameters:
 
@@ -320,8 +320,8 @@ For `EVMConnectAdapter` and `SolanaConnectAdapter`, the 'connect' method will in
 | ------------------- | -------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `loginType`         | `LoginType`          | The specific social login to be used. This can be either `.email`, `.phone`, `.google`, `.apple`, `.jwt`, `.facebook`, `.twitter`, `.discord`, `.github`, `.twitch`, `.microsoft` or `linkedin`.                                                                                 |
 | `supportAuthType`   | `[SupportAuthType]`  | The methods of authentication visible on the authentication popup UI. By default, this will be exclusive to the chosen social login method, although by passing in additional types, you can expand the UI to include the ability to login with those as an alternative to type. |
-| `account`           | `String?`            | (Optional) when `type` is set to either `.email`, `.phone`, or `.jwt`, you can use the `account` parameter to pass in an expected email, phone number, or JWT. This is optional for the former two, but required for `.jwt`. The phone number must be in E.164 format.           |
-| `code`              | `String?`            | (Optional) when `type` is set to either `.email` pr `.phone`, you can use the code parameter to pass the verification code.                                                                                                                                                      |
+| `account`           | `String?`            | (Optional) when `loginType` is set to either `.email`, `.phone`, or `.jwt`, you can use the `account` parameter to pass in an expected email, phone number, or JWT. This is optional for the former two, but required for `.jwt`. The phone number must be in E.164 format.           |
+| `code`              | `String?`            | (Optional) when `loginType` is set to either `.email` or `.phone`, you can use the code parameter to pass the verification code.                                                                                                                                                      |
 | `socialLoginPrompt` | `SocialLoginPrompt?` | (Optional) either `.none`, `.consent`, or `.select_account`                                                                                                                                                                                                                      |
 | `loginPageConfig`   | `LoginPageConfig?`   | (Optional) to customize the UI page, contains project name, icon and description.                                                                                                                                                                                                |
 
@@ -464,7 +464,7 @@ As an alternative to `signMessage`, for **EVM chains**, you can request that a u
 let signed = try await adapter.signTypedData(publicAddress: publicAddress, data: message).value
 ```
 
-### (Optional) Custom WalletConnect Projcet ID
+### (Optional) Custom WalletConnect Project ID
 
 ```swift
 ParticleConnect.setWalletConnectV2ProjectId("WalletConnect V2 Project ID")

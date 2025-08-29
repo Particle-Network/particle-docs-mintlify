@@ -189,11 +189,11 @@ Then, head over to your `Info.plist` file and include the following snippet:
 	<string>rainbow</string>
 	<string>trust</string>
 	<string>zerion</string>
-  <string>mathwallet</string>
-  <string>oneinch</string>
-  <string>awallet</string>
-  <string>okex</string>
-  <string>bnc</string>
+	<string>mathwallet</string>
+	<string>oneinch</string>
+	<string>awallet</string>
+	<string>okex</string>
+	<string>bnc</string>
 </array>
 <key>NSPhotoLibraryUsageDescription</key>
 <string>We need access in order to open photos of barcodes</string>
@@ -211,9 +211,9 @@ Head over to the [linked guide](https://github.com/Particle-Network/particle-flu
 
 ### Initialization
 
-Now that you've spun up a project on the [Particle dashboard]() and configured your application, you're ready to initialize the SDK itself. 
+Now that you've spun up a project on the [Particle dashboard](https://dashboard.particle.network) and configured your application, you're ready to initialize the SDK itself. 
 
-This must happen before the other methods become functional. First, call `ParticleInfo.set` and pass in your `projectId` and client key (`clientK`). Next, initialization can happen through the `init` function on `ParticleConnect`, which can be imported from `package:particle_connect/particle_connect.dart`. 
+This must happen before the other methods become functional. First, call `ParticleInfo.set` and pass in your `projectId` and client key (`clientKey`). Next, initialization can happen through the `init` function on `ParticleConnect`, which can be imported from `package:particle_connect/particle_connect.dart`. 
 
 `init` takes the following parameters:
 
@@ -221,7 +221,7 @@ This must happen before the other methods become functional. First, call `Partic
 | -------------- | --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `chainInfo`    | `ChainInfo`     |The primary blockchain and network (e.g., testnet) your application will use. For instance, you might choose `.Ethereum` or `.EthereumSepolia`, depending on the specific network required for your use case.                                                                                                                                                                                                                                                                                                                          |
 | `dAppData`     | `DAppMetadata`  | Metadata outlining the description of your application; this should be an instance of `DAppMetadata` with the following parameters: `name`, the name of your project. `icon`, a URL linking to the icon of your project; this should be 512x512, ideally. `url`, the URL of your project's website. `description`, the description of your project, `redirect`, optional, redirect universal link of you project, `verifyUrl`, optional. |
-| `env`          | `Env`           | The specific environmennt to be used. This can be either `.dev`, `.staging`, or `.production`.                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+| `env`          | `Env`           | The specific environment to be used. This can be either `.dev`, `.staging`, or `.production`.                                                                                                                                                                                                                                                                                                                                                                                                                                  |
 | `rpcUrlConfig` | `RpcUrlConfig?` | Customize the RPC URL.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
 
 ```dart
@@ -233,7 +233,7 @@ final dappInfo = DappMetaData(
     "https://connect.particle.network",
     "Particle Connect Flutter Demo");
 ParticleConnect.init(chainInfo, dappInfo, Env.dev);
-ParticleAuthCore.init()
+ParticleAuthCore.init();
 ```
 
 Additionally, if you'd like to define multiple chains to be available through **WalletConnect**, you'll need to create an array of `ChainInfo` objects (`chainInfos` in this example) and use it within `ParticleConnect.setWalletConnectV2SupportChainInfos`. E.g.:
@@ -442,10 +442,10 @@ final account = await ParticleConnect.importMnemonic(WalletType.evmPrivateKey, m
 // Exportation
 String privateKey = await ParticleConnect.exportPrivateKey(WalletType.evmPrivateKey, publicAddress);
 ```
-### (Optional) Custom WalletConnect Projcet ID
+### (Optional) Custom WalletConnect Project ID
 ```dart
 // Call before ParticleConnect.init
-ParticleConnect.setWalletConnectProjectId("Your WalletConnect Project ID, from https://cloud.walletconnect.com")
+ParticleConnect.setWalletConnectProjectId("Your WalletConnect Project ID, from https://cloud.walletconnect.com");
 ```
 
 ---
