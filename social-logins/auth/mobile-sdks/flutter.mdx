@@ -190,7 +190,7 @@ Before using the full extent of the SDK, you'll need to initialize it with `init
 ```dart
 // Set relevant project info, retrieved from https://dashboard.particle.network
 ParticleInfo.set(projectId, clientKey);
-// Inititilze ParticleAuth and ParticleAuthCore.
+// Initialize ParticleAuth and ParticleAuthCore.
 ParticleBase.init(ChainInfo.Ethereum, env);
 ParticleAuthCore.init()
 ```
@@ -271,7 +271,7 @@ If you need the same message to return a unique signature each time, use the `Ev
 
 | Field     | Type     | Description                                                                       |
 | --------- | -------- | --------------------------------------------------------------------------------- |
-| `message` | `String` | On Evm requires a hexadeciaml string, on Solana, requires a UTF-8/readable string |
+| `message` | `String` | On Evm requires a hexadecimal string, on Solana, requires a UTF-8/readable string |
 
 ```dart
 final messageHex = "0x${StringUtils.toHexString("Hello Particle")}";
@@ -310,13 +310,13 @@ List<String> signatures = await Solana.signAllTransactions(transactions);
 
 ### Sign and Send Transaction
 
-For more generalized transaction execution, `Evm.sendTransaction` and sendTransaction` and `Solana.signAndSendTransaction` will be the primary smethods used in virtually every scenario. 
+For more generalized transaction execution, `Evm.sendTransaction` and sendTransaction` and `Solana.signAndSendTransaction` will be the primary methods used in virtually every scenario. 
 
 This will propose a signature (on both EVM and Solana) and then immediately push it to the network once confirmed.
 
 | Field         | Type     | Description                                                               |
 | ------------- | -------- | ------------------------------------------------------------------------- |
-| `transaction` | `String` | On Evm requires a hexadeciaml string, on Solana, requires a base58 string |
+| `transaction` | `String` | On Evm requires a hexadecimal string, on Solana, requires a base58 string |
 
 ```dart
 final signature = await Evm.sendTransaction(transaction);
@@ -331,7 +331,7 @@ If you need the same message to return a unique signature each time, use the `Ev
 
 | Field     | Type     | Description                   |
 | --------- | -------- | ----------------------------- |
-| `message` | `String` | Requires a hexadeciaml string |
+| `message` | `String` | Requires a hexadecimal string |
 
 ```dart
 // your typed data is a json string
