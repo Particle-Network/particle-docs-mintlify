@@ -53,9 +53,7 @@ The setup process on iOS can be somewhat lengthy, so to ensure you don't run int
 Additionally, before diving in, you'll need to retrieve three universally required values from the [Particle dashboard](https://dashboard.particle.network): your `projectId`, `clientKey`, and `appId`. These directly link your project (instance of Particle Connect) with the Particle dashboard to enable customization, analytics, tracking, etc.
 
 <Note>
-  Follow the quickstart tutorial to set up a project and find the required keys:
-  [Create a new
-  project](/guides/wallet-as-a-service/waas/connect/ios-quickstart).
+Find a full rundown on how to set up a project and find the required keys in the [dashboard guide](/social-logins/dashboard).
 </Note>
 
 ### Dependencies
@@ -325,7 +323,7 @@ For `EVMConnectAdapter` and `SolanaConnectAdapter`, the 'connect' method will in
 | `socialLoginPrompt` | `SocialLoginPrompt?` | (Optional) either `.none`, `.consent`, or `.select_account`                                                                                                                                                                                                                      |
 | `loginPageConfig`   | `LoginPageConfig?`   | (Optional) to customize the UI page, contains project name, icon and description.                                                                                                                                                                                                |
 
-<Tip>You can use your existing user base or authentication method with Particle Connect through JWT. This way, your users can still log in with their current accounts. Check the [JWT guide](/guides/configuration/auth/jwt) to learn how to configure JWT. </Tip>
+<Tip>You can use your existing user base or authentication method with Particle Connect through JWT. This way, your users can still log in with their current accounts. Check the [JWT guide](/social-logins/configuration/auth/jwt) to learn how to configure JWT. </Tip>
 
 
 ```swift
@@ -418,7 +416,7 @@ The `adapter.signAndSendTransaction` method accepts the following parameters:
 let txHash = try await adapter.signAndSendTransaction(publicAddress: address, transaction: transaction).value
 ```
 
-You can create an EVM transaction with class `TxData` or `FeeMarketEIP1559TxData`, and also you can use another SDK, `ParticleWalletAPI`, to create a transaction, you can reference the examples from [Wallet SDK reference](/api-reference/wallet/mobile/ios)
+You can create an EVM transaction with class `TxData` or `FeeMarketEIP1559TxData`, and also you can use another SDK, `ParticleWalletAPI`, to create a transaction, you can reference the examples from [Wallet SDK reference](/wallet/mobile/ios)
 
 ### Sign Transaction
 
@@ -458,7 +456,7 @@ As an alternative to `signMessage`, for **EVM chains**, you can request that a u
 | Field           | Type     | Description                                                                                                                                                          |
 | --------------- | -------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `publicAddress` | `String` | The connected public address, if `adapter.WalletType` is `.authCore`, you can pass an empty string, for other `walletTypes`, you need to pass a connected public address. |
-| `data`          | `String` | The typed data to be signed; see the [Web (JavaScript/TypeScript)](/api-reference/auth/desktop-sdks/web) page for additional guidance.                               |
+| `data`          | `String` | The typed data to be signed; see the [Web (JavaScript/TypeScript)](/social-logins/connect/desktop/web) page for additional guidance.                               |
 
 ```swift
 let signed = try await adapter.signTypedData(publicAddress: publicAddress, data: message).value
@@ -494,4 +492,4 @@ public class Coin98WalletConnectAdapter: WalletConnectAdapter {
 
 ## Dive Deeper
 
-`ParticleConnect` includes `ParticleAuthCore`. If you log in with a Particle account, you can access additional functions such as `getUserInfo`, `openAccountAndSecurity`, `hasMasterPassword` and `hasPaymentPassword` and `changeMasterPassword`, you can reference the docs from [Auth SDK reference](/api-reference/auth/mobile-sdks/ios).
+`ParticleConnect` includes `ParticleAuthCore`. If you log in with a Particle account, you can access additional functions such as `getUserInfo`, `openAccountAndSecurity`, `hasMasterPassword` and `hasPaymentPassword` and `changeMasterPassword`, you can reference the docs from [Auth SDK reference](/social-logins/connect/mobile/ios).

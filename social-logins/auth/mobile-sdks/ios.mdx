@@ -27,9 +27,7 @@ To begin the initialization process, you must head over to the [Particle dashboa
 These will control specific customizations, statistics, and more for your instance of Particle's Wallet-as-a-Service. After creating an application, you'll need to retrieve three key values: `projectId`, `clientKey`, and `appId`. We'll be using these down the road.
 
 <Note>
-  Follow the quickstart tutorial to set up a project and find the required keys:
-  [Create a new
-  project](/guides/wallet-as-a-service/waas/auth/ios-quickstart).
+Find a guide on how to set up a project and find the required keys: [Dashboard Guide](/social-logins/dashboard).
 </Note>
 
 ### Installation
@@ -151,7 +149,7 @@ ParticleNetwork.setChainInfo(.ethereum)
 | `code`              | `String?`            | (Optional) When `type` is set to either `.email` pr `.phone`, you can use the `code` parameter to pass the verification code.                                                                                                                                            |
 | `socialLoginPrompt` | `SocialLoginPrompt?` | (Optional) Changes what the OAuth provider prompts a user to do; either `.none`, `.consent`, or `.select_account`. Only Google, Discord and Microsoft support it.                                                                                                                                                                  |
 
-<Tip>You can use your existing user base or authentication method with Particle Auth through JWT. This way, your users can still log in with their current accounts. Click [here](/guides/configuration/auth/jwt) to learn how to configure jwt. </Tip>
+<Tip>You can use your existing user base or authentication method with Particle Auth through JWT. This way, your users can still log in with their current accounts. Click [here](/social-logins/configuration/auth/jwt) to learn how to configure jwt. </Tip>
 
 ```swift
 // Connect with Google
@@ -321,7 +319,7 @@ To sign multi transactions from a user's embedded wallet, you can use `auth.sola
 let result = try await auth.solana.signAllTransactions(transactions, chainInfo: nil)
 ```
 
-You can create en EVM transaction with class `TxData` or `FeeMarketEIP1559TxData`, also you can use another SDK `ParticleWalletAPI` to create transaction, you can reference the examples from [Wallet SDK reference](/api-reference/wallet/mobile/ios), all the rpc methods are defined in `ParticleWalletAPI`.
+You can create en EVM transaction with class `TxData` or `FeeMarketEIP1559TxData`, also you can use another SDK `ParticleWalletAPI` to create transaction, you can reference the examples from [Wallet SDK reference](/wallet/mobile/ios), all the rpc methods are defined in `ParticleWalletAPI`.
 
 ---
 

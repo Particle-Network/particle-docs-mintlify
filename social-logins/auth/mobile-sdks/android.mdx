@@ -33,9 +33,7 @@ Before you begin using the **Particle Auth Android SDK**, you'll need a few requ
 These values are `projectId`, `clientKey`, and `appId`. All three can be retrieved by heading to the [Particle dashboard](https://dashboard.particle.network).
 
 <Note>
-  Follow the quickstart tutorial to set up a project and find the required keys:
-  [Create a new
-  project](/guides/wallet-as-a-service/waas/mobile-quickstart#configuring-particle-auth).
+Find a full rundown in the [Dashboard Guide](/social-logins/dashboard).
 </Note>
 
 ### Installation
@@ -177,7 +175,7 @@ The `AuthCore.login` function accepts the following parameters:
 | loginCallback     | AuthCoreServiceCallback`<UserInfo>` | Callback triggered after the login attempt.<br /><br />**Success**: Returns `UserInfo`.<br />**Failure**: Returns `ErrorInfo`.        |
                                                                                                                                                  |
 
-<Tip>You can use your existing user base or authentication method with Particle Auth through JWT. This way, your users can still log in with their current accounts. Check [Custom Authentication (JWT)](/guides/configuration/auth/jwt) to learn how to configure it.</Tip>
+<Tip>You can use your existing user base or authentication method with Particle Auth through JWT. This way, your users can still log in with their current accounts. Check [Custom Authentication (JWT)](/social-logins/configuration/auth/jwt) to learn how to configure it.</Tip>
 
 ```kotlin Kotlin
 // Connect with Email or Phone

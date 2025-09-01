@@ -7,7 +7,7 @@ mode: 'wide'
 
 Getting started and integrating Particle Network's Wallet-as-a-Service within your web application often takes **less than five minutes**.
 
-Below is a quick rundown on installing, configuring, and facilitating social logins within a typical Next.js application. For a more in-depth explanation of each feature, go to [Introduction to API & SDK overview](/api-reference/introduction).
+Below is a quick rundown on installing, configuring, and facilitating social logins within a typical Next.js application. For a more in-depth explanation of each feature, go to [Introduction to API & SDK overview](/social-logins/auth/introduction).
 
 ---
 
@@ -105,7 +105,7 @@ Sign up or Log in into the [Particle dashboard](https://dashboard.particle.netwo
 </Accordion>
 </AccordionGroup>
 
-For more information on the Particle dashboard, take a look at [this video](https://www.youtube.com/watch?v=d7DYCMNDmjo&ab_channel=ParticleNetwork) or visit the [dashboard quickstart](/guides/dashboard).
+For more information on the Particle dashboard, take a look at [this video](https://www.youtube.com/watch?v=d7DYCMNDmjo&ab_channel=ParticleNetwork) or visit the [dashboard quickstart](/social-logins/dashboard).
 
 With your `projectId`, `clientKey`, and `appId` retrieved, you'll need to configure Particle Auth within your application through `AuthCoreContextProvider` from `@particle-network/authkit`, the primary React component responsible for initializing Particle Auth.
 
@@ -124,7 +124,7 @@ import {InteractiveLayout} from '/snippets/InteractiveLayout.mdx'
 
 <InteractiveLayout />
 
-<Tip>Learn more about the Particle Auth configuration options in the [Particle Auth SDK page](/api-reference/auth/desktop-sdks/web).</Tip>
+<Tip>Learn more about the Particle Auth configuration options in the [Particle Auth SDK page](/social-logins/auth/desktop-sdks/web).</Tip>
 
 </Step>
 
@@ -232,7 +232,7 @@ export default function Home() {
 
 <Tip>
   For the complete Particle Auth SDK reference, head over to the  
-  <a href="/api-reference/auth/desktop-sdks/web">Web (JavaScript/TypeScript) documentation</a>. 
+  <a href="/social-logins/auth/desktop-sdks/web">Web (JavaScript/TypeScript) documentation</a>. 
   For practical examples, check out the following demo repositories:
   <ul>
     <li>
@@ -251,13 +251,13 @@ export default function Home() {
 ### Related Resources
 
 <CardGroup cols={3}>
-    <Card title="Customization" href="/guides/configuration/appearance/auth">
+    <Card title="Customization" href="/social-logins/configuration/appearance/auth">
         Customizing Particle Auth.
     </Card>
-    <Card title="Supported Blockchains" href="/guides/network-coverage">
+    <Card title="Supported Blockchains" href="/social-logins/network-coverage">
         List of blockchains supported by Particle Auth.
     </Card>
-    <Card title="Account Abstraction" href="/guides/wallet-as-a-service/aa/web-aa">
+    <Card title="Account Abstraction" href="/aa/sdks/desktop/web">
         Using Particle Auth to create smart accounts.
     </Card>
 </CardGroup>

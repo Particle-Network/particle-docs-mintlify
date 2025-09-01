@@ -22,9 +22,7 @@ The configuration process for this SDK varies significantly depending on whether
 To begin, you'll need to head over to the [Particle dashboard](https://dashboard.particle.network) and retrieve your `projectId`, `clientKey`, and `appId`.
 
 <Note>
-  Follow the quickstart tutorial to set up a project and find the required keys:
-  [Create a new
-  project](/guides/wallet-as-a-service/waas/auth/flutter-quickstart).
+Find a full rundown in the [Dashboard Guide](/social-logins/dashboard)
 </Note>
 
 ### Adding the Particle Auth Flutter SDK to your application
@@ -209,7 +207,7 @@ After installing, configuring, and initializing Particle Auth, initiate the logi
 | `loginPageConfig`  | `LoginPageConfig?`       | (Optional) Controls login UI customization: contains project name, icon and description.                                                                                                                                                                                                |
 | `supportAuthTypes` | `List<SupportAuthType>?` | The methods of authentication visible on the authentication popup UI. By default, this will be exclusive to the chosen social login method, although by passing in additional types, you can expand the UI to include the ability to login with those as an alternative to type. |
 
-<Tip>You can use your existing user base (account system) or a custom authentication method with Particle Connect through JWT. Click [here](/guides/configuration/auth/jwt) to learn how to configure JWT.</Tip>
+<Tip>You can use your existing user base (account system) or a custom authentication method with Particle Connect through JWT. Click [here](/social-logins/configuration/auth/jwt) to learn how to configure JWT.</Tip>
 
 ```dart
 // Google or other social login

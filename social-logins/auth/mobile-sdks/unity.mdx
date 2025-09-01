@@ -37,9 +37,7 @@ Once you've ensured that your project meets the above prerequisites, you'll also
 These connect your Unity project with the Particle dashboard, enabling customization, analytics, tracking, etc.
 
 <Note>
-  Follow the quickstart tutorial to set up a project and find the required keys:
-  [Create a new
-  project](/guides/wallet-as-a-service/waas/mobile-quickstart#configuring-particle-auth).
+  Find a guide on how to set up a project and find the required keys: [Dashboard Guide](/social-logins/dashboard).
 </Note>
 
 ### Configuration
@@ -392,7 +390,7 @@ var nativeResultData = await ParticleAuthCore.Instance.SolanaSendTransaction(tra
 
 ### Sign Type Data
 
-`ParticleAuthCore.Instance.EvmSignTypedData` is an **EVM-specific** method for signing structured (typed) data. For more information on `signTypedData`, see the [Web (JavaScript/TypeScript)](/api-reference/auth/desktop-sdks/web) page.
+`ParticleAuthCore.Instance.EvmSignTypedData` is an **EVM-specific** method for signing structured (typed) data. For more information on `signTypedData`, see the [Web (JavaScript/TypeScript)](/social-logins/auth/desktop-sdks/web) page.
 
 ```csharp
 string typedData = "Your typedata";

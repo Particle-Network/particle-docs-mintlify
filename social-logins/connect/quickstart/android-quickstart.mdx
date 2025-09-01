@@ -9,7 +9,7 @@ Particle Network has support for Android (Kotlin) through various platform-nativ
 This document covers everything needed to get up and running with Particle Connect on Android in just a few minutes.
 
 <Note>
-For complete documentation covering the implementation of Particle Connect on Android in more depth, head over to the [Android SDK reference](/api-reference/connect/mobile/android).
+For complete documentation covering the implementation of Particle Connect on Android in more depth, head over to the [Android SDK reference](/social-logins/connect/mobile/android).
 </Note>
 
 ---
@@ -125,7 +125,7 @@ Sign up or Log in into the [Particle dashboard](https://dashboard.particle.netwo
 </Accordion>
 </AccordionGroup>
 
-For more information on the Particle dashboard, take a look at [this video](https://www.youtube.com/watch?v=d7DYCMNDmjo&ab_channel=ParticleNetwork) or visit the [dashboard quickstart](/guides/dashboard).
+For more information on the Particle dashboard, take a look at [this video](https://www.youtube.com/watch?v=d7DYCMNDmjo&ab_channel=ParticleNetwork) or visit the [dashboard quickstart](/social-logins/dashboard).
 
 </Step>
 
@@ -386,7 +386,7 @@ ParticleConnectKit.connect(config,connectCallback = object : ConnectKitCallback 
 
 Upon a successful connection, you'll be able to retrieve information about the resulting account through two mechanisms. The first involves reading properties on the object originally assigned to the `ParticleConnectKit.connect` call, which will contain core properties such as `publicAddress` after an account is loaded.
 
-Additionally, to explicitly retrieve detailed information, you can call `AuthCore.getUserInfo`, which will return a `userInfo` object with various properties detailing the connection method used, addresses, and so on (to learn more about the structure of this object, head over to its [API reference](/api-reference/auth/server/getuserinfo)).
+Additionally, to explicitly retrieve detailed information, you can call `AuthCore.getUserInfo`, which will return a `userInfo` object with various properties detailing the connection method used, addresses, and so on (to learn more about the structure of this object, head over to its [API reference](/social-logins/connect/mobile/android)).
 
 <Tip> Ensure you save basic account details, such as the address, because you'll need this later as a parameter within transaction execution functions. </Tip>
 

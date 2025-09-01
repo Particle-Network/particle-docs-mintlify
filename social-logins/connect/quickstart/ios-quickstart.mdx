@@ -9,7 +9,7 @@ Getting started with Particle Connect on iOS only takes a few minutes.
 Below is a quick, step-by-step rundown on installing, configuring, and utilizing Particle Connect on iOS.
 
 <Note>
-  For complete documentation covering the implementation of Particle Connect on iOS in more depth, head over to the [iOS SDK reference](/api-reference/connect/mobile-sdks/ios).
+  For complete documentation covering the implementation of Particle Connect on iOS in more depth, head over to the [iOS SDK reference](/social-logins/connect/mobile/ios).
 </Note>
 
 ---
@@ -134,7 +134,7 @@ Sign up or Log in into the [Particle dashboard](https://dashboard.particle.netwo
 
 </AccordionGroup>
 
-For more information on the Particle dashboard, take a look at the [dashboard quickstart](/guides/dashboard).
+For more information on the Particle dashboard, take a look at the [dashboard quickstart](/social-logins/dashboard).
 
 With your project ID, client key, and app ID retrieved, you'll add a file named `ParticleNetwork-Info.plist` to your project, then insert these values as is shown below.
 
@@ -275,7 +275,7 @@ Upon wallet connection (or social login), you'll be able to retrieve information
 
 Basic account information can be found through the result of `ParticleConnectUI.connect`, in this case, that was saved to `account`, which contains properties such as `publicAddress` and `walletType`.
 
-To explicitly retrieve `userInfo` (a collection of information regarding the login mechanism, attached addresses, and so on; more information can be found within its [API reference](/api-reference/auth/server/getuserinfo)), you'll need to call `auth.getUserInfo`.
+To explicitly retrieve `userInfo` (a collection of information regarding the login mechanism, attached addresses, and so on; more information can be found within its [API reference](/social-logins/api/server/getuserinfo)), you'll need to call `auth.getUserInfo`.
 
 An example of both approaches can be found below.
 
@@ -323,4 +323,4 @@ PNRouter.navigatorWallet(hiddenBackButton: false)
 ```
 
 
-<Tip> To implement account abstraction within your iOS project, integrate the `ParticleAA` SDK and refer to this [documentation](/api-reference/aa/sdks/mobile/ios). Additionally, a demo repository can be found [here](https://github.com/Particle-Network/particle-connect-ios/tree/master/ConnectKitDemo). </Tip>
+<Tip> To implement account abstraction within your iOS project, integrate the `ParticleAA` SDK and refer to this [documentation](/aa/sdks/mobile/ios). Additionally, a demo repository can be found [here](https://github.com/Particle-Network/particle-connect-ios/tree/master/ConnectKitDemo). </Tip>

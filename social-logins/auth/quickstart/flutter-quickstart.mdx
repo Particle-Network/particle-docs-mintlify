@@ -4,12 +4,12 @@ title: "Flutter Quickstart"
 
 # Quickstart: Implementing Particle Auth within applications built with Flutter
 
-Particle Auth is the standard SDK used for standalone social logins, allowing for 2-click onboarding using Google, X, email, and so on. Flutter is [one of numerous platforms supported](/guides/integrations/platform/flutter) by Particle Auth and will be covered here.
+Particle Auth is the standard SDK used for standalone social logins, allowing for 2-click onboarding using Google, X, email, and so on.
 
-Specifically, this document will go through the step-by-step process of configuring, initializing, and using Particle Auth with Flutter.
+Specifically, this document will go through the step-by-step process of configuring, initializing, and using **Particle Auth** with **Flutter**.
 
 <Note>
-  For complete documentation covering the implementation of Particle Auth with Flutter in more depth, head over to the [Flutter SDK reference](/api-reference/auth/mobile-sdks/flutter).
+  For complete documentation covering the implementation of Particle Auth with Flutter in more depth, head over to the [Flutter SDK reference](/social-logins/auth/mobile-sdks/flutter).
 </Note>
 
 ***
@@ -100,7 +100,7 @@ Sign up or Log in into the [Particle dashboard](https://dashboard.particle.netwo
 </Accordion>
 </AccordionGroup>
 
-For more information on the Particle dashboard, take a look at the [dashboard quickstart](/guides/dashboard).
+For more information on the Particle dashboard, take a look at the [dashboard quickstart](/social-logins/dashboard).
 
 ---
 
@@ -297,7 +297,7 @@ final userInfo = await ParticleAuthCore.connect(LoginType.google,
           prompt: SocialLoginPrompt.select_account);
 
 // Additionally, you can implement custom authentication through JWT.
-// Learn more: https://developers.particle.network/guides/configuration/auth/jwt
+// Learn more: https://developers.particle.network/social-logins/configuration/auth/jwt
 final userInfo = await ParticleAuthCore.connect(LoginType.jwt,
           account: "the JWT");
 ```
@@ -309,7 +309,7 @@ final userInfo = await ParticleAuthCore.connect(LoginType.jwt,
 
 ### Retrieve User Information
 
-With a user logged in, you'll be able to retrieve information about their account (such as their address, or specific details regarding the social login mechanism they used) through methods such as `Evm.getAddress` and `ParticleAuthCore.getUserInfo` (`getUserInfo` returns an object with numerous points of information; to learn more, head over to its [API reference](/api-reference/auth/server/getuserinfo)).
+With a user logged in, you'll be able to retrieve information about their account (such as their address, or specific details regarding the social login mechanism they used) through methods such as `Evm.getAddress` and `ParticleAuthCore.getUserInfo` (`getUserInfo` returns an object with numerous points of information; to learn more, head over to its [API reference](/social-logins/api/server/getuserinfo)).
 
 The following snippet is an example of retrieving a user's address on both EVM and Solana alongside pulling their broader account information.
 

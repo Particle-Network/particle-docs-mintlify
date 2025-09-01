@@ -57,9 +57,7 @@ Once you've ensured that your project meets the above prerequisites, you'll also
 These connect your **Unity** project directly with the Particle dashboard, enabling customization, analytics, tracking, etc.
 
 <Note>
-  Follow the quickstart tutorial to set up a project and find the required keys:
-  [Create a new
-  project](/guides/wallet-as-a-service/waas/mobile-quickstart#configuring-particle-auth).
+Find a rundown on how to set up a project and find the required keys on the [dashboard guide](/social-logins/dashboard).
 </Note>
 
 ### Configuration
@@ -352,7 +350,7 @@ await ParticleConnect.Instance.SignMessage(this._walletType, publicAddress, mess
 As an alternative to `SignMessage`, for **EVM chains**, you can request that a user signs typed (structured) data rather than purely a raw string. To do this, you can use `adapter.signTypedData` (equivalent to `eth_signTypedData`, represented as either `TypedDataV4`, `TypedDataV2`, or `TypedDataV1`). This takes the following parameters:
 
 - `address` is the user address to target for signature initiation.
-- `data`, the typed data to be signed; see the [Web (JavaScript/TypeScript)](/api-reference/auth/desktop-sdks/web) page for additional guidance.
+- `data`, the typed data to be signed; see the [Web (JavaScript/TypeScript)](/social-logins/connect/desktop/web) page for additional guidance.
 
 E.g.:
 
@@ -386,4 +384,4 @@ await ParticleConnect.Instance.ExportWalletPrivateKey(this._walletType, publicAd
 
 ## Dive Deeper
 
-`ParticleConnect` includes `ParticleAuthCore`. When logged in with a Particle account, you can access additional functions such as `getUserInfo`, `openAccountAndSecurity`, `hasMasterPassword`, `hasPaymentPassword`, and `changeMasterPassword`. For more information, refer to the [Auth SDK reference](/api-reference/auth/mobile-sdks/unity).
+`ParticleConnect` includes `ParticleAuthCore`. When logged in with a Particle account, you can access additional functions such as `getUserInfo`, `openAccountAndSecurity`, `hasMasterPassword`, `hasPaymentPassword`, and `changeMasterPassword`. For more information, refer to the [Auth SDK reference](/social-logins/auth/mobile-sdks/unity).
