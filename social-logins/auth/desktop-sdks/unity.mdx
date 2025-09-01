@@ -11,7 +11,7 @@ This SDK streamlines **configuration**, **integration**, and **interaction**, ma
 
 It supports end-to-end usage of Particle Network with **email**, **phone**, or **custom JWT authentication**.
 
-While its structure is similar to the [Web (JavaScript/TypeScript)](/api-reference/auth/desktop-sdks/web) SDK, there are several key differences, **detailed below**.
+While its structure is similar to the [Web (JavaScript/TypeScript)](/social-logins/auth/desktop-sdks/web) SDK, there are several key differences, **detailed below**.
 
 <Warning>
 <p>Due to limitations with Webview, Particle Auth for Unity on Windows & macOS does not include most built-in social logins</p>
@@ -38,7 +38,7 @@ To start with the **Particle Auth** **Unity** SDK on **Windows** and **macOS**, 
 
 Before diving into the specifics of SDK initialization and use, the best way to get started and explore a live implementation of the Unity SDK is through the **Windows/macOS** demo included within the [GitHub repository](https://github.com/Particle-Network/particle-unity). 
 
-This demo will consist of initializing the SDK and, as previously detailed, a Webview-based authentication menu for [MPC-TSS](/landing/wallet-abstraction/waas/mpc-tss) login, enabling interaction with the resulting wallet.
+This demo will consist of initializing the SDK and, as previously detailed, a Webview-based authentication menu for [MPC-TSS](/social-logins/mpc-tss) login, enabling interaction with the resulting wallet.
 
 #### Quickstart demo installation
 
@@ -102,7 +102,7 @@ ParticleSystem.Instance.Init(config.ToString(), theme.ToString(), language, chai
 
 Among these parameters, the `ParticleUnityRpc` prefab containing `project id`, `app id` and `client key` are the most important. It directly connects your instance of Particle's Wallet-as-a-Service with your configurations in the [Particle dashboard](https://dashboard.particle.network/). 
 
-<Note>Follow the quickstart tutorial to set up a project and find the required keys: [Create a new project](/guides/wallet-as-a-service/waas/auth/web-quickstart#configuring-particle-auth).</Note>
+<Note>Find a full rundown on how to set up a project and find the required keys in the [Dashboard Guide ](/social-logins/dashboard).</Note>
 
 ### Examples of utilization
 
@@ -149,7 +149,7 @@ Debug.Log($"SignAndSendTransaction signature: {signature}");
 
 `ParticleSystem.Instance.SignTypedData` facilitates the signature of structured data; by default, this uses `eth_signTypedData_v4`. 
 
-For more information on `signTypedData`, see the [Web (JavaScript/TypeScript)](/api-reference/auth/desktop-sdks/web) page.
+For more information on `signTypedData`, see the [Web (JavaScript/TypeScript)](/social-logins/auth/desktop-sdks/web) page.
 
 ```csharp C#
 string typedDataV4 = "";

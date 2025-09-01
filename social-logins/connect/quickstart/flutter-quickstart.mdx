@@ -9,7 +9,7 @@ Particle Connect is the flagship SDK driving one-click onboarding through either
 This document will go through the step-by-step process of configuring, initializing, and using Particle Connect with Flutter.
 
 <Note>
-  For complete documentation covering the implementation of Particle Connect on Flutter in more depth, head over to the [Flutter SDK reference](/api-reference/connect/mobile/flutter).
+  For complete documentation covering the implementation of Particle Connect on Flutter in more depth, head over to the [Flutter SDK reference](/social-logins/connect/mobile/flutter).
 </Note>
 
 ***
@@ -98,7 +98,7 @@ Sign up or Log in into the [Particle dashboard](https://dashboard.particle.netwo
 </Accordion>
 </AccordionGroup>
 
-For more information on the Particle dashboard, take a look at the [dashboard quickstart](/guides/dashboard).
+For more information on the Particle dashboard, take a look at the [dashboard quickstart](/social-logins/dashboard).
 
 ---
 
@@ -365,7 +365,7 @@ Upon wallet connection (or social login), you'll be able to retrieve information
 
 Basic account information can be found through the result of `ParticleConnect.connectWithConnectKitConfig`, in this case, that was saved to `account`, which contains properties such as `publicAddress` and `walletType`.
 
-To explicitly retrieve `userInfo` (a collection of information regarding the login mechanism, attached addresses, and so on; more information can be found within its [API reference](/api-reference/auth/server/getuserinfo)), you'll need to call `ParticleAuthCore.getUserInfo`.
+To explicitly retrieve `userInfo` (a collection of information regarding the login mechanism, attached addresses, and so on; more information can be found within its [API reference](/social-logins/api/server/getuserinfo)), you'll need to call `ParticleAuthCore.getUserInfo`.
 
 An example of both approaches can be found below.
 
@@ -398,7 +398,7 @@ String txHash = await ParticleConnect.signAndSendTransaction(WalletType.authCore
 
 ### Open Wallet
 
-If you included `particle_wallet` within your `pubspec.yaml`, you can open the (optional) [embedded wallet interface](/api-reference/wallet/mobile/flutter) at any time after a user connects, use `ParticleWallet.setSupportChain` to set supported chains, then `ParticleWallet.navigatorWallet` to open the interface.
+If you included `particle_wallet` within your `pubspec.yaml`, you can open the (optional) **embedded wallet interface** at any time after a user connects, use `ParticleWallet.setSupportChain` to set supported chains, then `ParticleWallet.navigatorWallet` to open the interface.
 
 ```dart
 List<ChainInfo> chainInfos = [
@@ -410,4 +410,4 @@ ParticleWallet.setSupportChain(chainInfos);
 ParticleWallet.navigatorWallet();
 ```
 
-<Tip> To implement account abstraction within your Flutter project, integrate the `particle_aa` SDK and refer to this [documentation](/api-reference/aa/sdks/mobile/flutter). Additionally, a demo repository can be found [here](https://github.com/Particle-Network/particle-flutter/tree/master/particle-aa/example). </Tip>
+<Tip> To implement account abstraction within your Flutter project, integrate the `particle_aa` SDK and refer to this [documentation](/aa/sdks/mobile/flutter). Additionally, a demo repository can be found [here](https://github.com/Particle-Network/particle-flutter/tree/master/particle-aa/example). </Tip>

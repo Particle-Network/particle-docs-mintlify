@@ -9,7 +9,7 @@ Particle Auth, the core SDK responsible for driving social logins, has various i
 This document will go through the step-by-step process of configuring, initializing, and using Particle Auth on iOS.
 
 <Note>
-  For complete documentation covering the implementation of Particle Auth on iOS in more depth, head over to the [iOS SDK reference](/api-reference/auth/mobile-sdks/ios).
+  For complete documentation covering the implementation of Particle Auth on iOS in more depth, head over to the [iOS SDK reference](/social-logins/auth/mobile-sdks/ios).
 </Note>
 
 Before jumping into it, ensure your project meets the following minimum requirements (otherwise, you may encounter compatibility issues).
@@ -117,7 +117,7 @@ Sign up or Log in into the [Particle dashboard](https://dashboard.particle.netwo
 </Accordion>
 </AccordionGroup>
 
-For more information on the Particle dashboard, take a look at the [dashboard quickstart](/guides/dashboard).
+For more information on the Particle dashboard, take a look at the [dashboard quickstart](/social-logins/dashboard).
 
 With your project ID, client key, and app ID retrieved, you'll need to add a file named `ParticleNetwork-Info.plist` to your project, then insert the aforementioned keys as is exemplified below.
 
@@ -181,7 +181,7 @@ let userInfo = try await auth.connect(type: .jwt, account: "the JWT")
 
 ### Retrieve User Information
 
-With a user logged in, you'll be able to retrieve information about their account (such as their address, or specific details regarding the social login mechanism they used) through methods such as `auth.evm.getAddress` and `auth.getUserInfo` (`getUserInfo` returns an object with numerous points of information; to learn more, head over to its [API reference](/api-reference/auth/server/getuserinfo)).
+With a user logged in, you'll be able to retrieve information about their account (such as their address, or specific details regarding the social login mechanism they used) through methods such as `auth.evm.getAddress` and `auth.getUserInfo` (`getUserInfo` returns an object with numerous points of information; to learn more, head over to its [API reference](/social-logins/api/server/getuserinfo)).
 
 The following snippet is an example of retrieving a user's address on both EVM and Solana alongside pulling their broader account information.
 

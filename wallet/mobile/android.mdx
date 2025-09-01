@@ -33,9 +33,7 @@ Once your project meets the aforementioned requirements, you'll need to move ont
 These are your `projectId`, `clientKey`, and `appId`. During configuration, you'll need these to connect your project with the [Particle dashboard](https://dashboard.particle.network), unlocking customization, analytics, tracking, etc.
 
 <Note>
-  Follow the quickstart tutorial to set up a project and find the required keys:
-  [Create a new
-  project](/guides/wallet-as-a-service/waas/mobile-quickstart#configuring-particle-auth).
+Find a full rundown of the process in the [dashboard guide](/social-logins/dashboard).
 </Note>
 
 ### Configuration
@@ -167,7 +165,7 @@ YourProject/app/src/main/res/
 
 ### Set Wallet
 
-Before open a wallet, you need to set up a wallet, When you log in using [connect](/api-reference/connect/mobile/android/), a wallet information will be returned. You can directly use the SDK method to set it
+Before open a wallet, you need to set up a wallet, When you log in using [connect](/social-logins/connect/mobile/android/), a wallet information will be returned. You can directly use the SDK method to set it
 
 ```kotlin kotlin
         adapter.connect(null, object : ConnectCallback {

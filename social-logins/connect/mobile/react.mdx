@@ -47,9 +47,7 @@ The setup process for the **Particle Connect React Native SDK** is relatively st
 Before diving into the platform-specific configuration, all Particle Connect (& Auth) SDKs require three standard initialization values: `projectId`, `clientKey`, and `appId`. These can be retrieved from the [Particle dashboard](https://dashboard.particle.network).
 
 <Note>
-  Follow the quickstart tutorial to set up a project and find the required keys:
-  [Create a new
-  project](/guides/wallet-as-a-service/waas/mobile-quickstart#configuring-particle-auth).
+Find a full rundown of the setup process in the [dashboard guide](/social-logins/dashboard).
 </Note>
 
 ### Adding the Particle Connect React Native SDK to your application
@@ -443,4 +441,4 @@ particleConnect.setWalletConnectProjectId("Your WalletConnect Project ID")
 
 `@particle-network/rn-connect` includes `@particle-connect/rn-auth-core`. 
 
-If you log in with a Particle account, you can access additional functions such as `getUserInfo`, `openAccountAndSecurity`, `hasMasterPassword` and `hasPaymentPassword` and `changeMasterPassword`. You can also reference the docs from [Auth SDK reference](/api-reference/auth/mobile-sdks/react).
+If you log in with a Particle account, you can access additional functions such as `getUserInfo`, `openAccountAndSecurity`, `hasMasterPassword` and `hasPaymentPassword` and `changeMasterPassword`. You can also reference the docs from [Auth SDK reference](/social-logins/auth/mobile-sdks/react).

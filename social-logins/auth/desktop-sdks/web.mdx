@@ -15,7 +15,7 @@ The Particle Auth SDK is the primary mechanism for **configuring** and **using**
 ## Getting Started
 
 <Tip>
-    Check out the [Web Quickstart guide](/guides/wallet-as-a-service/waas/auth/web-quickstart) and get a new project up
+    Check out the [Web Quickstart guide](/social-logins/auth/quickstart/web-quickstart) and get a new project up
     and running in just 5 minutes.
 </Tip>
 
@@ -31,13 +31,13 @@ yarn add @particle-network/authkit viem@2
 
 ## Configuration
 
-Configuration is primarily handled by wrapping an application with **Particle Auth**'s master configuration component, essential for authenticating your project and [customizing the optional embedded wallet modal](/guides/configuration/appearance/wallet).
+Configuration is primarily handled by wrapping an application with **Particle Auth**'s master configuration component, essential for authenticating your project and [customizing the optional embedded wallet modal](/social-logins/configuration/appearance/wallet).
 
-No matter which **Particle Auth** SDK you're using, you must define your `projectId`, `clientKey`, and `appId` within this configuration object to authenticate your Particle Auth instance properly. Additionally, [you can apply customizations to the wallet modal](/guides/configuration/appearance/wallet) for a tailored user experience.
+No matter which **Particle Auth** SDK you're using, you must define your `projectId`, `clientKey`, and `appId` within this configuration object to authenticate your Particle Auth instance properly. Additionally, [you can apply customizations to the wallet modal](/social-logins/configuration/appearance/wallet) for a tailored user experience.
 
 <Note>
     Follow the quickstart tutorial to set up a project and find the required keys: [Create a new
-    project](/guides/wallet-as-a-service/waas/auth/web-quickstart#configuring-particle-auth).
+    project](/social-logins/auth/quickstart/web-quickstart#configuring-particle-auth).
 </Note>
 
 Below is an example of an `index.tsx` file from a `create-react-app` project. In this example, the `AuthCoreContextProvider` component acts as the configuration wrapper for the entire application.
@@ -97,8 +97,8 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
 
 <Tip>
  Learn how to customize the aesthetics of the login and embedded wallet interface in the [Customizing Login
- Modal](/guides/configuration/appearance/auth) and [Customizing Wallet
- Modal](/guides/configuration/appearance/wallet) pages.
+ Modal](/social-logins/configuration/appearance/auth) and [Customizing Wallet
+ Modal](/social-logins/configuration/appearance/wallet) pages.
 </Tip>
 
 <Warning>
@@ -168,7 +168,7 @@ You can now use the **provider** object to interact with **Web3**, enabling acti
 
 ## Initiating Social Login
 
-To interact with a user's account (wallet), they must first log in using **Particle Auth** or [Particle Connect](/api-reference/connect/desktop/web), similar to how one would enter a password and unlock MetaMask.
+To interact with a user's account (wallet), they must first log in using **Particle Auth** or [Particle Connect](/social-logins/connect/desktop/web), similar to how one would enter a password and unlock MetaMask.
 
 <Note>Before interactions can occur, the application must either recognize that the user is already logged in or prompt them to complete the login process.</Note>
 
@@ -196,7 +196,7 @@ In this example, the `handleLogin` function initiates the login process by displ
 
 ### Customize the Login Experience
 
-You can set specific configurations within the `connect()` function to further tailor the **login** experience beyond [frontend customizations](/guides/configuration/appearance/auth). 
+You can set specific configurations within the `connect()` function to further tailor the **login** experience beyond [frontend customizations](/social-logins/configuration/appearance/auth). 
 
 The following example showcases all available configuration options:
 
@@ -292,7 +292,7 @@ You can use your existing user base or authentication method with Particle Auth 
 
 Before connecting, you must set your custom JWT configuration on the [Dashboard](https://dashboard.particle.network).
 
-<img width="100%" noZoom src="/api-reference/auth/desktop-sdks/images/jwt.png" />
+<img width="100%" noZoom src="/social-logins/auth/desktop-sdks/images/jwt.png" />
 
 Then, you can refer to the code below to log in using JWT.
 
@@ -310,7 +310,7 @@ const userInfo = await connect({
 });
 ```
 
-Learn more about [Custom Authentication](/guides/configuration/auth/jwt).
+Learn more about [Custom Authentication](/social-logins/configuration/auth/jwt).
 
 ### Verify User Login Status
 
@@ -543,12 +543,12 @@ const result = await signAndSendTransaction(transaction);
     <Frame>
         <img
             className="block dark:hidden"
-            src="/api-reference/auth/desktop-sdks/images/example.png"
+            src="/social-logins/auth/desktop-sdks/images/example.png"
             alt="Particle Network example."
         />
         <img
             className="hidden dark:block"
-            src="/api-reference/auth/desktop-sdks/images/example.png"
+            src="/social-logins/auth/desktop-sdks/images/example.png"
             alt="Particle Network example."
         />
     </Frame>
@@ -636,7 +636,7 @@ To enable blind signatures (signing without a confirmation popup) in Particle Au
    - Users should not have set a payment password (as this interrupts the signing process).
 
 3. **Disable Payment Password Prompt Setting**
-   - Set the `promptPaymentPasswordSettingWhenSign` parameter to `false` within [`AuthCoreContextProvider`](https://developers.particle.network/api-reference/auth/desktop-sdks/web#configuration).
+   - Set the `promptPaymentPasswordSettingWhenSign` parameter to `false` within [`AuthCoreContextProvider`](/social-logins/auth/desktop-sdks/web#configuration).
 
     ```typescript
     // Configuration for disabling payment password prompt
@@ -766,18 +766,3 @@ const {
 } = useCustomize();
 ```
 
-# External Connection Kits
-
-Integrating and leveraging **Particle Auth** isn't limited to interfaces provided by **Particle Network**; instead, it's built to fit into nearly every implementation scenario. Whether you're using **RainbowKit**, **Web3Modal**, or **Solana**'s `wallet-adapter` or would like to have a standalone social login button within your application, **Particle Auth** can be used.
-
-<CardGroup cols={3}>
-    <Card title="RainbowKit" href="/guides/wallet-as-a-service/connection-kits/rainbow">
-        Particle Auth through RainbowKit, by Rainbow.
-    </Card>
-    <Card title="Web3Modal" href="/guides/wallet-as-a-service/connection-kits/web3modal">
-        Particle Auth through Web3Modal, by WalletConnect.
-    </Card>
-    <Card title="Web3-Onboard" href="/guides/wallet-as-a-service/connection-kits/web3-onboard">
-        Particle Auth through Web3-Onboard, by Blocknative.
-    </Card>
-</CardGroup>

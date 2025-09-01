@@ -85,9 +85,7 @@ dependencies {
 All implementations of Particle Connect (and Particle Auth) require three universal values: `projectId`, `appId`, and `clientKey`. These values tie a given implementation to the [Particle dashboard](https://dashboard.particle.network/), enabling configuration, analytics, tracking, etc.
 
 <Note>
-  Follow the quickstart tutorial to set up a project and find the required keys:
-  [Create a new
-  project](/guides/wallet-as-a-service/waas/connect/android-quickstart).
+Find a full rundown of how to set up a project and find the required keys in the [dashboard guide](/social-logins/dashboard).
 </Note>
 
 ### Configuration
@@ -481,11 +479,11 @@ Alternatively, **for EVM chains**, you can request that a user signs typed (stru
 | Field           | Type         | Description                                                                                                                                                     |
 | :-------------- | :----------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `publicAddress` | `String`            | For the connected public address, if `adapter` is `AuthCoreAdapter`, you can pass an empty string; for other wallet types, you need to pass a connected public address. |
-| `data`          | `String`     | the typed data to be signed; see the [Web (JavaScript/TypeScript)](/api-reference/auth/desktop-sdks/web) page for additional guidance.                          |
+| `data`          | `String`     | the typed data to be signed; see the [Web (JavaScript/TypeScript)](/social-logins/auth/desktop-sdks/web) page for additional guidance.                          |
 | callback        | SignCallback | A function to handle the transaction's return response.                                                                                 |
 
 - `address` — The user address to target for signature initiation.
-- `data` — The typed data to be signed. For more details, refer to the [Web (JavaScript/TypeScript)](/api-reference/auth/desktop-sdks/web) documentation.
+- `data` — The typed data to be signed. For more details, refer to the [Web (JavaScript/TypeScript)](/social-logins/auth/desktop-sdks/web) documentation.
 - `callback` — A function to handle the response after the signature process.
 
 E.g.:

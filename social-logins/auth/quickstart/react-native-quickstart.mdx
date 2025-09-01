@@ -4,12 +4,12 @@ title: "React Native Quickstart"
 
 # Quickstart: Implementing Particle Auth within applications built with React Native
 
-Particle Auth, the primary SDK driving standalone social logins, has native support for React Native (among [numerous other platforms](/guides/integrations/platform)); integration only takes a few steps.
+Particle Auth, the primary SDK driving standalone social logins, has native support for React Native; integration only takes a few steps.
 
 This document will go through the step-by-step process of configuring, initializing, and using Particle Auth with React Native.
 
 <Note>
-  For complete documentation covering the implementation of Particle Auth on React Native in more depth, head over to the [React Native SDK reference](/api-reference/auth/mobile-sdks/react).
+  For complete documentation covering the implementation of Particle Auth on React Native in more depth, head over to the [React Native SDK reference](/social-logins/auth/mobile-sdks/react).
 </Note>
 
 ***
@@ -106,7 +106,7 @@ Sign up or Log in into the [Particle dashboard](https://dashboard.particle.netwo
 </Accordion>
 </AccordionGroup>
 
-For more information on the Particle dashboard, take a look at the [dashboard quickstart](/guides/dashboard).
+For more information on the Particle dashboard, take a look at the [dashboard quickstart](/social-logins/dashboard).
 
 ---
 
@@ -330,7 +330,7 @@ const userInfo = await particleAuthCore.connect(LoginType.JWT, jwt);
 
 ### Retrieve User Information
 
-With a user logged in, you'll be able to retrieve information about their account (such as their address, or specific details regarding the social login mechanism they used) through methods such as `evm.getAddress` and `particleAuthCore.getUserInfo` (`getUserInfo` returns an object with numerous points of information; to learn more, head over to its [API reference](/api-reference/auth/server/getuserinfo)).
+With a user logged in, you'll be able to retrieve information about their account (such as their address, or specific details regarding the social login mechanism they used) through methods such as `evm.getAddress` and `particleAuthCore.getUserInfo` (`getUserInfo` returns an object with numerous points of information; to learn more, head over to its [API reference](/social-logins/api/server/getuserinfo)).
 
 The following snippet is an example of retrieving a user's address on both EVM and Solana alongside pulling their broader account information.
 

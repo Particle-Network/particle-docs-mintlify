@@ -120,4 +120,4 @@ dist
 .yarn/install-state.gz
 .pnp.*
 
-# End of https://mrkandreev.name/snippets/gitignore-generator/#Node
+./api-reference-legacy

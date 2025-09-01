@@ -28,15 +28,15 @@ To install:
 
 To begin, you'll need to create a config object with your `projectId`, `clientKey`, and `appId` filled in.
 
-<Note>Follow the quickstart tutorial to set up a project and find the required keys: [Create a new project](/guides/wallet-as-a-service/waas/mobile-quickstart#configuring-particle-auth).</Note>
+<Note>Find a guide on how to set up a project and find the required keys: [Dashboard Guide](/social-logins/dashboard).</Note>
 
 After retrieving and setting the necessary values, you must call the `Init` function to complete the initialization. The `Init` function accepts the following parameters:
 
 - **Default Browser Widget**: Typically set to `W_ExecuteWebBrowser`. If you prefer to use a custom `WebBrowser` blueprint, you can do so if it follows the structure of `W_ExecuteWebBrowser`.
 - **In Config**: This links to the previously defined configuration object containing `projectId`, `clientKey`, and `appId`.
-- **In Theme**: An optional JSON string for customization. For more details, see [Particle Auth Set Auth Theme](/api-reference/auth/desktop-sdks/web#usecustomize).
+- **In Theme**: An optional JSON string for customization. For more details, see [Particle Auth Set Auth Theme](/social-logins/auth/desktop-sdks/web#usecustomize).
 - **In Language**: Specifies the language used in the modal. Options include `en`, `zh-cn`, `zh-tw`, `ja`, or `ko`.
-- **In Chain Name & In Chain Id**: Defines the primary chain to be used, either EVM or Solana. For details on specific `chainId` and `chainName` configurations, refer to [EVM Chains Structure](/guides/network-coverage).
+- **In Chain Name & In Chain Id**: Defines the primary chain to be used, either EVM or Solana. For details on specific `chainId` and `chainName` configurations, refer to [EVM Chains Structure](/social-logins/network-coverage).
 
 <img
   className="block dark:hidden"

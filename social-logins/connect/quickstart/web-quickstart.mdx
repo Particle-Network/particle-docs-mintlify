@@ -8,7 +8,7 @@ Integrating **Particle Connect** into your web application can be done in **unde
 This guide provides a concise overview of how to install, configure, and enable social logins in a Next.js application using `create @particle-network/connectkit` as your starting point. 
 
 <Note>
-For a detailed explanation of each feature and more advanced configurations, refer to the [Particle Connect SDK reference](/api-reference/connect/desktop/web).
+For a detailed explanation of each feature and more advanced configurations, refer to the [Particle Connect SDK reference](/social-logins/connect/desktop/web).
 </Note>
 
 ---
@@ -119,7 +119,7 @@ Sign up or Log in into the [Particle dashboard](https://dashboard.particle.netwo
 </Accordion>
 </AccordionGroup>
 
-<Note>For a quick overview of the Particle dashboard, watch [this video](https://www.youtube.com/watch?v=d7DYCMNDmjo&ab_channel=ParticleNetwork) or check out the [Dashboard Quickstart Guide](/guides/dashboard).</Note>
+<Note>For a quick overview of the Particle dashboard, watch [this video](https://www.youtube.com/watch?v=d7DYCMNDmjo&ab_channel=ParticleNetwork) or check out the [Dashboard Quickstart Guide](/social-logins/dashboard).</Note>
 
 After obtaining your `projectId`, `clientKey`, and `appId`, you'll need to use these to configure the aforementioned `ConnectKitProvider` component from `@particle-network/connectkit`. 
 
@@ -150,13 +150,13 @@ Here’s how you can configure `ConnectKitProvider`:
 
 <Note>In the boilerplate application, you'll find a pre-configured `Connectkit.tsx` file located in the `src` directory.</Note>
 
-Below is an example of a configured instance of `ConnectKitProvider`. For more details around each available property, head over to the [Particle Connect Web SDK reference](/api-reference/connect/desktop/web).
+Below is an example of a configured instance of `ConnectKitProvider`. For more details around each available property, head over to the [Particle Connect Web SDK reference](/social-logins/connect/desktop/web).
 
 import {InteractiveConnectkit} from '/snippets/InteractiveConnectkit.mdx'
 
 <InteractiveConnectkit />
 
-<Tip>For more detailed information, visit the full [**Particle Connect** SDK documentation](/api-reference/connect/desktop/web).</Tip>
+<Tip>For more detailed information, visit the full [**Particle Connect** SDK documentation](/social-logins/connect/desktop/web).</Tip>
 
 </Step>
 
@@ -203,7 +203,7 @@ export default function RootLayout({
 
 With **Particle Connect** now configured, you can proceed to enable social logins within your application through the aforementioned `ConnectButton` component.
 
-Additionally, for driving application-level interaction (after initial onboarding), `@particle-network/connectkit` provides a variety of hooks. You can explore all available hooks in the [Particle Connect SDK documentation](/api-reference/connect/desktop/web#key-react-hooks-for-particle-connect).
+Additionally, for driving application-level interaction (after initial onboarding), `@particle-network/connectkit` provides a variety of hooks. You can explore all available hooks in the [Particle Connect SDK documentation](/social-logins/connect/desktop/web#key-react-hooks-for-particle-connect).
 
 The boilerplate application includes a basic example featuring only a **Connect** button (`ConnectButton`).
 

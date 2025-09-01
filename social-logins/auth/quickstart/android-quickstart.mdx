@@ -9,7 +9,7 @@ Particle Auth, responsible for driving standalone social logins leading to MPC-s
 Below, you'll find everything you need to get started, from beginning to end.
 
 <Note>
-For complete documentation covering the implementation of Particle Auth on Android in more depth, head over to the [Android SDK reference](/api-reference/connect/mobile/android).
+For complete documentation covering the implementation of Particle Auth on Android in more depth, head over to the [Android SDK reference](/social-logins/connect/mobile/android).
 </Note>
 
 ---
@@ -95,7 +95,7 @@ Before we begin installing and configuring the SDK, you'll need a project that m
         </Accordion>
     </AccordionGroup>
 
-    For more information on the Particle dashboard, take a look at [this video](https://www.youtube.com/watch?v=d7DYCMNDmjo&ab_channel=ParticleNetwork) or visit the [dashboard quickstart](/guides/dashboard).
+    For more information on the Particle dashboard, take a look at [this video](https://www.youtube.com/watch?v=d7DYCMNDmjo&ab_channel=ParticleNetwork) or visit the [dashboard quickstart](/social-logins/dashboard).
 
 </Step>
 
@@ -296,7 +296,7 @@ AuthCore.connect(SocialLoginType.GOOGLE, connectCallback =
 
 With a user logged in, you can retrieve information about their account (such as their address or the details relating to the chosen method; for example, the email attached to their Google account).
 
-To retrieve an object containing a large amount of general information, call `AuthCore.getUserInfo`. This method will return numerous attributes based upon the login method they chose; for a full list of included properties, head over to the [`getUserInfo` API reference](/api-reference/auth/server/getuserinfo).
+To retrieve an object containing a large amount of general information, call `AuthCore.getUserInfo`. This method will return numerous attributes based upon the login method they chose; for a full list of included properties, head over to the [`getUserInfo` API reference](/social-logins/api/server/getuserinfo).
 
 `AuthCore.getUserInfo` will include a `wallets` object with their address present; although an address can also be retrieved through `AuthCore.evm.getAddress`, or if Solana is being used, `AuthCore.solana.getAddress`.
 
