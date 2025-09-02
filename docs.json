@@ -2,7 +2,38 @@
   "$schema": "https://mintlify.com/docs.json",
   "theme": "mint",
   "name": "Particle Network docs",
+  "seo": {
+    "metatags": {
+        "charset": "UTF-8",
+        "viewport": "width=device-width, initial-scale=1",
+        "robots": "index, follow",
+        "googlebot": "index, follow",
+        "referrer": "strict-origin-when-cross-origin",
   
+        "application-name": "Particle Network Docs",
+        "theme-color": "#0F0F12",
+        "color-scheme": "light dark",
+  
+        "description": "Particle Network documentation: Chain Abstraction via Universal Accounts—one account, unified balance, automatic bridging and gas abstraction across chains.",
+"keywords": "chain abstraction, chain abstraction sdk, chain abstraction layer, unified balance, unified balance sdk, universal accounts, universal account sdk, universal balance, web3 sdk, cross-chain sdk, multi-chain sdk, omnichain sdk, chain-agnostic, chain-agnostic sdk, chain-agnostic apps, cross-chain ux, cross-chain user experience, automatic bridging, automatic bridging web3, gas abstraction, gasless transactions, multi-token gas, account abstraction, erc-4337, erc-4337 sdk, smart accounts, web3 onboarding, web3 developer tools, cross-chain liquidity, seamless dapp integration, multi-chain wallet balance, bridge-less transactions, user experience, improve user experience web3",
+  
+        "og:title": "Particle Network Docs - Chain Abstraction & Universal Accounts",
+        "og:type": "website",
+        "og:url": "https://developers.particle.network",
+        "og:image": "https://mintcdn.com/particlenetwork-fccf74d2/oXCulWNeMx80sJqa/images/hero-dark.png?w=840&maxW=2560&auto=format&n=oXCulWNeMx80sJqa&q=85&s=9e8bd92b6ee842d7af284f9c0d3732b8",
+        "og:description": "Build chain-agnostic apps with Universal Accounts: unified balances, automatic bridging, multi-token gas.",
+        "og:site_name": "Particle Network Docs",
+        "og:locale": "en_US",
+  
+        "twitter:card": "summary_large_image",
+        "twitter:site": "@ParticleNtwrk",
+        "twitter:creator": "@ParticleNtwrk",
+        "twitter:title": "Particle Network Docs - Chain Abstraction & Universal Accounts",
+        "twitter:description": "Universal Accounts: one account and unified balance across chains. Automatic bridging & gas abstraction.",
+        "twitter:image": "https://pbs.twimg.com/profile_images/1623919818108997633/o2JfMaqi_400x400.png"
+      },
+      "indexing": "navigable"
+    },
   "colors": {
     "primary": "#9d32de",
     "light": "#e44be0",
