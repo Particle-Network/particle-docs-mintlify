@@ -2,6 +2,11 @@
   "$schema": "https://mintlify.com/docs.json",
   "theme": "mint",
   "name": "Particle Network docs",
+  "integrations": {
+    "ga4": {
+      "measurementId": "G-LJLDQ1H9MM"
+    }
+  },
   "seo": {
     "metatags": {
         "charset": "UTF-8",
@@ -32,7 +37,20 @@
         "twitter:description": "Universal Accounts: one account and unified balance across chains. Automatic bridging & gas abstraction.",
         "twitter:image": "https://pbs.twimg.com/profile_images/1623919818108997633/o2JfMaqi_400x400.png"
       },
-      "indexing": "navigable"
+      "indexing": "all"
+    
+    },
+    "contextual": {
+      "options": [
+        "copy",
+        "view",
+        "chatgpt",
+        "claude",
+        "perplexity",
+        "mcp",
+        "cursor",
+        "vscode"
+      ]
     },
   "colors": {
     "primary": "#9d32de",
@@ -439,11 +457,7 @@
       "discord": "https://discord.com/invite/2y44qr6CR2"
     }
   },
-  "integrations": {
-    "ga4": {
-      "measurementId": "G-LJLDQ1H9MM"
-    }
-  },
+
   "redirects": [
     {
       "source": "/docs/what-is-particle-network",
