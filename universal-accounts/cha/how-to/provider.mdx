@@ -47,13 +47,17 @@ To start, ensure you have an app set up with a browser-injected EVM wallet like 
   </Step>
   <Step title="Set Environment Variables">
     Add your Universal Accounts project ID to `.env.local`:
-
+ 
     ```env .env
-    NEXT_PUBLIC_UA_PROJECT_ID=your_universal_accounts_project_id
+    NEXT_PUBLIC_PROJECT_ID="YOUR_PROJECT_ID"
+    NEXT_PUBLIC_CLIENT_KEY="YOUR_CLIENT_KEY"
+    NEXT_PUBLIC_APP_ID="YOUR_APP_ID"
     ```
 
     <Info>
-      Get your Universal Accounts project ID from the [Particle Dashboard](https://dashboard.particle.network/).
+      Get your Universal project keys from the [Particle Dashboard](https://dashboard.particle.network/). 
+
+      Find a full rundown of the process on the [Universal Accounts SDK](/universal-accounts/ua-reference/desktop/web) reference page.
     </Info>
   </Step>
 </Steps>
@@ -99,10 +103,14 @@ Once the user connects their wallet and you obtain their EOA address, create a n
 import { UniversalAccount } from "@particle-network/universal-account-sdk";
 
 const universalAccount = new UniversalAccount({
-  projectId: process.env.NEXT_PUBLIC_UA_PROJECT_ID!,
-  ownerAddress: walletAddress,
+  projectId: process.env.NEXT_PUBLIC_PROJECT_ID!,
+  projectClientKey: process.env.NEXT_PUBLIC_CLIENT_KEY!,
+  projectAppUuid: process.env.NEXT_PUBLIC_APP_ID!,
+  ownerAddress: address,
+  // If not set it will use auto-slippage
   tradeConfig: {
-    universalGas: false,
+    slippageBps: 100, // 1% slippage tolerance
+    //usePrimaryTokens: [SUPPORTED_TOKEN_TYPE.SOL], // Specify token to use as source (only for swaps)
   },
 });
 ```
