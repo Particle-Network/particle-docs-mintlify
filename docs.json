@@ -577,11 +577,11 @@
     },
     {
       "source": "/docs/bundler",
-      "destination": "/guides/aa/bundler"
+      "destination": "/aa/guides/bundler"
     },
     {
       "source": "/docs/paymaster",
-      "destination": "/guides/aa/paymaster"
+      "destination": "/aa/guides/paymaster"
     },
     {
       "source": "/docs/building-with-particle-auth",
