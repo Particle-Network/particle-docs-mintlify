@@ -419,7 +419,7 @@
         },
         {
           "anchor": "Universal Accounts Demo",
-          "href": "https://auth-universal-accounts.vercel.app/",
+          "href": "https://universal-accounts-connectkit-demo.vercel.app/",
           "icon": "browser"
         }
       ]
