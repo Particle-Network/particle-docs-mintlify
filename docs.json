@@ -318,6 +318,7 @@
             "group": "ACCOUNT ABSTRACTION",
             "pages": [
               "aa/introduction",
+              "aa/network-coverage",
               {
                 "group": "Quickstarts",
                 "pages": [

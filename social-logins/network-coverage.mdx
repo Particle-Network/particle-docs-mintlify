@@ -1,26 +1,11 @@
 ---
 title: "Network Coverage"
-description: "A complete list of all networks covered by Particle Network's SDKs."
+description: "A complete list of all networks covered by Particle's Social Logins SDKs."
 ---
 
 # Mapping network coverage
 
-Particle's Wallet Abstraction solutions support a significant amount of EVM networks (roughly 80) alongside Solana and Tron, although to varying degrees. The full list with details on chain-specific support across the Particle Network tech stack can be found below.
-
-<Warning>
-  <p>
-    <strong>
-      Not all of the below are supported by Particle's Smart
-      Wallet-as-a-Service.
-    </strong>
-  </p>
-  <p>
-    Many of these chains only have EOA support, which means that account
-    abstraction through Particle's Smart Wallet-as-a-Service isn't possible, and
-    thus are exclusively available within the traditional EOA-based
-    Wallet-as-a-Service.
-  </p>
-</Warning>
+Particle's Social Logins SDKs support a significant amount of EVM networks (roughly 80) alongside Solana and Tron, although to varying degrees. The full list with details on chain-specific support across the Particle Network tech stack can be found below.
 
 ---
 
@@ -110,80 +95,6 @@ Particle's Wallet Abstraction solutions support a significant amount of EVM netw
 | HashKey        | ✓                   | Mainnet: 177, Testnet: 133                                                 |
 
 
-## BTC Connect
-
-Versions 1.0.0 and 2.0.0 are available on all supported chains.
-
-| Chain                   | BTC Smart Account Version | Variables                                                |
-| :---------------------- | :------------------------ | :------------------------------------------------------- |
-| Merlin                  | 1.0.0, 2.0.0              | `Merlin`, `MerlinTestnet`                                |
-| BEVM                    | 1.0.0, 2.0.0              | `BEVM`, `BEVMTestnet`, `BEVMCanary`, `BEVMCanaryTestnet` |
-| B² Network              | 1.0.0, 2.0.0              | `BSquared`, `BSquaredTestnet`                            |
-| SatoshiVM               | 1.0.0, 2.0.0              | `SatoshiVMAlpha`, `SatoshiVMTestnet`                     |
-| BitLayer                | 1.0.0, 2.0.0              | `Bitlayer`, `BitlayerTestnet`                            |
-| MAP Protocol            | 1.0.0, 2.0.0              | `MAPProtocol`, `MAPProtocolTestnet`                      |
-| Botanix                 | 1.0.0, 2.0.0              | `BotanixTestnet`                                         |
-| AINN Layer2             | 1.0.0, 2.0.0              | `AILayer`, `AILayerTestnet`                              |
-| BOB                     | 1.0.0, 2.0.0              | `BOB`, `BOBTestnet`                                      |
-| Tuna                    | 1.0.0, 2.0.0              | `TUNATestnet`                                            |
-| Ethereum                | 1.0.0, 2.0.0              | `Ethereum`, `EthereumSepolia`                            |
-| Mantle                  | 1.0.0, 2.0.0              | `Mantle`, `MantleSepoliaTestnet`                         |
-| Polygon zkEVM (Testnet) | 2.0.0, 2.0.0              | `PolygonzkEVM`, `PolygonzkEVMCardona`                    |
-| Polygon (Testnet)       | 1.0.0, 2.0.0              | `Polygon`, `PolygonAmoy`                                 |
-| BSC                     | 1.0.0, 2.0.0              | `BNBChain`, `BNBChainTestnet`                            |
-| Arbitrum                | 1.0.0, 2.0.0              | `ArbitrumOne`, `ArbitrumSepolia`                         |
-| Core                    | 1.0.0, 2.0.0              | `Core`, `CoreTestnet`                                    |
-| Elastos                 | 1.0.0, 2.0.0              | `Elastos`                                                |
-| Mode                    | 1.0.0, 2.0.0              | `Mode`, `ModeTestnet`                                    |
-
-## Smart Accounts
-
-| Chain           | Biconomy V1 | Biconomy V2 | SimpleAccount | CyberConnect | Light | Coinbase     |
-|-----------------|-------------|-------------|---------------|--------------|-------|--------------|
-| Ethereum        | ✓           | ✓           | ✓             | ✓            | ✓     | ✓            |
-| Polygon         | ✓           | ✓           | ✓             | ✓            | ✓     | ✓            |
-| BSC             | ✓           | ✓           | ✓             | ✓            |       |              |
-| Arbitrum        | ✓           | ✓           | ✓             | ✓            |       |              |
-| Optimism        | ✓           | ✓           | ✓             | ✓            | ✓     | ✓            |
-| Avalanche       | ✓           | ✓           | ✓             |              |       | ✓            |
-| Base            | ✓           | ✓           | ✓             | ✓            | ✓     | ✓            |
-| Linea           |             | ✓           | ✓             | ✓            |       | ✓            |
-| opBNB           |             | ✓           | ✓             | ✓            |       | ✓            |
-| Mantle          |             | ✓           | ✓             | ✓            |       |              |
-| Manta           |             | ✓           | ✓             |              |       |              |
-| Moonbeam        |             | ✓           | ✓             |              |       |              |
-| Combo           |             | ✓           | ✓             |              |       |              |
-| Gnosis          |             | ✓           | ✓             |              |       |              |
-| ZetaChain       |             | ✓           | ✓             |              |       |              |
-| Scroll          |             | ✓           | ✓             | ✓            |       |              |
-| Blast           |             | ✓           | ✓             |              |       |              |
-| Cyber           |             |             | ✓             | ✓            |       |              |
-| Polygon zkEVM   | ✓           | ✓           | ✓             |              |       |              |
-| Fantom          |             |             | ✓             |              |       |              |
-| GM Network      |             |             | ✓             |              |       |              |
-| Fuse            |             |             | ✓             |              |       |              |
-| IoTeX           |             |             | ✓             |              |       |              |
-| Taiko           |             |             | ✓             |              |       |              |
-| Bitlayer        |             |             | ✓             |              |       |              |
-| Xterio          |             |             | ✓             |              |       |              |
-| Astar zkEVM     |             |             | ✓             |              |       |              |
-| Viction         |             |             | ✓             |              |       |              |
-| Moonriver       |             |             | ✓             |              |       |              |
-| Core            |             |             | ✓             |              |       |              |
-| Mode            |             |             | ✓             |              |       |              |
-| Ancient8        |             |             | ✓             |              |       |              |
-| ZKFair          |             |             | ✓             |              |       |              |
-| Sei             |             | ✓           | ✓             |              |       |              |
-| 5ire            |             |             | ✓             |              |       |              |
-| Kakarot         |             |             | ✓             |              |       |              |
-| Zircuit         |             |             | ✓             |              |       |              |
-| Aura            |             |             | ✓             |              |       |              |
-| Gravity         |             |             | ✓             |              |       |              |
-| DODOChain       |             |             | ✓             |              |       |              |
-| Duckchain       |             |             | ✓             |              |       |              |
-| Story Network   |             |             | ✓             |              |       |              |
-| Plume           |             |             | ✓             |              |       |              |
-| Soneium         |             |             | ✓             |              |       |              |
-| Lumia           |             |             | ✓             |              |       |              |
-| Movement        |             |             | ✓             |              |       |              |
-| HashKey         |             |             | ✓             |              |       |              |
+<Info>
+Check out the [network coverage page](/aa/network-coverage) in the Account abstraction section to see the list of supported smart accounts.
+</Info>
