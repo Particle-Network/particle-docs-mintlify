@@ -106,6 +106,24 @@ Fees can be edited on a *per-project* basis. Reach out to [Particle Support](htt
     })
     ```
   </Accordion>
+    <Accordion title="Could not find a declaration file for module '@particle-network/universal-account-sdk'." icon="file">
+    You might get this error when using TypeScript. To fix it, you can add a declaration in `tsconfig.json`.
+
+    Add `./node_modules/@particle-network/universal-account-sdk/dist/index.d.ts` to the `paths` property in `tsconfig.json`.
+
+    ```json
+    {
+      "paths": {
+        "@/*": ["./*"],
+        "@particle-network/universal-account-sdk": ["./node_modules/@particle-network/universal-account-sdk/dist/index.d.ts"]
+      }
+    }
+    ```
+
+    This will solve the declaration error.
+
+
+  </Accordion>
 </AccordionGroup>
 
 <Note>
