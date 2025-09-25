@@ -218,74 +218,51 @@ console.log("Smart Account info:", accountInfo);
   This repository includes a sample Next.js app with social logins via Particle Auth alongside Universal Accounts.
 </Card>
 
-## Fetch Primary Assets
+Here’s the reorganized section in clean Markdown, with the unified balance benefit front and center:
 
-Universal Accounts can hold any asset across all supported chains. Among these, **Primary Assets** are the assets that have the deepest liquidity—and, as such, can be used as the base for any cross-chain operation, including **liquidity routing, swaps, and gas payments.**
+## Primary Assets & Unified Balance
+
+Universal Accounts can hold many assets across supported chains.  
+Among these, **Primary Assets** are special: they have the deepest liquidity and can be used for **cross-chain swaps, liquidity routing, and gas payments**.
+
+> **Why this matters:** You can give users a *single, unified balance* of their spendable assets—regardless of which chain those assets are actually on.
 
 <Note>
-  You can find a list of supported Primary Assets in the [Supported chains and Primary Assets](/universal-accounts/cha/chains#primary-assets) page.
+  The full list of supported Primary Assets is available on the [Supported chains and Primary Assets](/universal-accounts/cha/chains#primary-assets) page.
 </Note>
 
-Primary Assets work independently of the chain on which a user holds them. The SDK will then automatically select the most efficient source and route to execute transactions involving them.
+### Fetch Unified Balance (the quick way)
 
-For example, if a user wants to buy `$PARTI` via a swap on BNB Chain, the SDK will:
+The easiest way to display a user’s total value is by fetching their **Unified Balance**—the sum of all Primary Assets across chains:
 
-- Determine the optimal Primary Asset(s) from the user's portfolio (e.g., USDT on Polygon) to finalize the purchase.
-- Handle liquidity routing through Universal Liquidity.
-- Complete the transaction on BNB Chain—even if the user holds **no assets on BNB Chain directly.**
+```ts
+const primaryAssets = await ua.getPrimaryAssets();
+console.log("Unified Balance:", primaryAssets.totalAmountInUSD);
+```
 
-You can fetch the **Primary Assets** balance from a Universal Account instance with one call:
+This gives you a single number (totalAmountInUSD) that represents the cross-chain total balance of Primary Assets in USD.
+
+Perfect for showing a dashboard balance or portfolio total in one call.
+
+### Inspect Primary Assets in Detail
+
+If you need more than just the total, `getPrimaryAssets()` also returns a detailed list of assets:
 
 ```ts
 const primaryAssets = await ua.getPrimaryAssets();
 console.log("Primary Assets:", JSON.stringify(primaryAssets, null, 2));
 ```
 
-The `getPrimaryAssets()` method will then return a list of **Primary Assets** held by the Universal Account across all supported chains.
-
-<Note>
-  Each asset includes metadata and a breakdown of holdings per chain.
-</Note>
-
-The response returned by `getPrimaryAssets()` has the following structure:
+The following is the structure of the response:
 
 ```ts
 {
-  assets: AssetInfo[],
-  totalAmountInUSD: number
+  assets: AssetInfo[],       // assets breakdown (per-token and chain)
+  totalAmountInUSD: number   // unified total
 }
 ```
 
-You can also retrieve the list of **Primary Assets** supported by Universal Accounts using the `SUPPORTED_PRIMARY_TOKENS` constant from the SDK:
-
-```ts
-import { SUPPORTED_PRIMARY_TOKENS } from "@particle-network/universal-account-sdk";
-console.log("Supported Primary Tokens:", SUPPORTED_PRIMARY_TOKENS);
-```
-
-This returns an array of token metadata objects, each representing a Primary Asset across supported chains. An example structure would be:
-
-```json JSON [expandable]
-[
-  {
-    assetId: "eth", 
-    type: "eth", 
-    chainId: 8453, 
-    address: "0x0000000000000000000000000000000000000000", 
-    decimals: 18, 
-    realDecimals: 18, 
-    isMultiChain: true, 
-    isMultiChainDefault: true
-  },
-  ...
-]
-```
-
-You can then use this object to filter or display supported tokens in your dApp interface, validate token support, or build custom asset selectors based on chain and asset type.
-
-### Asset Structure: `AssetInfo`
-
-Each entry in the `assets` array represents a single token type aggregated across chains.
+Each `AssetInfo` entry aggregates a token across chains, including per-chain breakdowns.
 
 <Accordion title="Expand to see the full structure">
   | Field              | Description                                 |
@@ -297,7 +274,8 @@ Each entry in the `assets` array represents a single token type aggregated acros
   | `chainAggregation` | Per-chain balance breakdowns                |
 </Accordion>
 
-### `chainAggregation` format
+
+#### `chainAggregation` format
 
 Each `chainAggregation` entry details the balance and metadata of the token on a specific chain:
 
