@@ -726,6 +726,10 @@
     {
       "source": "/resources/terms-and-conditions/api-and-sdk-license-agreement",
       "destination": "/intro/tos/license-agreement"
+    },
+    {
+      "source": "/landing/introduction",
+      "destination": "/intro/introduction"
     }
   ]
 }
