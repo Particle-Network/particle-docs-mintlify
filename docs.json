@@ -113,6 +113,7 @@
               {
                 "group": "How-to",
                 "pages": [
+                  "universal-accounts/cha/how-to/overview",
                   "universal-accounts/cha/how-to/provider",
                   "universal-accounts/cha/how-to/balances",
                   "universal-accounts/cha/how-to/deposit-flow",
