@@ -54,3 +54,23 @@ When a user sends a transaction (e.g. swapping a token), the SDK will:
 - Identify the optimal Primary Asset from the user’s portfolio. For example, it may select USDC on Polygon to allow a user to purchase a memecoin on Solana.
 - Route liquidity across all the chains the user holds this Primary Asset using Universal Liquidity.
 - Complete the transaction on the destination chain, even if the user holds **no assets on that chain**.
+
+### Availability by Chain
+
+Some **Primary Assets** are only available on specific chains, depending on native sources.
+
+- **Solana** — Available Assets: **USDC, USDT, SOL**
+- **Ethereum** — Available Assets: **USDC, USDT, ETH, BTC**
+- **Base** — Available Assets: **USDC, ETH, BTC**
+- **BNB Chain** — Available Assets: **USDC, USDT, ETH, BTC, BNB**
+- **Mantle** — Available Assets: **USDT**
+- **Plasma** — Available Assets: **USDT**
+- **X Layer** — Available Assets: **USDC, USDT**
+- **HyperEVM** — Available Assets: **USDT**
+- **Sonic** — Available Assets: **USDC**
+- **Berachain** — Available Assets: **USDC**
+- **Avalanche** — Available Assets: **USDC, USDT, ETH, BTC**
+- **Arbitrum** — Available Assets: **USDC, USDT, ETH, BTC**
+- **Optimism** — Available Assets: **USDC, USDT, ETH, BTC**
+- **Linea** — Available Assets: **USDC, USDT, ETH, BTC**
+- **Polygon** — Available Assets: **USDC, USDT, ETH, BTC**
