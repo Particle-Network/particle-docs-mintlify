@@ -692,6 +692,21 @@ console.log("tokenTransactions2", tokenTransactions2);
   Always check for the `nextPageToken` field in the response to determine if more results are available.
 </Note>
 
+## Fetching Transaction Details
+
+To retrieve the details of a specific transaction, use the `getTransaction(transactionId)` method:
+
+<Note>
+ The `transactionId` is the unique identifier of the transaction; you can retrieve it from the transaction history.
+</Note>
+
+```ts
+const txDetails = await universalAccountInstance.getTransaction(transactionId);
+console.log("txDetails", txDetails);
+```
+
+This will return a `TransactionDetails` object containing detailed information about the transaction. You can then use this object to display the transaction details in your application.
+
 ## Using Particle Connect with Universal Accounts
 
 <Note>
