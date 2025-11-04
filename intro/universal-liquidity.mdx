@@ -1,0 +1,70 @@
+---
+title: "What is Universal Liquidity?"
+sidebarTitle: "What is Universal Liquidity?"
+description: "Overview of Particle Network’s liquidity abstraction mechanism."
+keywords: ['universal liquidity', 'cross-chain liquidity', 'chain abstraction', 'cross-chain interactions', 'multi-chain balances', 'gas abstraction', 'particle network', 'sdk setup', 'unified balance', 'one balance', 'auto bridge']
+icon: "coins"
+---
+
+# What is Universal Liquidity?
+
+Liquidity today is fragmented across chains, tokens, and user balances.  
+Even when accounts are unified, assets themselves generally remain siloed.
+
+**Universal Liquidity** is the core of Particle Network’s chain abstraction, allowing users to **transact anywhere**, even when their tokens exist elsewhere. 
+
+It achieves this through an **intent-based model** applied automatically during transactions.
+
+<Note>
+TL;DR: users can spend tokens from one or multiple chains to fund operations on any destination chain. Possible without bridging, swapping, or manual transfers.
+</Note>
+
+***
+
+## How It Works
+
+When a transaction requires liquidity on a destination chain where a user holds insufficient tokens, **Universal Liquidity** coordinates an **intent-based settlement** behind the scenes.
+
+1. The user signs a **Merkle root hash** containing:
+   * The destination transaction (e.g., swap, mint, deposit)
+   * The necessary **operations** that fund it
+
+2. This Merkle root represents a **Merkle tree** of operations, ensuring atomic validation of all steps involved.
+
+3. **Solvers** detect this intent, execute the required operations, and front the necessary tokens on the destination chain.
+
+<Info>
+
+For example, a user wants to execute a transaction that requires **250 USDC on Ethereum**. 
+
+The user holds **100 USDC on Base**, **0.1 BNB on BNB Chain**, and **0.3 SOL on Solana**. 
+
+A solver fronts the required 250 USDC on Ethereum and later receives **repayment** from the user’s balances across those origin chains, plus a small fee.
+
+</Info>
+
+The mechanism operates through **solvers and liquidity sources** distributed across the [supported networks](/universal-accounts/cha/chains).
+
+***
+
+### Gas Abstraction
+
+Users can execute operations without requiring users to hold native gas tokens.  
+
+The Universal infrastructure uses **paymasters** to abstract gas costs, covering fees on the user’s behalf and settling repayment later in any supported token, even across different chains.
+
+This maintains the same cross-chain flexibility as the liquidity layer itself: users can approve and complete complex multi-chain transactions with a single signature, no gas management required.
+
+***
+
+## TL;DR
+
+Universal Liquidity unlocks a **true chain-agnostic user experience**, where:
+
+* Assets across chains act as a **single liquidity source**
+* Transactions can be executed **from any combination of balances**
+* Users never worry about **bridging, gas, or balance fragmentation**
+
+<Card title="Get started with Universal Account" icon="coins" href="/universal-accounts/cha/web-quickstart">
+  Learn how to integrate Universal Account into your dApp.
+</Card>
