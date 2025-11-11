@@ -19,6 +19,20 @@ It achieves this through an **intent-based model** applied automatically during 
 TL;DR: users can spend tokens from one or multiple chains to fund operations on any destination chain. Possible without bridging, swapping, or manual transfers.
 </Note>
 
+<Frame caption="Intent-based settlement flow.">
+  <img
+    className="block dark:hidden"
+    src="/intro/images/solver-flow.png"
+    alt="Intent-based settlement flow."
+  />
+
+  <img
+    className="hidden dark:block"
+    src="/intro/images/solver-flow.png"
+    alt="Intent-based settlement flow."
+  />
+</Frame>
+
 ***
 
 ## How It Works
@@ -32,6 +46,20 @@ When a transaction requires liquidity on a destination chain where a user holds 
 2. This Merkle root represents a **Merkle tree** of operations, ensuring atomic validation of all steps involved.
 
 3. **Solvers** detect this intent, execute the required operations, and front the necessary tokens on the destination chain.
+
+<Frame caption="User flow of Particle Network’s Universal Liquidity.">
+  <img
+    className="block dark:hidden"
+    src="/intro/images/merkel-flow.png"
+    alt="Universal Liquidity"
+  />
+
+  <img
+    className="hidden dark:block"
+    src="/intro/images/merkel-flow.png"
+    alt="Universal Liquidity"
+  />
+</Frame>
 
 <Info>
 
