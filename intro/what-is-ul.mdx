@@ -1,0 +1,92 @@
+---
+title: "What is Universal Liquidity?"
+sidebarTitle: "What is Universal Liquidity?"
+description: "Overview of Particle Network’s liquidity mechanism powering Universal Accounts."
+icon: "coin"
+---
+
+**Universal Liquidity** allows **Universal Accounts** to fulfill user actions without requiring them to **bridge** or manually move assets across chains. It routes funds across **solvers** with liquidity on supported networks based on the user’s **intent**, allowing them to interact with all chains as if they were **one**.
+
+---
+
+## How It Works
+
+When a user performs an action on a chain where they don’t hold funds, Universal Liquidity handles the **cross-chain** complexity behind the scenes. **Liquidity sources** and **solvers** operate across networks to execute the transaction.
+
+**Flow:**
+
+1. The user initiates the action (**swap**, **mint**, **deposit**, etc.) and signs once to **authorize** it. No preparation of assets or **gas** on the target chain is required.
+2. The **signature** conveys what the user wants to do and confirms they can cover the **cost**.
+3. **Solvers** detect the request and temporarily provide the required **liquidity** on the destination chain. They:
+   - Execute the transaction on the user’s behalf
+   - Cover the required **costs upfront**
+   - Recoup the value afterward from the user’s **balances** on any chain
+4. The transaction finalizes on the **destination network**.
+
+The user’s funds **never move beforehand**. The solver only fronts the required liquidity, then withdraws **repayment** from the user’s existing balances according to the signed authorization.
+
+A **solver** is simply an **on-chain entity** with liquidity (e.g., an **LP** holding **USDT** or another [**Primary Token**](/universal-accounts/cha/chains)). Particle currently operates the liquidity pools, with the goal of enabling **permissionless** participation in the future.
+
+---
+
+## Example
+
+A user holds:
+
+- **100 USDC** on Base
+- **0.1 BNB** (~$90) on BNB Chain
+- **0.3 SOL** (~$40) on Solana
+
+They want to execute a transaction that requires **200 USDC on Ethereum**. A solver provides **200 USDC** on Ethereum and then receives **repayment** across the user’s existing balances, plus a small **fee**.
+
+<Frame caption="Universal Liquidity visualized.">
+  <img
+    className="block dark:hidden"
+    src="/intro/images/ul.jpg"
+    alt="Universal Liquidity"
+  />
+
+  <img
+    className="hidden dark:block"
+    src="/intro/images/ul.jpg"
+    alt="Universal Liquidity"
+  />
+</Frame>
+
+---
+
+## Gas Abstraction
+
+Universal Liquidity also removes the requirement to hold **native gas tokens** on every chain. **Paymasters** cover **gas fees** on the user’s behalf, then settle repayment afterward using **any supported asset** — even if that asset is on another chain.
+
+**Flow:**
+
+1. User signs to authorize the operation and **repayment**.
+2. **Paymaster** fronts the gas immediately.
+3. Transaction executes on the **target chain**.
+4. Repayment is deducted afterward using available **balances**.
+
+A **single signature** is enough to complete **cross-chain** operations while advancing both **liquidity** and **gas**.
+
+---
+
+## TL;DR
+
+Universal Liquidity enables:
+
+- Assets across chains to function as **one unified liquidity source**
+- Execution of transactions using **any combination** of a user’s balances
+- Removal of **bridging**, **gas concerns**, and **balance fragmentation**
+
+---
+
+## Get Started with Universal Accounts
+
+Learn how to integrate **Universal Accounts** into your application.
+
+<CardGroup cols="1">
+  <Card title="Integrate Chain Abstraction" icon="code" href="/universal-accounts/cha/web-quickstart">
+    Start building with Universal Accounts.
+  </Card>
+
+</CardGroup>
