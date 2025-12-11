@@ -551,6 +551,113 @@ const config = createConfig({
 });
 ```
 
+## Login Flow Customization
+
+You can customize the login flow by specifing a social login or wallet to a custom button or component directly.
+
+### Log in with a Specific Social Platform
+
+You can streamline the login process by bypassing the standard login modal and directing users to log in with a specific social platform.
+
+The following example shows how to automatically prompt users to log in with their Google account, skipping the login modal entirely:
+
+<Steps>
+  <Step title="Find the Particle Auth Connector">
+    This is the connector responsible for social logins.
+```typescript
+const particleConnector = connectors.find(
+  (c) => c.id === 'particleAuth' || c.walletConnectorType === 'particleAuth'
+);
+```
+  </Step>
+<Step title="Create the Social Login Handler">
+Create a function that handles the login logic. It takes the social provider type as an argument.
+
+```typescript
+const handleLogin = (socialType) => {
+  if (!particleConnector) return;
+
+  connect({
+    connector: particleConnector,
+    authParams: { socialType },
+  });
+};
+```
+  </Step>
+<Step title="Add the Button (e.g., Google)">
+Add the button to your UI and attach the `handleLogin` function to its `onClick` event.
+```typescript
+<button onClick={() => handleLogin('google')}>Continue with Google</button>
+```
+</Step>
+</Steps>
+
+<Info>
+Supported socialType Values
+	- `google`
+    - `github`
+	- `twitter`
+	- `apple`
+	- `discord`
+	- `facebook`
+	- `microsoft`
+	- `linkedin`
+	- `twitch`
+</Info>
+
+
+### Direct Wallet Connection
+
+You can connect users directly to a specific wallet provider using a custom button or component.
+
+<Steps>
+  <Step title="Find the Wallet Connector">
+    Locate the connector by its ID (e.g., `'metaMask'`, `'walletConnect'`, `'coinbaseWalletSDK'`).
+```typescript
+const metaMaskConnector = connectors.find((c) => c.id === 'metaMask');
+```
+  </Step>
+
+
+  <Step title="Create the Wallet Login Handler">
+   Wallets do not require `authParams`.
+```typescript
+const handleMetaMask = async () => {
+  if (!metaMaskConnector) return;
+
+  try {
+    await connect({
+      connector: metaMaskConnector,
+    });
+  } catch (error) {
+    console.error("Error connecting with MetaMask:", error);
+  }
+};
+```
+  </Step>
+
+  <Step title="Add the Wallet Button">
+    Add the button and call your handler on click.
+    ```tsx
+    <button onClick={handleMetaMask}>Connect via MetaMask</button>
+    ```
+  </Step>
+</Steps>
+
+
+<Info>
+Available Wallet IDs
+  - `metaMask`
+  - `walletConnect`
+  - `coinbaseWalletSDK`
+  - `phantom`
+  - `trustWallet`
+  - `okxWallet`
+  - `bitKeep`
+  - `com.brave.wallet`
+  - `app.backpack`
+</Info>
+
 ## Plugins
 
 ### Embedded Wallet
