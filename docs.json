@@ -81,6 +81,7 @@
           {
             "group": "MORE RESOURCES",
             "pages": [
+              "intro/more/integrations",
               "intro/more/audits",
               "intro/more/assets",
               "intro/more/mcp"
