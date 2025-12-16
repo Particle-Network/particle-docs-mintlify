@@ -81,7 +81,6 @@
           {
             "group": "MORE RESOURCES",
             "pages": [
-              "intro/more/integrations",
               "intro/more/audits",
               "intro/more/assets",
               "intro/more/mcp"
@@ -120,7 +119,8 @@
                   "universal-accounts/cha/how-to/conversions",
                   "universal-accounts/cha/how-to/ua-magic"
                 ]
-              }
+              },
+              "universal-accounts/live-integrations"
             ]
           },
           {
