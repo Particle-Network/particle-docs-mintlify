@@ -4,9 +4,9 @@ sidebarTitle: "Web (JS/TS): Universal Accounts"
 description: "Implementing Universal Accounts in your application."
 ---
 
-The **Universal Accounts SDK** provides **chain abstraction** for your app by integrating Universal Accounts. These, in turn, offer your users a single account, balance, and interaction point across **EVM chains** and **Solana**.
+The **Universal Accounts SDK** provides **chain abstraction** for your app by integrating Universal Accounts. These, in turn, offer your users a single account, balance, and interaction point across **EVM chains** and **Solana**.
 
-Our SDK seamlessly integrates with your existing connection flow, with minimal setup.
+Our SDK integrates with existing connection flows with minimal setup.
 
 <Card title="Learn More About Universal Accounts" icon="user" href="/intro/universal-accounts">
   What are Universal Accounts, how do they work, and what problems do they solve?
@@ -15,30 +15,34 @@ Our SDK seamlessly integrates with your existing connection flow, with minimal s
 To integrate Universal Accounts:
 
 <Info>
-  The following examples use a React-based app alongside [**Particle Auth**](/social-logins/auth/introduction) for authentication and wallet connection. 
-  
-  However, the **Universal Accounts SDK is provider-agnostic**—alongside it, you can also use [**Particle Connect**](/social-logins/connect/introduction), **Web3Modal**, **RainbowKit**, or any **signer**. 
-  
-  You can also use the SDK to construct and sign transactions programmatically on the server side.
+  The following examples use a React-based app alongside
+  [**Particle Auth**](/social-logins/auth/introduction) for authentication and wallet connection.
+
+  However, the **Universal Accounts SDK is provider-agnostic**. You can also use
+  [**Particle Connect**](/social-logins/connect/introduction), **Web3Modal**, **RainbowKit**, or any signer.
+
+  The SDK can also be used server-side to construct and sign transactions programmatically.
 </Info>
 
 <Steps>
   <Step title="Connect a user's account">
-    A user logs into their account by connecting a wallet or via a social login.
+    A user logs in by connecting a wallet or via a social login.
+  </Step>
+  <Step title="Understand account modes">
+    Universal Accounts support two execution modes. Choosing the right one determines how the user’s account behaves.
   </Step>
   <Step title="Initialize Universal Accounts">
-    Once connected, pass the user's EOA address to the SDK and configure your project's details.
+    Once connected, pass the user's EOA address to the SDK and configure your project details.
   </Step>
   <Step title="Use the UA instance">
     Use the returned Universal Account instance to fetch data and send transactions across chains.
 
-    When sending a transaction, the SDK will create a **UserOperation** and return a `rootHash`. This hash must be **signed by the connected EOA**, then passed back into `sendTransaction()` to broadcast.
+    When sending a transaction, the SDK creates a **UserOperation** and returns a `rootHash`.  
+    This hash must be **signed by the connected EOA**, then passed back into `sendTransaction()` to broadcast.
   </Step>
 </Steps>
 
-Under the hood, all routing, bridging, and gas abstraction will be handled by Particle Network's infrastructure.
-
----
+Under the hood, all routing, bridging, and gas abstraction are handled by Particle Network infrastructure.
 
 ## Getting Started
 
@@ -47,124 +51,232 @@ Under the hood, all routing, bridging, and gas abstraction will be handled by Pa
 Once your app is set up, install the **Universal Accounts SDK**:
 
 <Info>
-  The SDK depends on `ethers.js` internally, but you’re not required to use it in your application.
-
-  You can use any provider or signer logic that fits your setup.
+  The SDK depends on `ethers.js` internally, but you are not required to use it directly.
+  You can use any provider or signer that fits your setup.
 </Info>
 
 <CodeGroup>
-
 ```bash yarn
 yarn add @particle-network/universal-account-sdk ethers
 ```
 
-
 ```bash npm
 npm install @particle-network/universal-account-sdk ethers
 ```
-
 </CodeGroup>
 
-### Import and Configure
 
-You can access and import the `UniversalAccount` class in your app from `@particle-network/universal-account-sdk`:
+## Account Modes
 
-```tsx
-import { UniversalAccount } from "@particle-network/universal-account-sdk";
+Universal Accounts can operate in two modes, depending on your wallet setup and execution environment.
+
+### 7702 Mode (Default)
+
+- The user’s EOA is upgraded to act directly as the Universal Account
+- The EOA address and Universal Account address are the same
+- Assets already held by the EOA are immediately usable
+- No smart account deployment or asset transfers are required
+
+This mode provides the lowest friction and is recommended for most applications.
+
+### Smart Account Mode
+- A separate smart account is attached to the EOA
+- The smart account has its own address
+- Users must transfer assets to the smart account before use
+
+This mode exists primarily for compatibility with JSON-RPC wallets.
+
+## Import and Configure
+
+Import the UniversalAccount class in your app:
+
+```ts
+import {
+  UniversalAccount,
+  UNIVERSAL_ACCOUNT_VERSION,
+} from "@particle-network/universal-account-sdk";
 ```
 
-Then, initialize the UA instance once a user has connected:
+Then initialize the Universal Account once a user has connected.
 
 <Note>
-The Universal Account SDK requires Particle project credentials from the [Particle Dashboard](https://dashboard.particle.network/).
+The Universal Accounts SDK requires Particle project credentials from the
+[Particle Dashboard](https://dashboard.particle.network/).
 </Note>
 
-To retrieve those values for configuration within your application, follow these steps:
+
+To retrieve your project credentials:
 
 <AccordionGroup>
   <Accordion title="Access the Particle Dashboard">
-
-Sign up or Log in into the [Particle dashboard](https://dashboard.particle.network/)
-
-<div className="flex justify-center">
-<img
-  className="block h-64 dark:hidden"
-  src="/social-logins/images/login.png"
-  alt="Login into Particle."
-/>
-<img
-  className="hidden h-64 dark:block"
-  src="/social-logins/images/login.png"
-  alt="Login into Particle."
-/>
-</div>
- </Accordion>
-<Accordion title="Create a new project or enter an existing project">
-<div className="flex justify-center">
-<img
-  className="block h-64 dark:hidden"
-  src="/social-logins/images/project.png"
-  alt="Create Particle project."
-/>
-<img
-  className="hidden h-64 dark:block"
-  src="/social-logins/images/project.png"
-  alt="Create Particle project."
-/>
-</div>
-</Accordion>
-
-<Accordion title="Create a new web application, or skip this step if you already have one">
     <div className="flex justify-center">
-        <img
-            className="block h-64 dark:hidden"
-            src="/social-logins/images/web-app.png"
-            alt="Create web app."
-        />
-        <img
-            className="hidden h-64 dark:block"
-            src="/social-logins/images/web-app.png"
-            alt="Create web app."
-        />
+      <img
+        className="block h-64 dark:hidden"
+        src="/social-logins/images/login.png"
+        alt="Login into Particle."
+      />
+      <img
+        className="hidden h-64 dark:block"
+        src="/social-logins/images/login.png"
+        alt="Login into Particle."
+      />
     </div>
-</Accordion>
-
-<Accordion title="Retrieve the project credentials (project ID, client key, app ID)">
-<div className="flex justify-center">
-<img
-  className="block h-64 dark:hidden"
-  src="/social-logins/images/credentials.png"
-  alt="Find app's credentials."
-/>
-<img
-  className="hidden h-64 dark:block"
-  src="/social-logins/images/credentials.png"
-  alt="Find app's credentials."
-/>
-</div>
-</Accordion>
+  </Accordion>
+  <Accordion title="Create or open a project">
+    <div className="flex justify-center">
+      <img
+        className="block h-64 dark:hidden"
+        src="/social-logins/images/project.png"
+        alt="Create Particle project."
+      />
+      <img
+        className="hidden h-64 dark:block"
+        src="/social-logins/images/project.png"
+        alt="Create Particle project."
+      />
+    </div>
+  </Accordion>
+  <Accordion title="Create a web application (or skip if already created)">
+    <div className="flex justify-center">
+      <img
+        className="block h-64 dark:hidden"
+        src="/social-logins/images/web-app.png"
+        alt="Create web app."
+      />
+      <img
+        className="hidden h-64 dark:block"
+        src="/social-logins/images/web-app.png"
+        alt="Create web app."
+      />
+    </div>
+  </Accordion>
+  <Accordion title="Retrieve project credentials">
+    <div className="flex justify-center">
+      <img
+        className="block h-64 dark:hidden"
+        src="/social-logins/images/credentials.png"
+        alt="Find app credentials."
+      />
+      <img
+        className="hidden h-64 dark:block"
+        src="/social-logins/images/credentials.png"
+        alt="Find app credentials."
+      />
+    </div>
+  </Accordion>
 </AccordionGroup>
 
+<Note>
+**EIP-7702 is the default mode for Universal Accounts.**  
+In this mode, the EOA used for authentication is upgraded to act directly as the Universal Account.
+</Note>
 
-
-```tsx
+```ts
 const ua = new UniversalAccount({
   projectId: process.env.NEXT_PUBLIC_PROJECT_ID!,
   projectClientKey: process.env.NEXT_PUBLIC_CLIENT_KEY!,
   projectAppUuid: process.env.NEXT_PUBLIC_APP_ID!,
-  ownerAddress: address,
-  // If not set it will use auto-slippage
+  smartAccountOptions: {
+    // 7702 mode: the EOA address itself becomes the Universal Account
+    useEIP7702: true,
+    name: "UNIVERSAL",
+    version: UNIVERSAL_ACCOUNT_VERSION,
+    ownerAddress: wallet.address,
+  },
+  // Optional: defaults to auto-slippage
   tradeConfig: {
     slippageBps: 100, // 1% slippage tolerance
-    //usePrimaryTokens: [SUPPORTED_TOKEN_TYPE.SOL], // Specify token to use as source (only for swaps)
+    // usePrimaryTokens: [SUPPORTED_TOKEN_TYPE.SOL], // Only for swaps
   },
 });
 ```
 
-You can now use the `ua` instance to **fetch data** (a Universal Account's balance or addresses) and send **transactions**.
+You can now use the `ua` instance to fetch Universal Account data (addresses and unified balances) and to send transactions across supported chains.
 
-<Card title="Check Out UA Initialization in this Sample Repository" icon="link" href="https://github.com/soos3d/auth-universal-accounts/blob/117dc53daea1b2bc9017e595bc5337e204171f69/auth-universal-demo/app/page.tsx#L43">
-  Repository of sample Next.js app with social logins via Particle Auth \+ UA.
+### 7702 Mode (Default)
+
+In 7702 mode, the EOA address used for authentication is the Universal Account.
+
+All Universal Account features—such as chain abstraction, unified balances, and gas abstraction—are applied directly to the user’s original EOA.
+
+<Info>
+**Current limitation:**  
+7702 mode is only available in server-side environments.  
+JSON-RPC wallets are not supported at the moment.
+</Info>
+
+To authorize the 7702 mode, run this pattern when sending the first transaction:
+
+```ts
+const universalAccount = new UniversalAccount(universalAccountConfig);
+
+const transaction = await universalAccount.createConvertTransaction({
+    expectToken: { type: SUPPORTED_TOKEN_TYPE.USDT, amount: '0.0001' },
+    chainId: CHAIN_ID.BSC_MAINNET,
+});
+
+// Handle 7702 Authorization
+const authorizations: EIP7702Authorization[] = [];
+const nonceMap = new Map<number, string>();
+for (const userOp of transaction.userOps) {
+    if (!!userOp.eip7702Auth && !userOp.eip7702Delegated) {
+        let signature = nonceMap.get(userOp.eip7702Auth.nonce);
+        if (!signature) {
+            const authorization = wallet.authorizeSync(userOp.eip7702Auth);
+            signature = authorization.signature.serialized;
+            nonceMap.set(userOp.eip7702Auth.nonce, signature);
+        }
+        authorizations.push({
+            userOpHash: userOp.userOpHash,
+            signature: signature,
+        });
+    }
+}
+```
+
+At this stage, the EOA is the Universal Account.
+
+<Card
+title="Find Universal Account usage examples on GitHub"
+icon="link"
+href="https://github.com/Particle-Network/universal-account-example">
+
+Universal Account Code Samples
+
+</Card>
+
+### Smart Account Mode (JSON-RPC wallets)
+
+If you need to support JSON-RPC wallets, initialize the Universal Account with:
+
+```ts
+useEIP7702: false
+```
+
+In this mode:
+- A separate smart account is created and attached to the EOA
+- The smart account has its own address
+- Users must transfer assets to the smart account before use
+
+This mode exists for compatibility and does not provide the same zero-friction experience as 7702 mode.
+
+### Mode Comparison
+
+| Mode | Account Address | Asset Transfer Required | JSON-RPC Support |
+|------|-----------------|-------------------------|------------------|
+| 7702 (default) | Same as EOA | No | No |
+| Smart Account | Separate | Yes | Yes |
+
+
+## Check Out UA Initialization in This Sample Repository
+
+<Card
+title="Check Out UA Initialization in This Sample Repository"
+icon="link"
+href="https://github.com/soos3d/auth-universal-accounts/blob/117dc53daea1b2bc9017e595bc5337e204171f69/auth-universal-demo/app/page.tsx#L43">
+
+Sample Next.js app using Particle Auth with Universal Accounts.
+
 </Card>
 
 #### Control which tokens are used for swaps
