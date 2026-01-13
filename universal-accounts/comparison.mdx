@@ -1,0 +1,331 @@
+---
+title: "Comparison with Alternatives"
+description: "How Universal Accounts stack up against other cross-chain solutions."
+---
+
+Universal Accounts take a fundamentally different approach to cross-chain UX. Instead of requiring developers to manage intents, quotes, or execution steps, **everything is abstracted at the account level**—one account, one balance, automatic routing.
+
+This page compares Universal Accounts with three popular alternatives: **Relay**, **OneBalance**, and **Avail Nexus**.
+
+---
+
+## At a Glance
+  <Card title="Universal Accounts" icon="atom-simple">
+    **Account-level abstraction**
+    
+    One account + one balance. Cross-chain, gas, and routing are always on by default.
+  </Card>
+<CardGroup cols={3}>
+<Card title="Avail Nexus" icon="diagram-project">
+  **Intent-based interoperability**
+  
+  Describe desired outcomes while Nexus coordinates routing, execution, gas, and settlement.
+</Card>
+  <Card title="Relay" icon="bridge">
+    **Execution-level abstraction**
+    
+    Orchestrate cross-chain execution via quotes, steps, signatures, and status tracking.
+  </Card>
+  <Card title="OneBalance" icon="wallet">
+    **Account abstraction + aggregation**
+    
+    Manage smart contract accounts with unified balances, requiring explicit quote requests.
+  </Card>
+</CardGroup>
+
+
+
+---
+
+## Feature Comparison
+
+<Tabs>
+  <Tab title="vs Relay">
+    | Feature | Universal Accounts | Relay |
+    | --- | --- | --- |
+    | **Abstraction layer** | Account | Execution / bridging |
+    | **Unified balance** | ✅ Aggregated Assets | ✅ Aggregated Assets |
+    | **One address across chains** | ✅ EVM + Solana | ⚠️ EVM - Solana supported but with additional account configuration |
+    | **Cross-chain txs** | ✅ Same API as single-chain | ⚠️ Quote + steps |
+    | **Gas abstraction** | ✅ Automatic | ⚠️ Via quote / sponsorship |
+    | **Pay gas in any token** | ✅ Automatic | ✅ Automatic |
+    | **Liquidity routing** | ✅ Fully automatic | ⚠️ Explicit via quote |
+    | **Bridging logic** | ✅ Hidden | ⚠️ Needs configuration |
+    | **Setup required** | None | High configuration workload |
+  </Tab>
+  <Tab title="vs OneBalance">
+    | Feature | Universal Accounts | OneBalance |
+    | --- | --- | --- |
+    | **Abstraction layer** | Account | Account |
+    | **Unified balance** | ✅ Aggregated assets | ✅ Aggregated assets |
+    | **One address across chains** | ✅ EVM + Solana | ⚠️ Based on account type |
+    | **Cross-chain txs** | ✅ Same API as single-chain | ⚠️ Quote + sign + execute |
+    | **Gas abstraction** | ✅ Automatic | ✅ Automatic |
+    | **Pay gas in any token** | ✅ Default | ✅ Default |
+    | **Liquidity routing** | ✅ Automatic | ✅ Automatic |
+    | **Bridging logic** | ✅ Hidden | ⚠️ Exposed via operations |
+    | **Setup required** | None | Moderate |
+  </Tab>
+  <Tab title="vs Avail Nexus">
+    | Feature | Universal Accounts | Avail Nexus |
+    | --- | --- | --- |
+    | **Abstraction layer** | Account | Intent |
+    | **Unified balance** | ✅ Aggregated assets | ✅ Aggregated assets |
+    | **One address across chains** | ✅ EVM + Solana | ⚠️ Provider-based, no Solana |
+    | **Cross-chain txs** | ✅ Same API as single-chain | ⚠️ Intent creation + submission |
+    | **Gas abstraction** | ✅ Automatic | ✅ Automatic |
+    | **Pay gas in any token** | ✅ Default | ✅ Default but fewer assets available |
+    | **Liquidity routing** | ✅ Fully automatic | ✅ Via solvers |
+    | **Bridging logic** | ✅ Hidden | ⚠️ Explicit via configuration |
+    | **Environment support** | ✅ Browser + server | ⚠️ Browser only |
+    | **Setup required** | None | Moderate |
+  </Tab>
+</Tabs>
+
+---
+
+## Speed Comparison
+
+Real-world latency measurements across common cross-chain routes:
+
+| Route | Universal Accounts | Relay | OneBalance | Avail Nexus |
+| --- | --- | --- | --- | --- |
+| **Base → Arbitrum** | ~1,605 ms | ~2,528 ms | ~2,982 ms | ~20s |
+| **Base → Solana** | ~578 ms | ~3,360 ms | ~2,803 ms | N/A |
+| **Solana → Base** | ~1,348 ms | — | ~2,803 ms | N/A |
+
+<Info>
+Universal Accounts achieve faster execution through a single abstracted flow, while alternatives require multiple API calls (quote → sign → execute → poll).
+</Info>
+
+---
+
+## Integration Effort
+
+Compare the integration complexity across all providers:
+
+<CodeGroup>
+
+```tsx Universal Accounts
+import { CHAIN_ID, SUPPORTED_TOKEN_TYPE, UniversalAccount } from '@particle-network/universal-account-sdk';
+import { getBytes, Wallet } from 'ethers';
+
+const wallet = new Wallet(process.env.PRIVATE_KEY || '');
+const universalAccount = new UniversalAccount({
+    projectId: process.env.PROJECT_ID || '',
+    projectClientKey: process.env.PROJECT_CLIENT_KEY || '',
+    projectAppUuid: process.env.PROJECT_APP_UUID || '',
+    ownerAddress: wallet.address,
+});
+
+// Create and send a cross-chain transaction
+const transaction = await universalAccount.createConvertTransaction({
+    expectToken: { type: SUPPORTED_TOKEN_TYPE.USDC, amount: '1' },
+    chainId: CHAIN_ID.ARBITRUM_MAINNET_ONE,
+});
+
+const result = await universalAccount.sendTransaction(
+    transaction,
+    wallet.signMessageSync(getBytes(transaction.rootHash))
+);
+```
+
+```tsx Relay
+import { config } from 'dotenv';
+import { Wallet, ethers } from 'ethers';
+import { createClient, getClient, MAINNET_RELAY_API } from '@relayprotocol/relay-sdk';
+
+config();
+
+(async () => {
+    const privateKey = process.env.PRIVATE_KEY_BASE || '';
+    const walletAddress = process.env.WALLET_ADDRESS || '';
+
+    // Create Relay SDK client
+    createClient({
+        baseApiUrl: MAINNET_RELAY_API,
+        source: "universal-account-benchmark"
+    });
+
+    // Create ethers wallet
+    const provider = new ethers.JsonRpcProvider('https://mainnet.base.org');
+    const ethersWallet = new Wallet(privateKey, provider);
+
+    const quote = await getClient()?.actions.getQuote({
+        chainId: 8453, // Base
+        toChainId: 42161, // Arbitrum
+        currency: '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913', // USDC on Base
+        toCurrency: '0xaf88d065e77c8cC2239327C5EDb3A432268e5831', // USDC on Arbitrum
+        amount: '100000', // $0.1 USDC (6 decimals)
+        user: walletAddress,
+        recipient: walletAddress,
+        tradeType: 'EXACT_INPUT'
+    });
+
+    if (!quote) {
+        console.error('Failed to get quote');
+        return;
+    }
+
+    for (const step of quote.steps || []) {
+        const item = step.items?.[0];
+        if (step.kind === 'transaction' && item?.data) {
+            const tx = await ethersWallet.sendTransaction({
+                to: item.data.to,
+                data: item.data.data,
+                value: BigInt(item.data.value || '0')
+            });
+            
+            await tx.wait();
+            
+            if (step.requestId) {
+                console.log('explorer url', `https://relay.link/bridge/${step.requestId}`);
+            }
+        }
+    }
+})();
+
+```
+
+```tsx OneBalance
+import { config } from 'dotenv';
+import { privateKeyToAccount } from 'viem/accounts';
+import { parseUnits } from 'viem';
+import { entryPoint07Address, getUserOperationHash } from 'viem/account-abstraction';
+
+config();
+
+(async () => {
+    const API_KEY = process.env.ONEBALANCE_API_KEY!;
+    const privateKey = process.env.PRIVATE_KEY_BASE as `0x${string}`;
+    const signer = privateKeyToAccount(privateKey);
+
+    // Predict account address
+    const predictResponse = await fetch('<https://be.onebalance.io/api/account/predict-address>', {
+        method: 'POST',
+        headers: { 'x-api-key': API_KEY, 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            type: 'kernel-v3.1-ecdsa',
+            signerAddress: signer.address,
+        })
+    });
+    const { predictedAddress } = await predictResponse.json() as { predictedAddress: string };
+
+    // Get quote for USDC → ETH swap
+    const quoteResponse = await fetch('<https://be.onebalance.io/api/v3/quote>', {
+        method: 'POST',
+        headers: { 'x-api-key': API_KEY, 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            from: {
+                accounts: [{
+                    type: 'kernel-v3.1-ecdsa',
+                    signerAddress: signer.address,
+                    accountAddress: predictedAddress,
+                }],
+                asset: { assetId: 'ob:usdc' },
+                amount: parseUnits('0.5', 6).toString(),
+            },
+            to: {
+                asset: { assetId: 'ob:eth' },
+            },
+        })
+    });
+    const quote = await quoteResponse.json() as any;
+
+    // Sign operation (Kernel v3.1 requires signing UserOp hash)
+    const operation = quote.originChainsOperations[0];
+    const userOp = {
+        sender: operation.userOp.sender,
+        nonce: BigInt(operation.userOp.nonce),
+        factory: operation.userOp.factory,
+        factoryData: operation.userOp.factoryData,
+        callData: operation.userOp.callData,
+        callGasLimit: BigInt(operation.userOp.callGasLimit),
+        verificationGasLimit: BigInt(operation.userOp.verificationGasLimit),
+        preVerificationGas: BigInt(operation.userOp.preVerificationGas),
+        maxFeePerGas: BigInt(operation.userOp.maxFeePerGas),
+        maxPriorityFeePerGas: BigInt(operation.userOp.maxPriorityFeePerGas),
+        paymaster: operation.userOp.paymaster,
+        paymasterVerificationGasLimit: operation.userOp.paymasterVerificationGasLimit
+            ? BigInt(operation.userOp.paymasterVerificationGasLimit) : undefined,
+        paymasterPostOpGasLimit: operation.userOp.paymasterPostOpGasLimit
+            ? BigInt(operation.userOp.paymasterPostOpGasLimit) : undefined,
+        paymasterData: operation.userOp.paymasterData,
+        signature: operation.userOp.signature,
+    };
+    const userOpHash = getUserOperationHash({
+        userOperation: userOp,
+        entryPointAddress: entryPoint07Address,
+        entryPointVersion: '0.7',
+        chainId: Number(operation.typedDataToSign.domain.chainId),
+    });
+    const signature = await signer.signMessage({ message: { raw: userOpHash } });
+    quote.originChainsOperations[0].userOp.signature = signature;
+
+    // Execute swap
+    const executeResponse = await fetch('<https://be.onebalance.io/api/v3/quote/execute-quote>', {
+        method: 'POST',
+        headers: { 'x-api-key': API_KEY, 'Content-Type': 'application/json' },
+        body: JSON.stringify(quote)
+    });
+    const result = await executeResponse.json() as any;
+})();
+
+```
+
+```tsx Avail Nexus
+import { NexusSDK, NEXUS_EVENTS } from '@avail-project/nexus-core';
+
+// Initialize SDK
+const sdk = new NexusSDK({ network: 'mainnet' });
+await sdk.initialize(provider); // Your EVM-compatible wallet provider
+
+// ---------------------------
+// 1️⃣ Get unified balances
+// ---------------------------
+const balances = await sdk.getUnifiedBalances(false); // false = CA balances only
+console.log('Balances:', balances);
+
+// ---------------------------
+// 2️⃣ Bridge tokens
+// ---------------------------
+const bridgeResult = await sdk.bridge(
+  {
+    token: 'USDC',
+    amount: 1_500_000n,
+    recipient: '0x...' // Optional
+    toChainId: 137, // Polygon
+  },
+  {
+    onEvent: (event) => {
+      if (event.name === NEXUS_EVENTS.STEPS_LIST) console.log('Bridge steps:', event.args);
+      if (event.name === NEXUS_EVENTS.STEP_COMPLETE) console.log('Step completed:', event.args);
+    },
+  },
+);
+```
+
+</CodeGroup>
+
+---
+
+## Summary
+
+<CardGroup cols={2}>
+  <Card title="Choose Universal Accounts if you want..." icon="check">
+    - **Zero configuration** for multichain UX
+    - **Fastest execution** times
+    - **EVM + Solana** support
+    - **Server-side** compatibility
+    - **Simplest integration** (2 API calls)
+  </Card>
+  <Card title="Consider alternatives if you need..." icon="circle-info">
+    - **Relay**: Fine-grained control over bridging steps
+    - **OneBalance**: Existing ERC-4337 smart account infrastructure
+    - **Avail Nexus**: Intent-based architecture with solver networks
+  </Card>
+</CardGroup>
+
+<Card title="Ready to integrate?" icon="rocket" href="/universal-accounts/cha/web-quickstart">
+  Get started with Universal Accounts in minutes →
+</Card>
