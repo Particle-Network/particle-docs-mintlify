@@ -19,7 +19,7 @@ This page compares Universal Accounts with three popular alternatives: **Relay**
 <Card title="Avail Nexus" icon="diagram-project">
   **Intent-based interoperability**
   
-  Describe desired outcomes while Nexus coordinates routing, execution, gas, and settlement.
+  Coordinates cross-chain execution from user-defined intents.
 </Card>
   <Card title="Relay" icon="bridge">
     **Execution-level abstraction**
@@ -51,7 +51,8 @@ This page compares Universal Accounts with three popular alternatives: **Relay**
     | **Pay gas in any token** | ✅ Automatic | ✅ Automatic |
     | **Liquidity routing** | ✅ Fully automatic | ⚠️ Explicit via quote |
     | **Bridging logic** | ✅ Hidden | ⚠️ Needs configuration |
-    | **Setup required** | None | High configuration workload |
+    | **7702 Delegation** | ✅ Server-side and WaaS | ⚠️ For specific use cases |
+    | **Setup required** | Low | High configuration workload |
   </Tab>
   <Tab title="vs OneBalance">
     | Feature | Universal Accounts | OneBalance |
@@ -64,7 +65,8 @@ This page compares Universal Accounts with three popular alternatives: **Relay**
     | **Pay gas in any token** | ✅ Default | ✅ Default |
     | **Liquidity routing** | ✅ Automatic | ✅ Automatic |
     | **Bridging logic** | ✅ Hidden | ⚠️ Exposed via operations |
-    | **Setup required** | None | Moderate |
+    | **7702 Delegation** | ✅ Server-side and WaaS | ⚠️ With multi-input limitation |
+    | **Setup required** | Low | Moderate |
   </Tab>
   <Tab title="vs Avail Nexus">
     | Feature | Universal Accounts | Avail Nexus |
@@ -78,7 +80,8 @@ This page compares Universal Accounts with three popular alternatives: **Relay**
     | **Liquidity routing** | ✅ Fully automatic | ✅ Via solvers |
     | **Bridging logic** | ✅ Hidden | ⚠️ Explicit via configuration |
     | **Environment support** | ✅ Browser + server | ⚠️ Browser only |
-    | **Setup required** | None | Moderate |
+    | **7702 Delegation** | ✅ Server-side and WaaS | Not needed |
+    | **Setup required** | Low | Moderate |
   </Tab>
 </Tabs>
 
@@ -90,9 +93,9 @@ Real-world latency measurements across common cross-chain routes:
 
 | Route | Universal Accounts | Relay | OneBalance | Avail Nexus |
 | --- | --- | --- | --- | --- |
-| **Base → Arbitrum** | ~1,605 ms | ~2,528 ms | ~2,982 ms | ~20s |
+| **Base → Arbitrum** | ~1,605 ms | ~2,528 ms | ~2,982 ms | ~11899 ms |
 | **Base → Solana** | ~578 ms | ~3,360 ms | ~2,803 ms | N/A |
-| **Solana → Base** | ~1,348 ms | — | ~2,803 ms | N/A |
+| **Solana → Base** | ~1,348 ms | ~9,820 ms | ~2,803 ms | N/A |
 
 <Info>
 Universal Accounts achieve faster execution through a single abstracted flow, while alternatives require multiple API calls (quote → sign → execute → poll).
@@ -321,7 +324,7 @@ const bridgeResult = await sdk.bridge(
   </Card>
   <Card title="Consider alternatives if you need..." icon="circle-info">
     - **Relay**: Fine-grained control over bridging steps
-    - **OneBalance**: Existing ERC-4337 smart account infrastructure
+    - **OneBalance**: Smart account infrastructure and 7702 delegation
     - **Avail Nexus**: Intent-based architecture with solver networks
   </Card>
 </CardGroup>
