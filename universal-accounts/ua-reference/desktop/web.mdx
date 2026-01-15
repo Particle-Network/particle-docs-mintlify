@@ -253,7 +253,16 @@ End-to-end example showing how to use **7702 mode** with **Privy’s embedded wa
 </Card>
 </CardGroup>
 
+### Verify the EIP-7702 delegation
 
+To check whether EIP-7702 delegation is active for a Universal Account, query the registered deployments:
+
+```ts
+const deployments = await universalAccount.getEIP7702Deployments();
+console.log(deployments);
+```
+
+This call returns an array of EIP-7702 deployment records, including the delegated contract addresses and their current status for each chain.
 
 ### Smart Account Mode (JSON-RPC wallets)
 
