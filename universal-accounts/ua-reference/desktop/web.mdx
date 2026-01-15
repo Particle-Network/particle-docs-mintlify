@@ -199,13 +199,13 @@ In 7702 mode, the EOA address used for authentication is the Universal Account.
 
 All Universal Account features—such as chain abstraction, unified balances, and gas abstraction—are applied directly to the user’s original EOA.
 
-<Info>
+<Warning>
 **Current limitation:**  
-7702 mode is only available in server-side environments.  
-JSON-RPC wallets are not supported at the moment.
-</Info>
+- 7702 mode is only available in server-side environments and embedded wallets that support the authorization methods.  
+- JSON-RPC wallets are not supported at the moment.
+</Warning>
 
-To authorize the 7702 mode, run this pattern when sending the first transaction:
+To authorize the 7702 mode, run this pattern when sending transactions :
 
 ```ts
 const universalAccount = new UniversalAccount(universalAccountConfig);
@@ -234,16 +234,26 @@ for (const userOp of transaction.userOps) {
 }
 ```
 
-At this stage, the EOA becomes the Universal Account.
+This authorizes the EOA to act as the Universal Account on the specified chain for this transaction. 
 
+Once the delegation is successful, all subsequent transactions will automatically execute on that chain.
+
+
+<CardGroup cols="2">
+  <Card title="Serverside examples using EIP-7702" icon="binary" href="https://github.com/Particle-Network/universal-account-example/blob/main/examples/7702-convert-evm.ts">
+    Find serverside examples using Universal Accounts in EIP-7702 mode.
+  </Card>
 <Card
-title="Find Universal Account usage examples on GitHub"
-icon="link"
-href="https://github.com/Particle-Network/universal-account-example">
+  title="7702 mode example using Privy's embedded wallet"
+  icon="wallet"
+  href="https://github.com/Particle-Network/universal-account-example">
 
-Universal Account Code Samples
+End-to-end example showing how to use **7702 mode** with **Privy’s embedded wallet**.
 
 </Card>
+</CardGroup>
+
+
 
 ### Smart Account Mode (JSON-RPC wallets)
 
