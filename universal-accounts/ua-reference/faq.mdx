@@ -54,19 +54,17 @@ description: "Frequently Asked Questions about the Universal Accounts SDK."
     Instead, ownership and permissions are managed via a signer (such as a user's wallet or social login) that authorizes transactions.
 
   </Accordion>
-  <Accordion title="What are the transaction fees?" icon="file-invoice-dollar">
+<Accordion title="What are the transaction fees?" icon="file-invoice-dollar">
 
-Each Universal Account (UA) transaction may include the following fees:
+Particle Network applies fees to **buy** and **sell** transactions executed through **Universal Accounts**.
 
-- **Gas fees**: Required to execute the transaction on the destination chain.
-- **Liquidity provider (LP) fee**: A 0.2% fee applied only to cross-chain transactions, paid to the LP handling the transfer.
-- **Transaction fee**: A 1% fee calculated on transaction volume.
+Fee structures are not fixed and are defined **per project**, based on factors such as use case, volume, and integration requirements.
 
-These fees are automatically calculated and included in the transaction quote returned by the SDK. Users don’t need to manage gas tokens—**Universal Liquidity handles routing and fee payments behind the scenes**.
+For detailed pricing or to discuss a custom fee model, contact  
+[Particle Support](https://t.me/particle_developer_bot).
 
-Fees can be edited on a _per-project_ basis. Reach out to [Particle Support](https://t.me/particle_developer_bot) for assistance.
+</Accordion>
 
-  </Accordion>
   <Accordion title="How to fix the 'Buffer is not defined' error in Vite" icon="bug">
     This error happens because Vite doesn't polyfill Node.js globals like `Buffer` in the browser. However, some SDK dependencies (like `ethers`) may expect it to be available.
 
