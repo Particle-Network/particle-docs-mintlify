@@ -1,0 +1,308 @@
+---
+title: "Universal Deposit SDK — Reference"
+sidebarTitle: "Types, Constants & Advanced"
+description: "Type definitions, constants, chain utilities, and advanced configuration for the Universal Deposit SDK."
+---
+
+## Types
+
+### DestinationConfig
+
+```typescript
+interface DestinationConfig {
+  address?: string;   // Defaults to ownerAddress
+  chainId: number;    // Required — use CHAIN constant
+}
+```
+
+### DetectedDeposit
+
+```typescript
+interface DetectedDeposit {
+  id: string;
+  token: TokenType;
+  chainId: number;
+  amount: string;
+  amountUSD: number;
+  rawAmount: bigint;
+  detectedAt: number;
+}
+```
+
+### SweepResult
+
+```typescript
+interface SweepResult {
+  depositId: string;
+  transactionId: string;
+  explorerUrl: string;
+  status: 'success' | 'failed' | 'pending';
+  error?: string;
+}
+```
+
+### RecoveryResult
+
+```typescript
+interface RecoveryResult {
+  token: TokenType;
+  chainId: number;
+  amount: string;
+  amountUSD: number;
+  status: 'success' | 'failed' | 'skipped';
+  error?: string;
+  txHash?: string;
+}
+```
+
+### RefundResult
+
+```typescript
+interface RefundResult {
+  depositId: string;
+  token: TokenType;
+  sourceChainId: number;
+  amount: string;
+  amountUSD: number;
+  status: 'pending' | 'processing' | 'success' | 'failed' | 'skipped';
+  reason: RefundReason;
+  txHash?: string;
+  error?: string;
+  refundedTo?: string;
+  refundedToSender?: boolean;
+}
+```
+
+### Other Types
+
+```typescript
+type TokenType = 'ETH' | 'USDC' | 'USDT' | 'BTC' | 'SOL' | 'BNB';
+
+type ClientStatus =
+  | 'idle'
+  | 'initializing'
+  | 'ready'
+  | 'watching'
+  | 'sweeping'
+  | 'error';
+
+type RefundReason =
+  | 'sweep_failed'
+  | 'user_requested'
+  | 'address_type_mismatch'
+  | 'below_minimum';
+
+interface DepositAddresses {
+  evm: string;
+  solana: string;
+}
+```
+
+---
+
+## Constants
+
+### CHAIN
+
+```typescript
+import { CHAIN } from '@particle-network/universal-deposit';
+
+CHAIN.ETHEREUM    // 1
+CHAIN.OPTIMISM    // 10
+CHAIN.BNB         // 56
+CHAIN.POLYGON     // 137
+CHAIN.MONAD       // 143
+CHAIN.SONIC       // 146
+CHAIN.XLAYER      // 196
+CHAIN.HYPERVM     // 999
+CHAIN.MERLIN      // 4200
+CHAIN.MANTLE      // 5000
+CHAIN.BASE        // 8453
+CHAIN.ARBITRUM    // 42161
+CHAIN.AVALANCHE   // 43114
+CHAIN.LINEA       // 59144
+CHAIN.PLASMA      // 9745
+CHAIN.BERACHAIN   // 80094
+CHAIN.SOLANA      // 101
+```
+
+### Defaults
+
+```typescript
+import {
+  DEFAULT_SUPPORTED_TOKENS,      // ['ETH', 'USDC', 'USDT', 'BTC', 'SOL', 'BNB']
+  DEFAULT_MIN_VALUE_USD,          // 0.50
+  DEFAULT_POLLING_INTERVAL_MS,    // 3000
+} from '@particle-network/universal-deposit';
+```
+
+### Chain Utilities
+
+```typescript
+import {
+  getChainName,              // getChainName(42161) → "Arbitrum"
+  isValidDestinationChain,   // isValidDestinationChain(42161) → true
+  getAddressType,            // getAddressType(101) → 'solana'
+  isValidEvmAddress,         // Validates 0x + 40 hex chars
+  isValidSolanaAddress,      // Validates base58 format
+  validateAddressForChain,   // Validates address format for chain type
+} from '@particle-network/universal-deposit';
+```
+
+---
+
+## Advanced Topics
+
+### Custom Particle Credentials
+
+You can provide your own Particle project ID via the `uaProjectId` config option.
+
+<Warning>
+  `uaProjectId` only affects Universal Account operations (smart account initialization and asset queries). The intermediary wallet authentication (JWT + Auth Core session) always uses the SDK's built-in credentials — this is by design and cannot be overridden.
+</Warning>
+
+<Info>
+  This is useful if you want to handle your own app fees. If you use your own project ID, deposits are subject to a 1% fee going to Particle. Reach out to configure a custom rate and establish a revenue sharing model.
+</Info>
+
+<Tip>
+  Contact: [Particle Developer Support](https://t.me/particle_developer_bot)
+</Tip>
+
+<CodeGroup>
+
+```tsx React
+<DepositProvider config={{
+  destination: { chainId: CHAIN.BASE },
+  uaProjectId: 'your-project-id',
+}}>
+  <App />
+</DepositProvider>
+```
+
+```typescript Headless
+const client = new DepositClient({
+  ownerAddress: '0x...',
+  intermediaryAddress: '0x...',
+  destination: { chainId: CHAIN.BASE },
+  uaProjectId: 'your-project-id',
+});
+```
+
+</CodeGroup>
+
+### Destination Configuration
+
+Change the sweep destination at runtime.
+
+<CodeGroup>
+
+```tsx React
+const { setDestination, currentDestination } = useDepositContext();
+
+setDestination({ chainId: CHAIN.ETHEREUM });
+```
+
+```typescript Headless
+client.setDestination({ chainId: CHAIN.BASE, address: '0xTreasury...' });
+const dest = client.getDestination(); // { address, chainId }
+```
+
+</CodeGroup>
+
+<Note>
+  Throws `ConfigurationError` if the chain ID or address is invalid.
+</Note>
+
+### Recovery
+
+Recover funds that are stuck in the intermediary wallet (e.g., due to failed sweeps).
+
+```tsx
+const { stuckFunds, recoverFunds, isRecovering } = useDepositContext();
+```
+
+Or use the built-in UI:
+
+```tsx
+<RecoveryModal isOpen={open} onClose={() => setOpen(false)} />
+```
+
+### Refund (Experimental)
+
+<Warning>
+  Refund is **experimental**. Auto-refund is disabled by default.
+</Warning>
+
+Enable auto-refund to automatically return funds to the source chain when sweeps fail:
+
+```tsx
+<DepositProvider config={{
+  destination: { chainId: CHAIN.BASE },
+  refund: {
+    enabled: true,
+    delayMs: 5000,
+    maxAttempts: 2,
+    refundToSender: true,
+  },
+}}>
+  <App />
+</DepositProvider>
+```
+
+#### RefundConfig
+
+| Property | Type | Default | Description |
+|---|---|---|---|
+| `enabled` | `boolean` | `false` | Enable auto-refund. |
+| `delayMs` | `number` | `5000` | Delay before refund attempt. |
+| `maxAttempts` | `number` | `2` | Max refund attempts. |
+| `refundToSender` | `boolean` | `true` | Refund to original sender if detectable. |
+
+Manual refund is always available regardless of the auto-refund setting:
+
+```typescript
+const result = await client.refund('deposit-id', 'user_requested');
+const { eligible, reason } = await client.canRefund('deposit-id');
+```
+
+### Error Handling
+
+All SDK errors extend `DepositSDKError`:
+
+```typescript
+import {
+  DepositSDKError,       // Base class
+  ConfigurationError,    // Invalid config
+  AuthenticationError,   // Auth failed
+  JwtError,              // JWT service error
+  UniversalAccountError, // UA operations failed
+  SweepError,            // Sweep failed
+  RefundError,           // Refund failed
+  NetworkError,          // Network issues
+} from '@particle-network/universal-deposit';
+```
+
+```typescript
+try {
+  await client.initialize();
+} catch (error) {
+  if (error instanceof ConfigurationError) {
+    // Invalid config — check destination chain ID and address
+  }
+  if (error instanceof JwtError) {
+    // JWT service unreachable
+  }
+  if (error instanceof UniversalAccountError) {
+    // UA initialization failed
+  }
+}
+```
+
+---
+
+<CardGroup cols={1}>
+  <Card title="Back to Overview" icon="arrow-left" href="/universal-accounts/ua-reference/universal-deposit/overview">
+    Installation, quickstart, and usage patterns.
+  </Card>
+</CardGroup>

@@ -1,0 +1,114 @@
+---
+title: "Universal Deposit SDK — Core API"
+sidebarTitle: "Core SDK"
+description: "Headless Core API reference for the Universal Deposit SDK: DepositClient constructor, methods, and events."
+---
+
+The `DepositClient` provides full deposit functionality without React. Use it for server-side scripts, Node.js backends, or custom UI frameworks.
+
+## DepositClient
+
+```typescript
+import { DepositClient, CHAIN } from '@particle-network/universal-deposit';
+
+const client = new DepositClient({
+  ownerAddress: '0x...',
+  intermediaryAddress: '0x...',
+  authCoreProvider: provider,
+  destination: { chainId: CHAIN.BASE },
+});
+
+await client.initialize();
+client.startWatching();
+```
+
+### Constructor Config
+
+| Property | Type | Required | Default | Description |
+|---|---|---|---|---|
+| `ownerAddress` | `string` | Yes | — | User's wallet address. |
+| `intermediaryAddress` | `string` | Yes | — | JWT wallet from Auth Core. |
+| `authCoreProvider` | `AuthCoreProvider` | No* | — | Provider for signing. *Required for sweeps. |
+| `destination` | `DestinationConfig` | Yes | — | Where swept funds go (`chainId` required). |
+| `supportedTokens` | `TokenType[]` | No | All | Tokens to watch. |
+| `supportedChains` | `number[]` | No | All 17 | Chains to watch. |
+| `autoSweep` | `boolean` | No | `true` | Auto-sweep on detection. |
+| `minValueUSD` | `number` | No | `0.50` | Minimum USD threshold. |
+| `pollingIntervalMs` | `number` | No | `3000` | Polling interval (ms). |
+| `recovery` | `RecoveryConfig` | No | — | Recovery behavior. |
+| `refund` | `RefundConfig` | No | `{ enabled: false }` | Auto-refund (experimental). |
+| `uaProjectId` | `string` | No | SDK default | Particle project ID for UA operations only. |
+
+---
+
+## Methods
+
+| Method | Parameters | Returns | Description |
+|---|---|---|---|
+| `initialize()` | — | `Promise<void>` | Initialize client (call first). |
+| `destroy()` | — | `void` | Cleanup resources. |
+| `getDepositAddresses()` | — | `Promise<DepositAddresses>` | Get EVM + Solana addresses. |
+| `startWatching()` | — | `void` | Start balance polling. |
+| `stopWatching()` | — | `void` | Stop balance polling. |
+| `checkBalances()` | — | `Promise<DetectedDeposit[]>` | Get current balances (above threshold). |
+| `sweep(depositId?)` | `string?` | `Promise<SweepResult[]>` | Sweep specific or all deposits. |
+| `getStatus()` | — | `ClientStatus` | Current status. |
+| `getPendingDeposits()` | — | `DetectedDeposit[]` | Unsent deposits. |
+| `getConfig()` | — | `ResolvedConfig` | Resolved config. |
+| `setDestination(dest)` | `Partial<DestinationConfig>` | `void` | Change destination at runtime. |
+| `getDestination()` | — | `{ address, chainId }` | Current destination. |
+| `getStuckFunds()` | — | `Promise<DetectedDeposit[]>` | All non-zero balances (no threshold). |
+| `recoverAllFunds()` | — | `Promise<RecoveryResult[]>` | Sweep all stuck funds. |
+| `refund(id, reason?)` | `string, RefundReason?` | `Promise<RefundResult>` | Refund specific deposit. |
+| `refundAll(reason?)` | `RefundReason?` | `Promise<RefundResult[]>` | Refund all pending. |
+| `canRefund(id)` | `string` | `Promise<{ eligible, reason? }>` | Check refund eligibility. |
+| `getRefundConfig()` | — | `RefundConfig` | Current refund config. |
+
+---
+
+## Events
+
+Subscribe to events using `on` / `off`:
+
+```typescript
+client.on('deposit:detected', (deposit: DetectedDeposit) => {
+  console.log(`New deposit: ${deposit.token} on chain ${deposit.chainId}`);
+});
+
+client.on('deposit:complete', (result: SweepResult) => {
+  console.log(`Sweep complete: ${result.explorerUrl}`);
+});
+
+// Remove a specific listener
+client.off('deposit:detected', handler);
+```
+
+### Event Reference
+
+| Event | Payload | Description |
+|---|---|---|
+| `deposit:detected` | `DetectedDeposit` | New deposit found. |
+| `deposit:processing` | `DetectedDeposit` | Sweep started. |
+| `deposit:complete` | `SweepResult` | Sweep succeeded. |
+| `deposit:error` | `Error, DetectedDeposit?` | Sweep failed. |
+| `recovery:started` | — | Recovery started. |
+| `recovery:complete` | `RecoveryResult[]` | Recovery finished. |
+| `recovery:failed` | `DetectedDeposit, Error` | Single recovery failed. |
+| `refund:started` | `DetectedDeposit, RefundReason` | Refund initiated. |
+| `refund:processing` | `DetectedDeposit, attempt` | Refund attempt. |
+| `refund:complete` | `RefundResult` | Refund succeeded. |
+| `refund:failed` | `DetectedDeposit, Error, exhausted` | Refund failed. |
+| `status:change` | `ClientStatus` | Status changed. |
+
+---
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="React SDK" icon="react" href="/universal-accounts/ua-reference/universal-deposit/react-sdk">
+    DepositProvider, hooks, and UI components.
+  </Card>
+  <Card title="Reference" icon="book" href="/universal-accounts/ua-reference/universal-deposit/reference">
+    Types, constants, and advanced topics.
+  </Card>
+</CardGroup>

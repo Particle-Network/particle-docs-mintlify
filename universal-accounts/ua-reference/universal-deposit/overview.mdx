@@ -1,0 +1,140 @@
+---
+title: "Universal Deposit SDK"
+sidebarTitle: "Overview & Quickstart"
+description: "Accept deposits from any chain. Funds are automatically detected and bridged to your configured destination."
+---
+
+The **Universal Deposit SDK** (`@particle-network/universal-deposit`) lets your app accept deposits from any chain. Funds sent to the generated deposit addresses are automatically detected and bridged to your configured destination chain in **USDC**.
+
+<Card title="Learn More About Universal Accounts" icon="user" href="/intro/universal-accounts">
+  Universal Deposit works on top of Universal Accounts. Learn what they are and how they work.
+</Card>
+
+<Note>
+  Universal Deposit uses **USDC** as the bridged asset. All deposits are automatically converted to USDC and sent to your configured destination chain.
+</Note>
+
+<Warning>
+ Due to the architecture of the Unviersal Deeposit SDK, it is not compatible with Particle **Connectkit** or **Authkit**.
+</Warning>
+
+## Installation
+
+<CodeGroup>
+
+```bash npm
+npm install @particle-network/universal-deposit
+```
+
+```bash yarn
+yarn add @particle-network/universal-deposit
+```
+
+</CodeGroup>
+
+## Quick Start
+
+### 1. Setup — Wrap your app with `DepositProvider`
+
+```tsx
+import { DepositProvider, CHAIN } from '@particle-network/universal-deposit/react';
+
+function App() {
+  return (
+    <YourAuthProvider>
+      <DepositProvider config={{
+        destination: { chainId: CHAIN.POLYGON },
+        autoSweep: true,
+        minValueUSD: 1,
+      }}>
+        <YourApp />
+      </DepositProvider>
+    </YourAuthProvider>
+  );
+}
+```
+
+### 2. Modal — Open a deposit dialog
+
+```tsx
+import { useDeposit, DepositModal } from '@particle-network/universal-deposit/react';
+
+function Page() {
+  const { address } = useYourWallet();
+  const [open, setOpen] = useState(false);
+  const { isReady } = useDeposit({ ownerAddress: address });
+
+  return (
+    <>
+      <button onClick={() => setOpen(true)} disabled={!isReady}>
+        Deposit
+      </button>
+      <DepositModal isOpen={open} onClose={() => setOpen(false)} />
+    </>
+  );
+}
+```
+
+<Note>
+  The user address is only used as reference for the deposit account generation, the SDK is fully wallet-agnostic.
+</Note>
+
+### 3. Inline Widget — Embed the deposit UI
+
+```tsx
+import { useDeposit, DepositWidget } from '@particle-network/universal-deposit/react';
+
+function Page() {
+  const { address } = useYourWallet();
+  const { isReady } = useDeposit({ ownerAddress: address });
+
+  if (!isReady) return <Loading />;
+  return <DepositWidget fullWidth />;
+}
+```
+
+### 4. Headless — Build your own UI
+
+```tsx
+import { useDeposit, getChainName } from '@particle-network/universal-deposit/react';
+
+function Page() {
+  const { address } = useYourWallet();
+  const {
+    isReady, depositAddresses, pendingDeposits,
+    recentActivity, status, sweep, currentDestination,
+  } = useDeposit({ ownerAddress: address });
+
+  if (!isReady) return <Loading />;
+
+  return (
+    <div>
+      <p>EVM: {depositAddresses?.evm}</p>
+      <p>Solana: {depositAddresses?.solana}</p>
+      <p>Status: {status}</p>
+      <p>Destination: {getChainName(currentDestination?.chainId)}</p>
+
+      {pendingDeposits.map(d => (
+        <div key={d.id}>
+          {d.token} — ${d.amountUSD.toFixed(2)}
+          <button onClick={() => sweep(d.id)}>Sweep</button>
+        </div>
+      ))}
+    </div>
+  );
+}
+```
+
+## Next Steps
+
+<CardGroup cols={3}>
+  <Card title="React SDK" icon="react" href="/universal-accounts/ua-reference/universal-deposit/react-sdk">
+    DepositProvider, hooks, and UI components.
+  </Card>
+  <Card title="Core SDK" icon="code" href="/universal-accounts/ua-reference/universal-deposit/core-sdk">
+    Headless DepositClient for non-React apps.
+  </Card>
+  <Card title="Reference" icon="book" href="/universal-accounts/ua-reference/universal-deposit/reference">
+    Types, constants, chain utilities, and advanced topics.
+  </Card>
+</CardGroup>
