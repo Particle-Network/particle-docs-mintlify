@@ -1,13 +1,13 @@
 ---
 title: "Universal Deposit SDK"
 sidebarTitle: "Overview & Quickstart"
-description: "Accept deposits from any chain. Funds are automatically detected and bridged to your configured destination."
+description: "Accept deposits from any chain. Funds are automatically detected and bridged to your desired destination."
 ---
 
-The **Universal Deposit SDK** (`@particle-network/universal-deposit`) lets your app accept deposits from any chain. Funds sent to the generated deposit addresses are automatically detected and bridged to your configured destination chain in **USDC**.
+The **Universal Deposit SDK** (`@particle-network/universal-deposit`) lets your app accept deposits from any chain. It gives your users deposit addresses for every chain supported by Universal Accounts, with funds automatically detected and bridged to your configured destination chain in **USDC**.
 
 <Card title="Learn More About Universal Accounts" icon="user" href="/intro/universal-accounts">
-  Universal Deposit works on top of Universal Accounts. Learn what they are and how they work.
+  Universal Deposit leverages Universal Accounts. Learn what they are and how they work.
 </Card>
 
 <Note>
@@ -15,7 +15,7 @@ The **Universal Deposit SDK** (`@particle-network/universal-deposit`) lets your 
 </Note>
 
 <Warning>
- Due to the architecture of the Universal Deposit SDK, it is not compatible with Particle **Connectkit** or **Authkit**.
+ Due to the architecture of Universal Deposit, it is not compatible with Particle **Connectkit** or **Authkit**.
 </Warning>
 
 ## Try Live Demo
@@ -106,7 +106,7 @@ function Page() {
 ```
 
 <Note>
-  The user address is only used as reference for the deposit account generation, the SDK is fully wallet-agnostic.
+  The user address above is only used as reference for the deposit account generation, the SDK is fully wallet-agnostic.
 </Note>
 
 ### 3. Inline Widget — Embed the deposit UI
