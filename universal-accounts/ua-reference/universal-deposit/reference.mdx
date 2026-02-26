@@ -73,6 +73,71 @@ interface RefundResult {
 }
 ```
 
+### UATransaction
+
+```typescript
+interface UATransaction {
+  transactionId: string;
+  tag: string;
+  createdAt: string;
+  updatedAt: string;
+  targetToken: {
+    name: string;
+    type: string;
+    image: string;
+    price: number;
+    symbol: string;
+    address: string;
+    assetId: string;
+    chainId: number;
+    decimals: number;
+    realDecimals: number;
+    isPrimaryToken: boolean;
+    isSmartRouterSupported: boolean;
+  };
+  change: {
+    amount: string;
+    amountInUSD: string;
+    from: string;
+    to: string;
+  };
+  detail: {
+    redPacketCount: number;
+  };
+  status: number;
+  fromChains: number[];
+  toChains: number[];
+}
+```
+
+### TransactionsResponse
+
+```typescript
+interface TransactionsResponse {
+  transactions: UATransaction[];
+  page: number;
+  pageSize: number;
+}
+```
+
+### TokenTransactionFilter
+
+```typescript
+interface TokenTransactionFilter {
+  chainId: number;   // Chain ID to filter by
+  address: string;   // Token contract address
+}
+```
+
+### TokenTransactionsResponse
+
+```typescript
+interface TokenTransactionsResponse {
+  transactions: UATransaction[];
+  nextPageToken?: string;  // Cursor for next page (undefined = no more pages)
+}
+```
+
 ### Other Types
 
 ```typescript

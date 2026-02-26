@@ -63,6 +63,55 @@ client.startWatching();
 | `refundAll(reason?)` | `RefundReason?` | `Promise<RefundResult[]>` | Refund all pending. |
 | `canRefund(id)` | `string` | `Promise<{ eligible, reason? }>` | Check refund eligibility. |
 | `getRefundConfig()` | — | `RefundConfig` | Current refund config. |
+| `getTransactions(page, pageSize)` | `number, number` | `Promise<TransactionsResponse>` | Page-based transaction history. |
+| `getTokenTransactions(filter, cursor?)` | `TokenTransactionFilter, string?` | `Promise<TokenTransactionsResponse>` | Cursor-based filtered transactions. |
+| `getTransaction(id)` | `string` | `Promise<UATransaction>` | Single transaction lookup. |
+
+---
+
+## Transaction History
+
+Query the Universal Account's transaction history. Results are cached (30s TTL, LRU) to avoid redundant API calls when paginating.
+
+### Page-Based Pagination
+
+```typescript
+const { transactions, page, pageSize } = await client.getTransactions(1, 10);
+
+for (const tx of transactions) {
+  console.log(tx.transactionId, tx.targetToken.symbol, tx.change.amountInUSD);
+}
+
+// Next page
+const page2 = await client.getTransactions(2, 10);
+```
+
+### Filter by Token and Chain (Cursor-Based)
+
+```typescript
+import { CHAIN } from '@particle-network/universal-deposit';
+
+// Get USDC transactions on Ethereum
+const result = await client.getTokenTransactions({
+  chainId: CHAIN.ETHEREUM,
+  address: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48', // USDC contract
+});
+
+// Paginate with cursor
+if (result.nextPageToken) {
+  const nextPage = await client.getTokenTransactions(
+    { chainId: CHAIN.ETHEREUM, address: '0xA0b8...' },
+    result.nextPageToken,
+  );
+}
+```
+
+### Single Transaction Lookup
+
+```typescript
+const tx = await client.getTransaction('tx_abc123');
+console.log(tx.status, tx.change.amount, tx.fromChains, tx.toChains);
+```
 
 ---
 
