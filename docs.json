@@ -143,6 +143,15 @@
             "group": "SDK Reference",
             "pages": [
               "universal-accounts/ua-reference/desktop/web",
+              {
+                "group": "Universal Deposit SDK",
+                "pages": [
+                  "universal-accounts/ua-reference/universal-deposit/overview",
+                  "universal-accounts/ua-reference/universal-deposit/react-sdk",
+                  "universal-accounts/ua-reference/universal-deposit/core-sdk",
+                  "universal-accounts/ua-reference/universal-deposit/reference"
+                ]
+              },
               "universal-accounts/ua-reference/faq"
             ]
           }

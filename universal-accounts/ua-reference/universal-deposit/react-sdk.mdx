@@ -1,0 +1,195 @@
+---
+title: "Universal Deposit SDK — React API"
+sidebarTitle: "React SDK"
+description: "React API reference for the Universal Deposit SDK: DepositProvider, hooks, and UI components."
+---
+
+## DepositProvider
+
+Wraps your app and manages the deposit lifecycle. Handles Auth Core context internally.
+
+```tsx
+import { DepositProvider, CHAIN } from '@particle-network/universal-deposit/react';
+
+<DepositProvider config={{
+  destination: { chainId: CHAIN.POLYGON },
+  autoSweep: true,
+  minValueUSD: 1,
+}}>
+  <App />
+</DepositProvider>
+```
+
+### Config
+
+| Property | Type | Default | Description |
+|---|---|---|---|
+| `destination.chainId` | `number` | — | **Required.** Destination chain (use `CHAIN` constant). |
+| `destination.address` | `string` | Owner's EOA | Custom sweep destination address. |
+| `supportedTokens` | `TokenType[]` | All | Tokens to watch. |
+| `supportedChains` | `number[]` | All 17 chains | Chains to watch. |
+| `autoSweep` | `boolean` | `true` | Auto-sweep detected deposits. |
+| `minValueUSD` | `number` | `0.50` | Minimum USD value to trigger sweep. |
+| `pollingIntervalMs` | `number` | `3000` | Balance check interval (ms). |
+| `refund` | `RefundConfig` | `{ enabled: false }` | Auto-refund config (experimental). |
+| `uaProjectId` | `string` | SDK default | Particle project ID for UA operations only. |
+
+---
+
+## useDeposit
+
+Primary hook. Pass `ownerAddress` to trigger auto-connection and start watching for deposits.
+
+```tsx
+import { useDeposit } from '@particle-network/universal-deposit/react';
+
+const {
+  isReady, depositAddresses, pendingDeposits,
+  sweep, status, currentDestination,
+} = useDeposit({ ownerAddress: '0x...' });
+```
+
+### Options
+
+| Property | Type | Description |
+|---|---|---|
+| `ownerAddress` | `string \| undefined` | User's wallet address. Pass to trigger connection. |
+
+### Return Value
+
+| Property | Type | Description |
+|---|---|---|
+| `isConnecting` | `boolean` | SDK is initializing. |
+| `isConnected` | `boolean` | Auth Core connected. |
+| `isReady` | `boolean` | Client ready for operations. |
+| `error` | `Error \| null` | Last error. |
+| `disconnect` | `() => Promise<void>` | Disconnect and cleanup. |
+| `status` | `ClientStatus` | Current client status. |
+| `depositAddresses` | `DepositAddresses \| null` | EVM and Solana deposit addresses. |
+| `pendingDeposits` | `DetectedDeposit[]` | Detected but unsent deposits. |
+| `recentActivity` | `ActivityItem[]` | Activity history. |
+| `sweep` | `(id?: string) => Promise<SweepResult[]>` | Trigger sweep (all or by ID). |
+| `setDestination` | `(dest: DestinationConfig) => void` | Change destination at runtime. |
+| `currentDestination` | `{ address: string; chainId: number } \| null` | Current destination. |
+
+---
+
+## useDepositContext
+
+Access the full context including recovery and refund methods. Returns everything from `useDeposit` plus:
+
+```tsx
+import { useDepositContext } from '@particle-network/universal-deposit/react';
+
+const { client, stuckFunds, recoverFunds, refundDeposit } = useDepositContext();
+```
+
+### Extended Properties
+
+| Property | Type | Description |
+|---|---|---|
+| `client` | `DepositClient \| null` | Underlying client instance. |
+| `ownerAddress` | `string \| null` | User's wallet. |
+| `intermediaryAddress` | `string \| null` | JWT wallet. |
+| `connect` | `(address: string) => Promise<void>` | Manual connect. |
+| `startWatching` / `stopWatching` | `() => void` | Control balance polling. |
+| `stuckFunds` | `DetectedDeposit[]` | Stuck funds list. |
+| `isRecovering` | `boolean` | Recovery in progress. |
+| `getStuckFunds` | `() => Promise<DetectedDeposit[]>` | Refresh stuck funds. |
+| `recoverFunds` | `() => Promise<RecoveryResult[]>` | Recover all funds. |
+| `isRefunding` | `boolean` | Refund in progress. |
+| `refundDeposit` | `(id: string) => Promise<RefundResult>` | Refund specific deposit. |
+| `refundAll` | `() => Promise<RefundResult[]>` | Refund all pending. |
+| `canRefund` | `(id: string) => Promise<{ eligible: boolean; reason?: string }>` | Check eligibility. |
+| `refundConfig` | `RefundConfig` | Current refund config. |
+
+---
+
+## Components
+
+### DepositWidget
+
+Inline deposit UI with token selection, QR code, and activity feed.
+
+```tsx
+import { DepositWidget } from '@particle-network/universal-deposit/react';
+
+<DepositWidget fullWidth theme="dark" />
+```
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `client` | `DepositClient` | Context | Optional client (uses context if omitted). |
+| `theme` | `'dark' \| 'light'` | `'dark'` | Color theme. |
+| `destination` | `DestinationConfig` | Provider config | Override destination. |
+| `onDestinationChange` | `(dest) => void` | — | Destination change callback. |
+| `showDestination` | `boolean` | `true` | Show destination section. |
+| `fullWidth` | `boolean` | `false` | Expand to container (default: 380px). |
+| `showHeader` | `boolean` | `true` | Show header with title. |
+| `className` | `string` | — | Custom CSS class. |
+| `onClose` | `() => void` | — | Close handler. |
+
+### DepositModal
+
+Modal wrapper around `DepositWidget`. Accepts all `DepositWidget` props plus:
+
+```tsx
+import { DepositModal } from '@particle-network/universal-deposit/react';
+
+<DepositModal isOpen={open} onClose={() => setOpen(false)} />
+```
+
+| Prop | Type | Description |
+|---|---|---|
+| `isOpen` | `boolean` | Modal visibility. |
+| `onClose` | `() => void` | Close handler (required). |
+| `overlayClassName` | `string` | Custom overlay CSS class. |
+
+### RecoveryWidget
+
+UI for scanning and recovering stuck funds.
+
+```tsx
+import { RecoveryWidget } from '@particle-network/universal-deposit/react';
+
+<RecoveryWidget autoScan theme="dark" />
+```
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `client` | `DepositClient` | Context | Optional client. |
+| `theme` | `'dark' \| 'light'` | `'dark'` | Color theme. |
+| `autoScan` | `boolean` | `true` | Auto-scan on mount. |
+| `showModeSelector` | `boolean` | `true` | Show recover/refund toggle. |
+| `defaultMode` | `'recover' \| 'refund'` | `'recover'` | Initial mode. |
+| `className` | `string` | — | Custom CSS class. |
+| `onClose` | `() => void` | — | Close handler. |
+
+### RecoveryModal
+
+Modal wrapper around `RecoveryWidget`. Accepts all `RecoveryWidget` props plus:
+
+```tsx
+import { RecoveryModal } from '@particle-network/universal-deposit/react';
+
+<RecoveryModal isOpen={open} onClose={() => setOpen(false)} />
+```
+
+| Prop | Type | Description |
+|---|---|---|
+| `isOpen` | `boolean` | Modal visibility. |
+| `onClose` | `() => void` | Close handler (required). |
+| `overlayClassName` | `string` | Custom overlay CSS class. |
+
+---
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Core SDK" icon="code" href="/universal-accounts/ua-reference/universal-deposit/core-sdk">
+    Headless DepositClient for non-React apps.
+  </Card>
+  <Card title="Reference" icon="book" href="/universal-accounts/ua-reference/universal-deposit/reference">
+    Types, constants, and advanced topics.
+  </Card>
+</CardGroup>
