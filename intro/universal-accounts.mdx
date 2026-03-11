@@ -63,6 +63,7 @@ From a technical standpoint, Universal Accounts are smart contract account deplo
 ### Smart Account implementation
 
 - Built on the ERC-4337 standard.
+- Leverages EIP-7702 to use existing EOA's assets without requiring users to migrate.
 - Compatible with existing EOA wallets.
 - Support social login integration.
 
@@ -86,12 +87,11 @@ From a technical standpoint, Universal Accounts are smart contract account deplo
    - Simple SDK implementation, using any EOA as signer.
    - Compatible with existing dApp infrastructure.
 2. **Account Creation**
-   - Created via social logins or wallet connection.
-   - Automatically assigned to a user's EOA.
+   - Created via social logins, wallet connection, or private key.
+   - Automatic upgrade from EOA to Universal Account (assets instantly available without migrating in 7702 default mode).
 3. **Cross-Chain Operations**
    - Transactions submitted are funded using a user's collective onchain balance, automatically bridging as needed to fulfill their intent.
    - Gas can be paid using different available tokens.
-   - Gasless transactions are available.
 
 <Card title="Try the Universal SDK" icon="code" href="/universal-accounts/cha/web-quickstart">
   Start building with Universal Accounts.
