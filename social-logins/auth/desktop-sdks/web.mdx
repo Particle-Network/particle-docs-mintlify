@@ -625,8 +625,6 @@ const result = await signTypedData({ data: msg, version: 'V4' });
 
 To enable blind signatures (signing without a confirmation popup) in Particle Auth, certain conditions must be met when configuring the `AuthCoreContextProvider` component and setting up the authentication flow.
 
-<Note>Blind signing is only supported when the user is authenticated via **JWT** or **Telegram**.</Note>
-
 1. **Master Password Requirement**
    - Users must either:
      - Have entered the master password, or
