@@ -272,41 +272,6 @@
                   "social-logins/api/server/getuserinfobyidentity",
                   "social-logins/api/server/isprojectuser"
                 ]
-              },
-              {
-                "group": "EVM Enhanced API",
-                "pages": [
-                  "social-logins/api/evm/abi_encodefunctioncall",
-                  "social-logins/api/evm/crosschain_getnfts",
-                  "social-logins/api/evm/deserializetransaction",
-                  "social-logins/api/evm/getcontractabi",
-                  "social-logins/api/evm/getlatestblock",
-                  "social-logins/api/evm/getnfts",
-                  "social-logins/api/evm/getpendingtransactionsbyaddress",
-                  "social-logins/api/evm/getprice",
-                  "social-logins/api/evm/gettokens",
-                  "social-logins/api/evm/gettokensandnfts",
-                  "social-logins/api/evm/gettransactionsbyaddress",
-                  "social-logins/api/evm/suggestedgasfees"
-                ]
-              },
-              {
-                "group": "Solana Enhanced API",
-                "pages": [
-                  "social-logins/api/solana/enhancedgetprice",
-                  "social-logins/api/solana/enhancedgettokensandnfts",
-                  "social-logins/api/solana/enhancedgettransactionsbyaddress",
-                  "social-logins/api/solana/solanaservice"
-                ]
-              },
-              {
-                "group": "Swap API",
-                "pages": [
-                  "social-logins/api/swap/introduction",
-                  "social-logins/api/swap/checkapprove",
-                  "social-logins/api/swap/getquote",
-                  "social-logins/api/swap/getswap"
-                ]
               }
             ]
           },

@@ -1,45 +1,30 @@
 ---
-title: "Introduction to Enhanced APIs"
+title: "Introduction to Server APIs"
 sidebarTitle: "Overview"
-description: "Particle Network's Enhanced APIs enable reliable, high-throughput blockchain interactions."
+description: "Particle Network's server APIs let you look up and verify Particle Auth users from your backend."
 ---
 
-<img
-  className="block dark:hidden"
-  src="/social-logins/api/images/web3.png"
-  alt="Particle Network Web3 services."
-/>
-<img
-  className="hidden dark:block"
-  src="/social-logins/api/images/web3.png"
-  alt="Particle Network Web3 services."
-/>
+Particle Network also provides a small set of **server APIs** for backend integrations.  
+These endpoints are useful when you need to **look up user details** or **verify whether a wallet belongs to a user in your project**.
 
-***
+- Retrieve user information by UUID and token
+- Retrieve user information by identity
+- Check whether an address belongs to a user in your project
 
-# Enhanced APIs
+<Note>These endpoints are intended for server-side usage and require your project server key.</Note>
 
-Alongside Particle’s Wallet-as-a-Service and Account Abstraction SDKs, we provide a set of **Enhanced APIs**.  
-These APIs are designed for **fast, flexible blockchain interactions**, such as:
-
-- Retrieving detailed wallet and token data  
-- Constructing ERC-20 swap transactions  
-- Reading and writing blockchain data programmatically  
-
-<Note>Many of these capabilities are already built into Particle SDKs.</Note>
-
-The Enhanced APIs section gives you a **transparent look at all available endpoints**, with examples and an interactive playground for testing.
+This section gives you a quick overview of the currently available server endpoints, along with examples and an interactive playground for testing.
 
 ***
 
 <CardGroup cols={3}>
-    <Card title="Enhanced APIs (EVM)" href="/social-logins/api/evm/abi_encodefunctioncall">
-        APIs for high-speed EVM data access and transaction calls.
+    <Card title="getUserInfo" href="/social-logins/api/server/getuserinfo">
+        Retrieve a registered user's information using their UUID and token.
     </Card>
-    <Card title="Enhanced APIs (Solana)" href="/social-logins/api/solana/enhancedgetprice">
-        Solana-focused APIs for on-chain data and interactions.
+    <Card title="getUserInfoByIdentity" href="/social-logins/api/server/getuserinfobyidentity">
+        Retrieve a registered user's information using a supported identity value.
     </Card>
-    <Card title="Enhanced APIs (Swap)" href="/social-logins/api/swap/introduction">
-        APIs for constructing and retrieving token swaps.
+    <Card title="isProjectUser" href="/social-logins/api/server/isprojectuser">
+        Check whether a wallet address belongs to a user associated with your project.
     </Card>
 </CardGroup>
