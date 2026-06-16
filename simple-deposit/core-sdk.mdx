@@ -37,6 +37,8 @@ client.startWatching();
 | `pollingIntervalMs` | `number` | No | `3000` | Polling interval (ms). |
 | `recovery` | `RecoveryConfig` | No | — | Recovery behavior. |
 | `refund` | `RefundConfig` | No | `{ enabled: false }` | Auto-refund (experimental). |
+| `funding` | `FundingConfig` | No | `{ enabled: false }` | Fund the deposit address from a connected browser wallet (zero-config). |
+| `onDepositEvent` | `(event: DepositLifecycleEvent) => void` | No | — | Deposit-lifecycle callback. Best-effort and client-side (not a server webhook). |
 | `uaProjectId` | `string` | No | SDK default | Particle project ID for UA operations only. |
 
 ---
@@ -63,9 +65,106 @@ client.startWatching();
 | `refundAll(reason?)` | `RefundReason?` | `Promise<RefundResult[]>` | Refund all pending. |
 | `canRefund(id)` | `string` | `Promise<{ eligible, reason? }>` | Check refund eligibility. |
 | `getRefundConfig()` | — | `RefundConfig` | Current refund config. |
+| `getWalletBalances(wallet)` | `FundingWallet` | `Promise<FundingBalance[]>` | Discover a connected wallet's cross-chain balances. |
+| `fundFromWallet(wallet, balance, opts?)` | `FundingWallet, FundingBalance, FundOptions?` | `Promise<FundingTransferResult>` | Transfer a discovered balance to the deposit address. |
 | `getTransactions(page, pageSize)` | `number, number` | `Promise<TransactionsResponse>` | Page-based transaction history. |
 | `getTokenTransactions(filter, cursor?)` | `TokenTransactionFilter, string?` | `Promise<TokenTransactionsResponse>` | Cursor-based filtered transactions. |
 | `getTransaction(id)` | `string` | `Promise<UATransaction>` | Single transaction lookup. |
+
+---
+
+## Notifications (Headless)
+
+Track each deposit through its lifecycle without any UI. Pass the `onDepositEvent`
+callback, or subscribe to the `deposit:lifecycle` event — both deliver the same
+normalized `DepositLifecycleEvent`, with a stable `id` across phase transitions
+(`detected → processing → credited`, or `failed` / `below_threshold`).
+
+```typescript
+const client = new DepositClient({
+  ownerAddress: '0x...',
+  intermediaryAddress: '0x...',
+  destination: { chainId: CHAIN.BASE },
+  onDepositEvent: (e) => {
+    console.log(e.phase, e.token, `$${e.amountUSD}`);
+  },
+});
+
+// Or subscribe to the same stream as an event:
+client.on('deposit:lifecycle', (e) => console.log(e.phase, e.id));
+```
+
+<Warning>
+  Lifecycle events fire client-side and best-effort — they are **not** a reliable
+  server webhook. Don't use them as the source of truth for crediting funds.
+</Warning>
+
+---
+
+## Fund from Wallet (Headless)
+
+Let a user top up their deposit address from a connected **browser wallet**
+(MetaMask / Rabby / Phantom / any injected EIP-1193 or Solana wallet). The SDK
+discovers the wallet's cross-chain balances, builds a plain transfer to the deposit
+address, and submits it through the wallet; the watcher then detects and sweeps it
+as usual. The browser wallet is a funding source only — it never becomes the
+Universal Account owner/signer.
+
+Balance discovery is **zero-config** (Particle's hosted service — no Moralis key,
+proxy, or backend). Enable it on the client:
+
+```typescript
+const client = new DepositClient({
+  ownerAddress: '0x...',
+  intermediaryAddress: '0x...',
+  authCoreProvider: provider,
+  destination: { chainId: CHAIN.BASE },
+  funding: { enabled: true },   // ← that's it
+});
+```
+
+### Flow
+
+```typescript
+import {
+  detectInjectedEvmWallets,
+  connectInjectedEvm,
+} from '@particle-network/simple-deposit';
+
+// 1. Detect + connect an injected wallet (or bring your own EIP-1193 provider).
+const [wallet] = await detectInjectedEvmWallets();
+const address = await connectInjectedEvm(wallet.provider);
+
+// 2. Discover spendable balances across supported chains.
+const balances = await client.getWalletBalances({ evm: { provider: wallet.provider, address } });
+
+// 3. Transfer a chosen balance to the deposit address (omit rawAmount for the
+//    gas-adjusted max). Emits funding:started → funding:complete (or funding:error).
+const result = await client.fundFromWallet(
+  { evm: { provider: wallet.provider, address } },
+  balances[0],
+);
+```
+
+### Detection Utilities
+
+Framework-agnostic helpers for discovering and connecting injected wallets:
+
+```typescript
+import {
+  detectInjectedEvmWallets,     // EIP-6963 + legacy window.ethereum fallback → DetectedEvmWallet[]
+  connectInjectedEvm,           // eth_requestAccounts → address
+  getEvmAccounts,               // current eth_accounts
+  promptEvmAccountSelection,    // wallet_requestPermissions → eth_accounts
+  detectInjectedSolanaWallet,   // window.phantom?.solana / window.solana → DetectedSolanaWallet | null
+  connectInjectedSolana,        // connect() → publicKey
+  formatUnits, parseUnits,      // smallest-unit ↔ human-readable amount helpers
+} from '@particle-network/simple-deposit';
+```
+
+<Note>
+  Balance discovery covers **Ethereum, BNB Chain, Base, Arbitrum, and Solana**. X Layer is not supported by the Moralis-backed service, so it is skipped during discovery — other supported chains are unaffected.
+</Note>
 
 ---
 
@@ -139,7 +238,9 @@ client.off('deposit:detected', handler);
 | `deposit:detected` | `DetectedDeposit` | New deposit found. |
 | `deposit:processing` | `DetectedDeposit` | Sweep started. |
 | `deposit:complete` | `SweepResult` | Sweep succeeded. |
+| `deposit:below_threshold` | `DetectedDeposit` | Deposit detected below `minValueUSD`. |
 | `deposit:error` | `Error, DetectedDeposit?` | Sweep failed. |
+| `deposit:lifecycle` | `DepositLifecycleEvent` | Normalized phase transition (mirrors the events above). |
 | `recovery:started` | — | Recovery started. |
 | `recovery:complete` | `RecoveryResult[]` | Recovery finished. |
 | `recovery:failed` | `DetectedDeposit, Error` | Single recovery failed. |
@@ -147,6 +248,9 @@ client.off('deposit:detected', handler);
 | `refund:processing` | `DetectedDeposit, attempt` | Refund attempt. |
 | `refund:complete` | `RefundResult` | Refund succeeded. |
 | `refund:failed` | `DetectedDeposit, Error, exhausted` | Refund failed. |
+| `funding:started` | `FundingBalance` | Wallet-funding transfer started. |
+| `funding:complete` | `FundingTransferResult` | Wallet-funding transfer submitted. |
+| `funding:error` | `Error, FundingBalance?` | Wallet-funding transfer failed. |
 | `status:change` | `ClientStatus` | Status changed. |
 
 ---

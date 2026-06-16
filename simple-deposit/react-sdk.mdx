@@ -32,6 +32,9 @@ import { DepositProvider, CHAIN } from '@particle-network/simple-deposit/react';
 | `minValueUSD` | `number` | `0.50` | Minimum USD value to trigger sweep. |
 | `pollingIntervalMs` | `number` | `3000` | Balance check interval (ms). |
 | `refund` | `RefundConfig` | `{ enabled: false }` | Auto-refund config (experimental). |
+| `notifications` | `boolean \| DepositNotificationsProps` | `false` | Show in-app deposit notifications. Set `true` to auto-mount the toaster, or pass props to configure it. |
+| `funding` | `FundingConfig` | `{ enabled: false }` | Let users fund the deposit address from a connected browser wallet. When enabled, `DepositWidget` shows a "Fund from wallet" toggle. |
+| `fundingWallet` | `{ evm?: { provider, address } }` | — | Reuse your app's already-connected wallet as the funding source (skips the connect step). |
 | `uaProjectId` | `string` | SDK default | Particle project ID for UA operations only. |
 
 ---
@@ -128,6 +131,10 @@ import { DepositWidget } from '@particle-network/simple-deposit/react';
 | `showHeader` | `boolean` | `true` | Show header with title. |
 | `className` | `string` | — | Custom CSS class. |
 | `onClose` | `() => void` | — | Close handler. |
+
+<Note>
+  When `funding.enabled` is set on the provider, `DepositWidget` automatically gains a **"Receive | Fund from wallet"** toggle — no extra props needed.
+</Note>
 
 ### DepositModal
 

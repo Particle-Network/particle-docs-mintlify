@@ -73,6 +73,68 @@ interface RefundResult {
 }
 ```
 
+### DepositLifecycleEvent
+
+Normalized, serializable view of a deposit at a single lifecycle phase — delivered by the `onDepositEvent` callback and the `deposit:lifecycle` event, and the basis for the notification UI. `id` is stable across phase transitions.
+
+```typescript
+type DepositPhase = 'detected' | 'processing' | 'credited' | 'failed' | 'below_threshold';
+
+interface DepositLifecycleEvent {
+  id: string;
+  phase: DepositPhase;
+  token: TokenType;
+  chainId: number;
+  amount: string;
+  amountUSD: number;
+  destination?: { address: string; chainId: number };
+  transactionId?: string; // present on 'credited'
+  explorerUrl?: string;   // present on 'credited'
+  error?: string;         // present on 'failed'
+  timestamp: number;
+}
+
+// DepositNotification (from useDepositNotifications) adds `createdAt` / `updatedAt`.
+```
+
+### FundingConfig
+
+```typescript
+interface FundingConfig {
+  enabled: boolean;                       // Master switch (default: false)
+  apiKey?: string;                        // Moralis key for DIRECT browser calls — dev/PoC only
+  proxyUrl?: string;                      // Your own reverse proxy (injects the key server-side)
+  balanceProvider?: BalanceProvider;      // Replace balance discovery entirely
+  evmRpcUrls?: Record<number, string>;    // Per-chain EVM RPC overrides
+  solanaRpcUrl?: string;                  // Solana RPC for building SPL/native transfers
+  minValueUSD?: number;                   // Min USD value for a balance to be offered
+}
+```
+
+### Funding Types
+
+```typescript
+// A connected browser wallet used as a funding source.
+interface FundingWallet {
+  evm?: { provider: unknown; address: string };     // EIP-1193 provider + address
+  solana?: { provider: unknown; address: string };  // Solana wallet provider + address
+}
+
+// Options when transferring a discovered balance.
+interface FundOptions {
+  rawAmount?: bigint;   // Omit for the gas-adjusted max
+}
+
+// Result of a fund-from-wallet transfer.
+interface FundingTransferResult {
+  txHash: string;
+  // …plus chain/token/amount metadata for the submitted transfer
+}
+
+// FundingBalance is the descriptor returned by getWalletBalances() — pass one
+// straight back into fundFromWallet(). Treat it as opaque; don't construct it by hand.
+```
+
 ### UATransaction
 
 ```typescript
@@ -214,6 +276,22 @@ import {
 } from '@particle-network/simple-deposit';
 ```
 
+### Wallet Detection Utilities
+
+Framework-agnostic helpers for the [Fund from Wallet](#fund-from-wallet) feature — discover and connect injected browser wallets without React.
+
+```typescript
+import {
+  detectInjectedEvmWallets,     // EIP-6963 + legacy window.ethereum fallback
+  connectInjectedEvm,           // eth_requestAccounts → address
+  getEvmAccounts,               // current eth_accounts
+  promptEvmAccountSelection,    // wallet_requestPermissions → eth_accounts
+  detectInjectedSolanaWallet,   // window.phantom?.solana / window.solana
+  connectInjectedSolana,        // connect() → publicKey
+  formatUnits, parseUnits,      // smallest-unit ↔ human-readable amount helpers
+} from '@particle-network/simple-deposit';
+```
+
 ---
 
 ## Advanced Topics
@@ -277,6 +355,79 @@ const dest = client.getDestination(); // { address, chainId }
 
 <Note>
   Throws `ConfigurationError` if the chain ID or address is invalid.
+</Note>
+
+### Notifications
+
+Surface deposit progress to your users. Set `notifications: true` on `DepositProvider` to auto-mount the toaster, build a custom UI with the `useDepositNotifications` hook, or go headless with the `onDepositEvent` callback / `deposit:lifecycle` event — all driven by the same `DepositLifecycleEvent`.
+
+<CodeGroup>
+
+```tsx React
+<DepositProvider config={{
+  destination: { chainId: CHAIN.BASE },
+  notifications: { position: 'bottom-right', durationMs: 6000 },
+}}>
+  <App />
+</DepositProvider>
+```
+
+```typescript Headless
+const client = new DepositClient({
+  ownerAddress: '0x...',
+  intermediaryAddress: '0x...',
+  destination: { chainId: CHAIN.BASE },
+  onDepositEvent: (e) => console.log(e.phase, e.token, e.amountUSD),
+});
+```
+
+</CodeGroup>
+
+#### DepositNotificationsProps
+
+| Property | Type | Default | Description |
+|---|---|---|---|
+| `position` | `'top-right' \| 'top-left' \| 'bottom-right' \| 'bottom-left' \| 'top-center' \| 'bottom-center'` | `'top-right'` | Anchor on screen. |
+| `theme` | `'dark' \| 'light'` | `'dark'` | Color theme. |
+| `durationMs` | `number` | `6000` | Auto-dismiss delay for terminal toasts. `0` disables. |
+| `max` | `number` | `5` | Max simultaneous toasts. |
+| `className` | `string` | — | Extra classes for the fixed container. |
+| `renderItem` | `(n, dismiss) => ReactNode` | — | Render-prop escape hatch (replaces default markup). |
+
+<Warning>
+  Lifecycle events fire client-side and best-effort — they are **not** a reliable server webhook. Don't use them as the source of truth for crediting funds.
+</Warning>
+
+### Fund from Wallet
+
+Let users top up their deposit address from a connected browser wallet (MetaMask / Rabby / Phantom / any injected EIP-1193 or Solana wallet). The SDK discovers cross-chain balances, builds a transfer to the deposit address, and the watcher sweeps it as usual. Balance discovery is **zero-config** (Particle's hosted service — no Moralis key, proxy, or backend). The browser wallet is a funding source only — it never becomes the Universal Account owner/signer.
+
+```typescript
+const client = new DepositClient({
+  ownerAddress: '0x...',
+  intermediaryAddress: '0x...',
+  authCoreProvider: provider,
+  destination: { chainId: CHAIN.BASE },
+  funding: { enabled: true },   // ← that's it
+});
+```
+
+When `funding.enabled` is set, `DepositWidget` automatically shows a "Receive | Fund from wallet" toggle. For a standalone surface use the `FundFromWallet` component, or call `client.getWalletBalances()` / `client.fundFromWallet()` directly — see the [React SDK](/simple-deposit/react-sdk) and [Core SDK](/simple-deposit/core-sdk).
+
+#### FundingConfig
+
+| Property | Type | Default | Description |
+|---|---|---|---|
+| `enabled` | `boolean` | `false` | Master switch for the feature. |
+| `apiKey` | `string` | — | Moralis API key for **direct** browser calls. Dev/PoC only — exposes the key. Prefer the hosted default. |
+| `proxyUrl` | `string` | Hosted service | Base URL of your own reverse proxy. Omit to use Particle's hosted service. |
+| `balanceProvider` | `BalanceProvider` | — | Replace balance discovery entirely; `apiKey` / `proxyUrl` / hosted default are ignored. |
+| `evmRpcUrls` | `Record<number, string>` | Public RPCs | Per-chain EVM RPC overrides (native gas checks / send fallback). |
+| `solanaRpcUrl` | `string` | Public RPC | Solana RPC used to build SPL/native transfers. |
+| `minValueUSD` | `number` | Client `minValueUSD` | Minimum USD value for a balance to be offered. |
+
+<Note>
+  Balance-source precedence: `balanceProvider` > `apiKey` (direct) > `proxyUrl` > hosted default. Balance discovery covers **Ethereum, BNB Chain, Base, Arbitrum, and Solana**; X Layer is not supported and is skipped during discovery.
 </Note>
 
 ### Recovery
@@ -344,6 +495,7 @@ import {
   UniversalAccountError, // UA operations failed
   SweepError,            // Sweep failed
   RefundError,           // Refund failed
+  FundingError,          // Fund-from-wallet failed
   NetworkError,          // Network issues
 } from '@particle-network/simple-deposit';
 ```
