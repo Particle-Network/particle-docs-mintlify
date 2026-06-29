@@ -135,6 +135,42 @@ interface FundingTransferResult {
 // straight back into fundFromWallet(). Treat it as opaque; don't construct it by hand.
 ```
 
+### OnrampConfig
+
+```typescript
+interface OnrampConfig {
+  enabled: boolean;                          // Master switch (default: false)
+  apiKey?: string;                           // Your RampNow partner key (pk_live_…); omit to use the SDK default
+  mode?: 'overlay' | 'redirect';             // 'overlay' = in-page iframe (emits order events); 'redirect' = new tab (no events). Default 'overlay'
+  fiatCurrency?: string;                     // Fiat the user spends, e.g. 'EUR' (default 'USD')
+  defaultFiatAmount?: number;                // Pre-fill the fiat amount
+  paymentMode?: string;                      // 'card' | 'apple_pay' | 'google_pay' | 'sepa' | …
+  widgetUrl?: string;                        // Override the RampNow widget base URL (e.g. a sandbox host)
+}
+```
+
+| Property | Type | Default | Description |
+|---|---|---|---|
+| `enabled` | `boolean` | `false` | Master switch for the feature. |
+| `apiKey` | `string` | _(SDK default)_ | **Optional.** Your RampNow partner key (`pk_live_…`). Omit to use the SDK's built-in key; set it to route through your own partner account (your fees / KYC / limits). |
+| `mode` | `'overlay' \| 'redirect'` | `'overlay'` | `'overlay'` = in-page iframe modal (emits order events → activity feed updates). `'redirect'` = open in a new tab (no close button to manage, but **no order events**). |
+| `fiatCurrency` | `string` | `'USD'` | Fiat currency the user spends (e.g. `'EUR'`). |
+| `defaultFiatAmount` | `number` | — | Pre-fill the fiat amount. |
+| `paymentMode` | `string` | — | Preferred method: `'card'`, `'apple_pay'`, `'google_pay'`, `'sepa'`, … |
+| `widgetUrl` | `string` | `https://app.rampnow.io` | Override the RampNow widget base URL (e.g. a sandbox host). For testing you normally just use a sandbox `apiKey`. |
+
+### OnrampOrder
+
+The completed-order payload from RampNow, delivered by the `onramp:complete` event and exposed as `lastOrder` from `useOnramp`.
+
+```typescript
+interface OnrampOrder {
+  amount: string;     // Delivered amount
+  token: TokenType;   // Delivered token (USDC today)
+  // …plus RampNow order metadata (status, id, destination)
+}
+```
+
 ### UATransaction
 
 ```typescript
@@ -429,6 +465,34 @@ When `funding.enabled` is set, `DepositWidget` automatically shows a "Receive | 
 <Note>
   Balance-source precedence: `balanceProvider` > `apiKey` (direct) > `proxyUrl` > hosted default. Balance discovery covers **Ethereum, BNB Chain, Base, Arbitrum, and Solana**; X Layer is not supported and is skipped during discovery.
 </Note>
+
+### Onramp
+
+Let users buy crypto with fiat (card / Apple Pay / bank) via [RampNow](https://rampnow.io), delivered straight to the destination. Onramp bypasses the watcher/sweeper pipeline — RampNow's order events are the source of truth and are forwarded as `onramp:*` events. Zero-config: the SDK ships a default RampNow key, and `@rampnow/sdk` loads lazily only when the onramp opens.
+
+```typescript
+const client = new DepositClient({
+  ownerAddress: '0x...',
+  intermediaryAddress: '0x...',
+  authCoreProvider: provider,
+  destination: { chainId: CHAIN.BASE },
+  onramp: { enabled: true },   // ← that's it
+});
+```
+
+When `onramp.enabled` is set, `DepositWidget` automatically adds a "Buy" tab. For custom placement use `OnrampButton`, the `useOnramp()` hook, or the `OnrampStatusToast` popup — see the [React SDK](/simple-deposit/react-sdk). Headless apps call `client.openOnramp({ amount })` directly — see the [Core SDK](/simple-deposit/core-sdk#onramp-buy-with-fiat-headless).
+
+<Note>
+  **Supported chains:** Ethereum, BNB Chain, Base, Arbitrum, and Solana. X Layer is **not** supported — `isOnrampSupported()` returns `false` and the "Buy" UI is disabled with an explanation.
+</Note>
+
+<Note>
+  **Delivered token:** Onramp always buys **USDC**, matching the token the sweep delivers to the destination.
+</Note>
+
+<Warning>
+  Order events only flow in `mode: 'overlay'`. A `redirect` tab has no postMessage channel back, so there's nothing to track (no activity-feed updates, no status toast).
+</Warning>
 
 ### Recovery
 

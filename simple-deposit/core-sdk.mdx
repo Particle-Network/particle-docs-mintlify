@@ -38,6 +38,7 @@ client.startWatching();
 | `recovery` | `RecoveryConfig` | No | — | Recovery behavior. |
 | `refund` | `RefundConfig` | No | `{ enabled: false }` | Auto-refund (experimental). |
 | `funding` | `FundingConfig` | No | `{ enabled: false }` | Fund the deposit address from a connected browser wallet (zero-config). |
+| `onramp` | `OnrampConfig` | No | `{ enabled: false }` | Buy crypto with fiat via RampNow, delivered straight to the destination (zero-config). |
 | `onDepositEvent` | `(event: DepositLifecycleEvent) => void` | No | — | Deposit-lifecycle callback. Best-effort and client-side (not a server webhook). |
 | `uaProjectId` | `string` | No | SDK default | Particle project ID for UA operations only. |
 
@@ -67,6 +68,8 @@ client.startWatching();
 | `getRefundConfig()` | — | `RefundConfig` | Current refund config. |
 | `getWalletBalances(wallet)` | `FundingWallet` | `Promise<FundingBalance[]>` | Discover a connected wallet's cross-chain balances. |
 | `fundFromWallet(wallet, balance, opts?)` | `FundingWallet, FundingBalance, FundOptions?` | `Promise<FundingTransferResult>` | Transfer a discovered balance to the deposit address. |
+| `openOnramp(opts?)` | `{ amount?: number }` | `Promise<void>` | Open the RampNow onramp to buy crypto with fiat. |
+| `isOnrampSupported()` | — | `boolean` | Whether the current destination chain supports onramp. |
 | `getTransactions(page, pageSize)` | `number, number` | `Promise<TransactionsResponse>` | Page-based transaction history. |
 | `getTokenTransactions(filter, cursor?)` | `TokenTransactionFilter, string?` | `Promise<TokenTransactionsResponse>` | Cursor-based filtered transactions. |
 | `getTransaction(id)` | `string` | `Promise<UATransaction>` | Single transaction lookup. |
@@ -168,6 +171,34 @@ import {
 
 ---
 
+## Onramp — Buy with Fiat (Headless)
+
+Let a user **buy crypto with fiat** (card / Apple Pay / bank) via [RampNow](https://rampnow.io), delivered **straight to the configured destination**. Unlike Fund from Wallet, the purchase bypasses the deposit-address → watcher → sweeper pipeline — RampNow's order events are the source of truth, forwarded by the SDK as `onramp:*` events. The SDK delivers **USDC**, matching the sweep.
+
+Onramp is a single flag — zero-config. The SDK ships with a default RampNow key, so there's nothing to source; pass your own `apiKey` only to route purchases through your own RampNow partner account. The underlying `@rampnow/sdk` is loaded lazily (dynamic `import()`) only when the onramp is opened, so it never bundles into apps that don't use it.
+
+```typescript
+const client = new DepositClient({
+  ownerAddress: '0x...',
+  intermediaryAddress: '0x...',
+  authCoreProvider: provider,
+  destination: { chainId: CHAIN.BASE },
+  onramp: { enabled: true },   // ← that's it
+});
+
+// Events report progress.
+client.on('onramp:complete', (order) => console.log('delivered', order.amount, order.token));
+
+// Open the overlay (100 USD by default fiat currency).
+await client.openOnramp({ amount: 100 });
+```
+
+<Note>
+  Onramp delivery is supported for **Ethereum, BNB Chain, Base, Arbitrum, and Solana**. X Layer is **not** supported — `isOnrampSupported()` returns `false` for it. Order events only flow in `mode: 'overlay'`; a `redirect` tab has no channel back to report progress.
+</Note>
+
+---
+
 ## Transaction History
 
 Query the Universal Account's transaction history. Results are cached (30s TTL, LRU) to avoid redundant API calls when paginating.
@@ -251,6 +282,7 @@ client.off('deposit:detected', handler);
 | `funding:started` | `FundingBalance` | Wallet-funding transfer started. |
 | `funding:complete` | `FundingTransferResult` | Wallet-funding transfer submitted. |
 | `funding:error` | `Error, FundingBalance?` | Wallet-funding transfer failed. |
+| `onramp:complete` | `OnrampOrder` | Fiat purchase delivered to the destination. |
 | `status:change` | `ClientStatus` | Status changed. |
 
 ---
