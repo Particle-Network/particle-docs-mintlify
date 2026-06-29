@@ -12,7 +12,7 @@ Wraps your app and manages the deposit lifecycle. Handles Auth Core context inte
 import { DepositProvider, CHAIN } from '@particle-network/simple-deposit/react';
 
 <DepositProvider config={{
-  destination: { chainId: CHAIN.POLYGON },
+  destination: { chainId: CHAIN.BASE },
   autoSweep: true,
   minValueUSD: 1,
 }}>
