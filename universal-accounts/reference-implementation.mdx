@@ -7,13 +7,13 @@ description: "A complete Next.js demo wiring Universal Accounts to Particle Auth
 A full working example that combines **Particle Auth** (for social login) with the **Universal Accounts SDK**. Use it as a tour of the integration surface or fork it as a starting point for your own app.
 
 <Warning>
-Notice: Universal Accounts are upgrading to V2. This will require a change in account system for your app.
+  Notice: Universal Accounts are upgrading to V2. This will require a change in your app's account system.
 
-We've begun the migration and need your users to withdraw all funds from the old account. The next version will be deployed shortly after and you can resume operations.
+  With this migration underway, you need your users to withdraw all funds from their old (existing) account(s). The next version will be deployed shortly, allowing you to resume operations with users creating new accounts.
 
-Withdrawals will be available past this date, but you will need to migrate your users to the new account system.
+  Withdrawals will still be available past this date.
 
-Assets can be withdrawn to any account the user controls, but only via the `createTransferTransaction` method.
+  Assets can be withdrawn to any account the user controls, but only via the `createTransferTransaction` method.
 </Warning>
 
 <Card title="Demo repository" icon="github" href="https://github.com/particle-network/universal-accounts-quickstart">
@@ -32,12 +32,12 @@ The demo is a Next.js app using [Particle Auth](/social-logins/auth/introduction
 
 - The user's owner EOA, EVM Universal Account address, and Solana Universal Account address.
 - A live unified balance across all supported chains.
-- Two transaction examples — a payable contract call and a token swap.
+- Two transaction examples: a payable contract call and a token swap.
 
 The signer is the `provider` returned by Particle Auth's `useEthereum()` hook. Any other EOA-based provider can be swapped in.
 
 <Note>
-  Universal Accounts are standalone smart accounts. To fund yours, transfer assets in — unless you're logging into a pre-existing UA created through [UniversalX](https://universalx.app) or another UA-enabled app.
+  Universal Accounts are standalone smart accounts. To fund yours, transfer assets in—unless you're logging into a pre-existing UA created through [UniversalX](https://universalx.app) or another UA-enabled app.
 </Note>
 
 ---
@@ -74,9 +74,9 @@ const ua = new UniversalAccount({
 
 The demo fetches the UA's EVM and Solana addresses with `getSmartAccountOptions()` and its unified balance with `getPrimaryAssets()`. Both are covered in more detail elsewhere:
 
-- [Quickstart §3](/universal-accounts/web-quickstart#3-fetch-the-unified-balance) — minimal balance fetch.
-- [Build a balance widget](/universal-accounts/how-to/balances) — full per-chain breakdown rendered as a React component.
-- [SDK reference: Addresses](/universal-accounts/ua-reference/web/addresses) — full response shape.
+- [Quickstart §3](/universal-accounts/web-quickstart#3-fetch-the-unified-balance): minimal balance fetch.
+- [Build a balance widget](/universal-accounts/how-to/balances): full per-chain breakdown rendered as a React component.
+- [SDK reference: Addresses](/universal-accounts/ua-reference/web/addresses): full response shape.
 
 ---
 
@@ -124,7 +124,7 @@ await ua.sendTransaction(transaction, signature);
 
 ### Token swap (`createBuyTransaction`)
 
-To swap into a specific token by USD amount — here, 1 USDT on Arbitrum — the demo uses `createBuyTransaction()`:
+To swap into a specific token by USD amount (here, 1 USDT on Arbitrum) the demo uses `createBuyTransaction()`:
 
 ```tsx page.tsx
 const transaction = await ua.createBuyTransaction({
@@ -139,7 +139,7 @@ const signature = await provider.signMessage(transaction.rootHash);
 await ua.sendTransaction(transaction, signature);
 ```
 
-The user can hold the source liquidity in any supported token on any supported chain — Universal Accounts handles the routing.
+The user can hold the source liquidity in any supported token on any supported chain. Universal Accounts handle the routing.
 
 ---
 
@@ -158,12 +158,15 @@ The user can hold the source liquidity in any supported token on any supported c
   <Card title="How-to guides" icon="book" href="/universal-accounts/how-to/overview">
     Task-oriented guides — browser wallets, balance widgets, deposit flows.
   </Card>
+
   <Card title="SDK reference" icon="rectangle-terminal" href="/universal-accounts/ua-reference/web/overview">
     Full Universal Accounts SDK API surface.
   </Card>
+
   <Card title="Supported chains" icon="link" href="/universal-accounts/chains">
     EVM and non-EVM chains supported by Universal Accounts.
   </Card>
+
   <Card title="Demo repository" icon="github" href="https://github.com/particle-network/universal-accounts-quickstart">
     Browse the complete code on GitHub.
   </Card>

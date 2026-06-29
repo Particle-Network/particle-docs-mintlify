@@ -1,81 +1,61 @@
 ---
 title: "Introduction"
-description: "Learn about the Universal Accounts SDK—your entry point to integrating chain abstraction."
-keywords: [
-  'universal accounts sdk',
-  'particle network',
-  'chain abstraction',
-  'cross-chain integration',
-  'unified balance',
-  'sdk quickstart'
-]
+description: "Learn about the Universal Accounts SDK; your entry point to integrating chain abstraction."
+keywords: ["universal accounts sdk", "particle network", "chain abstraction", "cross-chain integration", "unified balance", "sdk quickstart"]
 ---
 
 <Frame caption="User flow of Particle Network's Universal Accounts.">
   <img
     className="block dark:hidden"
-    src="/intro/images/universal-accounts.png"
     alt="Universal Accounts"
+    src="/intro/images/universal-accounts.png"
   />
-
   <img
     className="hidden dark:block"
-    src="/intro/images/universal-accounts.png"
     alt="Universal Accounts"
+    src="/intro/images/universal-accounts.png"
   />
 </Frame>
 
 <Warning>
-Notice: Universal Accounts are upgrading to V2. This will require a change in account system for your app.
+  Notice: Universal Accounts are upgrading to V2. This will require a change in your app's account system.
 
-We've begun the migration and need your users to withdraw all funds from the old account. The next version will be deployed shortly after and you can resume operations. 
+  With this migration underway, you need your users to withdraw all funds from their old (existing) account(s). The next version will be deployed shortly, allowing you to resume operations with users creating new accounts.
 
-Withdrawals will be available past this date, but you will need to migrate your users to the new account system.
+  Withdrawals will still be available past this date.
 
-Assets can be withdrawn to any account the user controls, but only via the `createTransferTransaction` method.
+  Assets can be withdrawn to any account the user controls, but only via the `createTransferTransaction` method.
 </Warning>
 
 ## What is the Universal SDK?
 
 **Universal Accounts** give your users a **single account and balance** across all [supported chains](/universal-accounts/chains).
 
-The **Universal Accounts SDK** allows you to integrate Universal Accounts into your dApp. With **UAs**, your users can interact with your dApp without bridging — regardless of your native chain or where their assets live.
+The **Universal Accounts SDK** allows you to integrate Universal Accounts into your dApp. With **UAs**, your users can interact with your dApp without bridging, regardless of your native chain or where their assets live.
 
 ---
-
-
 
 ## Integration Flow
 
 The **Universal Accounts SDK** is designed for fast, minimum-lift integrations with common wallet connection mechanisms.
 
-Under the hood, it utilizes any wallet provider object (e.g., social logins, MetaMask, WalletConnect) and routes all transactions through the user’s Universal Account, an ERC-4337 smart account implementation. 
+Under the hood, it utilizes any wallet provider object (e.g., social logins, MetaMask, WalletConnect) and routes all transactions through the user’s Universal Account, an ERC-4337 smart account implementation.
 
 <Info>
-  It also leverages EIP-7702 to facilitate users to spend their existing assets through their Universal Account, without migrating.
+  Universal Accounts also leverage EIP-7702 to enable users to spend their existing assets through their Universal Account without migrating.
 </Info>
 
-
-In short, the integration flow requires you to:
+In short, the integration flow of this SDK requires you to:
 
 1. Configure the account using a single config object.
 2. Use your existing provider object (from RainbowKit or any other connection mechanism) using the SDK.
-3. Push transactions throug the UA instance. A user’s balance of any token will be treated as a collective of these tokens across any chain they’re on.  
+3. Push transactions through the UA instance. A user’s balance of any token will be treated as a collective of their tokens across any chain they’re on.
 
-Once integrated, all transacions, balance reads, and gas handling will automatically use the Universal Account—no additional code for bridging or gas logic required.
+Once integrated, all transactions, balance reads, and gas handling will automatically use the Universal Account—no additional code for bridging or gas logic required.
 
-The Universal Accounts SDK leverages EIP-7702. As such, if a user creates a Universal Account by connecting an existing wallet, this wallet and its assets will be automatically upgraded to a Universal Account (as long as the target application uses a supported provider). 
+The Universal Accounts SDK leverages EIP-7702. As such, if a user creates a Universal Account by connecting an existing wallet (from a [supported provider](/universal-accounts/ua-reference/web/eip7702-wallets)), this wallet and its assets will be automatically upgraded to a Universal Account.
 
-If the target application does not use a supported provider, developers may also make Universal Accounts an optional toggle within the dApp if they prefer to maintain EOAs as the default account mechanism. Users can transfer assets into their Universal Account from any supported chain via in-app flows. 
-
-
-<Note>
-  Universal Accounts are **independent smart accounts** if used in *smart account mode*, not extensions of an existing wallet.
-
-  - When a user creates a Universal Account with their existing wallet, their assets stay in the original wallet. Nothing is moved automatically.
-  - Users can transfer assets into their Universal Account from any supported chain through in-app flows.
-  - As a developer, you can choose whether to make Universal Accounts the default experience or keep them as an optional toggle alongside EOAs.
-</Note>
+If the target application does not use a supported provider, developers may also make Universal Accounts an optional toggle within the dApp if they prefer to maintain EOAs as the default account mechanism. Users can transfer assets into their Universal Account from any supported chain via in-app flows.
 
 ---
 
@@ -87,9 +67,11 @@ Get a live integration ready in under 5 minutes by learning the basics of Univer
   <Card title="Introduction to Universal Accounts" icon="user" href="/intro/universal-accounts">
     What are Universal Accounts, how do they work, and what problems do they solve?
   </Card>
+
   <Card title="Getting Started" icon="rocket" href="/universal-accounts/web-quickstart">
     A step-by-step setup guide for integrating the UAs SDK into your application.
   </Card>
+
   <Card title="UA SDK Reference" icon="code" href="/universal-accounts/ua-reference/web/overview">
     SDK and API reference for the Universal Accounts SDK.
   </Card>
@@ -105,9 +87,11 @@ Learn to implement specific Universal Account features in your app.
   <Card title="Integrate Universal Accounts" icon="dollar-sign" href="/universal-accounts/how-to/provider">
     Learn how to integrate Universal Accounts into any dApp.
   </Card>
+
   <Card title="Use Universal Accounts as deposit flow" icon="paper-plane-top" href="/universal-accounts/how-to/deposit-flow">
     Learn how to use Universal Accounts as deposit flow.
   </Card>
+
   <Card title="Displaying An Assets Breakdown" icon="paper-plane-top" href="/universal-accounts/how-to/balances">
     Learn how to display the assets breakdown of a Universal Account.
   </Card>
@@ -123,6 +107,7 @@ Explore the foundational concepts behind Universal Accounts and how they power c
   <Card title="The tech behind Universal Accounts" icon="layer-group" href="/intro/what-is-cha">
     Breakdown of the tech behind Universal Accounts and how they power chain abstraction.
   </Card>
+
   <Card title="Supported Chains" icon="network-wired" href="/universal-accounts/chains">
     List of chains supported by Universal Accounts.
   </Card>

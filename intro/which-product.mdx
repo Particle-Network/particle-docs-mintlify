@@ -1,57 +1,55 @@
 ---
 title: "Start Here"
-description: "Pick the right Particle Network stack for your app — most projects combine two or more SDKs."
+description: "Pick the right Particle Network stack for your app. Most projects combine two or more SDKs."
 icon: "map-signs"
 ---
 
-Particle Network ships five SDKs. They're independent, free to use, and designed to compose. **Most apps pick a stack of two or more** — for example, a signer (Particle Auth or Connect) plus Universal Accounts.
+Particle Network's infra stack spans five SDKs. They're independent, free to use, and designed for composability. **Most apps pick a stack of two or more** (for example, a signer—Particle Auth or Connect—plus Universal Accounts).
 
-This page helps you pick that stack. Use the flow chart to reason it out, or jump straight to your scenario below.
+This page helps you pick your stack. Use the flow chart below to find it, or jump straight to a specific scenario under **"Recommended stacks"**.
 
 ---
 
 ## Pick a stack
 
-
-  <img
-    className="block dark:hidden"
-    src="/intro/images/decision-flow.png"
-    alt="Pick a stack"
-  />
-
-  <img
-    className="hidden dark:block"
-    src="/intro/images/decision-flow.png"
-    alt="Pick a stack"
-  />
-
-
-
+<img
+  className="block dark:hidden"
+  alt="Pick a stack"
+  src="/intro/images/decision-flow.png"
+/>
+<img
+  className="hidden dark:block"
+  alt="Pick a stack"
+  src="/intro/images/decision-flow.png"
+/>
 
 ---
 
 ## Recommended stacks
 
-Pick the scenario that matches your app — each links to the right starting point.
+Pick a scenario that matches your goals. Each links to the starting point for your use case.
 
 <CardGroup cols={2}>
-  <Card title="New multi-chain app" icon="rocket" href="/universal-accounts/overview">
-    Cross-chain UX from day one. **Universal Accounts SDK** + **Particle Connect** (or **Auth** for social-only onboarding).
-  </Card>
-  <Card title="Existing app, add chain abstraction" icon="layer-group" href="/universal-accounts/how-to/provider">
-    Keep your users and wallet stack. **Universal Accounts SDK** + your existing provider — no migration.
-  </Card>
-  <Card title="Onboard users, no seed phrases" icon="user-plus" href="/social-logins/overview">
-    Social login → instant wallet. **Particle Connect** for a wallet picker, **Particle Auth** for a branded custom UI.
-  </Card>
-  <Card title="Accept deposits from any chain" icon="arrow-down-to-bracket" href="/simple-deposit/overview">
-    Single-chain app, funds arrive as USDC. **Simple Deposit** — wallet-agnostic, no other UX changes.
+  <Card title="Launch a multi-chain app" icon="rocket" href="/universal-accounts/overview">
+    Cross-chain UX from day zero. **Universal Accounts SDK** \+ **Particle Connect** (or **Auth** for social-only onboarding, see below).
   </Card>
 
-</CardGroup>
-  <Card title="Smart accounts, full control" icon="gear" href="/aa/introduction">
-    Direct bundler & paymaster access. **AA SDK** — ERC-4337 primitives, pair with any signer.
+  <Card title="I have an app; make it chain-agnostic" icon="layer-group" href="/universal-accounts/how-to/provider">
+    **Universal Accounts SDK** in **7702 mode.** Keep your users and wallet provider. No migration required!  
   </Card>
+
+  <Card title="Onboard users without seed phrases" icon="user-plus" href="/social-logins/overview">
+    Social logins → instant wallet. **Particle Connect** for wallet selection, **Particle Auth** for a branded custom UI.
+  </Card>
+
+  <Card title="Accept deposits from any chain" icon="arrow-down-to-bracket" href="/simple-deposit/overview">
+    **Simple Deposit,** 10 lines of code. Users deposit from any chain, funds arrive as USDC in your home chain. Fully wallet-agnostic, no UX changes required.
+  </Card>
+</CardGroup>
+
+<Card title="Smart accounts, full control" icon="gear" href="/aa/introduction">
+  Direct bundler & Paymaster access. Use ERC-4337 primitives and pair with any signer with our **AA SDK**.
+</Card>
 
 ---
 
@@ -59,12 +57,12 @@ Pick the scenario that matches your app — each links to the right starting poi
 
 Both turn a social login into a wallet. Here's how they differ.
 
-| | Particle Connect | Particle Auth |
-|---|---|---|
-| **Logins** | Social + external wallets | Social only |
+|  | **Particle Connect** | **Particle Auth** |
+| --- | --- | --- |
+| **Logins** | Social \+ external wallets | Social only |
 | **UI** | Pre-built modal | Fully customizable |
-| **Account Abstraction** | Built in | Add via AA SDK |
-| **Best for** | A drop-in that covers everyone | A branded Web2-style sign-in |
+| **Account Abstraction** | Built-in | Add via AA SDK |
+| **Best for** | A drop-in covering everything | A branded Web2-style sign-in |
 
 ---
 
@@ -72,16 +70,16 @@ Both turn a social login into a wallet. Here's how they differ.
 
 A one-line summary of everything Particle Network ships.
 
-| Product | What it does |
-|---|---|
-| **Universal Accounts SDK** | One account and unified balance across all supported chains. Users never bridge. Uses EIP-7702 so existing wallets opt in without migrating funds. → [Docs](/universal-accounts/overview) |
-| **Simple Deposit** | Per-chain deposit addresses; funds auto-bridge to your destination chain as USDC. Wallet-agnostic. Not compatible with Particle Connectkit/Authkit. → [Docs](/simple-deposit/overview) |
-| **Particle Connect** | Drop-in modal for social logins and external wallets. AA-enabled viem provider built in. → [Docs](/social-logins/connect/introduction) |
-| **Particle Auth** | Social login → EOA. Full UI customization. Pair with the AA SDK for smart-account features. → [Docs](/social-logins/auth/introduction) |
-| **AA SDK** | ERC-4337 bundler + paymaster + smart account management. Use it directly when you want primitives. → [Docs](/aa/introduction) |
+| **Product** | **What it does** |
+| --- | --- |
+| **Universal Accounts SDK** | One account and balance across all supported chains. Users never bridge. Uses EIP-7702 to avoid migrating funds or wallet providers for live apps. → [Docs](/universal-accounts/overview) |
+| **Simple Deposit** | Get deposit addresses for every chain; funds auto-bridge to your destination chain as USDC. Wallet-agnostic. Not compatible with Particle Connectkit/Authkit. → [Docs](/simple-deposit/overview) |
+| **Particle Connect** | Drop-in modal for social logins and external wallets. Built-in account abstraction compatibility. → [Docs](/social-logins/connect/introduction) |
+| **Particle Auth** | Social login → EOA. Full UI customization. Pair with AA SDK for Smart Account features. → [Docs](/social-logins/auth/introduction) |
+| **AA SDK** | ERC-4337 bundler \+ Paymaster \+ Smart Account management. Use it directly for primitives. → [Docs](/aa/introduction) |
 
 <Tip>
   **Can I use Universal Accounts without Particle Auth or Connect?**
 
-  Yes. The Universal Accounts SDK is provider-agnostic — pair it with Particle Connect, Particle Auth, RainbowKit, Web3Modal, wagmi, or any signer that exposes a standard wallet provider.
+  Yes. The Universal Accounts SDK is provider-agnostic. You can pair it with Particle Connect, Particle Auth, RainbowKit, Web3Modal, wagmi, or any signer that exposes a standard wallet provider.
 </Tip>

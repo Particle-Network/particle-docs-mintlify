@@ -1,111 +1,131 @@
 ---
-title: "The tech behind Universal Accounts"
-description: "The tech behind Universal Accounts — how Particle Network unifies Web3 across chains."
+title: "Technology"
+description: "How Particle Network's Universal Accounts unify Web3 across chains."
 icon: "atom-simple"
 ---
 
 <Note>
-  **You don’t need to read this page to build with Universal Accounts.** Everything described here happens automatically under the hood. This page is for developers who want to understand what’s going on beneath the SDK before they integrate. If you just want to ship, jump straight to the [Web Quickstart](/universal-accounts/cha/web-quickstart).
+  **You don’t need to read this page to build with Universal Accounts.** Everything described here happens automatically under the hood. This page is for developers who want to understand what’s happening beneath the SDK before integrating. If you just want to ship, jump straight to our [Web Quickstart](/universal-accounts/cha/web-quickstart).
 </Note>
 
 <Frame caption="Chain Abstraction visualized.">
-  <img className="block dark:hidden" src="https://mintcdn.com/particlenetwork-fccf74d2/oXCulWNeMx80sJqa/intro/images/cha-overview.png?fit=max&auto=format&n=oXCulWNeMx80sJqa&q=85&s=760fd24d1b7d4e7067765f7aae3a4209" alt="Chain Abstraction" width="2104" height="1180" data-path="intro/images/cha-overview.png" />
-  <img className="hidden dark:block" src="https://mintcdn.com/particlenetwork-fccf74d2/oXCulWNeMx80sJqa/intro/images/cha-overview.png?fit=max&auto=format&n=oXCulWNeMx80sJqa&q=85&s=760fd24d1b7d4e7067765f7aae3a4209" alt="Chain Abstraction" width="2104" height="1180" data-path="intro/images/cha-overview.png" />
+  <img
+    className="block dark:hidden"
+    alt="Chain Abstraction"
+    width="2104"
+    height="1180"
+    data-path="intro/images/cha-overview.png"
+    src="https://mintcdn.com/particlenetwork-fccf74d2/oXCulWNeMx80sJqa/intro/images/cha-overview.png?fit=max&auto=format&n=oXCulWNeMx80sJqa&q=85&s=760fd24d1b7d4e7067765f7aae3a4209"
+  />
+  <img
+    className="hidden dark:block"
+    alt="Chain Abstraction"
+    width="2104"
+    height="1180"
+    data-path="intro/images/cha-overview.png"
+    src="https://mintcdn.com/particlenetwork-fccf74d2/oXCulWNeMx80sJqa/intro/images/cha-overview.png?fit=max&auto=format&n=oXCulWNeMx80sJqa&q=85&s=760fd24d1b7d4e7067765f7aae3a4209"
+  />
 </Frame>
 
 **Chain abstraction** removes the friction of dealing with multiple blockchains.\
 With **Universal Accounts**, users and developers interact with Web3 as if it were one unified environment.
 
-***
+---
 
 ## What This Means for Users
 
-* **One account and balance** across all chains.
-* **Use any token as gas** on any transaction.
-* **No bridges or chain switching** required.
+- **One account and balance** across all chains.
+- **Use any token as gas** on any transaction.
+- **No bridges or chain switching** required.
 
 ## What This Means for Developers
 
-* Build your dApp on one chain, serve users from all of them.
-* No need to manage cross-chain deployments.
-* Unified liquidity, handled automatically in the background.
+- Build your dApp on one chain, serve users from all of them.
+- No need to manage cross-chain deployments.
+- Unified liquidity, handled automatically in the background.
 
-<iframe
-  className="w-full aspect-video rounded-xl"
-  src="https://www.youtube.com/embed/JmEcDiZnsGo"
-  title="YouTube video player"
-  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-  allowFullScreen
-></iframe>
-
-
-
-
-***
+<Frame caption="For a semi-technical, action-packed Universal Accounts showcase, watch our official cinematic explainer!">
+<iframe className="w-full aspect-video rounded-xl" src="https://www.youtube.com/embed/JmEcDiZnsGo" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen />
+</Frame>
+---
 
 ## Powered by Universal Liquidity
 
-**Universal Liquidity** is the mechanism that makes chain abstraction possible. It allows **Universal Accounts** to fulfill user actions without requiring them to **bridge** or manually move assets across chains. It routes funds across **solvers** with liquidity on supported networks based on the user’s **intent**, allowing them to interact with all chains as if they were **one**.
+**Universal Liquidity** is the mechanism that enables chain abstraction. It allows **Universal Accounts** to fulfill user actions without requiring them to **bridge** or manually move assets across chains. It routes funds across **solvers** with liquidity on supported networks based on the user’s **intent**, allowing them to interact with all chains as if they were **one**.
 
 ### How It Works
 
-When a user performs an action on a chain where they don’t hold funds, Universal Liquidity handles the **cross-chain** complexity behind the scenes. **Liquidity sources** and **solvers** operate across networks to execute the transaction.
+When a user performs an action on a chain where they don’t hold funds, Universal Liquidity activates **liquidity sources** and **solvers** deployed on the chains involved to handle the **cross-chain** complexity behind the transaction.
 
-**Flow:**
+This happens as follows:
 
 1. The user initiates the action (**swap**, **mint**, **deposit**, etc.) and signs once to **authorize** it. No preparation of assets or **gas** on the target chain is required.
-2. The **signature** conveys what the user wants to do and confirms they can cover the **cost**.
+2. The **signature** conveys what the user wants to do and confirms they have assets to cover the **cost**.
 3. **Solvers** detect the request and temporarily provide the required **liquidity** on the destination chain. They:
-   * Execute the transaction on the user’s behalf
-   * Cover the required **costs upfront**
-   * Recoup the value afterward from the user’s **balances** on any chain
+   - Execute the transaction on the user’s behalf.
+   - Cover the required **costs upfront.**
+   - Recoup the value afterward from the user’s **balances** on supported chains.
 4. The transaction finalizes on the **destination network**.
 
-The user’s funds **never move beforehand**. The solver only fronts the required liquidity, then withdraws **repayment** from the user’s existing balances according to the signed authorization.
+The user’s funds **never move beforehand**. The solver only fronts the required liquidity and then withdraws **repayment** from the user’s existing balances in accordance with the signed authorization.
 
-A **solver** is simply an **on-chain entity** with liquidity (e.g., an **LP** holding **USDT** or another [**Primary Token**](/universal-accounts/cha/chains)). Particle currently operates the liquidity pools, with the goal of enabling **permissionless** participation in the future.
+A **solver** is simply an **on-chain entity** with liquidity (e.g., an **LP** holding **USDT** or other **[Primary Token](/universal-accounts/cha/chains)s**). Particle currently operates these liquidity pools, with the goal of enabling **permissionless** participation in the future.
 
 ### Example
 
 A user holds:
 
-* **100 USDC** on Base
-* **0.1 BNB** (\~\$90) on BNB Chain
-* **0.3 SOL** (\~\$40) on Solana
+- **50 USDC** on BNB Chain
+- **50 USDC** on Solana
 
-They want to execute a transaction that requires **200 USDC on Ethereum**. A solver provides **200 USDC** on Ethereum and then receives **repayment** across the user’s existing balances, plus a small **fee**.
+They want to spend **100 USDC** on Base.
 
-<Frame caption="Universal Liquidity visualized.">
-  <img className="block dark:hidden" src="https://mintcdn.com/particlenetwork-fccf74d2/QkE0mIUVUpr8TJjZ/intro/images/ul.png?fit=max&auto=format&n=QkE0mIUVUpr8TJjZ&q=85&s=422e0141d1a5ca2358fcaab4c08ccb65" alt="Universal Liquidity" width="3840" height="2160" data-path="intro/images/ul.png" />
-  <img className="hidden dark:block" src="https://mintcdn.com/particlenetwork-fccf74d2/QkE0mIUVUpr8TJjZ/intro/images/ul.png?fit=max&auto=format&n=QkE0mIUVUpr8TJjZ&q=85&s=422e0141d1a5ca2358fcaab4c08ccb65" alt="Universal Liquidity" width="3840" height="2160" data-path="intro/images/ul.png" />
+A solver aggregates liquidity across the user’s balances, fronts the required funds on Base, executes the transaction, and later settles repayment across the user’s assets plus a small fee.
+<Frame caption="Universal Liquidity in action.">
+  <img
+    className="block dark:hidden"
+    alt="Universal Liquidity"
+    width="3840"
+    height="2160"
+    data-path="intro/images/ul.png"
+    src="https://mintcdn.com/particlenetwork-fccf74d2/QkE0mIUVUpr8TJjZ/intro/images/ul.png?fit=max&auto=format&n=QkE0mIUVUpr8TJjZ&q=85&s=422e0141d1a5ca2358fcaab4c08ccb65"
+  />
+  <img
+    className="hidden dark:block"
+    alt="Universal Liquidity"
+    width="3840"
+    height="2160"
+    data-path="intro/images/ul.png"
+    src="https://mintcdn.com/particlenetwork-fccf74d2/QkE0mIUVUpr8TJjZ/intro/images/ul.png?fit=max&auto=format&n=QkE0mIUVUpr8TJjZ&q=85&s=422e0141d1a5ca2358fcaab4c08ccb65"
+  />
 </Frame>
 
-***
+---
 
 ## Gas Abstraction
 
-Universal Liquidity also removes the requirement to hold **native gas tokens** on every chain. **Paymasters** cover **gas fees** on the user’s behalf, then settle repayment afterward using **any supported asset** — even if that asset is on another chain.
+Universal Liquidity also removes the requirement to hold **native gas tokens** on every chain. **Paymasters** cover **gas fees** on user’s behalf, then settle repayment [afterward using **any supported asset**](/universal-accounts/chains)—even if that asset is on another chain.
 
-**Flow:**
+This looks as follows:
 
 1. User signs to authorize the operation and **repayment**.
-2. **Paymaster** fronts the gas immediately.
-3. Transaction executes on the **target chain**.
+2. **Paymaster(s)** fronts the gas immediately.
+3. The transaction is executed on the **target chain**.
 4. Repayment is deducted afterward using available **balances**.
 
-A **single signature** is enough to complete **cross-chain** operations while advancing both **liquidity** and **gas**.
+A **single signature** is enough to complete **cross-chain** operations while simplifying both **liquidity** and **gas**.
 
-***
+---
 
 ## TL;DR
 
 Chain Abstraction, powered by Universal Liquidity, enables:
 
-* Assets across chains to function as **one unified liquidity source**
-* Execution of transactions using **any combination** of a user’s balances
-* Removal of **bridging**, **gas concerns**, and **balance fragmentation**
+- Assets across chains to function as **a unified liquidity source.**
+- Execution of transactions using **any combination** of a user’s balances.
+- Removal of **bridging**, **gas concerns**, and **balance fragmentation.**
 
-***
+---
 
 ## Next Steps
 
@@ -113,6 +133,7 @@ Chain Abstraction, powered by Universal Liquidity, enables:
   <Card title="Integrate Chain Abstraction" icon="code" href="/universal-accounts/cha/web-quickstart">
     Start building with Universal Accounts.
   </Card>
+
   <Card title="See It Live: UniversalX" icon="layer-group" href="https://universalx.app">
     Try UniversalX, a chain-agnostic trading app powered by Universal Accounts.
   </Card>

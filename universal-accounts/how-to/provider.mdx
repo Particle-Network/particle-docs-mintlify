@@ -4,7 +4,7 @@ sidebarTitle: "Integrate with Browser Wallets"
 description: "Learn how to integrate Universal Accounts alongside standard EVM wallets (e.g. MetaMask)."
 ---
 
-Within this guide, you'll learn how to use **Universal Accounts** alongside browser-injected EVM wallets —such as **MetaMask** or other providers.
+Within this guide, you'll learn how to use **Universal Accounts** alongside browser-injected EVM wallets, such as **MetaMask** or other providers.
 
 You’ll learn how to:
 
@@ -36,18 +36,15 @@ To start, ensure you have an app set up with a browser-injected EVM wallet like 
     npm install ethers @particle-network/universal-account-sdk
     ```
 
-    
     ```bash yarn
     yarn add ethers @particle-network/universal-account-sdk
     ```
 
     </CodeGroup>
-
-
   </Step>
   <Step title="Set Environment Variables">
     Add your Universal Accounts project ID to `.env.local`:
- 
+
     ```env .env
     NEXT_PUBLIC_PROJECT_ID="YOUR_PROJECT_ID"
     NEXT_PUBLIC_CLIENT_KEY="YOUR_CLIENT_KEY"
@@ -55,7 +52,7 @@ To start, ensure you have an app set up with a browser-injected EVM wallet like 
     ```
 
     <Info>
-      Get your Universal project keys from the [Particle Dashboard](https://dashboard.particle.network/). 
+      Get your Universal project keys from the [Particle Dashboard](https://dashboard.particle.network/).
 
       Find a full rundown of the process on the [Universal Accounts SDK](/universal-accounts/ua-reference/web/overview) reference page.
     </Info>
@@ -173,6 +170,7 @@ Explore the SDK reference for more advanced capabilities.
   <Card title="SDK Reference" icon="code" href="/universal-accounts/ua-reference/web/overview">
     Learn more about the SDK APIs.
   </Card>
+
   <Card title="Supported Chains" icon="link" href="/universal-accounts/chains">
     See which chains are supported.
   </Card>

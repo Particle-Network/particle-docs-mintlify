@@ -12,29 +12,16 @@ description: "A list of the blockchains and Primary Assets supported by Universa
 
 - **Ethereum** — Chain ID: **1**
 - **BNB Chain** — Chain ID: **56**
-- **Mantle** — Chain ID: **5000**
-- **Monad** — Chain ID: **143**
-- **Plasma** — Chain ID: **9745**
 - **X Layer** — Chain ID: **196**
 - **Base** — Chain ID: **8453**
 - **Arbitrum** — Chain ID: **42161**
-- **Avalanche** — Chain ID: **43114**
-- **OP (Optimism)** — Chain ID: **10**
-- **Polygon** — Chain ID: **137**
-- **HyperEVM** — Chain ID: **999**
-- **Berachain** — Chain ID: **80094**
-- **Linea** — Chain ID: **59144**
-- **Sonic** — Chain ID: **146**
-- **Merlin** — Chain ID: **4200**
 
 ### Non-EVM Chains
 
 - **Solana** — Chain ID: **101**
 
 <Note>
-  This list is regularly updated as support for new chains is added. All
-  supported chains can be accessed through a single Universal Account—no
-  separate wallets or setups required.
+  This list is regularly updated as support for new chains is added. All supported chains can be accessed through a single Universal Account—no separate wallets or setups required.
 </Note>
 
 ## Primary Assets
@@ -44,38 +31,26 @@ description: "A list of the blockchains and Primary Assets supported by Universa
 <Note>
   Currently, the list of Primary Assets includes:
 
-- **ETH**
-- **USDT**
-- **USDC**
-- **BTC**
-- **SOL**
-- **BNB**
-
+  - **ETH**
+  - **USDT**
+  - **USDC**
+  - **SOL**
+  - **BNB**
 </Note>
 
-When a user sends a transaction (e.g. swapping a token), the SDK will:
+When a user sends a transaction (e.g., swapping a token), the SDK will:
 
 - Identify the optimal Primary Asset from the user’s portfolio. For example, it may select USDC on Polygon to allow a user to purchase a memecoin on Solana.
 - Route liquidity across all the chains the user holds this Primary Asset using Universal Liquidity.
 - Complete the transaction on the destination chain, even if the user holds **no assets on that chain**.
+- Automatically handle gas payments by using any available Primary Asset, even if that asset is on another chain or the gas token is a completely different token.
 
 ### Availability by Chain
 
 Some **Primary Assets** are only available on specific chains, depending on native sources.
 
 - **Solana** — Available Assets: **USDC, USDT, SOL**
-- **Ethereum** — Available Assets: **USDC, USDT, ETH, BTC**
-- **Base** — Available Assets: **USDC, ETH, BTC**
-- **BNB Chain** — Available Assets: **USDC, USDT, ETH, BTC, BNB**
-- **Mantle** — Available Assets: **USDT**
-- **Monad** — Available Assets: **USDC**
-- **Plasma** — Available Assets: **USDT**
-- **X Layer** — Available Assets: **USDC, USDT**
-- **HyperEVM** — Available Assets: **USDT**
-- **Sonic** — Available Assets: **USDC**
-- **Berachain** — Available Assets: **USDC**
-- **Avalanche** — Available Assets: **USDC, USDT, ETH, BTC**
-- **Arbitrum** — Available Assets: **USDC, USDT, ETH, BTC**
-- **Optimism** — Available Assets: **USDC, USDT, ETH, BTC**
-- **Linea** — Available Assets: **USDC, USDT, ETH, BTC**
-- **Polygon** — Available Assets: **USDC, USDT, ETH, BTC**
+- **Ethereum** — Available Assets: **USDC, USDT, ETH**
+- **Base** — Available Assets: **USDC, ETH**
+- **Arbitrum** — Available Assets: **USDC, USDT, ETH**
+- **BNB Chain** — Available Assets: **USDC, USDT, ETH, BNB**
