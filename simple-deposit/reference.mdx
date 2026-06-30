@@ -10,10 +10,44 @@ description: "Type definitions, constants, chain utilities, and advanced configu
 
 ```typescript
 interface DestinationConfig {
-  address?: string;   // Defaults to ownerAddress
-  chainId: number;    // Required — use CHAIN constant
+  address?: string;     // Defaults to ownerAddress
+  chainId: number;      // Required — use CHAIN constant
+  token?: TokenType;    // Defaults to 'USDC' — see "Destination tokens"
 }
 ```
+
+#### Destination tokens
+
+By default every deposit is delivered as **USDC** on the destination chain. Set
+`destination.token` to deliver a different asset; the sweep converts each deposit
+into that token and the fiat onramp buys it directly. The token must be
+deliverable on the destination chain or the client throws a `ConfigurationError`.
+
+```typescript
+// Deliver native ETH on Base instead of USDC
+destination: { chainId: CHAIN.BASE, token: 'ETH' }
+```
+
+Deliverable token × chain matrix:
+
+| Token | Ethereum | Base | Arbitrum | BNB | Solana |
+|-------|:--------:|:----:|:--------:|:---:|:------:|
+| USDC  | ✓ | ✓ | ✓ | ✓ | ✓ |
+| USDT  | ✓ | — | ✓ | ✓ | ✓ |
+| ETH   | ✓ (native) | ✓ (native) | ✓ (native) | ✓ (bridged) | — |
+| SOL   | — | — | — | — | ✓ (native) |
+
+Deliverability mirrors the Universal Account's routable primary assets (Base has
+no USDT route, for example). Use `isSupportedDestinationToken(token, chainId)` to
+check a combo at runtime.
+
+> **X Layer** is a deposit *source* only — the Universal Account has no X Layer
+> primary tokens, so it cannot be used as a sweep destination.
+
+> **Onramp note:** RampNow's fiat "Buy" supports a narrower set than the sweep —
+> stablecoins on all chains, but `ETH` only on Ethereum/Base, `BNB` on BNB, and
+> `SOL` on Solana. `isOnrampSupported()` / `isOnrampTokenSupported(token, chainId)`
+> reflect this; gate "Buy" UI on them.
 
 ### DetectedDeposit
 
@@ -303,12 +337,14 @@ import {
 
 ```typescript
 import {
-  getChainName,              // getChainName(42161) → "Arbitrum"
-  isValidDestinationChain,   // isValidDestinationChain(42161) → true
-  getAddressType,            // getAddressType(101) → 'solana'
-  isValidEvmAddress,         // Validates 0x + 40 hex chars
-  isValidSolanaAddress,      // Validates base58 format
-  validateAddressForChain,   // Validates address format for chain type
+  getChainName,                 // getChainName(42161) → "Arbitrum"
+  isValidDestinationChain,      // isValidDestinationChain(42161) → true
+  isSupportedDestinationToken,  // isSupportedDestinationToken('ETH', CHAIN.BASE) → true
+  isOnrampTokenSupported,       // isOnrampTokenSupported('ETH', CHAIN.BASE) → true
+  getAddressType,               // getAddressType(101) → 'solana'
+  isValidEvmAddress,            // Validates 0x + 40 hex chars
+  isValidSolanaAddress,         // Validates base58 format
+  validateAddressForChain,      // Validates address format for chain type
 } from '@particle-network/simple-deposit';
 ```
 
@@ -385,12 +421,16 @@ setDestination({ chainId: CHAIN.ETHEREUM });
 ```typescript Headless
 client.setDestination({ chainId: CHAIN.BASE, address: '0xTreasury...' });
 const dest = client.getDestination(); // { address, chainId }
+
+// Deliver a non-default token (see "Destination tokens")
+client.setDestination({ chainId: CHAIN.BASE, token: 'ETH' });
 ```
 
 </CodeGroup>
 
 <Note>
-  Throws `ConfigurationError` if the chain ID or address is invalid.
+  Throws `ConfigurationError` if the chain ID, address, or token is invalid — see the
+  [deliverable token × chain matrix](#destination-tokens).
 </Note>
 
 ### Notifications
