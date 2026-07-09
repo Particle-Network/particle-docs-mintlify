@@ -152,7 +152,26 @@
           }
         ]
       },
-
+      {
+        "tab": "Simple Deposit",
+        "groups": [
+          {
+            "group": "OVERVIEW",
+            "pages": [
+              "simple-deposit/overview",
+              "simple-deposit/quickstart"
+            ]
+          },
+          {
+            "group": "SDK Reference",
+            "pages": [
+              "simple-deposit/react-sdk",
+              "simple-deposit/core-sdk",
+              "simple-deposit/reference"
+            ]
+          }
+        ]
+      },
       {
         "tab": "Social Logins",
         "groups": [

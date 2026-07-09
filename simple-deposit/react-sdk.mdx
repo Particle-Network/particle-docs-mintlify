@@ -12,7 +12,7 @@ Wraps your app and manages the deposit lifecycle. Handles Auth Core context inte
 import { DepositProvider, CHAIN } from '@particle-network/simple-deposit/react';
 
 <DepositProvider config={{
-  destination: { chainId: CHAIN.POLYGON },
+  destination: { chainId: CHAIN.BASE },
   autoSweep: true,
   minValueUSD: 1,
 }}>
@@ -26,6 +26,7 @@ import { DepositProvider, CHAIN } from '@particle-network/simple-deposit/react';
 |---|---|---|---|
 | `destination.chainId` | `number` | — | **Required.** Destination chain (use `CHAIN` constant). |
 | `destination.address` | `string` | Owner's EOA | Custom sweep destination address. |
+| `destination.token` | `TokenType` | `'USDC'` | Token delivered to the destination (sweep converts to it; onramp buys it). See [Destination tokens](/simple-deposit/reference#destination-tokens). |
 | `supportedTokens` | `TokenType[]` | All | Tokens to watch. |
 | `supportedChains` | `number[]` | All 17 chains | Chains to watch. |
 | `autoSweep` | `boolean` | `true` | Auto-sweep detected deposits. |
@@ -35,6 +36,7 @@ import { DepositProvider, CHAIN } from '@particle-network/simple-deposit/react';
 | `notifications` | `boolean \| DepositNotificationsProps` | `false` | Show in-app deposit notifications. Set `true` to auto-mount the toaster, or pass props to configure it. |
 | `funding` | `FundingConfig` | `{ enabled: false }` | Let users fund the deposit address from a connected browser wallet. When enabled, `DepositWidget` shows a "Fund from wallet" toggle. |
 | `fundingWallet` | `{ evm?: { provider, address } }` | — | Reuse your app's already-connected wallet as the funding source (skips the connect step). |
+| `onramp` | `OnrampConfig` | `{ enabled: false }` | Let users buy crypto with fiat (card / Apple Pay / bank) via RampNow, delivered straight to the destination. When enabled, `DepositWidget` shows a "Buy" toggle. |
 | `uaProjectId` | `string` | SDK default | Particle project ID for UA operations only. |
 
 ---
@@ -108,6 +110,36 @@ const { client, stuckFunds, recoverFunds, refundDeposit } = useDepositContext();
 
 ---
 
+## useOnramp
+
+Drive a fiat purchase (buy crypto with fiat via RampNow) from a fully custom UI. Returns nothing useful until `onramp.enabled` is set on the provider.
+
+```tsx
+import { useOnramp } from '@particle-network/simple-deposit/react';
+
+const { open, status, error, enabled, supported } = useOnramp();
+
+// Render your own button:
+<button disabled={!enabled || !supported} onClick={() => open({ amount: 100 })}>
+  Buy
+</button>
+```
+
+### Return Value
+
+| Property | Type | Description |
+|---|---|---|
+| `open` | `(opts?: { amount?: number }) => Promise<void>` | Open the RampNow overlay/redirect. |
+| `close` | `() => void` | Close the overlay. |
+| `isOpen` | `boolean` | Overlay is open. |
+| `status` | `'idle' \| 'opening' \| 'open' \| 'processing' \| 'success' \| 'error'` | Current purchase status. |
+| `lastOrder` | `OnrampOrder \| null` | Most recent completed order. |
+| `error` | `Error \| null` | Last error. |
+| `enabled` | `boolean` | Onramp is enabled in config. |
+| `supported` | `boolean` | Destination chain supports onramp (see [supported chains](/simple-deposit/reference#onramp)). |
+
+---
+
 ## Components
 
 ### DepositWidget
@@ -133,7 +165,7 @@ import { DepositWidget } from '@particle-network/simple-deposit/react';
 | `onClose` | `() => void` | — | Close handler. |
 
 <Note>
-  When `funding.enabled` is set on the provider, `DepositWidget` automatically gains a **"Receive | Fund from wallet"** toggle — no extra props needed.
+  When `funding.enabled` and/or `onramp.enabled` are set on the provider, `DepositWidget` automatically gains a **"Receive | Fund | Buy"** toggle — segments appear only for the features you enable, no extra props needed. Pass `showBuy={false}` to suppress the Buy tab.
 </Note>
 
 ### DepositModal
@@ -151,6 +183,44 @@ import { DepositModal } from '@particle-network/simple-deposit/react';
 | `isOpen` | `boolean` | Modal visibility. |
 | `onClose` | `() => void` | Close handler (required). |
 | `overlayClassName` | `string` | Custom overlay CSS class. |
+
+### OnrampButton
+
+Standalone "Buy" button for custom placement. Renders nothing when `onramp` is disabled. Must live inside a `DepositProvider` with `onramp: { enabled: true }`.
+
+```tsx
+import { OnrampButton } from '@particle-network/simple-deposit/react';
+
+<OnrampButton theme="dark" amount={100} onPurchased={(order) => console.log('bought', order)} />
+```
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `client` | `DepositClient` | Context | Optional client (uses context if omitted). |
+| `theme` | `'dark' \| 'light'` | `'dark'` | Color theme. |
+| `amount` | `number` | — | Pre-fill the fiat amount. |
+| `onPurchased` | `(order: OnrampOrder) => void` | — | Called when a purchase completes. |
+
+### OnrampStatusToast
+
+A small floating "purchase in progress / complete / failed" popup that persists even after the user switches tabs or closes the RampNow overlay. Mount it once near your app root — it portals to `document.body` and is driven by `useOnramp` status.
+
+```tsx
+import { OnrampStatusToast } from '@particle-network/simple-deposit/react';
+
+<OnrampStatusToast theme="dark" position="bottom-right" />
+```
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `client` | `DepositClient` | Context | Optional client (uses context if omitted). |
+| `theme` | `'dark' \| 'light'` | `'dark'` | Color theme. |
+| `position` | `'top-right' \| 'top-left' \| 'bottom-right' \| 'bottom-left' \| 'top-center' \| 'bottom-center'` | `'bottom-right'` | Where the toast anchors. |
+| `successDurationMs` | `number` | `6000` | Auto-dismiss delay for the success toast. `0` keeps it until dismissed. |
+
+<Note>
+  Order events only flow in `mode: 'overlay'`. A `redirect` tab has no postMessage channel back, so there's nothing to track and the toast stays hidden.
+</Note>
 
 ### RecoveryWidget
 
